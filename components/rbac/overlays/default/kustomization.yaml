@@ -5,10 +5,11 @@ bases:
   - ../../base
 
 resources:
-  - tiger-cluster-admins-group.yaml
-  - tiger-cluster-admins-rolebinding.yaml
-  - tiger-cluster-readers-group.yaml
-  - tiger-cluster-readers-rolebinding.yaml
+  - cluster-admins-group.yaml
+  - cluster-admins-rolebinding.yaml
+  - cluster-readers-group.yaml
+  - cluster-readers-rolebinding.yaml
+  - workshop-admins-group.yaml
 
 patchesJson6902:
   - target:

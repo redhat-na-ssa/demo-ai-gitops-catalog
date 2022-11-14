@@ -1,5 +1,5 @@
 kind: Group
 apiVersion: user.openshift.io/v1
 metadata:
-  name: tiger-cluster-admins
+  name: cluster-admins
 users: []
