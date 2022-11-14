@@ -5,10 +5,10 @@ bases:
   - ../../base
 
 resources:
-  - cluster-admins-group.yaml
-  - cluster-admins-rolebinding.yaml
-  - cluster-readers-group.yaml
-  - cluster-readers-rolebinding.yaml
+  - lab-cluster-admins-group.yaml
+  - lab-cluster-admins-rolebinding.yaml
+  - lab-cluster-readers-group.yaml
+  - lab-cluster-readers-rolebinding.yaml
   - workshop-admins-group.yaml
 
 patchesJson6902:
