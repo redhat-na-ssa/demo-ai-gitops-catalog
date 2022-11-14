@@ -5,6 +5,7 @@ bases:
   - ../../base
 
 resources:
+  - htpasswd-secret-ss.yaml
   - lab-cluster-admins-group.yaml
   - lab-cluster-admins-rolebinding.yaml
   - lab-cluster-readers-group.yaml
