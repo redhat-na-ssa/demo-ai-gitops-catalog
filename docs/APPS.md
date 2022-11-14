@@ -10,4 +10,15 @@ cat scratch/repo-secret.yml | kubeseal \
   -o yaml > bootstrap/overlays/default/argocd-ssh-repo-ss.yaml 
 ```
 
+Add the following annotations to the sealed secret
+
+```
+spec:
+  template:
+    metadata:
+      annotations:
+        managed-by: argocd.argoproj.io
+        sealedsecrets.bitnami.com/managed: "true"
+```
+
 [Sealed Secrets - Offical Docs](https://github.com/bitnami-labs/sealed-secrets)
