@@ -9,3 +9,5 @@ resources:
   - chaosmonkey-namespace.yaml
   - fingerprint-id-admin-rolebinding.yaml
   - fingerprint-id-namespace.yaml
+  - iris-id-admin-rolebinding.yaml
+  - iris-id-namespace.yaml
