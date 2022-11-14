@@ -36,7 +36,7 @@ check_bin(){
 }
 
 download_kubeseal(){
-  DOWNLOAD_URL=https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.18.2/kubeseal-0.18.2-linux-amd64.tar.gz
+  DOWNLOAD_URL=https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.1/kubeseal-0.19.1-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -L | tar vzx -C ${TMP_DIR}/bin kubeseal
 }
 
