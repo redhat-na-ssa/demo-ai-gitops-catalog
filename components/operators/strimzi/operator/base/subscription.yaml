@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  labels:
+    operators.coreos.com/strimzi-kafka-operator.openshift-operators: ""
+  name: strimzi-kafka-operator
+spec:
+  channel: patch-me
+  installPlanApproval: Automatic
+  name: strimzi-kafka-operator
+  source: community-operators
+  sourceNamespace: openshift-marketplace

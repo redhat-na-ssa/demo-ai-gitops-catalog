@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+resources:
+  - tiger-cluster-admins-group.yaml
+  - tiger-cluster-admins-rolebinding.yaml
+  - tiger-cluster-readers-group.yaml
+  - tiger-cluster-readers-rolebinding.yaml
+
+patchesJson6902:
+  - target:
+      group: machineconfiguration.openshift.io
+      version: v1
+      kind: MachineConfig
+      name: 99-master-ssh
+    path: patch-ssh.yaml
+  - target:
+      group: machineconfiguration.openshift.io
+      version: v1
+      kind: MachineConfig
+      name: 99-worker-ssh
+    path: patch-ssh.yaml

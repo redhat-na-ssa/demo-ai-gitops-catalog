@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sandbox-cleanup
+spec:
+  schedule: "0 12 * * 6"
+  successfulJobsHistoryLimit: 3  # Remove after successful completion
+  failedJobsHistoryLimit: 1  # Retain failed so that we see it
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: sandbox-cleanup
+          containers:
+          - name: sandbox-cleanup
+            image: image-registry.openshift-image-registry.svc:5000/openshift/cli
+            env:
+              - name: OBJECTS
+                value: all,cm,secrets,pvc
+            command:
+              - bash
+              - -c
+              - |
+                # set cpu limit
+                oc -n sandbox \
+                  delete ${OBJECTS} --all

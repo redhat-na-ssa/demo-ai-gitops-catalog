@@ -1,0 +1,5 @@
+- op: replace
+  path: /spec/rbac/policy
+  value: |
+    g, system:cluster-admins, role:admin
+    g, intel-demos-admins, role:admin

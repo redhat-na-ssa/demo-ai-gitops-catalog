@@ -1,0 +1,9 @@
+.idea/
+manifest.yaml
+venv/
+dictionary.dic
+tmp
+generated/
+
+# Sealed secret key
+bootstrap/base/sealed-secrets-secret.yaml
