@@ -3,5 +3,6 @@ apiVersion: user.openshift.io/v1
 metadata:
   name: gitops-admins
 users:
+  - clatschk
   - codekow
   - opentlc-mgr

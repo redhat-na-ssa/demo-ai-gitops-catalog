@@ -7,3 +7,5 @@ bases:
 resources:
   - chaosmonkey-admin-rolebinding.yaml
   - chaosmonkey-namespace.yaml
+  - fbi-project-admin-rolebinding.yaml
+  - fbi-project-namespace.yaml
