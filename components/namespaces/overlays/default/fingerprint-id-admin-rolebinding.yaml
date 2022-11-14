@@ -1,8 +1,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: fbi-project-admin-rolebinding
-  namespace: fbi-project
+  name: fingerpint-id-admin-rolebinding
+  namespace: fingerpint-id
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
