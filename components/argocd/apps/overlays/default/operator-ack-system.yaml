@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-config-manager
+  name: operator-ack-system
   namespace: openshift-gitops
   labels:
     gitops.ownedBy: cluster-config
@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: cluster-config
   source:
-    path: clusters/overlays/default
+    path: components/operators/aws-controllers/overlays/default
     repoURL: git@github.com:redhat-na-ssa/ds-tiger-gitops.git
     targetRevision: main
   syncPolicy:

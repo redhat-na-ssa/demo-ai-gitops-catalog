@@ -7,6 +7,7 @@ bases:
 resources:
   - cluster-namespaces-app.yaml
   - cluster-rbac-app.yaml
+  - operator-ack-system.yaml
 
 patches:
   - target:
