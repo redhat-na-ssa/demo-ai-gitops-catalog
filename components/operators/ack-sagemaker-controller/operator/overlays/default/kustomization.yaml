@@ -15,5 +15,4 @@ patches:
         value: 'alpha'
 
 resources:
-- user-config-cm.yaml
-- user-secrets-secret.yaml
+  - user-secrets-ss.yaml
