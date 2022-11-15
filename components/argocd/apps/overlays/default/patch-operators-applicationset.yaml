@@ -11,13 +11,3 @@
       values:
         name: operator-web-terminal
         path: components/operators/web-terminal-operator/operator/overlays/fast
-    - cluster: local
-      url: https://kubernetes.default.svc
-      values:
-        name: operator-ack-s3-controller
-        path: components/operators/ack-s3-controller/operator/overlays/default
-    - cluster: local
-      url: https://kubernetes.default.svc
-      values:
-        name: operator-ack-sagemaker-controller
-        path: components/operators/ack-sagemaker-controller/operator/overlays/default
