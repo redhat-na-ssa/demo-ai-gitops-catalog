@@ -8,7 +8,7 @@ bases:
 patches:
   - target:
       kind: Subscription
-      name: ack-sagemaker-controller
+      name: ack-s3-controller
     patch: |-
       - op: replace
         path: /spec/channel
