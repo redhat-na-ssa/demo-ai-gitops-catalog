@@ -1,0 +1,19 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+patches:
+  - target:
+      kind: Subscription
+      name: ack-sagemaker-controller
+    patch: |-
+      - op: replace
+        path: /spec/channel
+        value: 'alpha'
+
+resources:
+- user-config-cm.yaml
+- user-secrets-secret.yaml
