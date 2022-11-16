@@ -1,8 +1,8 @@
 # How to add objects to the cluster
 
-## Sealed Secrets Quickstart
+## Sealed Secrets Quick Start
 
-Convert an existing secret into a sealed-secret that can be commited in git
+Convert an existing secret into a sealed-secret that can be committed in git
 
 Convert a secret local file to a sealed-secret
 
@@ -39,4 +39,4 @@ oc -n openshift-config \
   annotate secret/htpasswd-secret "sealedsecrets.bitnami.com/managed=true"
 ```
 
-[Sealed Secrets - Offical Docs](https://github.com/bitnami-labs/sealed-secrets)
+[Sealed Secrets - Official Docs](https://github.com/bitnami-labs/sealed-secrets)
