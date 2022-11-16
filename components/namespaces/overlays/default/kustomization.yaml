@@ -11,3 +11,5 @@ resources:
   - fingerprint-id-namespace.yaml
   - iris-id-admin-rolebinding.yaml
   - iris-id-namespace.yaml
+  - smart-cities-admin-rolebinding.yaml
+  - smart-cities-namespace.yaml
