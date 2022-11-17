@@ -23,4 +23,3 @@ spec:
       name: repo-cluster-config
       namespace: openshift-gitops
     type: Opaque
-
