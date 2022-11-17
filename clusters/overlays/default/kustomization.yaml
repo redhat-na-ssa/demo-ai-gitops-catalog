@@ -7,9 +7,6 @@ bases:
   # - ../../../tenants/aws-demos/argocd/projects/overlays/default
   # - ../../../tenants/aws-demos/argocd/apps/overlays/default
 
-resources:
-  - argocd-ssh-repo-ss.yaml
-
 patches:
   - path: patch-applicationset-repo-revision.yaml
     target:
