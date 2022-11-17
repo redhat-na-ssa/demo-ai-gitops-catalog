@@ -15,7 +15,7 @@ spec:
   project: cluster-config
   source:
     path: components/operators/aws-controllers/overlays/default
-    repoURL: git@github.com:redhat-na-ssa/ds-tiger-gitops.git
+    repoURL: git@github.com:redhat-na-ssa/demo-argocd-gitops.git
     targetRevision: main
   syncPolicy:
     automated:

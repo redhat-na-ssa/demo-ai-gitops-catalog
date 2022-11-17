@@ -48,7 +48,7 @@ spec:
             factor: 2
             # maxDuration: 3m
       source:
-        repoURL: 'git@github.com:redhat-na-ssa/ds-tiger-gitops.git'
+        repoURL: 'git@github.com:redhat-na-ssa/demo-argocd-gitops.git'
         targetRevision: main
         path: '{{values.path}}'
       destination:

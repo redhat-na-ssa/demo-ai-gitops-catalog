@@ -1,6 +1,6 @@
 - op: replace
   path: /spec/source/repoURL
-  value: 'git@github.com:redhat-na-ssa/ds-tiger-gitops.git'
+  value: 'git@github.com:redhat-na-ssa/demo-argocd-gitops.git'
 - op: replace
   path: /spec/source/targetRevision
   value: main
