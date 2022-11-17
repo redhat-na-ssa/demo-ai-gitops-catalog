@@ -8,4 +8,3 @@ bases:
 
 resources:
   - argocd-ssh-known-hosts-cm.yaml
-  - argocd-ssh-repo-ss.yaml
