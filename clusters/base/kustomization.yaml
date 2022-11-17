@@ -5,3 +5,6 @@ namespace: openshift-gitops
 
 bases:
   - ../../components/argocd/projects/overlays/default
+
+resources:
+  - argocd-ssh-repo-ss.yaml
