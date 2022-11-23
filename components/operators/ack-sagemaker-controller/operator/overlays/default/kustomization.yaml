@@ -13,6 +13,3 @@ patches:
       - op: replace
         path: /spec/channel
         value: 'alpha'
-
-resources:
-  - user-secrets-ss.yaml
