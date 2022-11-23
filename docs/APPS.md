@@ -4,6 +4,16 @@
 
 Convert an existing secret into a sealed-secret that can be committed in git
 
+Dump current sealed secret cert
+```
+SEALED_SECRETS_SECRET=bootstrap/base/sealed-secrets-secret.yaml
+
+oc -n sealed-secrets -o yaml \
+        get secret \
+        -l sealedsecrets.bitnami.com/sealed-secrets-key=active \
+        > ${SEALED_SECRETS_SECRET}
+```
+
 Convert a secret local file to a sealed-secret
 
 ```
