@@ -82,6 +82,7 @@ argocd
 argoproj
 autoscaler
 aws
+bitnami
 canada
 cd
 ceph
@@ -161,6 +162,7 @@ rhods
 rhpds
 runtime
 sandboxed
+sealedsecrets
 seldon
 selectable
 serverless
@@ -172,7 +174,6 @@ sublicense
 tekton
 templating
 thanos
-truly
 useable
 vSphere
 vsphere
