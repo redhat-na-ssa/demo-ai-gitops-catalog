@@ -11,3 +11,8 @@
       values:
         name: operator-web-terminal
         path: components/operators/web-terminal-operator/operator/overlays/fast
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-tekton
+        path: components/operators/openshift-pipelines-operator/overlays/stable

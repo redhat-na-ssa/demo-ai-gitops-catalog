@@ -13,4 +13,3 @@ patches:
       - op: replace
         path: /spec/channel
         value: 'alpha'
-
