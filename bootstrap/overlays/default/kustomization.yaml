@@ -7,8 +7,9 @@ bases:
   - ../../../clusters/overlays/default
 
 resources:
-  - argocd-ssh-known-hosts-cm.yaml
   - ack-s3-user-config-cm.yaml
   - ack-s3-user-secrets-ss.yaml
   - ack-sagemaker-user-config-cm.yaml
   - ack-sagemaker-user-secrets-ss.yaml
+  - ack-system-namespace.yaml
+  - argocd-ssh-known-hosts-cm.yaml
