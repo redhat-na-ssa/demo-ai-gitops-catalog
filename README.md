@@ -56,5 +56,6 @@ If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a 
 The `sandbox` [namespace](components/namespaces/base/sandbox-namespace.yaml) is useable by all [authenticated users](components/namespaces/base/sandbox-edit-rolebinding.yaml). All objects in the sandbox are [cleaned out weekly](components/simple/sandbox-cleanup/sandbox-cleanup-cj.yml).
 
 ## Additional Docs
+- [Deleted Cluster? - Restart Here](docs/RESTART.md)
 - [ArgoCD - Repo Specific](docs/ARGOCD.md)
 - [How to add something to the cluster](docs/APPS.md) 
