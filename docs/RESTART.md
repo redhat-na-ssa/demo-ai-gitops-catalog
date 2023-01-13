@@ -16,4 +16,9 @@ cp components/operators/ack-sagemaker-controller/operator/overlays/alpha/user-se
 # reseal secrets
 cat generated/ack-s3-user-secrets.yaml| kubeseal --controller-namespace sealed-secrets -o yaml > clusters/base/ack-s3-user-secrets-ss.yaml
 cat generated/ack-sagemaker-user-secrets.yaml| kubeseal --controller-namespace sealed-secrets -o yaml > clusters/base/ack-sagemaker-user-secrets-ss.yaml
+
+# commit to git
+git status
+git commit -m 'update: sealed secrets' -a
+git push
 ```
