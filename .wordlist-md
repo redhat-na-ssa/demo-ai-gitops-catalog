@@ -114,6 +114,7 @@ gp
 grafana
 homelab
 htpass
+htpasswd
 https
 idp
 init
@@ -154,6 +155,7 @@ postgres
 pre
 prem
 prometheus
+quickstart
 rbac
 redhat
 redistributions
