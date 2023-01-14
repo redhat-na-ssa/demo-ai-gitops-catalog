@@ -1,6 +1,6 @@
 # Deleted Cluster Sadness Rehab
 
-## Quickstart
+## Fix Issues
 
 ```
 # fix htpasswd-secret on demo env
@@ -25,4 +25,14 @@ cat generated/ack-sagemaker-user-secrets.yaml| kubeseal --controller-namespace s
 git status
 git commit -m 'update: sealed secrets' -a
 git push
+```
+
+## Set control-plane nodes as NoSchedulable
+
+```
+# run work on masters
+oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
+
+# scale down workers
+oc scale $(oc -n openshift-machine-api get machineset -o name | grep worker) -n openshift-machine-api --replicas=0
 ```
