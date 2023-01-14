@@ -4,13 +4,18 @@
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:
-    #     name: openshift-logging-operator
+    #     name: operator-openshift-logging
     #     path: components/operators/openshift-logging/aggregate/overlays/default
     - cluster: local
       url: https://kubernetes.default.svc
       values:
-        name: openshift-pipelines-operator
+        name: operator-openshift-pipelines
         path: components/operators/openshift-pipelines/operator/overlays/latest
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-nvidia-gpu-operator
+        path: components/operators/nvidia-gpu-operator/operator/overlays/v22.9
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:
@@ -19,10 +24,10 @@
     - cluster: local
       url: https://kubernetes.default.svc
       values:
-        name: sealed-secrets-operator
+        name: operator-sealed-secrets
         path: components/operators/sealed-secrets-operator/overlays/default
     - cluster: local
       url: https://kubernetes.default.svc
       values:
-        name: web-terminal-operator
+        name: operator-web-terminal
         path: components/operators/web-terminal-operator/operator/overlays/fast
