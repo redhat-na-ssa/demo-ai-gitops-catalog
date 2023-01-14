@@ -5,10 +5,12 @@ bases:
   - ../../base
 
 resources:
-  - aws-ops-namespace.yaml
+  - ack-ec2-user-config-cm.yaml
+  - ack-ecr-user-config-cm.yaml
   - ack-iam-user-config-cm.yaml
   - ack-s3-user-config-cm.yaml
   - ack-sagemaker-user-config-cm.yaml
+  - aws-ops-namespace.yaml
 
 patches:
   - patch: |-

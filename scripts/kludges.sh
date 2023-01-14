@@ -15,6 +15,14 @@ AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_se
 
 # create secrets for ack controllers
 NAMESPACE=ack-system
+cat components/operators/ack-ec2-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
+  sed "s/UPDATE_AWS_ACCESS_KEY_ID/${AWS_ACCESS_KEY_ID}/; s/UPDATE_AWS_SECRET_ACCESS_KEY/${AWS_SECRET_ACCESS_KEY}/" | \
+  oc -n ${NAMESPACE} apply -f -
+
+cat components/operators/ack-ecr-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
+  sed "s/UPDATE_AWS_ACCESS_KEY_ID/${AWS_ACCESS_KEY_ID}/; s/UPDATE_AWS_SECRET_ACCESS_KEY/${AWS_SECRET_ACCESS_KEY}/" | \
+  oc -n ${NAMESPACE} apply -f -
+
 cat components/operators/ack-iam-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
   sed "s/UPDATE_AWS_ACCESS_KEY_ID/${AWS_ACCESS_KEY_ID}/; s/UPDATE_AWS_SECRET_ACCESS_KEY/${AWS_SECRET_ACCESS_KEY}/" | \
   oc -n ${NAMESPACE} apply -f -
