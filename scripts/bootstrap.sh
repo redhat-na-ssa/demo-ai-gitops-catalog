@@ -79,6 +79,10 @@ bootstrap_cluster(){
   echo "https://${route}"
 }
 
+kludges(){
+  [ -e "scripts/kludges.sh" ] && scripts/kludges.sh
+}
+
 # functions
 setup_bin
 check_bin oc
@@ -90,3 +94,5 @@ check_oc_login
 check_sealed_secret
 install_gitops
 bootstrap_cluster
+openshift_save_money
+kludges
