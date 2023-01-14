@@ -4,11 +4,6 @@ kind: Kustomization
 bases:
   - ../../base
 
-resources:
-  - cluster-namespaces-app.yaml
-  - cluster-rbac-app.yaml
-  - operator-ack-system.yaml
-
 patches:
   - target:
       group: argoproj.io
@@ -16,6 +11,12 @@ patches:
       kind: Application
       name: cluster-config-app-of-apps
     path: patch-cluster-config-app-of-apps.yaml
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: ApplicationSet
+      name: cluster-configs-applicationset
+    path: patch-configs-applicationset.yaml
   - target:
       group: argoproj.io
       version: v1alpha1

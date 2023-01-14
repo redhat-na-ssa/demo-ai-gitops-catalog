@@ -1,0 +1,9 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleNotification
+metadata:
+  name: banner-top
+spec:
+  text: "Welcome to the Houston Edge Lab OpenShift Cluster"
+  location: BannerTop
+  color: '#fff'
+  backgroundColor: '#0088ce'
