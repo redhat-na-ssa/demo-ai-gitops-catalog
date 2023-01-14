@@ -3,7 +3,7 @@ kind: ConsoleNotification
 metadata:
   name: banner-top
 spec:
-  text: "Welcome to the Houston Edge Lab OpenShift Cluster"
+  text: "Welcome to the World of Tomorrow!"
   location: BannerTop
   color: '#fff'
   backgroundColor: '#0088ce'
