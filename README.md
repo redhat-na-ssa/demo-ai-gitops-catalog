@@ -53,7 +53,7 @@ If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a 
 
 *Sandbox Namespace*
 
-The `sandbox` [namespace](components/namespaces/base/sandbox-namespace.yaml) is useable by all [authenticated users](components/namespaces/base/sandbox-edit-rolebinding.yaml). All objects in the sandbox are [cleaned out weekly](components/simple/sandbox-cleanup/sandbox-cleanup-cj.yml).
+The `sandbox` [namespace](components/configs/namespaces/base/sandbox-namespace.yaml) is useable by all [authenticated users](components/configs/namespaces/base/sandbox-edit-rolebinding.yaml). All objects in the sandbox are [cleaned out weekly](components/configs/simple/sandbox-cleanup/sandbox-cleanup-cj.yml).
 
 ## Additional Docs
 - [Deleted Cluster? - Restart Here](docs/RESTART.md)

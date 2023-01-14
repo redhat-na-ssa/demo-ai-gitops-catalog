@@ -15,7 +15,7 @@ spec:
           values:
             name: simple-sandbox-cleanup
             namespace: openshift-gitops
-            path: components/simple/sandbox-cleanup
+            path: components/configs/simple/sandbox-cleanup
   template:
     metadata:
       name: '{{values.name}}'
