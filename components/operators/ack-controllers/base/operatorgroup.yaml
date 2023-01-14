@@ -4,3 +4,4 @@ kind: OperatorGroup
 metadata:
   name: ack-operatorgroup
   namespace: ack-system
+spec: {}

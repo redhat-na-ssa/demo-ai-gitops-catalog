@@ -7,5 +7,6 @@ bases:
   - ../../ack-sagemaker-controller/operator/overlays/alpha
 
 resources:
+  - adoptedresources-crd.yaml
   - namespace.yaml
   - operatorgroup.yaml
