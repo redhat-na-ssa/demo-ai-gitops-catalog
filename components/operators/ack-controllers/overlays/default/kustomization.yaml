@@ -12,12 +12,13 @@ resources:
   - ack-sagemaker-user-config-cm.yaml
   - aws-ops-namespace.yaml
 
-patches:
-  - patch: |-
-      - op: add
-        path: /spec/targetNamespaces
-        value:
-          - aws-ops
-    target:
-      kind: OperatorGroup
-      name: ack-operatorgroup
+# SingleNamespace InstallModeType not supported
+# patches:
+#   - patch: |-
+#       - op: add
+#         path: /spec/targetNamespaces
+#         value:
+#           - aws-ops
+#     target:
+#       kind: OperatorGroup
+#       name: ack-operatorgroup
