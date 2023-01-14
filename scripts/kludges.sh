@@ -9,9 +9,12 @@ oc delete -n openshift-config secret/htpasswd-secret
 # Create ack operator secrets with main creds
 # NOTE: operators are in godmode, meh
 
+# manually create ack-system
+oc create ns ack-system
+
 # get aws creds
-AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
-AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
+export AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
+export AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
 
 # create secrets for ack controllers
 NAMESPACE=ack-system

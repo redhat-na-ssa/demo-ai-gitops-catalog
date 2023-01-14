@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: github
+spec:
+  href: 'https://github.com/redhat-na-ssa'
+  location: ApplicationMenu
+  text: GitHub - Red Hat NA SSA
+  applicationMenu:
+    section: Tools
+    imageURL: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png

@@ -3,4 +3,5 @@ kind: Kustomization
 
 resources:
 - banner.yaml
+- link-gihub.yaml
 - link-quay.yaml
