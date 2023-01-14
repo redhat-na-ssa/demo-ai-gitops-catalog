@@ -4,6 +4,7 @@ kind: Kustomization
 bases:
   - ../../base
   - ../../../components/configs/argocd/apps/overlays/default
+  - ../../../components/operators/openshift-nfd-operator/instance/overlays/default
 
   # - ../../../tenants/aws-demos/argocd/projects/overlays/default
   # - ../../../tenants/aws-demos/argocd/apps/overlays/default
