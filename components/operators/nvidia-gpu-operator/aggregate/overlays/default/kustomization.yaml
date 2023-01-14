@@ -4,7 +4,7 @@ kind: Kustomization
 commonAnnotations:
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
-namespace: openshift-nfd
+namespace: nvidia-gpu-operator
 
 resources:
   - ../../../operator/overlays/v22.9
