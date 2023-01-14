@@ -5,7 +5,7 @@ metadata:
 spec:
   href: 'https://github.com/redhat-na-ssa'
   location: ApplicationMenu
-  text: GitHub - Red Hat NA SSA
+  text: GitHub - NA SSA
   applicationMenu:
     section: Tools
     imageURL: https://img.icons8.com/fluency/512/github.png
