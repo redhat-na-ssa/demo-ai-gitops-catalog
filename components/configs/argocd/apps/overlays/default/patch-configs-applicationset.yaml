@@ -19,12 +19,12 @@
         name: config-namespaces
         namespace: openshift-gitops
         path: components/configs/namespaces/overlays/default
-    # - cluster: local
-    #   url: https://kubernetes.default.svc
-    #   values:
-    #     name: config-oauth
-    #     namespace: openshift-gitops
-    #     path: components/configs/oauth/overlays/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: config-oauth
+        namespace: openshift-gitops
+        path: components/configs/oauth/overlays/default
     - cluster: local
       url: https://kubernetes.default.svc
       values:
