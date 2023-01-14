@@ -9,6 +9,11 @@
     - cluster: local
       url: https://kubernetes.default.svc
       values:
+        name: operator-openshift-nfd
+        path: components/operators/openshift-nfd-operator/operator/overlays/stable
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
         name: operator-openshift-pipelines
         path: components/operators/openshift-pipelines/operator/overlays/latest
     - cluster: local

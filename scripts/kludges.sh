@@ -44,3 +44,13 @@ oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
     s/instanceType.*/instanceType: g3s.xlarge/
     s/replicas.*/replicas: 0/' | \
   oc apply -f -
+
+# fix API cert issues
+CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
+API_HOST_NAME=api.cluster-mccdq.mccdq.sandbox2309.opentlc.com
+
+oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
+  sed 's/namespace: .*/namespace: openshift-config/' | \
+  oc -n openshift-config apply -f-
+
+oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'${API_HOST_NAME}'"], "servingCertificate": {"name": "'${CERT_NAME}'"}}]}}}'
