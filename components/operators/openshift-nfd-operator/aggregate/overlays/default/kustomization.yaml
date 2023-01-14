@@ -7,5 +7,5 @@ commonAnnotations:
 namespace: openshift-nfd
 
 resources:
-  - ../../../operator/overlays/4.9
+  - ../../../operator/overlays/default
   - ../../../instance/overlays/default
