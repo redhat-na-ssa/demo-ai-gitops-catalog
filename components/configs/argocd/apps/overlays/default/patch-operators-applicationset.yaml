@@ -1,6 +1,11 @@
 - op: add
   path: /spec/generators/0/list/elements
   value:
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-ack-system
+        path: components/operators/ack-controllers/overlays/default
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:
