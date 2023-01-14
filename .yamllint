@@ -15,3 +15,6 @@ rules:
   trailing-spaces:
     ignore: |
       components/operators/openshift-gitops/instance/overlays/default/patch-resource-customizations.yaml
+  empty-lines:
+    ignore: |
+      components/operators/ack-controllers/base/adoptedresources-crd.yaml
