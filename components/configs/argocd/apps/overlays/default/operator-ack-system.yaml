@@ -14,7 +14,7 @@ spec:
     server: https://kubernetes.default.svc
   project: cluster-config
   source:
-    path: components/operators/aws-controllers/overlays/default
+    path: components/operators/ack-controllers/overlays/default
     repoURL: git@github.com:redhat-na-ssa/demo-argocd-gitops.git
     targetRevision: main
   syncPolicy:

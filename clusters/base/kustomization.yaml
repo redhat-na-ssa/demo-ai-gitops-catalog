@@ -5,9 +5,4 @@ bases:
   - ../../components/configs/argocd/projects/overlays/default
 
 resources:
-  - ack-s3-user-config-cm.yaml
-  - ack-s3-user-secrets-ss.yaml
-  - ack-sagemaker-user-config-cm.yaml
-  - ack-sagemaker-user-secrets-ss.yaml
-  - ack-system-namespace.yaml
   - argocd-ssh-repo-ss.yaml
