@@ -150,11 +150,3 @@ check_sealed_secret(){
     create_sealed_secret
   fi
 }
-
-openshift_save_money(){
-  # run work on masters (save $$$)
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
-
-  # scale down workers (save $$$)
-  oc scale $(oc -n openshift-machine-api get machineset -o name | grep worker) -n openshift-machine-api --replicas=0
-}
