@@ -57,3 +57,12 @@ oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
   oc -n openshift-config apply -f-
 
 oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'${API_HOST_NAME}'"], "servingCertificate": {"name": "'${CERT_NAME}'"}}]}}}'
+
+# try to save money
+openshift_save_money(){
+  # run work on masters (save $$$)
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
+
+  # scale down workers (save $$$)
+  oc scale $(oc -n openshift-machine-api get machineset -o name | grep worker) -n openshift-machine-api --replicas=0
+}

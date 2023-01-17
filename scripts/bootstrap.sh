@@ -94,5 +94,4 @@ check_oc_login
 check_sealed_secret
 install_gitops
 bootstrap_cluster
-openshift_save_money
 kludges
