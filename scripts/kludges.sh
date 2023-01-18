@@ -66,3 +66,14 @@ openshift_save_money(){
   # scale down workers (save $$$)
   oc scale $(oc -n openshift-machine-api get machineset -o name | grep worker) -n openshift-machine-api --replicas=0
 }
+
+expose_image_registry(){
+  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"defaultRoute":true}}'
+
+  # remove 'default-route-openshift-image-' from route
+  HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+  SHORTER_HOST=$(echo ${HOST} | sed '/host/ s/default-route-openshift-image-//')
+  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'${SHORTER_HOST}'"}}'
+}
+
+expose_image_registry
