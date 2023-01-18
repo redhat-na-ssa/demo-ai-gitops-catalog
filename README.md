@@ -57,6 +57,6 @@ The `sandbox` [namespace](components/configs/namespaces/base/sandbox-namespace.y
 
 ## Additional Docs
 - [Kludges Script](scripts/kludges.sh) - Fixing things since 1970-01-01
-- [Fix GitHub Auth](docs/IDM.md)
+- [Fix GitHub Oauth](docs/IDM.md)
 - [ArgoCD - Repo Specific](docs/ARGOCD.md)
 - [How to add something to the cluster](docs/APPS.md) 
