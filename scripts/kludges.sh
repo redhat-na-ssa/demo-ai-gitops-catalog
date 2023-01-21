@@ -93,6 +93,6 @@ remove_kubeadmin(){
   oc delete secret kubeadmin -n kube-system
 }
 
-openshift_save_money
+# openshift_save_money
 expose_image_registry
 remove_kubeadmin
