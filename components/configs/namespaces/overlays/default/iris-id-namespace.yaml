@@ -3,6 +3,6 @@ kind: Namespace
 metadata:
   name: iris-id
   annotations:
-    openshift.io/display-name: IRIS ID
+    openshift.io/display-name: Iris ID (Demo)
   labels:
     argocd.argoproj.io/managed-by: cluster-config

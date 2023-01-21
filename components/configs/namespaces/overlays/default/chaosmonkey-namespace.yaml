@@ -3,6 +3,6 @@ kind: Namespace
 metadata:
   name: chaosmonkey
   annotations:
-    openshift.io/display-name: Make Chaos Great Again
+    openshift.io/display-name: Make Chaos Great Again (Engineering)
   labels:
     argocd.argoproj.io/managed-by: cluster-config

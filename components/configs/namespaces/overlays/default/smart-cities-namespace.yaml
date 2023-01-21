@@ -3,6 +3,6 @@ kind: Namespace
 metadata:
   name: smart-cities
   annotations:
-    openshift.io/display-name: SMART CITIES
+    openshift.io/display-name: Smart Cities (Demo)
   labels:
     argocd.argoproj.io/managed-by: cluster-config

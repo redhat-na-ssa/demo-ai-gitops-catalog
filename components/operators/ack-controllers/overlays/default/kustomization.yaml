@@ -10,7 +10,6 @@ resources:
   - ack-iam-user-config-cm.yaml
   - ack-s3-user-config-cm.yaml
   - ack-sagemaker-user-config-cm.yaml
-  - aws-ops-namespace.yaml
 
 # SingleNamespace InstallModeType not supported
 # patches:

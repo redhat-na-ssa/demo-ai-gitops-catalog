@@ -1,42 +1,44 @@
 #!/bin/bash
-# kludges
+# shellcheck disable=SC2155
 
+# kludges
 # TODO: ArgoCD Hooks
 
 
 # clobber htpasswd-secret on demo cluster
-oc delete -n openshift-config sealedsecret/htpasswd-secret
-oc delete -n openshift-config secret/htpasswd-secret
+oc delete -n openshift-config sealedsecret/htpasswd-secret >/dev/null 2>&1
+oc delete -n openshift-config secret/htpasswd-secret >/dev/null 2>&1
 
 # Create ack operator secrets with main creds
 # NOTE: operators are in godmode, meh
 
 # manually create ack-system
-oc create ns ack-system
+NAMESPACE=ack-system
+oc create ns ${NAMESPACE}
 
 # get aws creds
 export AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
 export AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
 
 # create secrets for ack controllers
-NAMESPACE=ack-system
-cat components/operators/ack-ec2-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
+
+< components/operators/ack-ec2-controller/operator/overlays/alpha/user-secrets-secret.yaml \
   sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
   oc -n ${NAMESPACE} apply -f -
 
-cat components/operators/ack-ecr-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
+< components/operators/ack-ecr-controller/operator/overlays/alpha/user-secrets-secret.yaml \
   sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
   oc -n ${NAMESPACE} apply -f -
 
-cat components/operators/ack-iam-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
+< components/operators/ack-iam-controller/operator/overlays/alpha/user-secrets-secret.yaml \
   sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
   oc -n ${NAMESPACE} apply -f -
 
-cat components/operators/ack-s3-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
+< components/operators/ack-s3-controller/operator/overlays/alpha/user-secrets-secret.yaml \
   sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
   oc -n ${NAMESPACE} apply -f -
 
-cat components/operators/ack-sagemaker-controller/operator/overlays/alpha/user-secrets-secret.yaml | \
+< components/operators/ack-sagemaker-controller/operator/overlays/alpha/user-secrets-secret.yaml \
   sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
   oc -n ${NAMESPACE} apply -f -
 
@@ -58,7 +60,7 @@ oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
   sed 's/namespace: .*/namespace: openshift-config/' | \
   oc -n openshift-config apply -f-
 
-oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'${API_HOST_NAME}'"], "servingCertificate": {"name": "'${CERT_NAME}'"}}]}}}'
+oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'
 
 # try to save money
 openshift_save_money(){
@@ -66,7 +68,7 @@ openshift_save_money(){
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
 
   # scale down workers (save $$$)
-  oc scale $(oc -n openshift-machine-api get machineset -o name | grep worker) -n openshift-machine-api --replicas=0
+  oc scale "$(oc -n openshift-machine-api get machineset -o name | grep worker)" -n openshift-machine-api --replicas=0
 }
 
 expose_image_registry(){
@@ -74,8 +76,8 @@ expose_image_registry(){
 
   # remove 'default-route-openshift-image-' from route
   HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
-  SHORTER_HOST=$(echo ${HOST} | sed '/host/ s/default-route-openshift-image-//')
-  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'${SHORTER_HOST}'"}}'
+  SHORTER_HOST=$(echo "${HOST}" | sed '/host/ s/default-route-openshift-image-//')
+  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'"${SHORTER_HOST}"'"}}'
 }
 
 remove_kubeadmin(){
@@ -83,5 +85,6 @@ remove_kubeadmin(){
   oc delete secret kubeadmin -n kube-system
 }
 
+openshift_save_money
 expose_image_registry
 remove_kubeadmin
