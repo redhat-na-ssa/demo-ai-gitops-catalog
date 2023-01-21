@@ -52,7 +52,14 @@ oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
     s/replicas.*/replicas: 0/' | \
   oc apply -f -
 
-# fix API cert issues
+# lets encrypt api cert
+# 
+# issue: RHPDS can not start cluster due to ca.crt change
+#
+# fix:
+# login to bastion
+# sed '/certificate-authority-data/d' ~/.kube/config
+
 CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
 API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
 
