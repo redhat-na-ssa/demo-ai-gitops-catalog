@@ -61,7 +61,8 @@ oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
 # sed '/certificate-authority-data/d' ~/.kube/config
 
 CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
-API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
+# API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
+API_HOST_NAME=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@')
 
 oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
   sed 's/namespace: .*/namespace: openshift-config/' | \
