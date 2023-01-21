@@ -2,6 +2,8 @@
 # kludges
 
 # TODO: ArgoCD Hooks
+
+
 # clobber htpasswd-secret on demo cluster
 oc delete -n openshift-config sealedsecret/htpasswd-secret
 oc delete -n openshift-config secret/htpasswd-secret
@@ -76,4 +78,10 @@ expose_image_registry(){
   oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'${SHORTER_HOST}'"}}'
 }
 
+remove_kubeadmin(){
+  oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
+  oc delete secret kubeadmin -n kube-system
+}
+
 expose_image_registry
+remove_kubeadmin
