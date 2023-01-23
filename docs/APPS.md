@@ -50,3 +50,13 @@ oc -n openshift-config \
 ```
 
 [Sealed Secrets - Official Docs](https://github.com/bitnami-labs/sealed-secrets)
+
+## ROSA Clusters
+
+In ROSA clusters you are not actually `cluster-admin` when you are the `cluster-admin` user. We need to review the actual permissions needed to run the argo scripts.
+
+Hack
+
+```
+oc --as=backplane-cluster-admin adm policy add-cluster-role-to-user cluster-admin cluster-admin
+```
