@@ -6,6 +6,11 @@
       values:
         name: operator-ack-controllers
         path: components/operators/ack-controllers/aggregate/popular
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-crunchy-postgres
+        path: components/operators/crunchy-postgres/overlays/v5
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:
