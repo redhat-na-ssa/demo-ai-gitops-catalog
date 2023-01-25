@@ -4,4 +4,6 @@ kind: Kustomization
 namespace: ack-system
 
 resources:
-  - user-config-cm.yaml
+  - adoptedresources-crd.yaml
+  - namespace.yaml
+  - operatorgroup.yaml

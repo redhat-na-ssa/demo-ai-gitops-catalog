@@ -1,6 +1,11 @@
 - op: add
   path: /spec/generators/0/list/elements
   value:
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-ack-controllers
+        path: components/operators/ack-controllers/aggregate/popular
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:
