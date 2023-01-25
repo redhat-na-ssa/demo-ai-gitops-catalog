@@ -5,6 +5,7 @@
 Convert an existing secret into a sealed-secret that can be committed in git
 
 Dump current sealed secret cert
+
 ```
 SEALED_SECRETS_SECRET=bootstrap/base/sealed-secrets-secret.yaml
 
@@ -21,7 +22,9 @@ cat scratch/repo-secret.yml | kubeseal \
   --controller-namespace sealed-secrets \
   -o yaml > bootstrap/overlays/default/argocd-ssh-repo-ss.yaml
 ```
+
 Convert a secret in OpenShift to a sealed-secret
+
 ```
 oc -n openshift-config \
   -o yaml \
@@ -31,7 +34,6 @@ oc -n openshift-config \
       --controller-namespace sealed-secrets
 ```
   
-
 Add the following annotations to the sealed secret
 
 ```
@@ -53,7 +55,7 @@ oc -n openshift-config \
 
 ## ROSA Clusters
 
-In ROSA clusters you are not actually `cluster-admin` when you are the `cluster-admin` user. We need to review the actual permissions needed to run the argo scripts.
+In ROSA clusters you are not actually `cluster-admin` when you are the `cluster-admin` user. We need to review the actual permissions needed to run the argocd scripts.
 
 Hack
 

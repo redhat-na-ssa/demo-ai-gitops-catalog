@@ -3,7 +3,7 @@
 USER=user
 PASS=ThisIsFine
 GROUP=workshop-attendees
-TMP_DIR=generated
+TMP_DIR=scratch
 
 check_init(){
     # do you have oc

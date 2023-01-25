@@ -9,7 +9,7 @@ rules:
     indent-sequences: whatever
     ignore: kludgeops/
   braces:
-    ignore: grafana-operator/base/instance/grafana.yaml
+    ignore: components/operators/grafana-operator/base/instance/grafana.yaml
   truthy:
     ignore: .github/workflows/
   trailing-spaces:

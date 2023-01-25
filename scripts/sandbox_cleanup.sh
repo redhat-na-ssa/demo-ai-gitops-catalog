@@ -29,28 +29,28 @@ get_most_api_resources() {
 
 oc_get_all() {
 NAMESPACE=${1:-$(oc project -q)}
-echo ${NAMESPACE}
+echo "${NAMESPACE}"
 sleep 3
 
 for i in $(get_api_resources)
 do
-    echo "Resource:" $i
-    oc -n ${NAMESPACE} \
-      get ${i} \
+    echo "Resource:" "${i}"
+    oc -n "${NAMESPACE}" \
+      get "${i}" \
       --ignore-not-found
 done
 }
 
 oc_delete_most() {
 NAMESPACE=${1:-sandbox}
-echo ${NAMESPACE}
+echo "${NAMESPACE}"
 sleep 3
 
 for i in $(get_most_api_resources)
 do
-    echo "Resource:" $i
-    oc -n ${NAMESPACE} \
-      delete ${i} \
+    echo "Resource:" "${i}"
+    oc -n "${NAMESPACE}" \
+      delete "${i}" \
       --all
 done
 }
