@@ -62,7 +62,7 @@ fix_api_cert(){
   issue: RHPDS can not start cluster due to ca.crt change
 
   fix:
-    login to bastion
+    # login to bastion
     sed -i '/certificate-authority-data/d' ~/.kube/config
   "
 
