@@ -35,10 +35,10 @@ setup_ack_system(){
 
   for type in ec2 ecr iam s3 sagemaker
   do
-    oc apply -k openshift/operators/ack-${type}-controller/operator/overlays/alpha
+    # oc apply -k openshift/operators/ack-${type}-controller/operator/overlays/alpha
 
     # create ack operator secrets with main creds
-    < openshift/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
+    < components/operators/ack-${type}-controller/overlays/alpha/user-secrets-secret.yaml \
       sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
       oc -n ${NAMESPACE} apply -f -
   done
@@ -83,7 +83,7 @@ openshift_save_money(){
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
 
   # scale down workers (save $$$)
-  oc scale "$(oc -n openshift-machine-api get machineset -o name | grep worker)" -n openshift-machine-api --replicas=0
+  oc scale "$(oc -n openshift-machine-api get machineset -o name | grep worker)" -n openshift-machine-api --replicas=1
 }
 
 expose_image_registry(){
