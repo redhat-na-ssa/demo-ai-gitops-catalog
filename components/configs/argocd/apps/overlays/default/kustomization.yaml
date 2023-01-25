@@ -4,6 +4,9 @@ kind: Kustomization
 bases:
   - ../../base
 
+resources:
+  - cluster-ack-operators-applicationset.yaml
+
 patches:
   - target:
       group: argoproj.io
