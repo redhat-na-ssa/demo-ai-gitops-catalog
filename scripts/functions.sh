@@ -12,6 +12,33 @@ echo "PWD:  $(pwd)"
 echo "PATH: ${PATH}"
 }
 
+is_sourced() {
+  if [ -n "$ZSH_VERSION" ]; then
+      case $ZSH_EVAL_CONTEXT in *:file:*) return 0;; esac
+  else  # Add additional POSIX-compatible shell names here, if needed.
+      case ${0##*/} in dash|-dash|bash|-bash|ksh|-ksh|sh|-sh) return 0;; esac
+  fi
+  return 1  # NOT sourced.
+}
+
+usage(){
+echo "
+You can run individual functions!
+"
+}
+
+check_oc(){
+  echo "Are you on the right OCP cluster?"
+
+  oc whoami || exit 0
+  export UUID=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@; s@api.*-@@; s@[.].*$@@')
+  oc status
+
+  echo "UUID: ${UUID}"
+
+  sleep 4
+}
+
 setup_bin(){
   mkdir -p ${BIN_PATH}/bin
   echo "${PATH}" | grep -q "${BIN_PATH}/bin" || \

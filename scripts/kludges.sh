@@ -4,71 +4,78 @@
 # kludges
 # TODO: ArgoCD Hooks
 
+setup_namespace(){
+  NAMESPACE=${1}
+
+  oc new-project ${NAMESPACE} 2>/dev/null || \
+    oc project ${NAMESPACE}
+}
 
 # clobber htpasswd-secret on demo cluster
-oc delete -n openshift-config sealedsecret/htpasswd-secret >/dev/null 2>&1
-oc delete -n openshift-config secret/htpasswd-secret >/dev/null 2>&1
-
-# Create ack operator secrets with main creds
-# NOTE: operators are in godmode, meh
-
-# manually create ack-system
-NAMESPACE=ack-system
-oc create ns ${NAMESPACE}
+fix_htpasswd(){
+  oc delete -n openshift-config sealedsecret/htpasswd-secret >/dev/null 2>&1
+  oc delete -n openshift-config secret/htpasswd-secret >/dev/null 2>&1
+}
 
 # get aws creds
-export AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
-export AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
+get_aws_key(){
+  # get aws creds
+  export AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
+  export AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
+  export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-west-2}
+}
 
 # create secrets for ack controllers
+setup_ack_system(){
+  # NOTE: operators are in godmode, meh
+  NAMESPACE=ack-system
 
-< components/operators/ack-ec2-controller/operator/overlays/alpha/user-secrets-secret.yaml \
-  sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-  oc -n ${NAMESPACE} apply -f -
+  # manually create ack-system
+  setup_namespace ${NAMESPACE}
 
-< components/operators/ack-ecr-controller/operator/overlays/alpha/user-secrets-secret.yaml \
-  sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-  oc -n ${NAMESPACE} apply -f -
+  for type in ec2 ecr iam s3 sagemaker
+  do
+    oc apply -k openshift/operators/ack-${type}-controller/operator/overlays/alpha
 
-< components/operators/ack-iam-controller/operator/overlays/alpha/user-secrets-secret.yaml \
-  sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-  oc -n ${NAMESPACE} apply -f -
-
-< components/operators/ack-s3-controller/operator/overlays/alpha/user-secrets-secret.yaml \
-  sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-  oc -n ${NAMESPACE} apply -f -
-
-< components/operators/ack-sagemaker-controller/operator/overlays/alpha/user-secrets-secret.yaml \
-  sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-  oc -n ${NAMESPACE} apply -f -
+    # create ack operator secrets with main creds
+    < openshift/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
+      sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
+      oc -n ${NAMESPACE} apply -f -
+  done
+}
 
 # create a gpu machineset
-MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
+setup_gpu_machineset(){
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
-oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
-  sed '/machine/ s/-worker/-gpu/g
-    /name/ s/-worker/-gpu/g
-    s/instanceType.*/instanceType: g3s.xlarge/
-    s/replicas.*/replicas: 0/' | \
-  oc apply -f -
+  oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
+    sed '/machine/ s/-worker/-gpu/g
+      /name/ s/-worker/-gpu/g
+      s/instanceType.*/instanceType: g3s.xlarge/
+      s/replicas.*/replicas: 0/' | \
+    oc apply -f -
+}
 
 # lets encrypt api cert
-# 
-# issue: RHPDS can not start cluster due to ca.crt change
-#
-# fix:
-# login to bastion
-# sed '/certificate-authority-data/d' ~/.kube/config
+fix_api_cert(){
+  echo "
+  issue: RHPDS can not start cluster due to ca.crt change
 
-CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
-# API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
-API_HOST_NAME=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@')
+  fix:
+    login to bastion
+    sed -i '/certificate-authority-data/d' ~/.kube/config
+  "
 
-oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
-  sed 's/namespace: .*/namespace: openshift-config/' | \
-  oc -n openshift-config apply -f-
+  CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
+  # API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
+  API_HOST_NAME=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@')
 
-oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'
+  oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
+    sed 's/namespace: .*/namespace: openshift-config/' | \
+    oc -n openshift-config apply -f-
+
+  oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'
+}
 
 # try to save money
 openshift_save_money(){
@@ -93,6 +100,14 @@ remove_kubeadmin(){
   oc delete secret kubeadmin -n kube-system
 }
 
-# openshift_save_money
+# get functions
+# sed -n '/(){/ s/(){$//p' scripts/kludges.sh
+
+fix_htpasswd
+get_aws_key
+setup_ack_system
+setup_gpu_machineset
+fix_api_cert
+openshift_save_money
 expose_image_registry
-remove_kubeadmin
+# remove_kubeadmin
