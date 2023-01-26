@@ -212,7 +212,7 @@ aws_stop_all_ec2(){
   RUNNING_IDS=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
   BASTION_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values=bastion --query 'Reservations[].Instances[].InstanceId' --output text)
 
-  echo "${RUNNING_VMS}"
+  echo "BASTION_ID: ${BASTION_ID}"
   aws ec2 stop-instances \
     --instance-ids \
     ${RUNNING_IDS} \
