@@ -7,9 +7,3 @@ bases:
 resources:
   - chaosmonkey-admin-rolebinding.yaml
   - chaosmonkey-namespace.yaml
-  - fingerprint-id-admin-rolebinding.yaml
-  - fingerprint-id-namespace.yaml
-  - iris-id-admin-rolebinding.yaml
-  - iris-id-namespace.yaml
-  - smart-cities-admin-rolebinding.yaml
-  - smart-cities-namespace.yaml

@@ -63,7 +63,7 @@ fix_api_cert(){
 
   fix:
     # login to bastion
-    sed -i '/certificate-authority-data/d' ~/.kube/config
+    sed -i.bak '/certificate-authority-data/d' ~/.kube/config
   "
 
   CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
