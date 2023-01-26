@@ -197,12 +197,33 @@ check_sealed_secret(){
   fi
 }
 
-stop_all_ec2(){
-  EC2_VMS=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | tr '\n' ' ')
+get_aws_key(){
+  # get aws creds
+  AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
+  AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
+  AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-2}
 
-  echo "${EC2_VMS}"
+  export AWS_ACCESS_KEY_ID
+  export AWS_SECRET_ACCESS_KEY
+  export AWS_DEFAULT_REGION
+}
+
+aws_stop_all_ec2(){
+  RUNNING_IDS=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
+  BASTION_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values=bastion --query 'Reservations[].Instances[].InstanceId' --output text)
+
+  echo "${RUNNING_VMS}"
   aws ec2 stop-instances \
     --instance-ids \
-    "${EC2_VMS}" \
-    --dry-run
+    ${RUNNING_IDS} \
+    --output text >/dev/null
+}
+
+aws_start_ocp4_cluster(){
+  CLUSTER_IDS=$(aws ec2 describe-instances --filters Name=tag:env_type,Values=ocp4-cluster --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
+
+  aws ec2 start-instances \
+    --instance-ids \
+    ${CLUSTER_IDS} \
+    --output text >/dev/null
 }
