@@ -31,6 +31,11 @@
       values:
         name: operator-nvidia-gpu-operator
         path: components/operators/nvidia-gpu-operator/aggregate/overlays/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-rhods
+        path: components/operators/rhods-operator/operator/overlays/stable
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:
