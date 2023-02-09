@@ -3,7 +3,7 @@ kind: Kustomization
 
 bases:
   - ../../base
-  - ../../components/configs/argocd/apps/overlays/default
+  - ../../../components/configs/argocd/apps/overlays/default
 
 patches:
   - path: patch-applicationset-repo-revision.yaml
