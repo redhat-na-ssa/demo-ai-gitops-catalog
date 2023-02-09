@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: ack-system
 
 bases:
-  - ../instance
+  - ../../instance
   - ../../../ack-ec2-controller/overlays/alpha
   - ../../../ack-ecr-controller/overlays/alpha
   - ../../../ack-iam-controller/overlays/alpha

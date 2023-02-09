@@ -3,4 +3,4 @@ kind: Kustomization
 
 bases:
   - ../default
-  - ../../../components/configs/argocd/apps/overlays/default
+  # - ../../../components/configs/argocd/apps/overlays/aws
