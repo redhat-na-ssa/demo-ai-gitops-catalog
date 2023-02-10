@@ -4,6 +4,9 @@ kind: Kustomization
 bases:
   - ../default
 
+# resources:
+#   - cluster-automation-applicationset.yaml
+
 patches:
   - target:
       group: argoproj.io

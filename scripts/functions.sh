@@ -92,6 +92,13 @@ check_bin(){
   sleep 2
 }
 
+wait_for_crd(){
+  CRD=${1}
+  until oc get crd "${CRD}" >/dev/null 2>&1
+    do sleep 1
+  done
+}
+
 download_helm(){
 BIN_VERSION=latest
 DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
