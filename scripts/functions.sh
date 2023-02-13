@@ -222,7 +222,7 @@ aws_stop_all_ec2(){
   echo "BASTION_ID: ${BASTION_ID}"
   aws ec2 stop-instances \
     --instance-ids \
-    ${RUNNING_IDS} \
+    "${RUNNING_IDS}" \
     --output text >/dev/null
 }
 
@@ -231,6 +231,6 @@ aws_start_ocp4_cluster(){
 
   aws ec2 start-instances \
     --instance-ids \
-    ${CLUSTER_IDS} \
+    "${CLUSTER_IDS}" \
     --output text >/dev/null
 }
