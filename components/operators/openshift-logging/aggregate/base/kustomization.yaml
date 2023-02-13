@@ -5,5 +5,5 @@ commonAnnotations:
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 resources:
-  - ../../operator/overlays/stable
-  - ../../instance/overlays/default
+  - https://github.com/redhat-cop/gitops-catalog/openshift-logging/operator/overlays/stable
+  - https://github.com/redhat-cop/gitops-catalog/openshift-logging/instance/overlays/default
