@@ -3,4 +3,9 @@ apiVersion: user.openshift.io/v1
 metadata:
   name: lab-cluster-admins
 users:
+  - bkozdemb
+  - clatschk
   - codekow
+  - dawhite
+  - dmarcus
+  - troyer

@@ -5,14 +5,12 @@ bases:
   - ../../base
 
 resources:
-  - htpasswd-secret-ss.yaml
   - lab-cluster-admins-group.yaml
   - lab-cluster-admins-rolebinding.yaml
   - lab-cluster-readers-group.yaml
   - lab-cluster-readers-rolebinding.yaml
-  - workshop-admins-group.yaml
 
-patchesJson6902:
+patches:
   - target:
       group: machineconfiguration.openshift.io
       version: v1

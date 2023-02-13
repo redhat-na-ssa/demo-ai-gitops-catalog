@@ -4,4 +4,4 @@ kind: Kustomization
 bases:
   - ../../base
   - ../../../components/operators/openshift-gitops/instance/overlays/default
-  - ../../../clusters/overlays/default
+  - ../../../clusters/overlays/openinfra.lab

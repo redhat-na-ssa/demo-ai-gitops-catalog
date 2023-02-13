@@ -55,8 +55,12 @@ If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a 
 
 The `sandbox` [namespace](components/configs/namespaces/base/sandbox-namespace.yaml) is useable by all [authenticated users](components/configs/namespaces/base/sandbox-edit-rolebinding.yaml). All objects in the sandbox are [cleaned out weekly](components/configs/simple/sandbox-cleanup/sandbox-cleanup-cj.yml).
 
-## Additional Docs
-- [Kludges Script](scripts/kludges.sh) - Fixing things since 1970-01-01
+## Additional Info
+- [Kludges Script](scripts/kludges.sh) - Making things work since 1970-01-01
+- [Using this repo effectively](docs/APPS.md)
 - [Fix GitHub Oauth](docs/IDM.md)
 - [ArgoCD - Repo Specific](docs/ARGOCD.md)
-- [How to add something to the cluster](docs/APPS.md) 
+
+## External Links
+- [ArgoCD - Example](https://github.com/gnunn-gitops/cluster-config)
+- [ArgoCD - Patterns](https://github.com/gnunn-gitops/standards)

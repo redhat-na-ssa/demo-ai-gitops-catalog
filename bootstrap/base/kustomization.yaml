@@ -4,5 +4,6 @@ kind: Kustomization
 bases:
    - ../../components/operators/sealed-secrets/operator/overlays/default
 
-# resources:
-#    - sealed-secrets-secret.yaml
+resources:
+  - argocd-ssh-known-hosts-cm.yaml
+#   - sealed-secrets-secret.yaml

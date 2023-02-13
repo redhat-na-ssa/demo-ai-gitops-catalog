@@ -3,4 +3,8 @@ apiVersion: user.openshift.io/v1
 metadata:
   name: lab-cluster-readers
 users:
-  - codekow
+  - bkozdemb
+  - clatschk
+  - dawhite
+  - dmarcus
+  - troyer
