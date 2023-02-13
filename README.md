@@ -4,6 +4,8 @@
 
 This project is designed to bootstrap an OpenShift cluster using ArgoCD.
 
+This repo is subject to frequent breaking changes while we all learn patterns we want to use as a team.
+
 ## Prerequisites
 
 ### Client
