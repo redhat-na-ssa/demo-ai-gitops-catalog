@@ -193,7 +193,7 @@ create_sealed_secret(){
 check_sealed_secret(){
   if [ -f ${SEALED_SECRETS_SECRET} ]; then
     echo "Exists: ${SEALED_SECRETS_SECRET}"
-    oc apply -f ${SEALED_SECRETS_FOLDER}/sealed-secrets-namespace.yaml
+    oc apply -f ${SEALED_SECRETS_FOLDER}/namespace.yaml
     oc apply -f ${SEALED_SECRETS_SECRET} || return 0
     oc apply -k ${SEALED_SECRETS_FOLDER}
   else
