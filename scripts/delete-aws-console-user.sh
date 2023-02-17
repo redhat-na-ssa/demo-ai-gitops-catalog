@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2086
 
 # USAGE: ./delete-console-user.sh $GROUPNAME $USERNAME
 

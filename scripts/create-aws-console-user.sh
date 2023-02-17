@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2086
 # http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_cliwpsapi
 
 usage(){
