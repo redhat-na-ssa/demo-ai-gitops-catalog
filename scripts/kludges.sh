@@ -103,11 +103,11 @@ remove_kubeadmin(){
 # get functions
 # sed -n '/(){/ s/(){$//p' scripts/kludges.sh
 
-fix_htpasswd
-get_aws_key
-setup_ack_system
-setup_gpu_machineset
-fix_api_cert
+# fix_htpasswd
+# get_aws_key
+# setup_ack_system
+# setup_gpu_machineset
+# fix_api_cert
 # openshift_save_money
-expose_image_registry
+# expose_image_registry
 # remove_kubeadmin
