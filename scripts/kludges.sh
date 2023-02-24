@@ -47,11 +47,12 @@ setup_ack_system(){
 # create a gpu machineset
 setup_gpu_machineset(){
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
+  INSTANCE_TYPE=${1:-g4dn.12xlarge}
 
   oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
     sed '/machine/ s/-worker/-gpu/g
       /name/ s/-worker/-gpu/g
-      s/instanceType.*/instanceType: g3s.xlarge/
+      s/instanceType.*/instanceType: '${INSTANCE_TYPE}'/
       s/replicas.*/replicas: 0/' | \
     oc apply -f -
 }
