@@ -12,4 +12,4 @@ patches:
       name: sandbox-limit-range
     patch: |-
       - op: remove
-        path: /spec/limits
+        path: /spec/limits/0
