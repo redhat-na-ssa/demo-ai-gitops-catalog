@@ -11,5 +11,6 @@ patches:
       kind: LimitRange
       name: sandbox-limit-range
     patch: |-
-      - op: remove
-        path: /spec/limits/0
+      - op: replace
+        path: /spec/limits
+        value: null
