@@ -5,3 +5,11 @@ bases:
   - ../../instance/codekow
   - ../../instance/default
   - ../../instance/sandbox
+
+patches:
+  - target:
+      kind: LimitRange
+      name: sandbox-limit-range
+    patch: |-
+      - op: remove
+        path: /spec/limits
