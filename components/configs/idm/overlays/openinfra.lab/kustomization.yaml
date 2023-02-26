@@ -6,6 +6,7 @@ commonAnnotations:
   argocd.argoproj.io/sync-options: Prune=false
 
 resources:
+- ../base
 - github-client-sealed-secret.yaml
 
 # Patch cluster specific
