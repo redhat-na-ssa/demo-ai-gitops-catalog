@@ -52,7 +52,7 @@ setup_gpu_machineset(){
   oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
     sed '/machine/ s/-worker/-gpu/g
       /name/ s/-worker/-gpu/g
-      s/instanceType.*/instanceType: '${INSTANCE_TYPE}'/
+      s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
       s/replicas.*/replicas: 0/' | \
     oc apply -f -
 }
