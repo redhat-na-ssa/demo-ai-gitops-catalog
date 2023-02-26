@@ -1,0 +1,13 @@
+- op: add
+  path: /spec/identityProviders/-
+  value:
+    github:
+      clientID: d7944d70f41af73c99d8
+      clientSecret:
+        name: github-client-secret
+      organizations:
+        - codekow
+        - redhat-na-ssa
+    mappingMethod: claim
+    name: GitHub
+    type: GitHub
