@@ -1,5 +1,6 @@
 - op: add
-  path: /spec/identityProviders/-
+  # path: /spec/identityProviders/-
+  path: /spec/identityProviders/
   value:
     github:
       clientID: d7944d70f41af73c99d8
