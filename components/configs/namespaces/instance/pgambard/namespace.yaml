@@ -6,4 +6,3 @@ metadata:
     openshift.io/display-name: pgambard is here
   labels:
     argocd.argoproj.io/managed-by: cluster-config
-    
