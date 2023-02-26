@@ -9,6 +9,7 @@
         organizations:
           - redhat-manufacturing
           - redhat-na-ssa
+          - redhat-openinfra-lab
       mappingMethod: claim
       name: GitHub
       type: GitHub
