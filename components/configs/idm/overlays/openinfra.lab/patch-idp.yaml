@@ -7,8 +7,7 @@
         clientSecret:
           name: github-client-secret
         organizations:
-          - codekow
-          - pgambard
+          - redhat-manufacturing
           - redhat-na-ssa
       mappingMethod: claim
       name: GitHub
