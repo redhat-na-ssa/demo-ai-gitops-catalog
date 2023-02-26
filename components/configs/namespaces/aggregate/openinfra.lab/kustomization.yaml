@@ -4,6 +4,7 @@ kind: Kustomization
 bases:
   - ../../instance/codekow
   - ../../instance/default
+  - ../../instance/pgambard
   - ../../instance/sandbox
 
 patches:
