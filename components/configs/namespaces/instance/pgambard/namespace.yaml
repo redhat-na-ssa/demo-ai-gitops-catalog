@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: pgambard
   annotations:
-    openshift.io/display-name: pgambard dev namespace
+    openshift.io/display-name: pgambard is here
   labels:
     argocd.argoproj.io/managed-by: cluster-config
+    
