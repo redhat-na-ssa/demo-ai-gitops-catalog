@@ -1,12 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
+resources:
   - ../../base
   - ../../../components/configs/argocd/apps/overlays/rhdp
-
-resources:
-  - htpasswd-secret-ss.yaml
 
 patches:
   - path: patch-applicationset-repo-revision.yaml

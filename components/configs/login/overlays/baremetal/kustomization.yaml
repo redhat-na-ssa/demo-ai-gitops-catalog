@@ -5,14 +5,5 @@ commonAnnotations:
   argocd.argoproj.io/compare-options: IgnoreExtraneous
   argocd.argoproj.io/sync-options: Prune=false
 
-bases:
-- ../../base
-
-# Patch cluster specific
-patches:
-  - path: patch-idp.yaml
-    target:
-      group: config.openshift.io
-      kind: OAuth
-      name: cluster
-      version: v1
+resources:
+  - ../default

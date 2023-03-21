@@ -6,8 +6,8 @@ commonAnnotations:
   argocd.argoproj.io/sync-options: Prune=false
 
 resources:
-- ../rhdp
-- github-client-sealed-secret.yaml
+  - ../rhdp
+  - github-client-sealed-secret.yaml
 
 # Patch cluster specific
 patches:
