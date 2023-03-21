@@ -12,10 +12,10 @@ setup_namespace(){
 }
 
 # clobber htpasswd-secret on demo cluster
-fix_htpasswd(){
-  oc delete -n openshift-config sealedsecret/htpasswd-secret >/dev/null 2>&1
-  oc delete -n openshift-config secret/htpasswd-secret >/dev/null 2>&1
-}
+# fix_htpasswd(){
+#   oc delete -n openshift-config sealedsecret/htpasswd-secret >/dev/null 2>&1
+#   oc delete -n openshift-config secret/htpasswd-secret >/dev/null 2>&1
+# }
 
 # get aws creds
 get_aws_key(){
