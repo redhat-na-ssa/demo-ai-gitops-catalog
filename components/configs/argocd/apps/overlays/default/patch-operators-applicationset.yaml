@@ -1,0 +1,8 @@
+- op: add
+  path: /spec/generators/0/list/elements
+  value:
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-sealed-secrets
+        path: components/operators/sealed-secrets/operator/overlays/default
