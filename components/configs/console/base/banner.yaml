@@ -3,7 +3,7 @@ kind: ConsoleNotification
 metadata:
   name: banner-top
 spec:
-  text: "Welcome to the World of Tomorrow!"
+  text: "< see overlays - if you are seeing this you have mistaked >"
   location: BannerTop
   color: '#fff'
   backgroundColor: '#0088ce'
