@@ -6,7 +6,7 @@ namespace: openshift-cert-manager-operator
 bases:
   - ../../base
 
-patchesJson6902:
+patches:
   - target:
       group: operators.coreos.com
       version: v1alpha1

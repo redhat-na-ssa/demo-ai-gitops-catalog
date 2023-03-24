@@ -15,7 +15,7 @@ patches:
         path: /spec/targetNamespaces
         value: []
 
-patchesJson6902:
+patches:
   - target:
       group: operators.coreos.com
       version: v1alpha1

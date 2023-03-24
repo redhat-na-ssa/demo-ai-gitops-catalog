@@ -11,7 +11,7 @@ resources:
   - operator-group.yaml
   - ../user-app
 
-patchesJson6902:
+patches:
   - target:
       version: v1alpha1
       group: integreatly.org

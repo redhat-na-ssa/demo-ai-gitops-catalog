@@ -4,7 +4,7 @@ kind: Kustomization
 bases:
   - ../../base
 
-patchesJson6902:
+patches:
   - path: patch-m2-cache.yaml
     target:
       group: tekton.dev
