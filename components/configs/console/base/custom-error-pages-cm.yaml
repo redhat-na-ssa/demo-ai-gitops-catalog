@@ -1,0 +1,10 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: custom-error-pages
+  namespace: openshift-ingress
+  annotations:
+    docs: https://docs.openshift.com/container-platform/4.10/networking/ingress-operator.html#nw-customize-ingress-error-pages_configuring-ingress
+data:
+  error-page-404.http: ''
+  error-page-503.http: ''
