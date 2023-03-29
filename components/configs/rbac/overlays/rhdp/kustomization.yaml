@@ -9,8 +9,6 @@ resources:
   - custom-cluster-admins-rolebinding.yaml
   - custom-cluster-readers-group.yaml
   - custom-cluster-readers-rolebinding.yaml
-  - rhods-self-provisioner-clusterrolebinding.yaml
-  - rhods-self-provisioner-group.yaml
 
 patches:
   - target:

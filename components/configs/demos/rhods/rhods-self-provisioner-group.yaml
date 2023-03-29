@@ -3,4 +3,4 @@ apiVersion: user.openshift.io/v1
 metadata:
   name: rhods-self-provisioners
 users:
-  - opentlc-mgr
+  - darkrainbow
