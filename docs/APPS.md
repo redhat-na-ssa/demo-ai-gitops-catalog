@@ -23,6 +23,13 @@ cat scratch/repo-secret.yml | kubeseal \
   -o yaml > bootstrap/overlays/default/argocd-ssh-repo-ss.yaml
 ```
 
+```
+cat scratch/htpasswd-secret.yaml | kubeseal \
+  --controller-namespace sealed-secrets \
+  -o yaml > components/configs/login/overlays/rhdp/htpasswd-secret-ss.yaml
+```
+
+
 Convert a secret in OpenShift to a sealed-secret
 
 ```
