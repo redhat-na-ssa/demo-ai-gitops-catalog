@@ -7,7 +7,7 @@ resources:
 patches:
   - target:
       kind: ConsoleNotification
-      name: banner-top
+      name: 00-banner-top
     patch: |-
       - op: replace
         path: /spec/text
