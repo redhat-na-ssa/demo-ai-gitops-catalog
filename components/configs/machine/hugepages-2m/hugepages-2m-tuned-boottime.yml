@@ -4,7 +4,7 @@ metadata:
   name: hugepages-2m
   namespace: openshift-cluster-node-tuning-operator
 spec:
-  profile: 
+  profile:
   - data: |
       [main]
       summary=Boot time configuration for hugepages-2M
@@ -14,7 +14,7 @@ spec:
     name: openshift-node-hugepages-2m
 
   recommend:
-  - machineConfigLabels: 
+  - machineConfigLabels:
       machineconfiguration.openshift.io/role: "worker-hp-2m"
     priority: 30
     profile: openshift-node-hugepages-2m

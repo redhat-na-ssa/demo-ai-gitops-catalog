@@ -7,7 +7,7 @@ metadata:
 spec:
   machineConfigSelector:
     matchExpressions:
-      - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker,worker-hp-2m]}
+      - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker, worker-hp-2m]}
   nodeSelector:
     matchLabels:
       node-role.kubernetes.io/worker-hp-2m: ""
