@@ -1,11 +1,11 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: lab-cluster-admins
+  name: custom-cluster-admins
 subjects:
   - kind: Group
     apiGroup: rbac.authorization.k8s.io
-    name: lab-cluster-admins
+    name: custom-cluster-admins
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

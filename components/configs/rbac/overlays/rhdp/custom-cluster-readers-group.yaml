@@ -1,6 +1,6 @@
 kind: Group
 apiVersion: user.openshift.io/v1
 metadata:
-  name: lab-cluster-admins
+  name: custom-cluster-readers
 users:
   - codekow
