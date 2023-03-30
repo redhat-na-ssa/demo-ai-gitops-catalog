@@ -95,6 +95,7 @@ clusterissuer
 clusterrolebinding
 config
 configmap
+cr
 creds
 datasource
 deployable
