@@ -3,5 +3,6 @@ kind: Kustomization
 
 resources:
 - banner-top.yaml
+- data-banner-top.yaml
 - link-github.yaml
 - link-quay.yaml
