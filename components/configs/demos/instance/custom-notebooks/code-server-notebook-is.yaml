@@ -2,12 +2,16 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   annotations:
-    opendatahub.io/notebook-image-desc: >-
+    opendatahub.io/notebook-image-desc: |
       VS Code in a web browser!
-    opendatahub.io/notebook-image-name: VS Code Server (Coder)
+
+      Code on any device with a consistent development environment
+      Use cloud servers to speed up tests, compilations, downloads, and more
+      Preserve battery life when you're on the go; all intensive tasks run on your server
+    opendatahub.io/notebook-image-name: VS Code Server
     opendatahub.io/notebook-image-order: '10'
     opendatahub.io/notebook-image-url: >-
-      https://github.com/red-hat-data-services/notebooks/tree/main/jupyter/minimal/ubi8-python-3.8
+      https://github.com/coder/code-server
   name: custom-code-server
   labels:
     component.opendatahub.io/name: jupyterhub
