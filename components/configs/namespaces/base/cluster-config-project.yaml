@@ -1,0 +1,10 @@
+piVersion: config.openshift.io/v1
+kind: Project
+metadata:
+  name: cluster
+spec:
+  # projectRequestMessage: >-
+  #   To provision Projects you must request access in https://labs.opentlc.com or
+  #   https://rhpds.redhat.com.
+  # projectRequestTemplate:
+  #   name: project-request
