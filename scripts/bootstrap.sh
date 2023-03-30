@@ -60,7 +60,8 @@ bootstrap_cluster(){
 
   echo "Selected: ${bootstrap_dir}"
   echo "Apply overlay to override default instance"
-  kustomize build "${bootstrap_dir}" | oc apply -f -
+  # kustomize build "${bootstrap_dir}" | oc apply -f -
+  oc apply -k "${bootstrap_dir}"
 
   sleep 10
   echo "Waiting for all pods to redeploy"
