@@ -5,10 +5,10 @@ bases:
   - ../../base
 
 resources:
-  - custom-cluster-admins-group.yaml
-  - custom-cluster-admins-rolebinding.yaml
-  - custom-cluster-readers-group.yaml
-  - custom-cluster-readers-rolebinding.yaml
+  - cluster-admins-custom-group.yaml
+  - cluster-admins-custom-rolebinding.yaml
+  - cluster-readers-custom-group.yaml
+  - cluster-readers-custom-rolebinding.yaml
 
 patches:
   - target:
