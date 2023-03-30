@@ -9,8 +9,8 @@ commonAnnotations:
 
 resources:
   - ../../base
-  - htpasswd-secret-ss.yaml
   - htpasswd-secret-ss-job.yaml
+  - htpasswd-secret-ss.yaml
 
 # Patch cluster specific
 patches:
