@@ -1,8 +1,8 @@
 #!/bin/bash
 # shellcheck disable=SC2015,SC1091
 
-BIN_PATH=scratch
-COMPLETION_PATH=${BIN_PATH}
+COMPLETION_PATH=scratch
+BIN_PATH=${COMPLETION_PATH}/bin
 SEALED_SECRETS_FOLDER=components/operators/sealed-secrets/operator/overlays/default
 SEALED_SECRETS_SECRET=bootstrap/base/sealed-secrets-secret.yaml
 
@@ -50,7 +50,6 @@ check_oc(){
   oc status
 
   echo "UUID: ${UUID}"
-
   sleep 4
 }
 
@@ -165,6 +164,8 @@ create_sealed_secret(){
     [yY][eE][sS]|[yY])
 
       oc apply -k ${SEALED_SECRETS_FOLDER}
+
+      # sanity check
       [ -e ${SEALED_SECRETS_SECRET} ] && return
 
       # TODO: explore using openssl
@@ -172,9 +173,13 @@ create_sealed_secret(){
       #   create secret generic
 
       # just wait for it
-      sleep 20
+      wait_for_crd sealedsecrets.bitnami.com
+      oc -n sealed-secrets \
+        rollout status deployment sealed-secrets-controller
+      sleep 10
 
-      oc -n sealed-secrets -o yaml \
+      oc -n sealed-secrets \
+        -o yaml \
         get secret \
         -l sealedsecrets.bitnami.com/sealed-secrets-key=active \
         > ${SEALED_SECRETS_SECRET}
@@ -185,6 +190,13 @@ create_sealed_secret(){
       ;;
     *)
       echo
+      echo "!!NOTICE!!: Cluster automation MAY NOT WORK w/o a valid sealed secret"
+      echo "Choosing NO may have unintended results - see docs for more info"
+      echo "Contact a repo MAINTINAER to get a current sealed secrets key"
+      echo
+      echo 'You must choose yes or no to continue'
+      echo      
+      create_sealed_secret
       ;;
   esac
 }
