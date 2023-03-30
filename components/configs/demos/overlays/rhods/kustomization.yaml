@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../instance/custom-notebooks
-  - ../../instance/jupyterhub-images
+  # - ../../instance/jupyterhub-images
   - ../../instance/rhods
 
 patches:
@@ -13,10 +13,10 @@ patches:
       kind: Group
       name: workshop-users
     path: patch-workshop-users.yaml
-  - target:
-      group: image.openshift.io
-      kind: ImageStream
-    patch: |-
-      - op: replace
-        path: /metadata/namespace
-        value: rhods-notebooks
+  # - target:
+  #     group: image.openshift.io
+  #     kind: ImageStream
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/namespace
+  #       value: rhods-notebooks
