@@ -39,7 +39,5 @@ spec:
       from:
         kind: DockerImage
         name: quay.io/opendatahub-contrib/workbench-images:cuda-code-server-ubi9-py39_2023b_latest
-      importPolicy:
-        importMode: Legacy
       referencePolicy:
         type: Local
