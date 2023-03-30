@@ -1,0 +1,37 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    opendatahub.io/notebook-image-desc: >-
+      VS Code in a web browser!
+    opendatahub.io/notebook-image-name: VS Code Server (Coder)
+    opendatahub.io/notebook-image-order: '10'
+    opendatahub.io/notebook-image-url: >-
+      https://github.com/red-hat-data-services/notebooks/tree/main/jupyter/minimal/ubi8-python-3.8
+  name: custom-code-server
+  # namespace: custom-notebooks
+  namespace: rhods-notebooks
+  labels:
+    component.opendatahub.io/name: jupyterhub
+    opendatahub.io/component: 'true'
+    opendatahub.io/notebook-image: 'true'
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: v0.0.1
+      annotations:
+        opendatahub.io/default-image: 'true'
+        opendatahub.io/notebook-python-dependencies: >-
+          [{"name":"JupyterLab","version": "3.2"},
+          {"name":"Notebook","version": "6.4"},
+          {"name":"Coder Code Server","version": "4.9.1"}]
+        opendatahub.io/notebook-software: '[{"name":"Coder Code Server","version":"v4.9.1"}]'
+        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+      from:
+        kind: DockerImage
+        name: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+      importPolicy:
+        importMode: Legacy
+      referencePolicy:
+        type: Local
