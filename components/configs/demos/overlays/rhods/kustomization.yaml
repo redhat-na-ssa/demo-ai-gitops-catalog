@@ -3,6 +3,5 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - rhods-banner-top.yaml
   - rhods-self-provisioner-clusterrolebinding.yaml
   - rhods-self-provisioner-group.yaml

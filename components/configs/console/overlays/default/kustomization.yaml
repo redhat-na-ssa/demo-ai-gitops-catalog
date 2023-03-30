@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - ../../base
+- data-banner-top.yaml
 
 patches:
   - target:
