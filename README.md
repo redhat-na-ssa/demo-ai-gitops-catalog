@@ -62,7 +62,7 @@ The `sandbox` [namespace](components/configs/namespaces/instance/sandbox/sandbox
 
 ## Additional Info
 
-- [Kludges Script](scripts/kludges.sh) - Making things work since 1970-01-01
+- [Kludges Script](scripts/wip/kludges.sh) - Making things work since 1970-01-01
 - [Using this repo effectively](docs/APPS.md)
 - [Fix GitHub Oauth](docs/IDM.md)
 - [ArgoCD - Repo Specific](docs/ARGOCD.md)
