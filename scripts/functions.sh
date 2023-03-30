@@ -56,7 +56,7 @@ check_oc(){
 setup_bin(){
   mkdir -p ${BIN_PATH}/bin
   echo "${PATH}" | grep -q "${BIN_PATH}/bin" || \
-    PATH=$(pwd)/${BIN_PATH}/bin:${PATH}
+    PATH=$(pwd)/${BIN_PATH}:${PATH}
     export PATH
 }
 
