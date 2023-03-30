@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - cluster-config-project.yaml
-  # - project-template.yaml
+  # - project-request-template.yaml
