@@ -3,4 +3,4 @@ apiVersion: user.openshift.io/v1
 metadata:
   name: cluster-admins-custom
 users:
-  - codekow
+  - opentlc-mgr
