@@ -4,9 +4,9 @@ metadata:
   name: individual-project
   annotations:
     openshift.io/description: |
-      A personal project to explore personal feelings
+      A personal project to explore alone
       I made this for you!
-    openshift.io/display-name: Individual Project
+    openshift.io/display-name: Lonely On Friday
     openshift.io/requester: claymore
   labels:
     kubernetes.io/metadata.name: individual-project
