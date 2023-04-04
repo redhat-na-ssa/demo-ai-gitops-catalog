@@ -1,7 +1,8 @@
 - op: replace
   path: /users
   value:
-    - anormaluser
+    - agentpanda
     - darkrainbow
+    - claymore
     - user1
     - user2

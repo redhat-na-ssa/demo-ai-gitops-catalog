@@ -3,5 +3,6 @@ apiVersion: user.openshift.io/v1
 metadata:
   name: workshop-users
 users:
-  - anormaluser
+  - agentpanda
   - darkrainbow
+  - claymore
