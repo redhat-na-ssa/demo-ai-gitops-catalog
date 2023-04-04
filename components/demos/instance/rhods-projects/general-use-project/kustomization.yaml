@@ -3,4 +3,5 @@ kind: Kustomization
 
 resources:
   - admin-rolebinding.yaml
+  - edit-rolebinding.yaml
   - namespace.yaml

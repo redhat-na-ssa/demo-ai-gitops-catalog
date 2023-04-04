@@ -1,13 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: general-use-project-admin-rolebinding
+  name: general-use-project-edit-rolebinding
   namespace: general-use-project
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: admin
+  name: edit
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: Group
-  name: rhods-admins
+  name: system:authenticated:oauth
