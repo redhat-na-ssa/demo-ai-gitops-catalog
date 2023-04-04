@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: general-use-project
+  name: group-project
   annotations:
     openshift.io/description: |
       A friendly, open project to allow collaboration around unrestricted data
     openshift.io/display-name: The Allen Parsons Project
     openshift.io/requester: argocd
   labels:
-    kubernetes.io/metadata.name: general-use-project
+    kubernetes.io/metadata.name: group-project
     modelmesh-enabled: 'true'
     opendatahub.io/dashboard: 'true'

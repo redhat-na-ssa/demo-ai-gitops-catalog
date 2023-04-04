@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: individual-project
+  annotations:
+    openshift.io/description: |
+      A personal project to explore personal feelings
+      I made this for you!
+    openshift.io/display-name: Individual Project
+    openshift.io/requester: opentlc-mgr
+  labels:
+    kubernetes.io/metadata.name: individual-project
+    modelmesh-enabled: 'true'
+    opendatahub.io/dashboard: 'true'
