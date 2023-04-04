@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   - ../../instance/custom-notebooks
   - ../../instance/rhods
+  - ../../instance/rhods-projects
+  
 
 patches:
   - target:
