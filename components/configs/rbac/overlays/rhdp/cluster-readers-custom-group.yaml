@@ -4,4 +4,5 @@ metadata:
   name: cluster-readers-custom
 users:
   - codekow
+  - davwhite
   - troyer
