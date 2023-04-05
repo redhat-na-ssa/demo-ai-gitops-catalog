@@ -98,6 +98,14 @@ wait_for_crd(){
   done
 }
 
+null_finalizers(){
+  OBJ=${1}
+
+  oc patch "${OBJ}" \
+    --type=merge \
+    -p '{"metadata":{"finalizers":null}}'
+}
+
 download_helm(){
 BIN_VERSION=latest
 DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
