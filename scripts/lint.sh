@@ -21,7 +21,7 @@ check_venv(){
 check_venv
 
 # chcek scripts
-which shellcheck && shellcheck scripts/*
+which shellcheck && shellcheck scripts/*.sh
 
 # check spelling
 pyspelling -c .spellcheck.yaml

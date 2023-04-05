@@ -5,7 +5,7 @@ namespace: sandbox
 
 resources:
   - minio.yaml
-  
+
 
 # patches:
 #   - target:
