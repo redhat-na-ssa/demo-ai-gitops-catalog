@@ -54,9 +54,9 @@ check_oc(){
 }
 
 setup_bin(){
-  mkdir -p ${BIN_PATH}/bin
-  echo "${PATH}" | grep -q "${BIN_PATH}/bin" || \
-    PATH=$(pwd)/${BIN_PATH}:${PATH}
+  mkdir -p "${BIN_PATH}"
+  echo "${PATH}" | grep -q "${BIN_PATH}" || \
+    PATH="$(pwd)/${BIN_PATH}:${PATH}"
     export PATH
 }
 
@@ -107,10 +107,10 @@ null_finalizers(){
 }
 
 download_helm(){
-BIN_VERSION=latest
-DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
-curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/ helm-linux-amd64
-mv  ${BIN_PATH}/helm-linux-amd64  ${BIN_PATH}/helm
+  BIN_VERSION=latest
+  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/ helm-linux-amd64
+  mv  ${BIN_PATH}/helm-linux-amd64  ${BIN_PATH}/helm
 }
 
 download_kustomize(){
@@ -120,41 +120,41 @@ download_kustomize(){
 }
 
 download_oc(){
-BIN_VERSION=4.10
-DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${BIN_VERSION}/openshift-client-linux.tar.gz
-curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/ oc kubectl
+  BIN_VERSION=4.10
+  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${BIN_VERSION}/openshift-client-linux.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/ oc kubectl
 }
 
 download_odo(){
-BIN_VERSION=latest
-DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/odo/${BIN_VERSION}/odo-linux-amd64.tar.gz
-curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/
+  BIN_VERSION=latest
+  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/odo/${BIN_VERSION}/odo-linux-amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/
 }
 
 download_s2i(){
-# BIN_VERSION=
-DOWNLOAD_URL=https://github.com/openshift/source-to-image/releases/download/v1.3.2/source-to-image-v1.3.2-78363eee-linux-amd64.tar.gz
-curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/
+  # BIN_VERSION=
+  DOWNLOAD_URL=https://github.com/openshift/source-to-image/releases/download/v1.3.2/source-to-image-v1.3.2-78363eee-linux-amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/
 }
 
 download_rclone(){
-curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
-unzip rclone-current-linux-amd64.zip
-cd rclone-*-linux-amd64 || return
+  curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
+  unzip rclone-current-linux-amd64.zip
+  cd rclone-*-linux-amd64 || return
 
-cp rclone ${BIN_PATH}
-chown root:root ${BIN_PATH}/rclone
-chmod 755 ${BIN_PATH}/rclone
+  cp rclone ${BIN_PATH}
+  chown root:root ${BIN_PATH}/rclone
+  chmod 755 ${BIN_PATH}/rclone
 
-cd ..
-rm -rf rclone-*-linux-amd64
+  cd ..
+  rm -rf rclone-*-linux-amd64
 }
 
 download_restic(){
-BIN_VERSION=0.14.0
-DOWNLOAD_URL=https://github.com/restic/restic/releases/download/v${BIN_VERSION}/restic_${BIN_VERSION}_linux_amd64.bz2
-curl "${DOWNLOAD_URL}" -sL | bzcat > ${BIN_PATH}/restic
-chmod 755 ${BIN_PATH}/restic
+  BIN_VERSION=0.15.1
+  DOWNLOAD_URL=https://github.com/restic/restic/releases/download/v${BIN_VERSION}/restic_${BIN_VERSION}_linux_amd64.bz2
+  curl "${DOWNLOAD_URL}" -sL | bzcat > ${BIN_PATH}/restic
+  chmod 755 ${BIN_PATH}/restic
 }
 
 

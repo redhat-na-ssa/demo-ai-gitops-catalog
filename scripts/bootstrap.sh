@@ -12,7 +12,8 @@ install_gitops(){
   echo ""
   echo "Installing GitOps Operator."
 
-  kustomize build components/operators/openshift-gitops-operator/operator/overlays/stable | oc apply -f -
+  # kustomize build components/operators/openshift-gitops-operator/operator/overlays/latest | oc apply -f -
+  oc apply -k components/operators/openshift-gitops-operator/operator/overlays/latest
 
   echo "Pause ${SLEEP_SECONDS} seconds for the creation of the gitops-operator..."
   sleep ${SLEEP_SECONDS}
@@ -87,8 +88,8 @@ kludges(){
 # functions
 setup_bin
 check_bin oc
-check_bin kustomize
-#check_bin kubeseal
+# check_bin kustomize
+# check_bin kubeseal
 check_oc_login
 
 # bootstrap
