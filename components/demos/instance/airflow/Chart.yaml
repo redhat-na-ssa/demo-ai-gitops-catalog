@@ -1,0 +1,12 @@
+apiVersion: v2
+name: airflow-eformat
+description: A Helm chart for Kubernetes
+
+type: application
+
+version: 0.0.2
+
+dependencies:
+  - name: "airflow"
+    version: "0.0.2"
+    repository: "https://eformat.github.io/helm-charts"
