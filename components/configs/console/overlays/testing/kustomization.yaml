@@ -15,7 +15,7 @@ patches:
       # https://htmlcolorcodes.com/color-picker
       - op: replace
         path: /spec/color
-        value: '#29FF00'
+        value: '#54FF00'
       - op: replace
         path: /spec/backgroundColor
         value: '#FF00F3'
