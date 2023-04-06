@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - ../../../components/argocd/apps/overlays/default
+  - ../../../components/argocd/apps/overlays/rhdp-rhods
 
 patches:
   - path: patch-applicationset-repo-revision.yaml

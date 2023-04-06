@@ -4,11 +4,9 @@ kind: Kustomization
 commonAnnotations:
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
-bases:
+resources:
   - github.com/redhat-cop/gitops-catalog//grafana-operator/base/operator?ref=main
   - github.com/redhat-cop/gitops-catalog//grafana-operator/base/instance?ref=main
-
-resources:
   - grafana-ds.yaml
   - cluster-monitor-view-rb.yaml
   - grafana-auth-secret.yaml

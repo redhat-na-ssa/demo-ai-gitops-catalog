@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: openshift-keda
 
-bases:
+resources:
   - ../../base
 
 patches:

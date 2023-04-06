@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../default
+  # - cluster-automation-applicationset.yaml
 
 patches:
   - target:

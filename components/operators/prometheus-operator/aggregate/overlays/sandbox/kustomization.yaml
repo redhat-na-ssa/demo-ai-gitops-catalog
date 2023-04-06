@@ -3,9 +3,7 @@ kind: Kustomization
 
 namespace: prometheus
 
-bases:
-  - ../../base
-
 resources:
+  - ../../base
   - namespace.yaml
   - operator-group.yaml

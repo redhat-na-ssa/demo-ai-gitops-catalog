@@ -3,9 +3,7 @@ kind: Kustomization
 
 namespace: openshift-storage
 
-bases:
-  - ../../base
-
 resources:
+  - ../../base
   - ocsinitialization.yaml
   - storagecluster.yaml

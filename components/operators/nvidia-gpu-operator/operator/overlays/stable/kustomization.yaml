@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: nvidia-gpu-operator
 
-bases:
+resources:
   - ../../base
 
 patches:

@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: openshift-operators
 
-bases:
+resources:
   - ../../base
 
 patches:

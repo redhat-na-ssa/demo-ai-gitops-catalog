@@ -35,7 +35,7 @@ spec:
           backoff:
             duration: 5s
             factor: 2
-            maxDuration: 10m
+            maxDuration: 5m
       source:
         repoURL: patch-me-see-clusters-overlays
         targetRevision: patch-me-see-clusters-overlays

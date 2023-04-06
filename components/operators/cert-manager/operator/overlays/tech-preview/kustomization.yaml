@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: openshift-cert-manager-operator
 
-bases:
+resources:
   - ../../base
 
 patches:
