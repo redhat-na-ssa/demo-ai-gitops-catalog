@@ -10,9 +10,9 @@ Dump current sealed secret cert
 SEALED_SECRETS_SECRET=bootstrap/base/sealed-secrets-secret.yaml
 
 oc -n sealed-secrets -o yaml \
-        get secret \
-        -l sealedsecrets.bitnami.com/sealed-secrets-key=active \
-        > ${SEALED_SECRETS_SECRET}
+  get secret \
+  -l sealedsecrets.bitnami.com/sealed-secrets-key=active \
+  > ${SEALED_SECRETS_SECRET}
 ```
 
 Convert a secret local file to a sealed-secret
@@ -28,7 +28,6 @@ cat scratch/htpasswd-secret.yaml | kubeseal \
   --controller-namespace sealed-secrets \
   -o yaml > components/configs/login/overlays/rhdp/htpasswd-secret-ss.yaml
 ```
-
 
 Convert a secret in OpenShift to a sealed-secret
 
@@ -55,7 +54,8 @@ spec:
 ```
 oc -n openshift-config \
   -o yaml \
-  annotate secret/htpasswd-secret "sealedsecrets.bitnami.com/managed=true"
+  annotate secret/htpasswd-secret \
+  "sealedsecrets.bitnami.com/managed=true"
 ```
 
 [Sealed Secrets - Official Docs](https://github.com/bitnami-labs/sealed-secrets)
@@ -64,8 +64,9 @@ oc -n openshift-config \
 
 In ROSA clusters you are not actually `cluster-admin` when you are the `cluster-admin` user. We need to review the actual permissions needed to run the argocd scripts.
 
-Hack
-
 ```
-oc --as=backplane-cluster-admin adm policy add-cluster-role-to-user cluster-admin cluster-admin
+# hack
+oc --as=backplane-cluster-admin \
+  adm policy \
+  add-cluster-role-to-user cluster-admin cluster-admin
 ```
