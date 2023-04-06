@@ -11,8 +11,11 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'Welcome to the chaos of TESTING! Beware of dragons (and broken things)'
+        value: 'Welcome to the chaos of <B>TESTING!</B> Beware of dragons (and broken things)'
       # https://htmlcolorcodes.com/color-picker
+      - op: replace
+        path: /spec/color
+        value: '#29FF00'
       - op: replace
         path: /spec/backgroundColor
         value: '#FF5600'
