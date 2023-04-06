@@ -1,9 +1,9 @@
 apiVersion: console.openshift.io/v1
 kind: ConsoleNotification
 metadata:
-  name: 00-banner-bottom-data
+  name: banner-data
 spec:
-  text: "NOTICE!!! - DATA MAY BE DELETED at any time `git push`"
+  text: "DATA MAY BE DELETED at any time `git push`"
   location: BannerBottom
   color: '#fff'
   backgroundColor: '#ff6666'
