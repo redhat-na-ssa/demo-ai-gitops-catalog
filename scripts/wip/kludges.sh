@@ -78,13 +78,21 @@ fix_api_cert(){
   oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'
 }
 
-# try to save money
-openshift_save_money(){
-  # run work on masters (save $$$)
+add_control_as_workers(){
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
+}
 
+# try to save money
+save_money(){
+  # run work on masters (save $$$)
+  add_control_as_workers
   # scale down workers (save $$$)
-  oc -n openshift-machine-api get machineset -o name | grep worker | xargs oc scale -n openshift-machine-api --replicas=1
+  oc -n openshift-machine-api \
+    get machineset \
+    -o name | grep worker | \
+      xargs \
+        oc -n openshift-machine-api \
+        scale --replicas=1
 }
 
 expose_image_registry(){

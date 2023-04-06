@@ -5,15 +5,17 @@ set -e
 source "$(dirname "$0")/functions.sh"
 
 LANG=C
-SLEEP_SECONDS=45
+SLEEP_SECONDS=25
 ARGO_NS="openshift-gitops"
+ARGO_CHANNEL="stable"
+ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
 
 install_gitops(){
   echo ""
   echo "Installing GitOps Operator."
 
-  # kustomize build components/operators/openshift-gitops-operator/operator/overlays/latest | oc apply -f -
-  oc apply -k components/operators/openshift-gitops-operator/operator/overlays/latest
+  # kustomize build components/operators/openshift-gitops-operator/operator/overlays/stable | oc apply -f -
+  oc apply -k "components/operators/openshift-gitops-operator/operator/overlays/${ARGO_CHANNEL}"
 
   echo "Pause ${SLEEP_SECONDS} seconds for the creation of the gitops-operator..."
   sleep ${SLEEP_SECONDS}
@@ -37,8 +39,7 @@ install_gitops(){
   done
 
   echo "Waiting for all pods to be created"
-  deployments=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
-  for i in "${deployments[@]}"
+  for i in "${ARGO_DEPLOY_V15[@]}"
   do
     echo "Waiting for deployment $i"
     oc rollout status deployment "$i" -n ${ARGO_NS}
