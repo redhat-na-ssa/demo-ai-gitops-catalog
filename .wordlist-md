@@ -74,6 +74,7 @@ Thanos
 UI
 Workspaces
 ack
+adm
 alongsecret
 amq
 api
@@ -84,6 +85,7 @@ argocd
 argoproj
 autoscaler
 aws
+backplane
 bitnami
 canada
 cd
