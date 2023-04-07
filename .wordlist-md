@@ -8,6 +8,7 @@ Bitnami
 CICD
 CRD
 CRDs
+CheCluster
 ClusterRoleBindings
 ClusterTask
 CodeReady
@@ -201,4 +202,4 @@ useable
 vSphere
 vsphere
 workspaces
-yamlCheCluster
+yaml
