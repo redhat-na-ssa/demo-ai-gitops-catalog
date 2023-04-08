@@ -18,7 +18,8 @@ spec:
       credentialsSecretName: postgres-credentials
       externalDb: false
       postgresDb: devspaces
-      postgresHostName: devspaces-db
+      # BUG: can not change postgresHostNmae
+      postgresHostName: postgres
       postgresPort: '5432'
       pvc:
         claimSize: 1Gi
