@@ -1,0 +1,52 @@
+apiVersion: org.eclipse.che/v2
+kind: CheCluster
+metadata:
+  name: devspaces
+  namespace: openshift-operators
+spec:
+  components:
+    cheServer:
+      debug: false
+      logLevel: INFO
+    dashboard:
+      headerMessage:
+        show: true
+        text: >-
+          Microsoft Visual Studio Code - Open Source is the default <a
+          href='https://access.redhat.com/documentation/en-us/red_hat_openshift_dev_spaces/3.5/html-single/user_guide/index#selecting-a-workspace-ide'>editor</a>
+          for new workspaces. Eclipse Theia is <a
+          href='https://access.redhat.com/documentation/en-us/red_hat_openshift_dev_spaces/3.5/html-single/release_notes_and_known_issues/index#deprecated-functionalities'>deprecated</a>
+          and will be removed in a future release.
+    database:
+      credentialsSecretName: postgres-credentials
+      externalDb: false
+      postgresDb: dbche
+      postgresHostName: postgres
+      postgresPort: '5432'
+      pvc:
+        claimSize: 1Gi
+    metrics:
+      enable: true
+  containerRegistry: {}
+  devEnvironments:
+    startTimeoutSeconds: 300
+    secondsOfRunBeforeIdling: -1
+    maxNumberOfWorkspacesPerUser: -1
+    containerBuildConfiguration:
+      openShiftSecurityContextConstraint: container-build
+    disableContainerBuildCapabilities: true
+    defaultEditor: che-incubator/che-code/latest
+    defaultComponents:
+      - container:
+          sourceMapping: /projects
+          image: >-
+            registry.redhat.io/devspaces/udi-rhel8@sha256:99ff1b5c541855e4cf368816c4bcdcdc86d32304023f72c4443213a4032ef05b
+        name: universal-developer-image
+    defaultNamespace:
+      autoProvision: true
+      template: <username>-devspaces
+    secondsOfInactivityBeforeIdling: 1800
+    storage:
+      pvcStrategy: per-user
+  gitServices: {}
+  networking: {}
