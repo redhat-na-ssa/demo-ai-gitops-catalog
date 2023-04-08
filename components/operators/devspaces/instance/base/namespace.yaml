@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: outer-space
+  annotations:
+    openshift.io/description: |
+      Get your Dev on here!
+    openshift.io/display-name: Dev Space
