@@ -10,10 +10,10 @@ spec:
       extraProperties:
         CHE_SYSTEM_ADMIN__NAME: 'opentlc-mgr'
     dashboard:
-      headerMessage:
-        show: false
-        text: >-
-          It's time to get your Dev on!
+      # headerMessage:
+      #   show: false
+      #   text: >-
+      #     It's time to get your Dev on!
     database:
       credentialsSecretName: postgres-credentials
       externalDb: false
