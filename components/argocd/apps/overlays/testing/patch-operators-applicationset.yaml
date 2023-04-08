@@ -17,11 +17,11 @@
       values:
         name: operator-openshift-pipelines
         path: components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
-    - cluster: local
-      url: https://kubernetes.default.svc
-      values:
-        name: operator-nvidia-gpu-operator
-        path: components/operators/nvidia-gpu-operator/aggregate/overlays/default
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: operator-nvidia-gpu-operator
+    #     path: components/operators/nvidia-gpu-operator/aggregate/overlays/default
     - cluster: local
       url: https://kubernetes.default.svc
       values:
