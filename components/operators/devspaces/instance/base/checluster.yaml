@@ -2,35 +2,35 @@ apiVersion: org.eclipse.che/v2
 kind: CheCluster
 metadata:
   name: devspaces
-  namespace: openshift-operators
 spec:
   components:
     cheServer:
       debug: false
       logLevel: INFO
+      extraProperties:
+        CHE_SYSTEM_ADMIN__NAME: 'opentlc-mgr'
     dashboard:
       headerMessage:
-        show: true
+        show: false
         text: >-
-          Microsoft Visual Studio Code - Open Source is the default <a
-          href='https://access.redhat.com/documentation/en-us/red_hat_openshift_dev_spaces/3.5/html-single/user_guide/index#selecting-a-workspace-ide'>editor</a>
-          for new workspaces. Eclipse Theia is <a
-          href='https://access.redhat.com/documentation/en-us/red_hat_openshift_dev_spaces/3.5/html-single/release_notes_and_known_issues/index#deprecated-functionalities'>deprecated</a>
-          and will be removed in a future release.
+          It's time to get your Dev on!
     database:
       credentialsSecretName: postgres-credentials
       externalDb: false
-      postgresDb: dbche
-      postgresHostName: postgres
+      postgresDb: devspaces
+      postgresHostName: devspaces-db
       postgresPort: '5432'
       pvc:
         claimSize: 1Gi
     metrics:
       enable: true
+    pluginRegistry:
+      openVSXURL: "https://open-vsx.org"
   containerRegistry: {}
   devEnvironments:
     startTimeoutSeconds: 300
     secondsOfRunBeforeIdling: -1
+    maxNumberOfRunningWorkspacesPerUser: -1
     maxNumberOfWorkspacesPerUser: -1
     containerBuildConfiguration:
       openShiftSecurityContextConstraint: container-build
@@ -44,9 +44,9 @@ spec:
         name: universal-developer-image
     defaultNamespace:
       autoProvision: true
-      template: <username>-devspaces
+      template: workspace-<username>
     secondsOfInactivityBeforeIdling: 1800
     storage:
-      pvcStrategy: per-user
+      pvcStrategy: ephemeral
   gitServices: {}
   networking: {}

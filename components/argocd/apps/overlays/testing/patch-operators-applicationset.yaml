@@ -4,6 +4,12 @@
     - cluster: local
       url: https://kubernetes.default.svc
       values:
+        name: operator-devspaces
+        namespace: openshift-gitops
+        path: components/operators/devspaces/aggregate/overlays/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
         name: operator-openshift-nfd
         path: components/operators/openshift-nfd/aggregate/overlays/default
     - cluster: local
