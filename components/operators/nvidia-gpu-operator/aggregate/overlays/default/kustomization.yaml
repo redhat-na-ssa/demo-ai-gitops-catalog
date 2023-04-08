@@ -7,5 +7,5 @@ commonAnnotations:
 namespace: nvidia-gpu-operator
 
 resources:
-  - ../../../operator/overlays/v22.9
+  - ../../../operator/overlays/stable
   - ../../../instance/overlays/default
