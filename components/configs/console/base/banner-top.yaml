@@ -4,6 +4,7 @@ metadata:
   name: banner-top
 spec:
   text: "< see overlays - if you are seeing this you have mistaken >"
+  # valid locations: BannerTop, BannerBottom, BannerTopBottom
   location: BannerTop
   # https://www.w3schools.com/colors/colors_picker.asp
   color: '#fff'
