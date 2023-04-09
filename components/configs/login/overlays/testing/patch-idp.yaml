@@ -22,9 +22,9 @@
 - op: add
   path: /spec/templates
   value:
-    error:
-      name: login-custom
+    # error:
+    #   name: login-custom
     login:
       name: login-custom
-    providerSelection:
-      name: login-custom
+    # providerSelection:
+    #   name: login-custom

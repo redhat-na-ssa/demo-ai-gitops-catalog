@@ -171,10 +171,12 @@ opentlc
 operatorGroup
 operatorGroups
 patchesJson
+popd
 postgres
 pre
 prem
 prometheus
+pushd
 quickstart
 rbac
 redhat

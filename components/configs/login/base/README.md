@@ -43,6 +43,9 @@ Apply custom login template
 ```
 pushd components/configs/login/base
 oc -n openshift-config \
+  delete secret login-custom
+
+oc -n openshift-config \
   create secret generic login-custom \
   --from-file=login.html \
   --from-file=providers.html \
@@ -60,4 +63,21 @@ spec:
         name: login-custom
       providerSelection:
         name: login-custom
+```
+
+Update CSS
+
+```
+--pf-global--primary-color--100: #06c; --pf-global--primary-color--200: #004080;
+--pf-global--BackgroundColor--light-100: #fff;
+h6 { padding: 0; margin: 0; }
+--pf-global--Color--100: #151515;
+```
+
+```
+root:
+--pf-global--primary-color--100: var(--pf-global--palette--purple-500); --pf-global--primary-color--200: var(--pf-global--palette--purple-600);
+--pf-global--BackgroundColor--light-100: rgba(3, 3, 3, 0.25);
+h6 { padding: 0; margin: 0; color: var(--pf-global--palette--green-300); }
+--pf-global--Color--100: var(--pf-global--palette--green-300);
 ```

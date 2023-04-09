@@ -12,6 +12,7 @@ resources:
   - github-client-sealed-secret.yaml
   - htpasswd-secret-ss-job.yaml
   - htpasswd-secret-ss.yaml
+  - login-custom-secret.yaml
 
 # Patch cluster specific
 patches:
