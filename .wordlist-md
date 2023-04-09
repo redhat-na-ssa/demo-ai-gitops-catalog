@@ -98,6 +98,7 @@ cli
 clusterissuer
 clusterrolebinding
 config
+configs
 configmap
 cr
 creds
@@ -126,8 +127,10 @@ homelab
 html
 htpass
 htpasswd
+httpErrorCodePages
 https
 idp
+ingresscontroller
 inB
 init
 installplan
