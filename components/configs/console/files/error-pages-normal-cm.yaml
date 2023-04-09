@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: custom-error-pages
+  name: error-pages-normal
   namespace: openshift-config
 data:
   error-page-404.http: |
@@ -79,8 +79,8 @@ data:
       </head>
       <body>
         <div>
-          <h1><del>Application</del> Love Not Found</h1>
-          <p>No love was found at the provided URL.</p>
+          <h1>Application or Document Not Found</h1>
+          <p>No application was found at the provided URL.</p>
 
           <div class="alert alert-info">
             <p class="info">
@@ -88,20 +88,24 @@ data:
             </p>
             <ul>
               <li>
-                <strong>The site administrators hate you.</strong>
-                  Sometimes the page itself may not be the cause of a 404 - it could be the result of a human's feelings.
+                <strong>Moving a page.</strong>
+                  If you recently added or moved a page, it's possible that the page was placed in the wrong folder.
               </li>
               <li>
-                <strong>The host doesn't exist - or does it?</strong>
-                URLs and relationships are sometimes fleeting. Humans are sensitive. Tell the people you know in IT that they are loved - always.
+                <strong>Moving a page's directory.</strong>
+                  Sometimes the page itself may not be the cause of a 404 — it could be the page's containing folder.
               </li>
               <li>
-                <strong>The host exists (at least that is what you want to believe).</strong>
-                Verify that your confidence is not actually over-confidence. Have you ever been wrong before?
+                <strong>The host doesn't exist.</strong>
+                Make sure the hostname was typed correctly and that a route matching this hostname exists.
               </li>
               <li>
-                <strong>Technology is complicated.</strong>
-                Try giving up. This has worked for millions.
+                <strong>The host exists, but doesn't have a matching path.</strong>
+                Check if the URL path was typed correctly and that the route was created using the desired path.
+              </li>
+              <li>
+                <strong>Route and path matches, but all pods are down.</strong>
+                Make sure that the resources exposed by this route (pods, services, deployment configs, etc) have at least one pod running.
               </li>
             </ul>
           </div>
@@ -183,30 +187,28 @@ data:
       </head>
       <body>
         <div>
-          <h1>Everything is <del>Probably</del> Fine</h1>
-
-          <p>The application may not have started or is not yet ready to reveal itself.</p>
+          <h1>Application is not available</h1>
+          <p>The application is currently not serving requests at this endpoint. It may not have been started or is still starting.</p>
 
           <div class="alert alert-info">
             <p class="info">
-              Don't Panic
+              Possible reasons you are seeing this page:
             </p>
             <ul>
               <li>
-                <strong>Human error accounts for 103% of the reasons you are seeing this page.</strong>
-                Make sure the human is functioning correctly.
+                <strong>The host doesn't exist.</strong>
+                Make sure the hostname was typed correctly and that a route matching this hostname exists.
               </li>
               <li>
-                <strong>You still exist, but have chosen <a href=https://sadtrombone.com/>a failed path</a>.</strong>
-                Check if you typed correctly.
+                <strong>The host exists, but doesn't have a matching path.</strong>
+                Check if the URL path was typed correctly and that the route was created using the desired path.
               </li>
               <li>
-                <strong>Some pods are ready, others are not.</strong>
-                Make sure that the application is ready to serve it's human overlords.
+                <strong>Route and path matches, but all pods are down.</strong>
+                Make sure that the resources exposed by this route (pods, services, deployment configs, etc) have at least one pod running.
               </li>
             </ul>
           </div>
         </div>
       </body>
     </html>
-
