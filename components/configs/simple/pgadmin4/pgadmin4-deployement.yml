@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"pgadmin4:patch"},"fieldPath":"spec.template.spec.containers[?(@.name==\"pgadmin4\")].image"}]'
+  labels:
+    app: pgadmin4
+    app.kubernetes.io/component: pgadmin4
+    app.kubernetes.io/instance: pgadmin4
+  name: pgadmin4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: pgadmin4
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deployment: pgadmin4
+    spec:
+      containers:
+      - env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: user@example.com
+        - name: PGADMIN_DEFAULT_PASSWORD
+          value: WorkshopPassword
+        image: ' '
+        name: pgadmin4
+        ports:
+        - containerPort: 443
+          protocol: TCP
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/pgadmin
+          # name: pgadmin4-volume-1
+          name: empty
+      volumes:
+      - emptyDir: {}
+        name: empty
+      # - persistentVolumeClaim:
+      #     claimName: pgadmin4-pvc
+      #   name: pgadmin4-volume-1
