@@ -9,6 +9,7 @@ commonAnnotations:
 
 resources:
   - ../../base
+  - github-client-sealed-secret.yaml
   - htpasswd-secret-ss-job.yaml
   - htpasswd-secret-ss.yaml
 
