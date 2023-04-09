@@ -1,0 +1,70 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleYAMLSample
+metadata:
+  name: build-config-dockerfile
+spec:
+  description: >-
+    A Dockerfile build performs an image build using a Dockerfile
+    in the source repository or specified in build configuration.
+    Embedded Dockerfile in YAML for build config
+  targetResource:
+    apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+  title: Build from Dockerfile (YAML Embedded)
+  yaml: |
+    apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      name: docker-build
+    spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: 'cli:custom'
+      resources: {}
+      # successfulBuildsHistoryLimit: 5
+      # failedBuildsHistoryLimit: 5
+      strategy:
+        type: Docker
+        dockerStrategy:
+          from:
+            kind: ImageStreamTag
+            name: 'cli:latest'
+            namespace: openshift
+      postCommit:
+        args:
+          - "uname -a && id"
+      source:
+        type: Dockerfile
+        dockerfile: |
+          FROM quay.io/openshift/origin-cli:latest
+
+          USER 0
+
+          # install dependencies
+          RUN yum install -y unzip bzip2 && \
+              yum -y clean all && \
+              rm -rf /var/cache
+
+          # install restic
+          ENV RESTIC_VERSION=0.15.0
+          ENV RESTIC_URL=https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/restic_${RESTIC_VERSION}_linux_amd64.bz2
+          ENV BIN_PATH=/usr/local/bin
+
+          RUN curl "${RESTIC_URL}" -sL | bzcat > ${BIN_PATH}/restic && \
+              chmod 755 ${BIN_PATH}/restic && \
+              restic self-update && \
+              restic generate --bash-completion /etc/bash_completion.d/restic
+
+          # install rclone
+          RUN curl https://rclone.org/install.sh | sh && \
+              rm -rf /tmp/tmp.* && \
+              rclone completion bash > /etc/bash_completion.d/rclone
+
+          USER 1001
+
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChange: {}
+      runPolicy: Serial

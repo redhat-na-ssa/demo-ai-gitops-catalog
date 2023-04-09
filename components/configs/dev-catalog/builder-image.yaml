@@ -1,0 +1,4 @@
+oc new-build \
+  https://github.com/codekow/s2i-r-shiny.git \
+  --name s2i-r-shiny \
+  --context-dir container --dry-run -o yaml > components/configs/custom-images/r-shiny.yaml
