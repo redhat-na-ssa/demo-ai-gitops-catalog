@@ -19,12 +19,12 @@
     mappingMethod: claim
     name: GitHub
     type: GitHub
-# - op: add
-#   path: /spec/templates
-#   value:
-#     error:
-#       name: error-template
-#     login:
-#       name: login-template
-#     providerSelection:
-#       name: providers-template
+- op: add
+  path: /spec/templates
+  value:
+    error:
+      name: login-custom
+    login:
+      name: login-custom
+    providerSelection:
+      name: login-custom
