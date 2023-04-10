@@ -1,0 +1,59 @@
+# Example: exposing ingress as .onion via OnionService
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: http-app
+  template:
+    metadata:
+      labels:
+        app: http-app
+    spec:
+      containers:
+      - name: http-app
+        image: registry.redhat.io/ubi8/httpd-24:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-app
+  labels:
+    app: http-app
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: http-app
+---
+apiVersion: tor.k8s.torproject.org/v1alpha2
+kind: OnionService
+metadata:
+  name: http-app
+  labels:
+    app: http-app
+spec:
+  version: 3
+  rules:
+    - port:
+        number: 8080
+      backend:
+        service:
+          # This name will depend on your ingress installation
+          # For example, for nginx's ingress installation using helm
+          # the name template is [release-name]-nginx-ingress
+          #
+          # I used this commands:
+          # $ helm repo add nginx-stable https://helm.nginx.com/stable
+          # $ helm install nginx-ingress nginx-stable/nginx-ingress
+          name: http-app
+          port:
+            number: 8080
