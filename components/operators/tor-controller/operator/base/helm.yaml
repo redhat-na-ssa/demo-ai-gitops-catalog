@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tor-controller-helm
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  destination:
+    namespace: tor-controller
+    server: 'https://kubernetes.default.svc'
+  project: cluster-config
+  source:
+    helm:
+      parameters:
+        - name: fullnameOverride
+          value: tor-controller
+    path: charts/tor-controller
+    repoURL: 'https://github.com/bugfest/tor-controller.git'
+    targetRevision: '0.9.0'
