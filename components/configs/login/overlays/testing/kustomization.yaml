@@ -13,7 +13,7 @@ resources:
   - htpasswd-secret-ss-job.yaml
   - htpasswd-secret-ss.yaml
   - login-custom-secret.yaml
-  - v4-0-config-user-template-login.yaml
+  # - v4-0-config-user-template-login.yaml
 
 # Patch cluster specific
 patches:
