@@ -33,8 +33,8 @@ spec:
   tags:
   - annotations:
       description: |-
-        Build and run Python and R shiny applications. 
-        
+        Build and run Python and R shiny applications.
+
         For more information about using this builder image, including OpenShift considerations, see https://github.com/codekow/s2i-r-shiny.
       iconClass: icon-catalog
       openshift.io/display-name: R /w Shiny

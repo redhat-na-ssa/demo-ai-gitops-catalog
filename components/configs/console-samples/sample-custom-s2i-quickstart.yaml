@@ -6,7 +6,7 @@ spec:
   displayName: Create a Source-to-Image (s2i) container image
   description: >-
     Want to make a custom image that can be used for
-    source-to-image (s2i) on OpenShift? 
+    source-to-image (s2i) on OpenShift?
     Let's start with a simple example to learn the basics.
   durationMinutes: 10
   introduction: >-
