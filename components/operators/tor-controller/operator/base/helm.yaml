@@ -4,6 +4,8 @@ metadata:
   name: tor-controller-helm
 spec:
   syncPolicy:
+    syncOptions:
+    - ServerSideApply=true
     automated:
       selfHeal: true
   destination:
