@@ -1,5 +1,7 @@
 # TODO Items
 
+- [ ] setup: registry w/ `emptyDir` for base ArgoCD config
+- [ ] add: demos to components
 - [ ] Update: gitops-catalog with nfd cr instance
 - [ ] Create: auto generate image streams for custom jupyter notebooks
   - https://github.com/opendatahub-io-contrib/workbench-images
