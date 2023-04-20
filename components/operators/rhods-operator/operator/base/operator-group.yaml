@@ -1,4 +1,5 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: redhat-ods-operator
+  name: rhods-operator-group
+  namespace: redhat-ods-operator
