@@ -3,4 +3,4 @@
   value: 'git@github.com:redhat-na-ssa/demo-argocd-gitops.git'
 - op: replace
   path: /spec/template/spec/source/targetRevision
-  value: main
+  value: testing
