@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../default
-  - app-pgadmin4.yaml
+  # - app-pgadmin4.yaml
   # - appset-cluster-automation.yaml
 
 patches:
