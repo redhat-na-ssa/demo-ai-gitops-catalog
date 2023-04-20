@@ -1,7 +1,11 @@
 #!/bin/bash
 # shellcheck disable=SC2086
 
-# USAGE: ./delete-console-user.sh $USERNAME $GROUPNAME
+usage(){
+echo "
+    USAGE: ./delete-aws-console-user.sh [username] [groupname]
+"
+}
 
 USERNAME=${1:-admin}
 GROUPNAME=${2:Admins}
