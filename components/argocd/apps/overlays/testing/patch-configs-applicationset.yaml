@@ -1,0 +1,39 @@
+- op: add
+  path: /spec/generators/0/list/elements
+  value:
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: config-cluster-console
+        namespace: openshift-gitops
+        path: components/configs/console/overlays/testing
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: config-cluster-login
+        namespace: openshift-config
+        path: components/configs/login/overlays/testing
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: config-cluster-namespaces
+        namespace: openshift-gitops
+        path: components/configs/namespaces/aggregate/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: config-cluster-rbac
+        namespace: openshift-gitops
+        path: components/configs/rbac/overlays/rhdp
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: config-demo-rhods
+        namespace: openshift-gitops
+        path: components/demos/overlays/rhods
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: config-sandbox-cleanup
+        namespace: openshift-gitops
+        path: components/configs/simple/sandbox-cleanup
