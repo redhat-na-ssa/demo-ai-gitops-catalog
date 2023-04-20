@@ -13,7 +13,7 @@ echo "PATH: ${PATH}"
 
 usage(){
 echo "
-You can run individual functions!
+  usage: source scripts/funtions.sh
 "
 }
 
@@ -313,4 +313,7 @@ get_functions(){
   sed -n '/(){/ s/(){$//p' "$(dirname $0)/$(basename $0)"
 }
 
-# get_functions
+# get functions
+# sed -n '/(){/ s/(){$//p' scripts/kludges.sh
+
+is_sourced || usage
