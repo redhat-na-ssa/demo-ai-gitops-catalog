@@ -40,5 +40,10 @@
     - cluster: local
       url: https://kubernetes.default.svc
       values:
+        name: operator-velero
+        path: components/operators/redhat-oadp-operator/operator/overlays/stable
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
         name: operator-web-terminal
         path: components/operators/web-terminal/operator/overlays/fast
