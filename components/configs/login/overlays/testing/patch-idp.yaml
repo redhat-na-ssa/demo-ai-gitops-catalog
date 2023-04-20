@@ -5,7 +5,7 @@
         fileData:
           name: htpasswd-secret
       mappingMethod: claim
-      name: htpasswd_provider
+      name: Internal
       type: HTPasswd
 - op: add
   path: /spec/identityProviders/-
