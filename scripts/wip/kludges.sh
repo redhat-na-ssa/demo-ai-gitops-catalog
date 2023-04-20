@@ -11,18 +11,15 @@ setup_namespace(){
     oc project "${NAMESPACE}"
 }
 
-# clobber htpasswd-secret on demo cluster
-# fix_htpasswd(){
-#   oc delete -n openshift-config sealedsecret/htpasswd-secret >/dev/null 2>&1
-#   oc delete -n openshift-config secret/htpasswd-secret >/dev/null 2>&1
-# }
-
 # get aws creds
 get_aws_key(){
   # get aws creds
   export AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
   export AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
   export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-west-2}
+
+  echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
+  sleep 5
 }
 
 # create secrets for ack controllers
@@ -45,7 +42,7 @@ setup_ack_system(){
 }
 
 # create a gpu machineset
-setup_gpu_machineset(){
+setup_aws_gpu_machineset(){
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
   INSTANCE_TYPE=${1:-g4dn.12xlarge}
 
@@ -82,11 +79,12 @@ add_control_as_workers(){
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
 }
 
-# try to save money
+# save money in aws
 save_money(){
-  # run work on masters (save $$$)
+  # run work on masters
   add_control_as_workers
-  # scale down workers (save $$$)
+
+  # scale down workers
   oc -n openshift-machine-api \
     get machineset \
     -o name | grep worker | \
@@ -104,10 +102,7 @@ expose_image_registry(){
   oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'"${SHORTER_HOST}"'"}}'
 }
 
-remove_kubeadmin(){
-  oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
-  oc delete secret kubeadmin -n kube-system
-}
+
 
 # get functions
 # sed -n '/(){/ s/(){$//p' scripts/kludges.sh
@@ -115,8 +110,7 @@ remove_kubeadmin(){
 # fix_htpasswd
 # get_aws_key
 # setup_ack_system
-# setup_gpu_machineset
+# setup_aws_gpu_machineset
 # fix_api_cert
 # openshift_save_money
 # expose_image_registry
-# remove_kubeadmin

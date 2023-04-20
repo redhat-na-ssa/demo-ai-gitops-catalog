@@ -258,3 +258,8 @@ aws_start_ocp4_cluster(){
     "${CLUSTER_IDS}" \
     --output text >/dev/null
 }
+
+remove_kubeadmin(){
+  oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
+  oc delete secret kubeadmin -n kube-system
+}
