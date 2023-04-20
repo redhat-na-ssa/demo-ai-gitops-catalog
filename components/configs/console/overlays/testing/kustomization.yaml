@@ -11,7 +11,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'Welcome to the cHAoS of <b>TESTING!</b> Beware of broken things'
+        value: 'Welcome to the cHAoS of TESTING! Beware of broken things'
       # https://htmlcolorcodes.com/color-picker
       - op: replace
         path: /spec/color
