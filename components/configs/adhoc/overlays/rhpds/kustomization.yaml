@@ -2,5 +2,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - cluster-config-project.yaml
-  - project-request-template.yaml
+  - fix-remove-project-template.yaml

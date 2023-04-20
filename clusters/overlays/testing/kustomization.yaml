@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - ../../../components/configs/adhoc/overlays/rhpds
   - ../../../components/argocd/apps/overlays/testing
 
 patches:
