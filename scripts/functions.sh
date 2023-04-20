@@ -104,6 +104,10 @@ null_finalizers(){
   oc patch "${OBJ}" \
     --type=merge \
     -p '{"metadata":{"finalizers":null}}'
+
+  # oc patch "${OBJ}" \
+  #   --type="json" \
+  #   -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
 }
 
 download_helm(){
