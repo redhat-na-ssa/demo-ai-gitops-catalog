@@ -4,6 +4,12 @@
     - cluster: local
       url: https://kubernetes.default.svc
       values:
+        name: config-cluster-adhoc
+        namespace: openshift-gitops
+        path: components/configs/adhoc/overlays/rhpds
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
         name: config-cluster-console
         namespace: openshift-gitops
         path: components/configs/console/overlays/testing
