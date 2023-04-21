@@ -280,7 +280,7 @@ ocp_control_as_workers(){
 # save money in aws
 ocp_save_money(){
   # run work on masters
-  add_control_as_workers
+  ocp_control_as_workers
 
   # scale down workers
   oc -n openshift-machine-api \
