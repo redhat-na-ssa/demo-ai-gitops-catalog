@@ -5,7 +5,7 @@ set -e
 source "$(dirname "$0")/functions.sh"
 
 LANG=C
-SLEEP_SECONDS=25
+SLEEP_SECONDS=10
 ARGO_NS="openshift-gitops"
 ARGO_CHANNEL="stable"
 ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
@@ -18,13 +18,13 @@ wait_for_gitops(){
   done
 
   echo "Waiting for openshift-gitops namespace to be created"
-  until oc get ns ${ARGO_NS}
+  until oc get ns ${ARGO_NS} >/dev/null 2>&1
   do
     sleep 1
   done
 
   echo "Waiting for deployments to start"
-  until oc get deployment cluster -n ${ARGO_NS}
+  until oc get deployment cluster -n ${ARGO_NS} >/dev/null 2>&1
   do
     sleep 1
   done
@@ -33,7 +33,7 @@ wait_for_gitops(){
   for i in "${ARGO_DEPLOY_STABLE[@]}"
   do
     echo "Waiting for deployment $i"
-    oc rollout status deployment "$i" -n ${ARGO_NS}
+    oc rollout status deployment "$i" -n ${ARGO_NS} >/dev/null 2>&1
   done
 
   echo ""
@@ -65,7 +65,6 @@ bootstrap_cluster(){
   done
 
   echo "Selected: ${bootstrap_dir}"
-  echo "Apply overlay to override default instance"
   # kustomize build "${bootstrap_dir}" | oc apply -f -
   oc apply -k "${bootstrap_dir}"
 

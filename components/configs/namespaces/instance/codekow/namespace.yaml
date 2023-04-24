@@ -7,5 +7,3 @@ metadata:
       Science is often preceded by explosions
       Create confidence not fear
     openshift.io/display-name: Make Chaos Great Again (Engineering)
-  labels:
-    argocd.argoproj.io/managed-by: cluster-config

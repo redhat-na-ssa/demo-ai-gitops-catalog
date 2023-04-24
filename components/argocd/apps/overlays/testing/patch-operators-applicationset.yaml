@@ -1,0 +1,53 @@
+- op: add
+  path: /spec/generators/0/list/elements
+  value:
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-devspaces
+        path: components/operators/devspaces/aggregate/overlays/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-amq-streams
+        path: components/operators/amq-streams/operator/overlays/stable
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-openshift-nfd
+        path: components/operators/openshift-nfd/aggregate/overlays/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-openshift-pipelines
+        path: components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-nvidia-gpu-operator
+        path: components/operators/nvidia-gpu-operator/aggregate/overlays/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-rhods
+        path: components/operators/rhods-operator/operator/overlays/stable
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-sealed-secrets
+        path: components/operators/sealed-secrets/operator/overlays/default
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: operator-tor
+    #     path: components/operators/tor-controller/operator/overlay/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-velero
+        path: components/operators/redhat-oadp-operator/operator/overlays/stable
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-web-terminal
+        path: components/operators/web-terminal/operator/overlays/fast
