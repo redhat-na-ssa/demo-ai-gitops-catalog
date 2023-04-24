@@ -11,10 +11,18 @@ echo "PWD:  $(pwd)"
 echo "PATH: ${PATH}"
 }
 
+# get functions
+get_functions(){
+  echo -e "functions:\n"
+  sed -n '/(){/ s/(){$//p' "$(dirname $0)/$(basename $0)"
+}
+
 usage(){
-echo "
+  echo "
   usage: source scripts/funtions.sh
-"
+  "
+
+  get_functions
 }
 
 is_sourced() {
@@ -51,6 +59,14 @@ check_oc(){
 
   echo "UUID: ${UUID}"
   sleep 4
+}
+
+# check login
+check_oc_login(){
+  oc cluster-info | head -n1
+  oc whoami || exit 1
+  echo
+  sleep 3
 }
 
 setup_bin(){
@@ -161,16 +177,7 @@ download_restic(){
   chmod 755 ${BIN_PATH}/restic
 }
 
-
-# check login
-check_oc_login(){
-  oc cluster-info | head -n1
-  oc whoami || exit 1
-  echo
-  sleep 3
-}
-
-create_sealed_secret(){
+sealed_secret_create(){
   read -r -p "Create NEW [${SEALED_SECRETS_SECRET}]? [y/N] " input
   case $input in
     [yY][eE][sS]|[yY])
@@ -208,13 +215,13 @@ create_sealed_secret(){
       echo
       echo 'You must choose yes or no to continue'
       echo      
-      create_sealed_secret
+      sealed_secret_create
       ;;
   esac
 }
 
 # Validate sealed secrets secret exists
-check_sealed_secret(){
+sealed_secret_check(){
   if [ -f ${SEALED_SECRETS_SECRET} ]; then
     echo "Exists: ${SEALED_SECRETS_SECRET}"
     oc apply -f ${SEALED_SECRETS_FOLDER}/namespace.yaml
@@ -224,7 +231,7 @@ check_sealed_secret(){
     echo "Missing: ${SEALED_SECRETS_SECRET}"
     echo "The master key is required to bootstrap sealed secrets and CANNOT be checked into git."
     echo
-    create_sealed_secret
+    sealed_secret_create
   fi
 }
 
@@ -305,12 +312,6 @@ ocp_expose_image_registry(){
 ocp_remove_kubeadmin(){
   oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
   oc delete secret kubeadmin -n kube-system
-}
-
-# get functions
-get_functions(){
-  echo "$(dirname $0)/$(basename $0)"
-  sed -n '/(){/ s/(){$//p' "$(dirname $0)/$(basename $0)"
 }
 
 # get functions
