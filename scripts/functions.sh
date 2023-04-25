@@ -14,7 +14,7 @@ echo "PATH: ${PATH}"
 # get functions
 get_functions(){
   echo -e "functions:\n"
-  sed -n '/(){/ s/(){$//p' "$(dirname $0)/$(basename $0)"
+  sed -n '/(){/ s/(){$//p' "$(dirname "$0")/$(basename "$0")"
 }
 
 usage(){

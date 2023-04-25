@@ -24,7 +24,7 @@ check_venv
 which shellcheck && shellcheck scripts/*.sh
 
 # check spelling
-pyspelling -c .spellcheck.yaml
+pyspelling -c .pyspelling.yml
 
 # check yaml
 yamllint . && echo "YAML check passed :)"
