@@ -11,12 +11,10 @@ spec:
     type: AgCotoAFGG5lm9zDlyEpz6jU3zMYyDzQRRT06rKHHdJqFIiqLV5CfgTerxUaiH9C5XJt8U3jCrzMXQJOuPLyPnFJwIS0crM6TkJ7DCsLVk6doP02/KCgKcToAnMCr0DirG0pjEEkFrlL1y0A8ELKmbhMl+J5ripLPW65PscDwS15J7xcRQtuUcPxlp5abGIeRlU4dCoioYSuJdkPBaI4W93FfkRedIBxrpNdmjQBi8pYiQLrQP6fixaR52MEtJxeXp842iBukBhw96ezUx/3TZA8FxZg0hynqrojc1pj40A95m8AeDA999ZE2HTz1MeDlfruDJ++7cCzCv+V4PU1IgRfB7E5mfIStitM+53yQhrs+pq3geBCrehMOSoPhIDJdHY8UagqYBReuAtQW7S7TgXw6zRZ/QS7XYOq6IP5492/NS/nvZz4roC9YDOM395nB8NlQddgqnYk/Hpqolspzhdu8wM++Qb+6szVUU16sxOsCj+dxq2LcnoBhkMj3KtOVCPUOu6LtAcFHbsancU7gst5YlfrHdRoN/VCs5/7acEvDwlyrCdW6ewM40njeaKw+ucMcSn/2AmqRnTTqfZK7ZvdrTqD/hbb4G0MDvP4DZ0mlFKMMXzK8gQ/JXt9yK1bxTqjraISNiRGxi37jTqbzgpSQILvXROavnVh7nFFcKMLNztNLdc+0o1orFibgiBdQ1Bu09w=
     url: AgCUFeS1x5jvH3kQUeA10RUjRGQR49I+NIK79VLFOTcP9rdwKy/eF/NlGK/JrOV+2QCmVIsGskDfj03IGyfHIp5Twwn/LYk+XgxM8m79UyrkG+tOTtiX75hQdwIT3LZ5xEUsU/JLALQlYP/umXrGeK99EkMJriX4XlagZL3XkDSD8oWZGbCs7coHMxhkvcRieW8AgP/XMuB2YkzD5SlordpSVCRahThHIJQUCppWoFC5PpG/Wf70GeMlzlfVcDHg01CVnfNNuZoWrUjytVouLWKiDXeYevmVA2NYo0VS6y519FFpZ7ds9JznCh2BZLbLp5APx6je3wudIjr/V3WPco5GJ0veJYuoX/qMMVs6gMgcsaTWWGoydzTdPRZMOOr7KJrrumB2x9QSvHEb7fPIEDb5tjw+U68fRc+OUNBvdyYkbJeGGNfsfd5ILOZTxL8EmfXkp/o0Jovj0u738tJvgCcBRSGh71X+o4pDXuGnhnDwi9eU/kZDSI433tLXGnSQ8GxrMshkBQJbznZw1iWAFcaOfFTR1OsV1W/IBHsC+3GiXCL9MDueJbAydPkVSkZTZ9N2iJdRrlHEe/COCl5Oq49sYJQR77+aTDB4d9bxYAvw5pCK9mglFFhkxXfRztk3Ccy24GVzNWEVgFj3L6ckz0s6f/ZER0GMEUbbrBfUcDQ4zMzrO5asRk/vaPgW02mIaki+VV+xSwuy9oW51xXdpo8eQzQSDAqMCH7CXHPf/dqY4nW1hPjsdqjhixdiRYs2U+R80GU=
   template:
-    data: null
     metadata:
       annotations:
         managed-by: argocd.argoproj.io
         sealedsecrets.bitnami.com/managed: "true"
-      creationTimestamp: null
       labels:
         argocd.argoproj.io/secret-type: repository
       name: repo-cluster-config

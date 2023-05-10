@@ -10,6 +10,57 @@ If your cluster domain has changed you will need to update the Oauth callback UR
 
 Add a login to htpasswd
 
+Extract / Create htpasswd
+
+```
+oc -n openshift-config \
+  extract \
+  secret/htpasswd-secret \
+  --to=- > scratch/htpasswd
+
+# edit htpasswd
+# vi scratch/htpasswd
+
+# create new secret from htpasswd
+oc -n openshift-config \
+  create secret generic \
+  htpasswd-secret \
+  --from-file scratch/htpasswd \
+  --dry-run=client -o yaml \
+  > scratch/htpasswd-secret.yaml
+
+# create sealed secret for htpasswd
+cat scratch/htpasswd-secret.yaml | \
+  kubeseal \
+    -o yaml \
+    --controller-namespace sealed-secrets \
+      | sed '/: null/d; $d' > scratch/htpasswd-secret-ss.yaml
+```
+
+Create GitHub Secret
+
+```
+oc -n openshift-config \
+  extract \
+  secret/github-secret \
+  --to=- > scratch/clientSecret
+
+# create new secret from clientSecret
+oc -n openshift-config \
+  create secret generic \
+  github-secret \
+  --from-file scratch/clientSecret \
+  --dry-run=client -o yaml \
+  > scratch/github-secret.yaml
+
+# create sealed secret for htpasswd
+cat scratch/github-secret.yaml | \
+  kubeseal \
+    -o yaml \
+    --controller-namespace sealed-secrets \
+      | sed '/: null/d; $d' > scratch/github-secret-ss.yaml
+```
+
 ```
 cat << YAML | > scratch/htpasswd-secret.yaml
 kind: Secret
