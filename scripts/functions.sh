@@ -21,8 +21,7 @@ usage(){
   echo "
   usage: source scripts/funtions.sh
   "
-
-  get_functions
+  # get_functions
 }
 
 is_sourced() {
@@ -231,7 +230,7 @@ sealed_secret_check(){
     echo "Missing: ${SEALED_SECRETS_SECRET}"
     echo "The master key is required to bootstrap sealed secrets and CANNOT be checked into git."
     echo
-    sealed_secret_create
+    [ -n "${NON_INTERACTIVE}" ] || sealed_secret_create
   fi
 }
 
@@ -269,8 +268,8 @@ aws_start_ocp4_cluster(){
 }
 
 aws_create_gpu_machineset(){
-  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
   INSTANCE_TYPE=${1:-g4dn.12xlarge}
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
   oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
     sed '/machine/ s/-worker/-gpu/g
@@ -280,8 +279,48 @@ aws_create_gpu_machineset(){
     oc apply -f -
 }
 
+ocp_create_machineset_autoscale(){
+  MACHINE_MIN=${1:-0}
+  MACHINE_MAX=${2:-4}
+  MACHINE_SETS=${3:-$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | sed 's@.*/@@' )}
+
+  for set in ${MACHINE_SETS}
+  do
+cat << YAML | oc apply -f -
+apiVersion: "autoscaling.openshift.io/v1beta1"
+kind: "MachineAutoscaler"
+metadata:
+  name: "${set}"
+  namespace: "openshift-machine-api"
+spec:
+  minReplicas: ${MACHINE_MIN}
+  maxReplicas: ${MACHINE_MAX}
+  scaleTargetRef:
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    name: "${set}"
+YAML
+  done
+}
+
+ocp_scale_all_machineset(){
+  REPLICAS=${1:-1}
+  MACHINE_SETS=${2:-$(oc -n openshift-machine-api get machineset -o name)}
+
+  # scale workers
+  echo "${MACHINE_SETS}" | \
+    xargs \
+      oc -n openshift-machine-api \
+      scale --replicas="${REPLICAS}"
+
+}
+
 ocp_control_as_workers(){
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
+}
+
+ocp_control_dedicated(){
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": false}}'
 }
 
 # save money in aws
@@ -289,13 +328,8 @@ ocp_save_money(){
   # run work on masters
   ocp_control_as_workers
 
-  # scale down workers
-  oc -n openshift-machine-api \
-    get machineset \
-    -o name | grep worker | \
-      xargs \
-        oc -n openshift-machine-api \
-        scale --replicas=1
+  # scale to zero
+  ocp_scale_all_machineset 0
 }
 
 ocp_expose_image_registry(){
@@ -310,7 +344,8 @@ ocp_expose_image_registry(){
 }
 
 ocp_remove_kubeadmin(){
-  oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
+  [ ! -e scratch/kubeadmin.yaml ] && \
+    oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
   oc delete secret kubeadmin -n kube-system
 }
 
