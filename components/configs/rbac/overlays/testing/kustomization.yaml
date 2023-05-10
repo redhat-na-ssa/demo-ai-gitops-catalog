@@ -6,6 +6,18 @@ resources:
 
 patches:
   - target:
+      group: machineconfiguration.openshift.io
+      version: v1
+      kind: MachineConfig
+      name: 99-master-ssh
+    path: patch-ssh.yaml
+  - target:
+      group: machineconfiguration.openshift.io
+      version: v1
+      kind: MachineConfig
+      name: 99-worker-ssh
+    path: patch-ssh.yaml
+  - target:
       group: user.openshift.io
       version: v1
       kind: Group

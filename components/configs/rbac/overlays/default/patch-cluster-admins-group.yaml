@@ -1,0 +1,5 @@
+- op: add
+  path: /users
+  value:
+    - admin
+    - opentlc-mgr

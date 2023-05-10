@@ -4,4 +4,8 @@ kind: Kustomization
 resources:
   - 99-master-ssh-machineconfig.yaml
   - 99-worker-ssh-machineconfig.yaml
+  - cluster-admins-group.yaml
+  - cluster-admins-rolebinding.yaml
+  - cluster-readers-group.yaml
+  - cluster-readers-rolebinding.yaml
   - self-provisioner-clusterrolebinding.yaml
