@@ -3,5 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../components/operators/sealed-secrets/operator/overlays/default
+  - ../../components/operators/openshift-gitops-operator/instance/overlays/default
+  - ../../components/configs/namespaces/base
   - argocd-ssh-known-hosts-cm.yaml
   # - sealed-secrets-secret.yaml
