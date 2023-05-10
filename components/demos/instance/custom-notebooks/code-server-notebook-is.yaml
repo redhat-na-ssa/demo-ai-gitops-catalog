@@ -2,6 +2,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   annotations:
+    argocd.argoproj.io/sync-wave: "5"
     opendatahub.io/notebook-image-desc: |
       VS Code in a web browser!
 
