@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: sandbox-edit-rolebinding
+  name: sandbox-edit
   namespace: sandbox
 roleRef:
   apiGroup: rbac.authorization.k8s.io
