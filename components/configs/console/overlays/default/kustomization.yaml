@@ -1,6 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+commonAnnotations:
+  # argocd.argoproj.io/compare-options: IgnoreExtraneous
+  argocd.argoproj.io/sync-options: Prune=true
+
 resources:
 - ../../base
 
@@ -11,4 +15,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'Welcome to the World of <Default Overlay>'
+        value: 'Welcome to a default cluster'
