@@ -70,9 +70,11 @@ select_bootstrap_folder(){
   echo
   select bootstrap_dir in bootstrap/overlays/*/
   do
-      test -n "$bootstrap_dir" && select_bootstrap_folder
+      test -n "$bootstrap_dir" && break
       echo ">>> Invalid Selection <<<";
   done
+
+  bootstrap_cluster
 }
 
 bootstrap_cluster(){
