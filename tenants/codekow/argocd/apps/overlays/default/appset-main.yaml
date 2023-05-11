@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: codekow-tenant-appset
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    # argocd.argoproj.io/sync-options: Prune=false
+spec:
+  generators:
+    - list:
+        elements:
+        - cluster: local
+          url: https://kubernetes.default.svc
+          values:
+            name: demo-kafka
+            path: components/demos/instance/kafka/overlays/kafdrop
+        - cluster: local
+          url: https://kubernetes.default.svc
+          values:
+            name: demo-pgadmin4
+            path: components/demos/instance/pgadmin4
+        - cluster: local
+          url: https://kubernetes.default.svc
+          values:
+            name: demo-rhods
+            path: components/demos/overlays/rhods
+        - cluster: local
+          url: https://kubernetes.default.svc
+          values:
+            name: edge-workshop-namespaces
+            path: tenants/edge-workshop/components/configs/namespaces/aggregate/default
+        - cluster: local
+          url: https://kubernetes.default.svc
+          values:
+            name: edge-workshop-namespaces-users
+            path: components/demos/instance/workshop-users
+        - cluster: local
+          url: https://kubernetes.default.svc
+          values:
+            name: edge-workshop-rbac
+            path: tenants/edge-workshop/components/configs/rbac/overlays/default
+  template:
+    metadata:
+      name: '{{values.name}}'
+      # annotations:
+      #   argocd.argoproj.io/compare-options: IgnoreExtraneous
+      #   argocd.argoproj.io/sync-options: Prune=false
+    spec:
+      project: codekow-tenant
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        retry:
+          limit: 6
+          backoff:
+            duration: 15s
+            factor: 2
+            # maxDuration: 3m
+      source:
+        repoURL: 'https://github.com/Enterprise-Neurosystem/cluster-bootstrap.git'
+        targetRevision: main
+        path: '{{values.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: openshift-gitops

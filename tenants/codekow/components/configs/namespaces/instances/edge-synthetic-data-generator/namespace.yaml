@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: Edge Data Gen Workshop Namespace
+    openshift.io/display-name: Edge Data Gen Workshop
+  name: edge-synthetic-data-generator
