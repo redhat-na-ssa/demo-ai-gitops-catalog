@@ -44,8 +44,8 @@ spec:
         cpu: 250m
         memory: 128Mi
   initialSSHKnownHosts: {}
-  notifications:
-    enabled: false
+  # notifications:
+  #   enabled: false
   prometheus:
     enabled: false
     ingress:
@@ -102,15 +102,15 @@ spec:
     service:
       type: ""
   sso:
-    dex:
-      openShiftOAuth: true
-      resources:
-        limits:
-          cpu: 500m
-          memory: 256Mi
-        requests:
-          cpu: 250m
-          memory: 128Mi
+    # dex:
+    #   openShiftOAuth: true
+    #   resources:
+    #     limits:
+    #       cpu: 500m
+    #       memory: 256Mi
+    #     requests:
+    #       cpu: 250m
+    #       memory: 128Mi
     provider: dex
   tls:
     ca: {}
