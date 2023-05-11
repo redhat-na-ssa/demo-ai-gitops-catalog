@@ -3,5 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - nb-culler-config.yaml
+  - odh-dashboard-config-cr.yaml
+  - rhods-admins-group.yaml
   - rhods-self-provisioner-clusterrolebinding.yaml
   - rhods-self-provisioner-group.yaml

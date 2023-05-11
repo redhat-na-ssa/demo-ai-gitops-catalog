@@ -6,7 +6,7 @@ metadata:
     openshift.io/description: |
       A friendly, open project to allow collaboration around unrestricted data
     openshift.io/display-name: The Allen Parsons Project
-    openshift.io/requester: argocd
+    # openshift.io/requester: argocd
   labels:
     kubernetes.io/metadata.name: group-project
     modelmesh-enabled: 'true'
