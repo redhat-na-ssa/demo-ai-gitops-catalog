@@ -96,11 +96,13 @@ ceph
 checluster
 cicd
 cli
+clientSecret
 clusterissuer
 clusterrolebinding
 config
-configs
 configmap
+configs
+contrib
 cr
 creds
 datasource
@@ -131,8 +133,8 @@ htpasswd
 httpErrorCodePages
 https
 idp
-ingresscontroller
 inB
+ingresscontroller
 init
 installplan
 installplans
@@ -144,6 +146,7 @@ kataconfig
 kiali
 knative
 kube
+kubeseal
 kustomization
 kustomize
 labeler
@@ -198,7 +201,9 @@ serverless
 serviceaccount
 servicemesh
 sfdc
+ss
 ssa
+strimzi
 stringData
 sublicense
 tekton
