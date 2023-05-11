@@ -8,15 +8,15 @@ resources:
 
 patches:
   - target:
-      group: user.openshift.io
-      version: v1
-      kind: Group
-      name: workshop-users
-    path: patch-workshop-users.yaml
-  - target:
       group: image.openshift.io
       kind: ImageStream
     patch: |-
       - op: replace
         path: /metadata/namespace
         value: redhat-ods-applications
+  - target:
+      group: user.openshift.io
+      version: v1
+      kind: Group
+      name: workshop-users
+    path: patch-workshop-users.yaml
