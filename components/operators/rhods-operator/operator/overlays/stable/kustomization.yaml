@@ -9,3 +9,12 @@ patches:
       kind: Subscription
       name: rhods-operator
     path: patch-channel.yaml
+  # # kludge: for rhdp - just don't install operator
+  # - target:
+  #     group: operators.coreos.com
+  #     kind: OperatorGroup
+  #     name: rhods-operator-group
+  #   patch: |-
+  #     - op: replace
+  #       path: /metadata/name
+  #       value: rhods-ods-operator
