@@ -3,5 +3,4 @@ kind: Kustomization
 
 bases:
   - ../../base
-  - ../../../components/operators/openshift-gitops-operator/instance/overlays/default
   - ../../../clusters/overlays/baremetal
