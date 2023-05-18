@@ -46,6 +46,7 @@ spec:
     enabled: true
     notebookNamespace: rhods-notebooks
     pvcSize: 10Gi
+    gpuSetting: 1
   notebookSizes:
     # kludge: everyone picks the largest, why offer more than one?
     - name: "Demo / Workshop"
