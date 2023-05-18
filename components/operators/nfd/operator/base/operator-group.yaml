@@ -3,6 +3,4 @@ kind: OperatorGroup
 metadata:
   name: nfd-group
   namespace: openshift-nfd
-spec:
-  targetNamespaces:
-    - openshift-nfd
+
