@@ -1,0 +1,8 @@
+FROM quay.io/modh/cuda-notebooks:cuda-jupyter-tensorflow-ubi9-python-3.9-2023a-weekly
+
+USER 0
+RUN dnf install -y mesa-libGL \
+ && dnf -y clean all
+
+USER 1001
+ RUN pip install elyra==3.15.0 opencv-python==4.7.0.72 opencv-contrib-python==4.7.0.72 matplotlib==3.6.3 imutils==0.5.4 \
