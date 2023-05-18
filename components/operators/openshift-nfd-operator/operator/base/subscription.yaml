@@ -1,11 +1,11 @@
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: nfd
+  name: openshift-nfd-operator
   namespace: openshift-nfd
 spec:
   channel: patch-me-see-overlays-dir
   installPlanApproval: Automatic
-  name: nfd
-  source: redhat-operators
+  name: openshift-nfd-operator
+  source: community-operators
   sourceNamespace: openshift-marketplace

@@ -1,6 +1,5 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: nfd-group
+  name: openshift-nfd-operator-group
   namespace: openshift-nfd
-
