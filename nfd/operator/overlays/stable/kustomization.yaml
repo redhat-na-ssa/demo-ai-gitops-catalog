@@ -7,5 +7,5 @@ resources:
 patches:
   - target:
       kind: Subscription
-      name: openshift-nfd-operator
+      name: nfd
     path: patch-channel.yaml
