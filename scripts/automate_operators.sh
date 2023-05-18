@@ -240,7 +240,7 @@ metadata:
   namespace: ${NAMESPACE}
 YAML
 
-if [ "${NS_OWN}" == "true" ] && [ "${NS_MULTI}" != "true" ] ; then
+if [ "${NS_SINGLE}" == "true" ] && [ "${NS_ALL}" != "true" ] || [ "${NS_MULTI}" != "false" ]; then
 echo -n "spec:
   targetNamespaces:
     - ${NAMESPACE}
