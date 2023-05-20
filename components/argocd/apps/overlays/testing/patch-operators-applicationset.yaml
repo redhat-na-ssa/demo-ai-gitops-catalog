@@ -46,11 +46,6 @@
       values:
         name: operator-strimzi-kafka
         path: components/operators/strimzi-kafka-operator-kafka-operator/operator/overlays/stable
-    # - cluster: local
-    #   url: https://kubernetes.default.svc
-    #   values:
-    #     name: operator-tor
-    #     path: components/operators/tor-controller/operator/overlay/default
     - cluster: local
       url: https://kubernetes.default.svc
       values:
