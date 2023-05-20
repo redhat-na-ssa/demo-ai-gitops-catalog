@@ -1,6 +1,7 @@
 # Airflow deployment
 
 ## Create an airflow project on OpenShift
+
 ```
 # create new project
 oc new-project airflow

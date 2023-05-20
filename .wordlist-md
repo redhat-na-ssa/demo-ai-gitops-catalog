@@ -18,6 +18,7 @@ DevWorkspace
 DevWorkspaces
 Devfile
 DotNET
+EOF
 Eventing
 Gi
 GitOps
@@ -86,6 +87,7 @@ apicast
 approver
 argocd
 argoproj
+auth
 autoscaler
 aws
 backplane
@@ -146,6 +148,7 @@ kataconfig
 kiali
 knative
 kube
+kubernetes
 kubeseal
 kustomization
 kustomize
