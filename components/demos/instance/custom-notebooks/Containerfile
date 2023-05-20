@@ -5,4 +5,4 @@ RUN dnf install -y mesa-libGL \
  && dnf -y clean all
 
 USER 1001
- RUN pip install elyra==3.15.0 opencv-python==4.7.0.72 opencv-contrib-python==4.7.0.72 matplotlib==3.6.3 imutils==0.5.4 \
+ RUN pip install elyra==3.15.0 opencv-python==4.7.0.72 opencv-contrib-python==4.7.0.72 matplotlib==3.6.3 imutils==0.5.4 tensorflow_datasets==4.9.2
