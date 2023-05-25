@@ -10,7 +10,10 @@ RUN dnf install -y gcc g++ diffutils && \
     ./configure && \
     make && \
     make install && \
-    yum history undo last -y
+    yum history undo last -y && \
+    yum clean all && \
+    cd .. && \
+    rm -rf graphviz-*
 
 # upgrade all the things; add libGL
 RUN dnf upgrade -y && \
