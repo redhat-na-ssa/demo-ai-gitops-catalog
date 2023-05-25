@@ -12,9 +12,18 @@ RUN dnf install -y gcc g++ diffutils && \
     make install && \
     yum history undo last -y
 
+# upgrade all the things; add libGL
 RUN dnf upgrade -y && \
     dnf install -y mesa-libGL && \
     dnf -y clean all
 
 USER 1001
- RUN pip install elyra==3.15.0 opencv-python==4.7.0.72 opencv-contrib-python==4.7.0.72 matplotlib==3.6.3 imutils==0.5.4 tensorflow_datasets==4.9.2
+
+# install the pip things
+RUN pip install \
+    elyra==3.* \
+    opencv-python==4.7.* \
+    opencv-contrib-python==4.7.* \
+    matplotlib>=3.6.0,<3.7.0 \
+    imutils==0.5.* \
+    tensorflow_datasets==4.9.*
