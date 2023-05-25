@@ -1,8 +1,20 @@
 FROM quay.io/modh/cuda-notebooks:cuda-jupyter-tensorflow-ubi9-python-3.9-2023a-weekly
 
 USER 0
-RUN dnf install -y mesa-libGL \
- && dnf -y clean all
+
+# install graphviz - the hard way
+RUN dnf install -y gcc g++ diffutils && \
+    wget https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.0.5/graphviz-8.0.5.tar.gz && \
+    tar zxf graphviz-* && \
+    cd graphviz-* && \
+    ./configure && \
+    make && \
+    make install && \
+    yum history undo last -y
+
+RUN dnf upgrade -y && \
+    dnf install -y mesa-libGL && \
+    dnf -y clean all
 
 USER 1001
  RUN pip install elyra==3.15.0 opencv-python==4.7.0.72 opencv-contrib-python==4.7.0.72 matplotlib==3.6.3 imutils==0.5.4 tensorflow_datasets==4.9.2
