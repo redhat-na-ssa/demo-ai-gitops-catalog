@@ -23,7 +23,7 @@ RUN dnf upgrade -y && \
 USER 1001
 
 # install the pip things
-RUN pip install \
+RUN pip install --no-cache-dir \
     elyra==3.* \
     opencv-python==4.7.* \
     opencv-contrib-python==4.7.* \
