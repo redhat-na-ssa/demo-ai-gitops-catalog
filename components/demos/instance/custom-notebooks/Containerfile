@@ -5,8 +5,8 @@ USER 0
 # install graphviz - the hard way
 RUN dnf install -y gcc g++ diffutils && \
     wget https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.0.5/graphviz-8.0.5.tar.gz && \
-    tar zxf graphviz-* && \
-    cd graphviz-* && \
+    tar zxf graphviz-8.0.5.tar.gz && \
+    cd graphviz-8.0.5 && \
     ./configure && \
     make && \
     make install && \
@@ -27,6 +27,7 @@ RUN pip install \
     elyra==3.* \
     opencv-python==4.7.* \
     opencv-contrib-python==4.7.* \
-    matplotlib>=3.6.0,<3.7.0 \
+    matplotlib==3.6.* \
+    protobuf==3.19.* \
     imutils==0.5.* \
     tensorflow_datasets==4.9.*
