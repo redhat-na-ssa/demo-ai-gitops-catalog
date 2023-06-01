@@ -1,16 +1,17 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: pgadmin4-patch
+  name: opencv-notebook
 spec:
   source:
     type: Git
     git:
       uri: https://github.com/redhat-na-ssa/demo-argocd-gitops.git
+      contextDir: components/demos/instance/custom-notebooks/opencv
   strategy:
     type: Docker
     dockerStrategy:
-      dockerfilePath: components/demos/instance/custom-notebooks/opencv
+      dockerfilePath: Containerfile
   output:
     to:
       kind: ImageStreamTag
