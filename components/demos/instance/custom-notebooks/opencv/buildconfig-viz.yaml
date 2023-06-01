@@ -7,7 +7,9 @@ spec:
     type: Dockerfile
     dockerfile: |
       FROM empty
-      
+
+      USER 0
+
       # install graphviz - the hard way
       RUN dnf install -y gcc g++ diffutils && \
           wget https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.0.5/graphviz-8.0.5.tar.gz && \
@@ -20,6 +22,8 @@ spec:
           yum clean all && \
           cd .. && \
           rm -rf graphviz-*
+
+      USER 1001
   strategy:
     type: Docker
     dockerStrategy:
