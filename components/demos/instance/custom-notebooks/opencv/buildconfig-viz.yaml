@@ -6,6 +6,8 @@ spec:
   source:
     type: Dockerfile
     dockerfile: |
+      FROM empty
+      
       # install graphviz - the hard way
       RUN dnf install -y gcc g++ diffutils && \
           wget https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.0.5/graphviz-8.0.5.tar.gz && \
