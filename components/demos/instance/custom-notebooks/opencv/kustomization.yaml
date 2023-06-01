@@ -3,5 +3,5 @@ kind: Kustomization
 
 resources:
   - buildconfig.yaml
-  - buildconfig-viz.yaml
+  - buildconfig-graphviz.yaml
   - imagestream.yaml
