@@ -1,0 +1,20 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: pgadmin4-patch
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/redhat-na-ssa/demo-argocd-gitops.git
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: components/demos/instance/custom-notebooks/opencv
+  output:
+    to:
+      kind: ImageStreamTag
+      name: opencv-notebook:latest
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange

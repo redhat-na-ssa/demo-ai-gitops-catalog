@@ -1,0 +1,30 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    opendatahub.io/notebook-image-desc: |
+      OpenCV Notebook
+
+      Insert description here
+    opendatahub.io/notebook-image-name: 'OpenCV Notebook'
+    opendatahub.io/notebook-image-order: '10'
+    opendatahub.io/notebook-image-url: >-
+      https://github.com/redhat-na-ssa/demo-argocd-gitops
+  name: opencv-notebook
+  labels:
+    component.opendatahub.io/name: jupyterhub
+    opendatahub.io/component: 'true'
+    opendatahub.io/notebook-image: 'true'
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: latest
+      annotations:
+        # opendatahub.io/default-image: 'true'
+        opendatahub.io/notebook-python-dependencies: >-
+          [{"name":"JupyterLab","version": "3.2"},
+          {"name":"Notebook","version": "6.4"},
+          {"name":"OpenCV","version": "null"}]
+        opendatahub.io/notebook-software: '[{"name":"OpenCV","version":"null"}]'
+        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
