@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: custom-notebooks
 
 resources:
+  - ./opencv
   - code-server-notebook-is.yaml
   - namespace.yaml
   - namespace-rb.yaml
