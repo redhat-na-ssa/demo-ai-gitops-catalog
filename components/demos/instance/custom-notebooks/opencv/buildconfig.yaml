@@ -18,5 +18,4 @@ spec:
       name: opencv-notebook:latest
       namespace: custom-notebooks
   triggers:
-    - type: ImageChange
     - type: ConfigChange
