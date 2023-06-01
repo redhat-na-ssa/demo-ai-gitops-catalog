@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - custom-notebooks-rb.yaml
   - nb-culler-config.yaml
   - odh-dashboard-config-cr.yaml
   - rhods-admins-group.yaml
