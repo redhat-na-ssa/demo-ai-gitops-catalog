@@ -15,6 +15,13 @@ patches:
         path: /metadata/namespace
         value: redhat-ods-applications
   - target:
+      group: build.openshift.io/v1
+      kind: BuildConfig
+    patch: |-
+      - op: replace
+        path: /spec/output/to/namespace
+        value: redhat-ods-applications
+  - target:
       group: user.openshift.io
       version: v1
       kind: Group

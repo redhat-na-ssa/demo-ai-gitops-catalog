@@ -34,6 +34,7 @@ spec:
     to:
       kind: ImageStreamTag
       name: opencv-notebook:custom
+      namespace: custom-notebooks
   triggers:
     - type: ImageChange
     - type: ConfigChange
