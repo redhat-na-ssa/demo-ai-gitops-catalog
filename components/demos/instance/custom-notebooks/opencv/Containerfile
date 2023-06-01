@@ -2,19 +2,6 @@ FROM quay.io/modh/cuda-notebooks:cuda-jupyter-tensorflow-ubi9-python-3.9-2023a-w
 
 USER 0
 
-# install graphviz - the hard way
-RUN dnf install -y gcc g++ diffutils && \
-    wget https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.0.5/graphviz-8.0.5.tar.gz && \
-    tar zxf graphviz-8.0.5.tar.gz && \
-    cd graphviz-8.0.5 && \
-    ./configure && \
-    make && \
-    make install && \
-    yum history undo last -y && \
-    yum clean all && \
-    cd .. && \
-    rm -rf graphviz-*
-
 # version lock cuda
 RUN dnf install -y 'dnf-command(versionlock)' && \
     dnf versionlock \
