@@ -7,7 +7,7 @@ spec:
     type: Git
     git:
       uri: https://github.com/redhat-na-ssa/demo-argocd-gitops.git
-      contextDir: components/demos/instance/custom-notebooks/opencv
+    contextDir: components/demos/instance/custom-notebooks/opencv
   strategy:
     type: Docker
     dockerStrategy:
