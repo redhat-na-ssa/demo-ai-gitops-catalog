@@ -19,7 +19,7 @@ spec:
   lookupPolicy:
     local: true
   tags:
-    - name: custom
+    - name: graphviz
       annotations:
         # opendatahub.io/default-image: 'true'
         opendatahub.io/notebook-python-dependencies: >-

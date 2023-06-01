@@ -6,7 +6,7 @@ spec:
   source:
     type: Dockerfile
     dockerfile: |
-      FROM empty
+      FROM image-stream
 
       USER 0
 
@@ -29,12 +29,12 @@ spec:
     dockerStrategy:
       from:
         kind: ImageStreamTag
-        name: 'opencv-notebook:latest'
+        name: opencv-notebook:latest
         namespace: custom-notebooks
   output:
     to:
       kind: ImageStreamTag
-      name: opencv-notebook:custom
+      name: opencv-notebook:graphviz
       namespace: custom-notebooks
   triggers:
     - type: ImageChange
