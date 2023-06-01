@@ -24,7 +24,7 @@ patches:
   - target:
       group: build.openshift.io
       kind: BuildConfig
-      name: opencv-notebook-graphviz
+      # name: opencv-notebook-graphviz
     patch: |-
       - op: replace
         path: /spec/strategy/dockerStrategy/from/namespace
