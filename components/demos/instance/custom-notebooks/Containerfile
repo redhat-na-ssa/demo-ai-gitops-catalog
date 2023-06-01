@@ -30,4 +30,9 @@ RUN pip install --no-cache-dir \
     matplotlib==3.6.* \
     protobuf==3.19.* \
     imutils==0.5.* \
-    tensorflow_datasets==4.9.*
+    tensorflow_datasets==4.9.* \
+    keras_tuner==1.0.* \
+    visualkeras==0.0.* \
+    graphviz==0.20.* \
+    pydot==1.4.* \
+    python-dotenv==1.*
