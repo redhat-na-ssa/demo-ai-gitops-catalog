@@ -25,7 +25,8 @@ spec:
         opendatahub.io/notebook-python-dependencies: >-
           [{"name":"JupyterLab","version": "3.2"},
           {"name":"Notebook","version": "6.4"},
-          {"name":"OpenCV","version": "null"}]
+          {"name":"OpenCV","version": "4.7"},
+          {"name":"Cuda", "version": "11.4"}]
         opendatahub.io/notebook-software: '[{"name":"OpenCV","version":"null"}]'
         # openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
     - name: custom
@@ -34,6 +35,7 @@ spec:
         opendatahub.io/notebook-python-dependencies: >-
           [{"name":"JupyterLab","version": "3.2"},
           {"name":"Notebook","version": "6.4"},
-          {"name":"OpenCV","version": "null"}]
+          {"name":"OpenCV","version": "4.7"},
+          {"name":"Cuda", "version": "11.4"}]
         opendatahub.io/notebook-software: '[{"name":"OpenCV","version":"null"}]'
         # openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
