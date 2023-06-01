@@ -15,15 +15,16 @@ patches:
         path: /metadata/namespace
         value: redhat-ods-applications
   - target:
-      group: build.openshift.io/v1
+      group: build.openshift.io
       kind: BuildConfig
     patch: |-
       - op: replace
         path: /spec/output/to/namespace
         value: redhat-ods-applications
   - target:
-      group: build.openshift.io/v1
+      group: build.openshift.io
       kind: BuildConfig
+      name: opencv-notebook-graphviz
     patch: |-
       - op: replace
         path: /spec/strategy/dockerStrategy/from/namespace
