@@ -5,7 +5,7 @@ metadata:
     opendatahub.io/notebook-image-desc: |
       OpenCV Notebook
 
-      Insert description here
+      Cuda, OpenCV, mesa-libGL, Graphviz for Computer Vision
     opendatahub.io/notebook-image-name: 'OpenCV Notebook'
     opendatahub.io/notebook-image-order: '10'
     opendatahub.io/notebook-image-url: >-
