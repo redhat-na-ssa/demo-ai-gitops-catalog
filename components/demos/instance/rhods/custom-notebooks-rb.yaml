@@ -5,7 +5,7 @@ metadata:
   name: custom-notebooks-builder
   namespace: redhat-ods-applications
 subjects:
-  - kind: Group
+  - kind: ServiceAccount
     apiGroup: rbac.authorization.k8s.io
     name: 'system:custom-notebooks:builder'
 roleRef:
@@ -19,7 +19,7 @@ metadata:
   name: custom-notebooks-puller
   namespace: redhat-ods-applications
 subjects:
-  - kind: Group
+  - kind: ServiceAccount
     apiGroup: rbac.authorization.k8s.io
     name: 'system:custom-notebooks:builder'
 roleRef:
