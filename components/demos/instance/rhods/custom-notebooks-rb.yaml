@@ -11,7 +11,8 @@ subjects:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: 'system:image-builder'
+  name: builder
+  namespace: custom-notebooks
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -21,7 +22,8 @@ metadata:
 subjects:
   - kind: ServiceAccount
     apiGroup: rbac.authorization.k8s.io
-    name: 'system:custom-notebooks:builder'
+    name: builder
+    namespace: custom-notebooks
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
