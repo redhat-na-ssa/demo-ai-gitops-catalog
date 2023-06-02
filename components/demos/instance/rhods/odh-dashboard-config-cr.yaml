@@ -81,11 +81,11 @@ spec:
     #     requests:
     #       cpu: '7'
     #       memory: 56Gi
-    # - name: X Large
-    #   resources:
-    #     limits:
-    #       cpu: '30'
-    #       memory: 120Gi
-    #     requests:
-    #       cpu: '15'
-    #       memory: 120Gi
+    - name: X Large
+      resources:
+        limits:
+          cpu: '40'
+          memory: 186Gi
+        requests:
+          cpu: '30'
+          memory: 120Gi
