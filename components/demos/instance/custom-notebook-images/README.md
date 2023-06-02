@@ -4,3 +4,4 @@
 
 - https://github.com/opendatahub-io-contrib
 - https://github.com/opendatahub-io-contrib/workbench-images
+- https://git.jharmison.com/james/mufg

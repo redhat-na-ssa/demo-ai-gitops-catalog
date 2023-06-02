@@ -9,5 +9,4 @@ commonLabels:
 
 resources:
 - imagestream.yml
-- imagestreamtag.yml
 - buildconfig.yml

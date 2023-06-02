@@ -20,7 +20,7 @@ spec:
   lookupPolicy:
     local: true
   tags:
-    - name: v4.9.1
+    - name: "4.9.1"
       annotations:
         opendatahub.io/default-image: 'true'
         opendatahub.io/workbench-image-recommended: 'true'
@@ -28,14 +28,14 @@ spec:
           [{"name":"JupyterLab","version": "3.2"},
           {"name":"Notebook","version": "6.4"},
           {"name":"Coder Code Server","version": "4.9.1"}]
-        opendatahub.io/notebook-software: '[{"name":"Coder Code Server","version":"v4.9.1"}]'
+        opendatahub.io/notebook-software: '[{"name":"Coder Code Server","version":"4.9.1"}]'
         openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
       from:
         kind: DockerImage
         name: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
       referencePolicy:
         type: Local
-    - name: v4.9.1-cuda
+    - name: "4.9.1-cuda"
       annotations:
         opendatahub.io/notebook-python-dependencies: >-
           [{"name":"JupyterLab","version": "3.2"},
