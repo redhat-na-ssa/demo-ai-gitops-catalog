@@ -3,10 +3,10 @@ kind: ImageStream
 metadata:
   annotations:
     opendatahub.io/notebook-image-desc: |
-      OpenCV Notebook
+      TensorFlow OpenCV Notebook
 
-      Cuda, OpenCV, mesa-libGL, Graphviz for Computer Vision
-    opendatahub.io/notebook-image-name: 'OpenCV'
+      CUDA, TensorFlow, OpenCV, mesa-libGL, Graphviz for Computer Vision
+    opendatahub.io/notebook-image-name: 'TensorFlow OpenCV'
     opendatahub.io/notebook-image-order: '10'
     opendatahub.io/notebook-image-url: >-
       https://github.com/redhat-na-ssa/demo-argocd-gitops
@@ -26,6 +26,7 @@ spec:
           [{"name":"JupyterLab","version": "3.2"},
           {"name":"Notebook","version": "6.4"},
           {"name":"OpenCV","version": "4.7"},
+          {"name":"TensorFlow", "version": "2.11"},
           {"name":"Cuda", "version": "11.4"},
           {"name":"Graphviz", "version": "8.0.5"}]
         opendatahub.io/notebook-software: '[{"name":"Python","version":"3.9"},{"name":"OpenCV","version":"4.7"},{"name":"Graphviz","version":"8.0.5"}]'
@@ -37,5 +38,6 @@ spec:
           [{"name":"JupyterLab","version": "3.2"},
           {"name":"Notebook","version": "6.4"},
           {"name":"OpenCV","version": "4.7"},
+          {"name":"TensorFlow", "version": "2.11"},
           {"name":"Cuda", "version": "11.4"}]
         opendatahub.io/notebook-software: '[{"name":"Python","version":"3.9"},{"name":"OpenCV","version":"4.7"}]'
