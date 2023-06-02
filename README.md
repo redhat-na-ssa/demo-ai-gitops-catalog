@@ -9,6 +9,8 @@ This repo is subject to frequent breaking changes while we all learn patterns to
 
 ## Prerequisites
 
+Demo Catalog: `Red Hat OpenShift Container Platform 4 Demo`
+
 ### Client
 
 In order to bootstrap this repository you must have the following cli tools:
