@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: custom-notebooks
 
 resources:
-  - code-server-notebook-is.yaml
+  - imagestream.yaml

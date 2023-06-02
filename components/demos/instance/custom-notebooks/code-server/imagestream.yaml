@@ -1,6 +1,7 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
+  name: custom-code-server
   annotations:
     argocd.argoproj.io/sync-wave: "5"
     opendatahub.io/notebook-image-desc: |
@@ -9,15 +10,11 @@ metadata:
       Code on any device with a consistent development environment
       Use cloud servers to speed up tests, compilations, downloads, and more
       Preserve battery life when you're on the go; all intensive tasks run on your server
-    opendatahub.io/notebook-image-name: VS Code Server
-    opendatahub.io/notebook-image-order: '10'
-    opendatahub.io/notebook-image-url: >-
-      https://github.com/coder/code-server
-  name: custom-code-server
+    opendatahub.io/notebook-image-name: Code Server
+    opendatahub.io/notebook-image-url: https://github.com/opendatahub-io-contrib/workbench-images
   labels:
-    component.opendatahub.io/name: jupyterhub
-    opendatahub.io/component: 'true'
-    opendatahub.io/notebook-image: 'true'
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/notebook-image: "true"
 spec:
   lookupPolicy:
     local: true
