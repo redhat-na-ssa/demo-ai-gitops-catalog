@@ -33,8 +33,3 @@ spec:
         opendatahub.io/notebook-software: >-
           [{"name":"Python","version":"v3.9"},
           {"name":"LightGBM","version":"3.3"}]
-      from:
-        kind: DockerImage
-        name: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
-      referencePolicy:
-        type: Local

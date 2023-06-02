@@ -15,8 +15,8 @@ spec:
           name: s2i-generic-data-science-notebook:2023.1
   source:
     git:
-      uri: https://git.jharmison.com/james/mufg.git
-    contextDir: demo/custom-notebook-image
+      uri: https://github.com/redhat-na-ssa/demo-argocd-gitops.git
+    contextDir: components/demos/instance/custom-notebook-images/lightgbm
   strategy:
     dockerStrategy:
       from:
