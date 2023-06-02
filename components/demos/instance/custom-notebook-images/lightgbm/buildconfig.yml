@@ -1,0 +1,29 @@
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: lightgbm
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  runPolicy: Serial
+  triggers:
+    - type: ImageChange
+      imageChange:
+        from:
+          kind: ImageStreamTag
+          name: s2i-generic-data-science-notebook:2023.1
+  source:
+    git:
+      uri: https://git.jharmison.com/james/mufg.git
+    contextDir: demo/custom-notebook-image
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: s2i-generic-data-science-notebook:2023.1
+      dockerfilePath: Containerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: lightgbm:3.3.5
