@@ -5,7 +5,7 @@ metadata:
   annotations:
     openshift.io/description: |
       A secret project to explore dark rainbows in space
-    openshift.io/display-name: Top Secret Project
+    openshift.io/display-name: Stereo Keyhole
     openshift.io/requester: darkrainbow
   labels:
     kubernetes.io/metadata.name: secret-project
