@@ -2,7 +2,7 @@
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: custom-notebooks-pusher
+  name: custom-notebooks-builder
   namespace: redhat-ods-applications
 subjects:
   - kind: Group
@@ -11,7 +11,7 @@ subjects:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: 'system:image-pusher'
+  name: 'system:image-builder'
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
