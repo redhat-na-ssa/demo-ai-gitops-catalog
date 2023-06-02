@@ -12,6 +12,7 @@ metadata:
       Preserve battery life when you're on the go; all intensive tasks run on your server
     opendatahub.io/notebook-image-name: Code Server
     opendatahub.io/notebook-image-url: https://github.com/opendatahub-io-contrib/workbench-images
+    opendatahub.io/notebook-image-order: '10'
   labels:
     opendatahub.io/dashboard: "true"
     opendatahub.io/notebook-image: "true"
