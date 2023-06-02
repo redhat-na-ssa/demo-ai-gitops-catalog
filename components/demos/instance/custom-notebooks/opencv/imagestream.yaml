@@ -6,7 +6,7 @@ metadata:
       OpenCV Notebook
 
       Cuda, OpenCV, mesa-libGL, Graphviz for Computer Vision
-    opendatahub.io/notebook-image-name: 'OpenCV Notebook'
+    opendatahub.io/notebook-image-name: 'OpenCV'
     opendatahub.io/notebook-image-order: '10'
     opendatahub.io/notebook-image-url: >-
       https://github.com/redhat-na-ssa/demo-argocd-gitops
@@ -32,6 +32,7 @@ spec:
     - name: latest
       annotations:
         opendatahub.io/default-image: 'true'
+        opendatahub.io/workbench-image-recommended: 'true'
         opendatahub.io/notebook-python-dependencies: >-
           [{"name":"JupyterLab","version": "3.2"},
           {"name":"Notebook","version": "6.4"},
