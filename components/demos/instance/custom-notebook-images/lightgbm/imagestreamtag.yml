@@ -15,3 +15,4 @@ tag:
   name: "3.3.5"
   referencePolicy:
     type: Local
+image: {}
