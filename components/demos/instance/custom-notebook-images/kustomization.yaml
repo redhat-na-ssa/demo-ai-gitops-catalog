@@ -7,5 +7,6 @@ resources:
   - ./code-server
   - ./lightgbm
   - ./opencv
+  - ./rstudio
   - namespace.yaml
   - namespace-rb.yaml
