@@ -142,7 +142,9 @@ installplan
 installplans
 io
 jaeger
+james
 jenkins
+jharmison
 kafka
 kataconfig
 kiali
@@ -159,6 +161,7 @@ libvirt
 linux
 machineset
 mastersSchedulable
+mufg
 na
 namespace
 namespaces
