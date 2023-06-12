@@ -37,6 +37,7 @@ fix_api_cert(){
 
   fix:
     # login to bastion
+    # user: ec2-user
     sed -i.bak '/certificate-authority-data/d' ~/.kube/config
   "
 

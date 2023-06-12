@@ -6,7 +6,6 @@ setup_venv(){
   python3 -m venv venv
   source venv/bin/activate
   pip install -q -U pip
-  pip install -q awscli
 
   check_venv || return
 }
@@ -14,7 +13,7 @@ setup_venv(){
 check_venv(){
   # activate python venv
   [ -d venv ] && . venv/bin/activate || setup_venv
-  [ -e requirements.txt ] && pip install -q -r requirements.txt
+  [ -e requirements-devel.txt ] && pip install -q -r requirements-devel.txt
 }
 
 # activate python venv
@@ -30,4 +29,4 @@ pyspelling -c .pyspelling.yml
 yamllint . && echo "YAML check passed :)"
 
 # validate manifests
-scripts/validate_manifests.sh
+[ -e scripts/validate_manifests.sh ] && scripts/validate_manifests.sh
