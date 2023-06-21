@@ -54,9 +54,11 @@ spec:
         - mountPath: /data
           name: minio-1
       volumes:
-      - PersistentVolumeClaim:
+      - name: minio-1
+        persistentVolumeClaim:
           claimName: minio-data
-        name: minio-1
+      - name: empty
+        emptyDir: {}
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
