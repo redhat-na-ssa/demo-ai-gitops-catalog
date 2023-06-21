@@ -5,7 +5,7 @@ metadata:
   name: minio-data
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 4Gi
@@ -29,7 +29,7 @@ spec:
     matchLabels:
       app: minio
   strategy:
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       labels:
