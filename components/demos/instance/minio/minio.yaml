@@ -5,10 +5,10 @@ metadata:
   name: minio-data
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 2Gi
+      storage: 4Gi
   volumeMode: Filesystem
 ---
 apiVersion: apps/v1
@@ -54,7 +54,8 @@ spec:
         - mountPath: /data
           name: minio-1
       volumes:
-      - emptyDir: {}
+      - PersistentVolumeClaim:
+          claimName: minio-data
         name: minio-1
 ---
 apiVersion: route.openshift.io/v1
