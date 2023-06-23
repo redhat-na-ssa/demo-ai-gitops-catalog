@@ -3,13 +3,3 @@ kind: Kustomization
 
 resources:
   - minio.yaml
-
-
-# patches:
-#   - target:
-#       group: image.openshift.io
-#       kind: ImageStream
-#     patch: |-
-#       - op: replace
-#         path: /metadata/namespace
-#         value: redhat-ods-applications
