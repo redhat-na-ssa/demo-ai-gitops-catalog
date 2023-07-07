@@ -1,5 +1,20 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: minio
+
+commonLabels:
+  component: minio
+  # app.kubernetes.io/component: minio
+  # app.kubernetes.io/instance: minio
+  # app.kubernetes.io/name: minio
+  # app.kubernetes.io/part-of: minio
+
 resources:
-  - minio.yaml
+- deployment.yaml
+- namespace.yaml
+- pvc.yaml
+- route.yaml
+- secret.yaml
+- service.yaml
+# - setup-job.yaml
