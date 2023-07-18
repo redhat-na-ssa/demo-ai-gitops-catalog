@@ -6,3 +6,4 @@ metadata:
     openshift.io/display-name: Fingerprint ID (Demo)
   labels:
     argocd.argoproj.io/managed-by: cluster-config
+    opendatahub.io/dashboard: 'true'
