@@ -4,3 +4,4 @@ metadata:
   name: rhods-self-provisioners
 users:
   - darkrainbow
+  - user1
