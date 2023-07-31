@@ -1,0 +1,164 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: ingest-and-train
+spec:
+  workspaces:
+    - name: shared-workspace
+  params:
+    - name: GIT-URL
+      type: string
+      description: URL of the git repo for the code
+      default: https://github.com/redhat-na-ssa/datasci-stock-pipeline.git
+    - name: GIT-REVISION
+      type: string
+      description: Revision / Branch / Tag to be used from repo of the code
+      default: main
+    - name: CONTEXT-DIR
+      type: string
+      description: Directory where the code is located
+      default: src
+    - name: IMAGE_STREAM
+      type: string
+      description: Image stream to be built from the code
+      default: ingest-and-train
+    - name: AWS_ACCESS_KEY_ID
+      type: string
+      description: minio access_key
+      default: minioadmin
+    - name: AWS_SECRET_ACCESS_KEY
+      type: string
+      description: minio secret_key
+      default: minioadmin
+    - name: AWS_S3_ENDPOINT
+      type: string
+      description: minio endpoint
+      default: http://minio:9000
+  tasks:
+    - name: fetch-scripts
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: url
+          value: $(params.GIT-URL)
+        - name: deleteExisting
+          value: "true"
+        - name: revision
+          value: $(params.GIT-REVISION)
+    - name: extract-ibm
+      taskRef:
+        name: python-task
+      params:
+        - name: IMAGE_STREAM
+          value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/$(params.IMAGE_STREAM)
+        - name: AWS_ACCESS_KEY_ID
+          value: $(params.AWS_ACCESS_KEY_ID)
+        - name: AWS_SECRET_ACCESS_KEY
+          value: $(params.AWS_SECRET_ACCESS_KEY)
+        - name: AWS_S3_ENDPOINT
+          value: $(params.AWS_S3_ENDPOINT)
+        - name: CONTEXT-DIR
+          value: $(params.CONTEXT-DIR)
+        - name: SCRIPT
+          value: 
+            - 01-get-data.py
+            - IBM
+      workspaces:
+      - name: source
+        workspace: shared-workspace
+      runAfter:
+      - fetch-scripts
+    - name: extract-spy
+      taskRef:
+        name: python-task
+      params:
+        - name: IMAGE_STREAM
+          value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/$(params.IMAGE_STREAM)
+        - name: AWS_ACCESS_KEY_ID
+          value: $(params.AWS_ACCESS_KEY_ID)
+        - name: AWS_SECRET_ACCESS_KEY
+          value: $(params.AWS_SECRET_ACCESS_KEY)
+        - name: AWS_S3_ENDPOINT
+          value: $(params.AWS_S3_ENDPOINT)
+        - name: CONTEXT-DIR
+          value: $(params.CONTEXT-DIR)
+        - name: SCRIPT
+          value: 
+            - 01-get-data.py
+            - SPY
+      workspaces:
+      - name: source
+        workspace: shared-workspace
+      runAfter:
+      - fetch-scripts
+    - name: load
+      taskRef:
+        name: python-task
+      params:
+        - name: IMAGE_STREAM
+          value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/$(params.IMAGE_STREAM)
+        - name: AWS_ACCESS_KEY_ID
+          value: $(params.AWS_ACCESS_KEY_ID)
+        - name: AWS_SECRET_ACCESS_KEY
+          value: $(params.AWS_SECRET_ACCESS_KEY)
+        - name: AWS_S3_ENDPOINT
+          value: $(params.AWS_S3_ENDPOINT)
+        - name: CONTEXT-DIR
+          value: $(params.CONTEXT-DIR)
+        - name: SCRIPT
+          value:
+            - 02-load-data.py
+      workspaces:
+      - name: source
+        workspace: shared-workspace
+      runAfter:
+      - extract-ibm
+      - extract-spy
+    - name: model-train
+      taskRef:
+        name: python-task
+      params:
+        - name: IMAGE_STREAM
+          value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/$(params.IMAGE_STREAM)
+        - name: AWS_ACCESS_KEY_ID
+          value: $(params.AWS_ACCESS_KEY_ID)
+        - name: AWS_SECRET_ACCESS_KEY
+          value: $(params.AWS_SECRET_ACCESS_KEY)
+        - name: AWS_S3_ENDPOINT
+          value: $(params.AWS_S3_ENDPOINT)
+        - name: CONTEXT-DIR
+          value: $(params.CONTEXT-DIR)
+        - name: SCRIPT
+          value:
+            - 03-model-train.py
+      workspaces:
+      - name: source
+        workspace: shared-workspace
+      runAfter:
+      - load
+    - name: model-test
+      taskRef:
+        name: python-task
+      params:
+        - name: IMAGE_STREAM
+          value: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/$(params.IMAGE_STREAM)
+        - name: AWS_ACCESS_KEY_ID
+          value: $(params.AWS_ACCESS_KEY_ID)
+        - name: AWS_SECRET_ACCESS_KEY
+          value: $(params.AWS_SECRET_ACCESS_KEY)
+        - name: AWS_S3_ENDPOINT
+          value: $(params.AWS_S3_ENDPOINT)
+        - name: CONTEXT-DIR
+          value: $(params.CONTEXT-DIR)
+        - name: SCRIPT
+          value:
+            - 04-model-test.py
+      workspaces:
+      - name: source
+        workspace: shared-workspace
+      runAfter:
+      - model-train

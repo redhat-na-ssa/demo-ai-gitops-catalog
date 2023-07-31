@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pipelines-tutorial
+  annotations:
+    openshift.io/description: |
+      A demo of Tekton pipelines for data science
+    openshift.io/requester: argocd
+    openshift.io/display-name: Pipelines Tutorial (Demo)
+  labels:
+    kubernetes.io/metadata.name: pipelines-tutorial
+    modelmesh-enabled: 'true'
+    opendatahub.io/dashboard: 'true'
