@@ -64,7 +64,7 @@ spec:
         - name: CONTEXT-DIR
           value: $(params.CONTEXT-DIR)
         - name: SCRIPT
-          value: 
+          value:
             - 01-get-data.py
             - IBM
       workspaces:
@@ -87,7 +87,7 @@ spec:
         - name: CONTEXT-DIR
           value: $(params.CONTEXT-DIR)
         - name: SCRIPT
-          value: 
+          value:
             - 01-get-data.py
             - SPY
       workspaces:
