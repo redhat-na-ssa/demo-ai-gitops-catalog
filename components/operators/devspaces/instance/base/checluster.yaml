@@ -37,7 +37,7 @@ spec:
       enable: true
     # pluginRegistry:
     #   openVSXURL: "https://open-vsx.org"
-    #   openVSXURL: "https://marketplace.visualstudio.com/VSCode"
+    #   openVSXURL: "https://marketplace.visualstudio.com"
   containerRegistry: {}
   devEnvironments:
     startTimeoutSeconds: 180
