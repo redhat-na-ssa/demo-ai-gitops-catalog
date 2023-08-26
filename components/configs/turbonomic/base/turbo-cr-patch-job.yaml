@@ -1,0 +1,76 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: patch-cr-fsgroup
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - charts.helm.k8s.io
+    resources:
+      - xls
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: patch-cr-fsgroup
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: patch-cr-fsgroup
+subjects:
+  - kind: ServiceAccount
+    name: patch-cr-fsgroup
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: patch-cr-fsgroup
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: patch-cr-fsgroup
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/usr/bin/env bash
+              # lets try to dynamically get this value ??
+              FS_GROUP=$(oc get ns ${NAMESPACE} -o jsonpath='{.metadata.annotations.openshift\.io/sa\.scc\.uid-range}' | sed 's@/.*@@')
+              oc whoami
+              if oc get xl -n ${NAMESPACE}; then
+                echo FS_GROUP: ${FS_GROUP}
+                oc patch xl turbo --type=merge -p '{"spec": {"global": {"securityContext": {"fsGroup":'${FS_GROUP}'}}}}'
+              else
+                echo "Wrong something went"
+                exit 1
+              fi
+          name: patch-cr-fsgroup
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
+      serviceAccount: patch-cr-fsgroup
+      serviceAccountName: patch-cr-fsgroup

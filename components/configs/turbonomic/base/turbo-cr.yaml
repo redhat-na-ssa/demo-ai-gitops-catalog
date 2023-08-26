@@ -1,0 +1,50 @@
+apiVersion: charts.helm.k8s.io/v1
+kind: Xl
+metadata:
+  name: turbo
+spec:
+  global:
+    customImageNames: false
+    repository: icr.io/cpopen/turbonomic
+    # securityContext:
+    #   fsGroup: 5555555555
+  grafana:
+    adminPassword: turbo123
+    enabled: false
+    grafana.ini:
+      database:
+        password: turbo123
+        type: postgres
+  extractor:
+    enabled: true
+  server-power-modeler:
+    enabled: false
+  prometheus:
+    enabled: false
+  reporting:
+    enabled: false
+  properties:
+    extractor:
+      grafanaAdminPassword: turbo123
+  postgresql:
+    image:
+      registry: icr.io/cpopen
+      repository: turbonomic/timescaledb
+      tag: 2.0.1-pg12
+    persistence:
+      size: 500Gi
+  webhook:
+    enabled: true
+  telemetry:
+    enabled: false
+  nginx:
+    httpsRedirect: false
+    nginxIsPrimaryIngress: false
+  nginxingress:
+    enabled: true
+  timescaledb:
+    enabled: false
+  suspend:
+    enabled: false
+  openshiftingress:
+    enabled: true
