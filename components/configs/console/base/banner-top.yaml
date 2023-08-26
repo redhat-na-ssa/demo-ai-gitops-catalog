@@ -6,6 +6,6 @@ spec:
   text: "< see overlays - if you are seeing this you have mistaken >"
   # valid locations: BannerTop, BannerBottom, BannerTopBottom
   location: BannerTop
-  # https://www.w3schools.com/colors/colors_picker.asp
+  # https://htmlcolorcodes.com/color-picker
   color: '#fff'
-  backgroundColor: '#0088ce'
+  backgroundColor: '#0066ff'
