@@ -1,9 +1,0 @@
-# https://docs.openshift.com/container-platform/4.11/monitoring/nvidia-gpu-admin-dashboard.html#viewing-the-gpus-dashboard
-apiVersion: helm.openshift.io/v1beta1
-kind: HelmChartRepository
-metadata:
-  name: rh-ecosystem-edge
-spec:
-  connectionConfig:
-    url: 'https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu'
-  name: Red Hat Ecosystem / Edge
