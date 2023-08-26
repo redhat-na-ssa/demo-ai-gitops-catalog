@@ -1,0 +1,29 @@
+apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  annotations:
+    cluster.ocs.openshift.io/local-devices: "true"
+    storagesystem.odf.openshift.io/watched-by: ocs-storagecluster-storagesystem
+    uninstall.ocs.openshift.io/cleanup-policy: delete
+    uninstall.ocs.openshift.io/mode: graceful
+  name: ocs-storagecluster
+  namespace: openshift-storage
+spec:
+  storageDeviceSets:
+    - count: 6
+      dataPVCTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: '1'
+          storageClassName: local-disks-block
+          volumeMode: Block
+      name: ocs-deviceset-local-disks-block
+      replica: 1
+  encryption:
+    clusterWide: true
+    enable: true
+  monDataDirHostPath: /var/lib/rook
+  flexibleScaling: true
