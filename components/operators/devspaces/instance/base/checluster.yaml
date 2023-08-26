@@ -12,44 +12,52 @@ spec:
       extraProperties:
         CHE_SYSTEM_ADMIN__NAME: 'opentlc-mgr'
     dashboard:
-      # headerMessage:
-      #   show: false
-      #   text: >-
-      #     It's time to get your Dev on!
+      headerMessage:
+        show: false
+        text: >-
+          It's time to get your Dev on!
     database:
       credentialsSecretName: postgres-credentials
       externalDb: false
       postgresDb: devspaces
-      # BUG: can not change postgresHostNmae
+      # BUG: can not change postgresHostNamae
       postgresHostName: postgres
       postgresPort: '5432'
       pvc:
         claimSize: 1Gi
+    devfileRegistry:
+      # deployment:
+      #   containers:
+      #     - name: devfile-registry
+      #       # image: quay.io/eclipse/che-devfile-registry:next
+      #       image: registry.redhat.io/devspaces/devfileregistry-rhel8:latest
+      externalDevfileRegistries:
+      - url: https://eclipse-che.github.io/che-devfile-registry/main
     metrics:
       enable: true
-    pluginRegistry:
-      openVSXURL: "https://open-vsx.org"
+    # pluginRegistry:
+    #   openVSXURL: "https://open-vsx.org"
+    #   openVSXURL: "https://marketplace.visualstudio.com/VSCode"
   containerRegistry: {}
   devEnvironments:
-    startTimeoutSeconds: 300
+    startTimeoutSeconds: 180
     secondsOfRunBeforeIdling: -1
-    maxNumberOfRunningWorkspacesPerUser: -1
+    maxNumberOfRunningWorkspacesPerUser: 2
     maxNumberOfWorkspacesPerUser: -1
     containerBuildConfiguration:
       openShiftSecurityContextConstraint: container-build
     disableContainerBuildCapabilities: true
     defaultEditor: che-incubator/che-code/latest
-    defaultComponents:
-      - container:
-          sourceMapping: /projects
-          image: >-
-            registry.redhat.io/devspaces/udi-rhel8@sha256:99ff1b5c541855e4cf368816c4bcdcdc86d32304023f72c4443213a4032ef05b
-        name: universal-developer-image
+    # defaultComponents:
+    #   - container:
+    #       sourceMapping: /projects
+    #       image: registry.redhat.io/devspaces/udi-rhel8:latest
+    #     name: universal-developer-image
     defaultNamespace:
       autoProvision: true
       template: workspace-<username>
     secondsOfInactivityBeforeIdling: 1800
     storage:
-      pvcStrategy: ephemeral
+      pvcStrategy: per-user
   gitServices: {}
   networking: {}
