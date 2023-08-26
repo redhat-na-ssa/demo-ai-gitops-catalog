@@ -18,7 +18,7 @@ spec:
             image: image-registry.openshift-image-registry.svc:5000/openshift/cli
             env:
               - name: OBJECTS
-                value: all,cm,secrets,pvc
+                value: all,cm,secret,pvc,dw,pipeline,el
             command:
               - bash
               - -c
@@ -54,5 +54,5 @@ spec:
                       --all
                   done
                 }
-                
+
                 oc_delete_most sandbox
