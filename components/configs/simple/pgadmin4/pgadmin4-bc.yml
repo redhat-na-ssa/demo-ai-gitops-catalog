@@ -8,8 +8,8 @@ spec:
     dockerfile: |
       FROM docker.io/dpage/pgadmin4:latest
       USER root
-      RUN setcap -r /usr/bin/python3.10 && \
-          getcap /usr/bin/python3.10 && \
+      RUN setcap -r /usr/bin/python3.11 && \
+          getcap /usr/bin/python3.11 && \
           sed -i 's@443@8443@g; s@80@8080@g' /entrypoint.sh
       # ENV PGADMIN_LISTEN_PORT 8080
       ENV PGADMIN_DISABLE_POSTFIX true
