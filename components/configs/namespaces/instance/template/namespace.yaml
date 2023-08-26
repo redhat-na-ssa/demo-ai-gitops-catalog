@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: template
+  annotations:
+    openshift.io/description: |
+      Welcome to your new home
+    openshift.io/display-name: Template
