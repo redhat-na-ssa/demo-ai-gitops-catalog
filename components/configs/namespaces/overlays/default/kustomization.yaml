@@ -5,3 +5,16 @@ resources:
   - ../../base
   - ../../instance/registry
   - ../../instance/sandbox
+
+# patches:
+#   - target:
+#       kind: LimitRange
+#       name: sandbox-limit-range
+#     patch: |-
+#       - op: replace
+#         path: /spec/limits
+#         value:
+#           - default:
+#               cpu: 100m
+#               memory: 256Mi
+#             type: Container
