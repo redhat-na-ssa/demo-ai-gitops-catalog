@@ -1,0 +1,13 @@
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  name: example
+  namespace: openshift-machine-api
+spec:
+  automatedCleaningMode: metadata
+  bmc:
+    address: redfish-virtualmedia://se350-01-xcc.edge.lab/redfish/v1/Systems/1
+    credentialsName: example-bmc-secret
+    disableCertificateVerification: true
+  bootMACAddress: 00:00:00:00:00:01
+  online: true
