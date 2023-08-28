@@ -66,7 +66,7 @@ If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a 
 
 ### Sandbox Namespace
 
-The `sandbox` [namespace](components/configs/namespaces/instance/sandbox/sandbox-namespace.yaml) is useable by all [authenticated users](components/configs/namespaces/instance/sandbox/sandbox-edit-rolebinding.yaml). All objects in the sandbox are [cleaned out weekly](components/configs/simple/sandbox-cleanup/sandbox-cleanup-cj.yml).
+The `sandbox` [namespace](components/configs/namespaces/instance/sandbox/namespace.yaml) is useable by all [authenticated users](components/configs/namespaces/instance/sandbox/rolebinding-edit.yaml). All objects in the sandbox are [cleaned out weekly](components/configs/simple/sandbox-cleanup/sandbox-cleanup-cj.yml).
 
 ## Additional Info
 
