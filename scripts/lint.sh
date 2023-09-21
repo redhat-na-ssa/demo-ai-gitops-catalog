@@ -31,15 +31,16 @@ reset_wordlist(){
   pyspelling | sort -u | grep -E -v ' |---|/|^$' > .wordlist-md
 }
 
-# activate python venv
 py_check_venv
+py_check_bins
 
 # chcek scripts
-which shellcheck && shellcheck scripts/{library/,}*.sh
+which shellcheck && \
+  shellcheck scripts/{library/,}*.sh
 
 # check spelling
 which aspell && \
-pyspelling -c .pyspelling.yml
+  pyspelling -c .pyspelling.yml
 
 # check yaml
 yamllint . && echo "YAML check passed :)"

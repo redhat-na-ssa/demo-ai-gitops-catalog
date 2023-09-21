@@ -2,8 +2,8 @@
 set -e
 
 check_shell(){
-  [ "${SHELL}" = "/bin/bash" ] && return
-  echo "Please verify you are running this script in bash shell"
+  [[ "${0}" =~ "bash" ]] && return
+  echo "Please verify you are running in bash shell"
 }
 
 check_shell

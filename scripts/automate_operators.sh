@@ -1,17 +1,28 @@
 #!/bin/bash
 # set -x
 
+check_shell(){
+  [[ "${0}" =~ "bash" ]] && return
+  echo "Please verify you are running in bash shell"
+}
+
+check_shell
+
+
 usage(){
 echo "
 
-This script is ALPHA and there is probably a better way to do this, but it should help you create
-the basic file structure you need to setup an operator.
+This script is ALPHA!
 
-examples:
+There is probably a better way to do this, but it should help create
+the basic file structure needed for an operator.
+
+functions:
   get_all_pkg_manifests
   get_all_pkg_manifests_details
   save_all_pkg_manifests_details
 
+  # ex: rhods-operator
   get_pkg_manifest_info rhods-operator
   get_pkg_manifest_channels rhods-operator
   get_pkg_manifest_description rhods-operator
@@ -38,6 +49,8 @@ check_oc(){
 
   sleep 4
 }
+
+# main script functions
 
 MANIFEST_INFO="NAME:.status.packageName"
 MANIFEST_INFO="${MANIFEST_INFO},NAMESPACE:.status.channels[0].currentCSVDesc.annotations.operatorframework\.io/suggested-namespace"
