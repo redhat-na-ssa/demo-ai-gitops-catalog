@@ -2,6 +2,7 @@
 data/
 scratch/
 files.txt
+bootstrap/base/sealed-secrets-secret.yaml
 
 dictionary.dic
 
