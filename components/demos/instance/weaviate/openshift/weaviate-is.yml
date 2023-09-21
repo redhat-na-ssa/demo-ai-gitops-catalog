@@ -1,0 +1,21 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: weaviate
+    app.kubernetes.io/component: weaviate
+    app.kubernetes.io/instance: weaviate
+  name: weaviate
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations:
+      openshift.io/imported-from: docker.io/semitechnologies/weaviate:1.21.2
+    from:
+      kind: DockerImage
+      name: docker.io/semitechnologies/weaviate:1.21.2
+    importPolicy: {}
+    name: 1.21.2
+    referencePolicy:
+      type: Source

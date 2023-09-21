@@ -1,0 +1,91 @@
+apiVersion: opendatahub.io/v1alpha
+kind: OdhDashboardConfig
+metadata:
+  name: odh-dashboard-config
+  namespace: redhat-ods-applications
+spec:
+  dashboardConfig:
+    enablement: true
+    disableProjects: false
+    disableSupport: false
+    disableModelServing: false
+    disableISVBadges: false
+    disableInfo: false
+    disableClusterManager: false
+    disableBYONImageStream: false
+    disableTracking: false
+  groupsConfig:
+    adminGroups: 'rhods-admins,workshop-admins'
+    allowedGroups: 'system:authenticated'
+  modelServerSizes:
+    - name: Small
+      resources:
+        limits:
+          cpu: '2'
+          memory: 8Gi
+        requests:
+          cpu: '1'
+          memory: 4Gi
+    - name: Medium
+      resources:
+        limits:
+          cpu: '8'
+          memory: 10Gi
+        requests:
+          cpu: '4'
+          memory: 8Gi
+    # - name: Large
+    #   resources:
+    #     limits:
+    #       cpu: '10'
+    #       memory: 20Gi
+    #     requests:
+    #       cpu: '6'
+    #       memory: 16Gi
+  notebookController:
+    enabled: true
+    notebookNamespace: rhods-notebooks
+    pvcSize: 10Gi
+    gpuSetting: '4'
+  notebookSizes:
+    # kludge: everyone picks the largest, why offer more than one?
+    - name: "Demo / Workshop"
+      resources:
+        limits:
+          cpu: '6'
+          memory: 20Gi
+        requests:
+          cpu: '3'
+          memory: 10Gi
+    - name: Small
+      resources:
+        limits:
+          cpu: '2'
+          memory: 8Gi
+        requests:
+          cpu: '1'
+          memory: 8Gi
+    # - name: Medium
+    #   resources:
+    #     limits:
+    #       cpu: '6'
+    #       memory: 24Gi
+    #     requests:
+    #       cpu: '3'
+    #       memory: 24Gi
+    # - name: Large
+    #   resources:
+    #     limits:
+    #       cpu: '14'
+    #       memory: 56Gi
+    #     requests:
+    #       cpu: '7'
+    #       memory: 56Gi
+    - name: X Large
+      resources:
+        limits:
+          cpu: '40'
+          memory: 186Gi
+        requests:
+          cpu: '30'
+          memory: 120Gi

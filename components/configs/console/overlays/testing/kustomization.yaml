@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-top
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'Welcome to the cHAoS of <B>TESTING!</B> Beware of dragons (and broken things)'
+      # https://htmlcolorcodes.com/color-picker
+      - op: replace
+        path: /spec/color
+        value: '#54FF00'
+      - op: replace
+        path: /spec/backgroundColor
+        value: '#FF00F3'

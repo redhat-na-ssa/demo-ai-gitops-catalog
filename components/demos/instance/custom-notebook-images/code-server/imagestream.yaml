@@ -1,0 +1,54 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: custom-code-server
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+    opendatahub.io/notebook-image-desc: |
+      VS Code in a web browser!
+
+      Code on any device with a consistent development environment
+      Use cloud servers to speed up tests, compilations, downloads, and more
+      Preserve battery life when you're on the go; all intensive tasks run on your server
+    opendatahub.io/notebook-image-name: Code Server
+    opendatahub.io/notebook-image-url: https://github.com/opendatahub-io-contrib/workbench-images
+    opendatahub.io/notebook-image-order: '10'
+  labels:
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/notebook-image: "true"
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+    - name: "4.9.1"
+      annotations:
+        opendatahub.io/default-image: 'true'
+        opendatahub.io/workbench-image-recommended: 'true'
+        opendatahub.io/notebook-python-dependencies: >-
+          [{"name":"JupyterLab","version": "3.2"},
+          {"name":"Notebook","version": "6.4"},
+          {"name":"Coder Code Server","version": "4.9.1"}]
+        opendatahub.io/notebook-software: >-
+          [{"name":"Coder Code Server","version":"4.9.1"}]
+        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+      from:
+        kind: DockerImage
+        name: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+      referencePolicy:
+        type: Local
+    - name: "4.9.1-cuda"
+      annotations:
+        opendatahub.io/notebook-python-dependencies: >-
+          [{"name":"JupyterLab","version": "3.2"},
+          {"name":"Notebook","version": "6.4"},
+          {"name":"CUDA","version": "11.8"},
+          {"name":"Coder Code Server","version": "4.9.1"}]
+        opendatahub.io/notebook-software: >-
+          [{"name":"Coder Code Server","version": "v4.9.1"},
+          {"name":"CUDA","version":"11.8"}]
+        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:cuda-code-server-ubi9-py39_2023b_latest
+      from:
+        kind: DockerImage
+        name: quay.io/opendatahub-contrib/workbench-images:cuda-code-server-ubi9-py39_2023b_latest
+      referencePolicy:
+        type: Local

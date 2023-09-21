@@ -1,0 +1,13 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: worker-hp-1g
+  labels:
+    worker-hp-1g: ""
+spec:
+  machineConfigSelector:
+    matchExpressions:
+      - {key: machineconfiguration.openshift.io/role, operator: In, values: [worker, worker-hp-1g]}
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/worker-hp-1g: ""

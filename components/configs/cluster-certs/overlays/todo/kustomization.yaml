@@ -1,0 +1,63 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../letsencrypt
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/value
+        value: api.hou.edgelab.online
+    target:
+      kind: Job
+      name: patch-cluster-api-cert
+  - patch: |-
+      - op: replace
+        path: /spec/dnsNames
+        value:
+          - api.hou.edgelab.online
+      - op: replace
+        path: /spec/issuerRef/name
+        value: letsencrypt-prod
+    target:
+      kind: Certificate
+      name: openshift-api
+  - patch: |-
+      - op: replace
+        path: /spec/dnsNames
+        value:
+          - '*.apps.hou.edgelab.online'
+      - op: replace
+        path: /spec/commonName
+        value: '*.apps.hou.edgelab.online'
+      - op: replace
+        path: /spec/issuerRef/name
+        value: letsencrypt-prod
+    target:
+      kind: Certificate
+      name: openshift-wildcard
+  - patch: |-
+      - op: replace
+        path: /spec/acme/solvers/0/selector/dnsZones
+        value:
+          - 'edgelab.online'
+          - 'hou.edgelab.online'
+      - op: add
+        path: /spec/acme/solvers/0/dns01/cnameStrategy
+        value: Follow
+    target:
+      kind: ClusterIssuer
+      name: letsencrypt-prod
+  - patch: |-
+      - op: replace
+        path: /spec/acme/solvers/0/selector/dnsZones
+        value:
+          - 'edgelab.online'
+          - 'hou.edgelab.online'
+      - op: add
+        path: /spec/acme/solvers/0/dns01/cnameStrategy
+        value: Follow
+    target:
+      kind: ClusterIssuer
+      name: letsencrypt-staging

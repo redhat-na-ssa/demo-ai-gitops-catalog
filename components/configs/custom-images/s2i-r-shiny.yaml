@@ -1,0 +1,95 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/display-name: R
+  labels:
+    samples.operator.openshift.io/managed: "false"
+    build: s2i-r-shiny
+  name: r-ver
+spec:
+  tags:
+    - name: 4.2.2
+      annotations:
+        openshift.io/imported-from: 'docker.io/rocker/r-ver:4.2.2'
+      from:
+        kind: DockerImage
+        name: 'docker.io/rocker/r-ver:4.2.2'
+      importPolicy: {}
+      referencePolicy:
+        type: Source
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    openshift.io/display-name: R w/ Shiny
+  labels:
+    samples.operator.openshift.io/managed: "false"
+    build: s2i-r-shiny
+  name: s2i-r-shiny
+spec:
+  tags:
+  - annotations:
+      description: |-
+        Build and run Python and R shiny applications.
+
+        For more information about using this builder image, including OpenShift considerations, see https://github.com/codekow/s2i-r-shiny.
+      iconClass: icon-catalog
+      openshift.io/display-name: R /w Shiny
+      openshift.io/provider-display-name: codekow
+      sampleRepo: https://github.com/codekow/s2i-r-shiny.git
+      supports: python,r
+      tags: builder,python,r,shiny
+      version: "4.2.2"
+    name: "4.2.2"
+    referencePolicy:
+      type: Local
+  - annotations:
+      description: |-
+        Build and run R applications. For more information about using this builder image, including OpenShift considerations, see https://github.com/codekow/s2i-r-shiny.
+
+        WARNING: By selecting this tag, your application will automatically update to use the latest version of R available on OpenShift, including major version updates.
+      iconClass: icon-catalog
+      openshift.io/display-name: R /w Shiny (Latest)
+      openshift.io/provider-display-name: codekow
+      sampleRepo: https://github.com/codekow/s2i-r-shiny.git
+      supports: python,r
+      tags: builder,python,r,shiny
+    from:
+      kind: ImageStreamTag
+      name: "4.2.2"
+    generation: 1
+    importPolicy: {}
+    name: latest
+    referencePolicy:
+      type: Local
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: s2i-r-shiny
+  name: s2i-r-shiny
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: s2i-r-shiny:4.2.2
+  postCommit: {}
+  resources: {}
+  source:
+    contextDir: container
+    git:
+      uri: https://github.com/codekow/s2i-r-shiny.git
+    type: Git
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: r-ver:4.2.2
+    type: Docker
+  triggers:
+  - type: ConfigChange
+  - type: ImageChange

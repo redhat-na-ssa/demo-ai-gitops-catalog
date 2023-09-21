@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - app-kafdrop.yaml
+  - kafdrop-route.yaml
+
+# patches:
+#   - target:
+#       kind: ''
+#     patch: |-
+#       - op: replace
+#         path: /metadata/namespace
+#         value: edge-kafka
+#   - target:
+#       kind: Namespace
+#       name: kafka
+#     patch: |-
+#       - op: replace
+#         path: /metadata/name
+#         value: edge-kafka
+#       - op: replace
+#         path: /metadata/annotations/openshift.io~1display-name
+#         value: 'Edge Kafka'

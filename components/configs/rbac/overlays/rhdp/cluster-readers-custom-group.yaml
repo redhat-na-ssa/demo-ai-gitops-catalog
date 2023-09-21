@@ -1,0 +1,8 @@
+kind: Group
+apiVersion: user.openshift.io/v1
+metadata:
+  name: cluster-readers-custom
+users:
+  - codekow
+  - davwhite
+  - troyer

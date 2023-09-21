@@ -1,0 +1,45 @@
+image:
+  # example if deploying from image stream in `sandbox` namespace
+  # registry: image-registry.openshift-image-registry.svc:5000
+  # tag: patch
+  # repo: sandbox/weaviate
+  registry: docker.io
+  tag: 1.21.2
+  repo: semitechnologies/weaviate
+
+debug: true
+
+# manage 'vm.max_map_count' via a machine config in openshift
+# default: vm.max_map_count = 262144
+initContainers:
+  sysctlInitContainer:
+    enabled: false
+
+service:
+  name: weaviate
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+  type: ClusterIP
+
+authentication:
+  anonymous_access:
+    enabled: false
+
+authorization:
+  admin_list:
+    enabled: true
+    users:
+    - api-key-user-admin
+    read_only_users:
+    - api-key-user-readonly
+
+env:
+  AUTHENTICATION_APIKEY_ENABLED: 'true'
+  AUTHENTICATION_APIKEY_USERS: 'api-key-user-admin,api-key-user-readonly'
+  AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'all-the-power,i-pity-the-fool'
+
+modules:
+  text2vec-huggingface:
+    enabled: true

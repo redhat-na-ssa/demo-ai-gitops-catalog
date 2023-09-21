@@ -1,0 +1,22 @@
+apiVersion: tuned.openshift.io/v1
+kind: Tuned
+metadata:
+  name: hugepages-1g
+  namespace: openshift-cluster-node-tuning-operator
+spec:
+  profile:
+  - data: |
+      [main]
+      summary=Boot time configuration for hugepages-1G
+      include=openshift-node
+      [vm]
+      transparent_hugepages=never
+      [bootloader]
+      cmdline_openshift_node_hugepages=default_hugepagesz=1G hugepagesz=1G hugepages=2
+    name: openshift-node-hugepages-1g
+
+  recommend:
+  - machineConfigLabels:
+      machineconfiguration.openshift.io/role: "worker-hp-1g"
+    priority: 30
+    profile: openshift-node-hugepages-1g

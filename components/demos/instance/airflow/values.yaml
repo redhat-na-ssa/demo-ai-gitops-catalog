@@ -1,0 +1,5 @@
+airflow:
+  gitSync.repo: "https://github.com/dmarcus-wire/telecom-customer-churn-airflow.git"
+  gitSync.branch: "main"
+  gitSync.wait: "2"
+namespace: airflow

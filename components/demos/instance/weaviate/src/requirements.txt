@@ -1,0 +1,2 @@
+weaviate-client
+python-dotenv

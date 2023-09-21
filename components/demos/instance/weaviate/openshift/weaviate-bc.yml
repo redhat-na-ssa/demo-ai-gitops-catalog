@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: weaviate-patch
+spec:
+  source:
+    type: Dockerfile
+    dockerfile: |
+      FROM docker.io/semitechnologies/weaviate:1.21.2
+      USER 1001
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'weaviate:1.21.2'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: weaviate:patch
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange

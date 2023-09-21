@@ -1,0 +1,28 @@
+- op: add
+  path: /spec/generators/0/list/elements
+  value:
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: openshift-logging-operator
+    #     path: components/operators/openshift-logging/aggregate/overlays/default
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: openshift-pipelines-operator
+    #     path: components/operators/openshift-pipelines/operator/overlays/latest
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: prometheus-user-workload-monitoring
+    #     path: components/operators/prometheus-monitoring/instance/overlays/user-workload-monitoring
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: sealed-secrets-operator
+        path: components/operators/sealed-secrets-operator/overlays/default
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: web-terminal-operator
+    #     path: components/operators/web-terminal-operator/operator/overlays/fast

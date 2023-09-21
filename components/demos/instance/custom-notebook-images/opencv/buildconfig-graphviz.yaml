@@ -1,0 +1,41 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: opencv-notebook-graphviz
+spec:
+  source:
+    type: Dockerfile
+    dockerfile: |
+      FROM image-stream
+
+      USER 0
+
+      # install graphviz - the hard way
+      RUN dnf install -y gcc g++ diffutils && \
+          wget https://gitlab.com/api/v4/projects/4207231/packages/generic/graphviz-releases/8.0.5/graphviz-8.0.5.tar.gz && \
+          tar zxf graphviz-8.0.5.tar.gz && \
+          cd graphviz-8.0.5 && \
+          ./configure && \
+          make && \
+          make install && \
+          yum history undo last -y && \
+          yum clean all && \
+          cd .. && \
+          rm -rf graphviz-*
+
+      USER 1001
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: opencv-notebook:latest
+        namespace: custom-notebooks
+  output:
+    to:
+      kind: ImageStreamTag
+      name: opencv-notebook:graphviz
+      namespace: custom-notebooks
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange

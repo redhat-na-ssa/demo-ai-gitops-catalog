@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  name: demo-kafdrop
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: true
+  destination:
+    namespace: kafka
+    server: 'https://kubernetes.default.svc'
+  project: cluster-config
+  source:
+    helm:
+      parameters:
+        - name: fullnameOverride
+          value: kafdrop
+        - name: kafka.brokerConnect
+          value: 'kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092'
+        - name: jvm.opts
+          value: '-Xms32M -Xmx64M'
+    path: chart
+    repoURL: 'https://github.com/obsidiandynamics/kafdrop.git'
+    targetRevision: 3.31.0

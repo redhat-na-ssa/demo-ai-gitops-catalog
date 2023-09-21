@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: turbo
+
+resources:
+  - ../../base
+
+# patches:
+#   - target:
+#       kind: OperatorGroup
+#     patch: |-
+#       - op: replace
+#         path: /spec/targetNamespaces
+#         value:
+#           - turbo
+#   - target:
+#       kind: Xl
+#     patch: |-
+#       - op: replace
+#         path: /spec/global/securityContext/fsGroup
+#         value: 1000810000
+#   - target:
+#       kind: Namespace
+#     patch: |-
+#       - op: add
+#         path: /metadata/annotations/openshift.io~1sa.scc.mcs
+#         value: 's0:c28:c27'
+#       - op: add
+#         path: /metadata/annotations/openshift.io~1sa.scc.supplemental-groups
+#         value: '1000810000/10000'
+#       - op: add
+#         path: /metadata/annotations/openshift.io~1sa.scc.uid-range
+#         value: '1000810000/10000'

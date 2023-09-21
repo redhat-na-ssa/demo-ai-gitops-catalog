@@ -1,0 +1,30 @@
+- op: add
+  path: /spec/identityProviders
+  value:
+    - htpasswd:
+        fileData:
+          name: htpasswd-secret
+      mappingMethod: claim
+      name: Internal
+      type: HTPasswd
+- op: add
+  path: /spec/identityProviders/-
+  value:
+    github:
+      clientID: 2ac4af8a641091b2f05a
+      clientSecret:
+        name: github-client-secret
+      organizations:
+        - redhat-na-ssa
+    mappingMethod: claim
+    name: GitHub
+    type: GitHub
+- op: add
+  path: /spec/templates
+  value:
+    # error:
+    #   name: login-custom
+    login:
+      name: login-custom
+    # providerSelection:
+    #   name: login-custom

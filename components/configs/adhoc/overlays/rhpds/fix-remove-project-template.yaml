@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: fix-remove-project-template-job-
+  name: fix-remove-project-template-job
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: fix-remove-project-template-job
+          image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/usr/bin/env bash
+              # set -x
+
+              delete_object(){
+                OBJECT=template/project-request
+                NS=openshift-config
+
+                oc -n "${NS}"
+                  delete "${OBJECT}"
+              }
+
+              delete_object
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
+      serviceAccount: cluster-admin-adhoc-helper
+      serviceAccountName: cluster-admin-adhoc-helper

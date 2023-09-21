@@ -1,0 +1,25 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  annotations:
+  name: see-scale-worker-hp-1g
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: see-scale
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: see-scale
+      machine.openshift.io/cluster-api-machineset: see-scale-worker-hp-1g
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: see-scale
+        machine.openshift.io/cluster-api-machine-role: worker-hp-1g
+        machine.openshift.io/cluster-api-machine-type: worker-hp-1g
+        machine.openshift.io/cluster-api-machineset: see-scale-worker-hp-1g
+    spec:
+      metadata:
+        labels:
+          node-role.kubernetes.io/worker-hp-1g: ''

@@ -1,0 +1,126 @@
+#!/bin/sh
+# shellcheck disable=SC2120,SC2119
+
+which oc >/dev/null && alias kubectl=oc
+
+wait_for_crd(){
+  CRD=${1}
+  until kubectl get crd "${CRD}" >/dev/null 2>&1
+    do sleep 1
+  done
+}
+
+null_finalizers(){
+  OBJ=${1}
+
+  kubectl patch "${OBJ}" \
+    --type=merge \
+    -p '{"metadata":{"finalizers":null}}'
+
+  # oc patch "${OBJ}" \
+  #   --type="json" \
+  #   -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
+}
+
+
+# get all resources
+k8s_get_api_resources() {
+    kubectl api-resources \
+      --verbs=list \
+      --namespaced \
+      -o name | \
+        grep -v "events.events.k8s.io" | \
+        grep -v "events" | \
+        sort | uniq
+}
+
+k8s_get_most_api_resources() {
+    kubectl api-resources \
+        --verbs=list \
+        --namespaced \
+        -o name | \
+        grep -v "events.events.k8s.io" | \
+        grep -v "events" | \
+        grep -v "packagemanifests" | \
+        grep -v "operator.openshift.io" | \
+        grep -v "operators.coreos.com" | \
+        grep -v "authorization.openshift.io" | \
+        grep -v "serviceaccount" | \
+        grep -v "rbac" | \
+        sort | uniq
+}
+
+k8s_ns_get_resources(){
+  NAMESPACE=${1:-sandbox}
+
+  for i in $(k8s_get_api_resources)
+  do
+    echo "Resource:" "${i}"
+    kubectl -n "${NAMESPACE}" \
+    get "${i}" \
+    --ignore-not-found
+  done
+}
+
+k8s_ns_delete_most_resources() {
+  NAMESPACE=${1:-sandbox}
+
+  for i in $(k8s_get_most_api_resources)
+  do
+    echo "Resource:" "${i}"
+    kubectl -n "${NAMESPACE}" \
+      delete "${i}" \
+      --all
+  done
+}
+
+k8s_ns_delete_most_resources_force() {
+  NAMESPACE=${1:-sandbox}
+
+  for i in $(k8s_get_most_api_resources)
+  do
+    echo "Resource:" "${i}"
+    null_finalizers "${i}"
+    kubectl -n "${NAMESPACE}" \
+      delete "${i}" \
+      --all
+  done
+}
+
+k8s_api_start_proxy(){
+  echo "k8s api proxy: starting..."
+  kubectl proxy -p 8080 &
+  API_PROXY_PID=$!
+  sleep 3
+}
+
+# do core resources first, which are at a separate api location
+k8s_api_dump_core(){
+  SERVER=${1:-http://localhost:8080}
+  api="core"
+  curl -s "${SERVER}/api/v1" | \
+    jq -r --arg api "$api" \
+    '.resources | .[] | "\($api) \(.name): [ \(.verbs | join(",")) ]"'
+}
+
+# now do non-core resources
+k8s_api_dump_noncore(){
+  SERVER=${1:-http://localhost:8080}
+  APIS=$(curl -s "${SERVER}/apis" | jq -r '[.groups | .[].name] | join(" ")')
+
+  for api in ${APIS}; do
+    version=$(curl -s "$SERVER/apis/${api}" | jq -r '.preferredVersion.version')
+    curl -s "${SERVER}/apis/${api}/${version}" | \
+      jq -r --arg api "$api" \
+      '.resources | .[]? | "\($api) \(.name): [ \(.verbs | join(",")) ]"'
+  done
+}
+
+k8s_api_dump_resources(){
+  k8s_api_start_proxy
+  k8s_api_dump_core
+  k8s_api_dump_noncore
+
+  echo "k8s api proxy: stopping..."
+  kill "${API_PROXY_PID}"
+}

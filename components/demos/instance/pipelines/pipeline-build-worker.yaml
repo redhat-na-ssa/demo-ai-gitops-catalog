@@ -1,0 +1,53 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-worker-image
+spec:
+  workspaces:
+    - name: shared-workspace
+  params:
+    - name: GIT-URL
+      type: string
+      description: URL of the git repo for the code
+      default: https://github.com/redhat-na-ssa/datasci-stock-pipeline.git
+    - name: GIT-REVISION
+      type: string
+      description: Revision / Branch / Tag to be used from repo of the code
+      default: main
+    - name: CONTEXT-DIR
+      type: string
+      description: Directory where the code is located
+      default: src
+    - name: IMAGE_STREAM
+      type: string
+      description: Image stream to be built from the code
+      default: image-registry.openshift-image-registry.svc:5000/$(context.pipelineRun.namespace)/ingest-and-train
+  tasks:
+    - name: fetch-repository
+      taskRef:
+        name: git-clone
+        kind: ClusterTask
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: url
+          value: $(params.GIT-URL)
+        - name: deleteExisting
+          value: "true"
+        - name: revision
+          value: $(params.GIT-REVISION)
+    - name: build
+      runAfter:
+        - fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: s2i-python
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+      params:
+        - name: IMAGE
+          value: $(params.IMAGE_STREAM)
+        - name: PATH_CONTEXT
+          value: $(params.CONTEXT-DIR)

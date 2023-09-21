@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: Science
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: science
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeMode: Filesystem

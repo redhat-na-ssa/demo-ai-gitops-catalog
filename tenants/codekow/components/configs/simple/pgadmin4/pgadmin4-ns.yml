@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: For all your postgres needs
+    openshift.io/display-name: Postgres Admin
+  name: pgadmin4

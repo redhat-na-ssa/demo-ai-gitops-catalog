@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple-pgadmin4
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: pgadmin4
+    server: https://kubernetes.default.svc
+  project: cluster-config
+  source:
+    path: components/configs/simple/pgadmin4
+    repoURL: https://github.com/codekow/demo-ai-gitops-catlog.git
+    targetRevision: main
+  syncPolicy:
+    automated: {}
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers: []
+      jqPathExpressions:
+        # - .spec.template.spec.initContainers[] | select(.name == "injected-init-container")
+        # - .spec.template.spec.containers[].image
+        - .spec.template.spec.containers[] | select(.name == "pgadmin4") | .image
