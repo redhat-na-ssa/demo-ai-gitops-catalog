@@ -1,6 +1,6 @@
 #!/bin/sh
 
-check_aws(){
+aws_check_cli(){
   aws --version || return
 }
 

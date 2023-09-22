@@ -4,8 +4,8 @@
 ocp_check_info(){
   oc cluster-info | head -n1
   oc whoami || exit 1
-  NAMESPACE: "$(oc project -q)"
-  echo
+  
+  echo "NAMESPACE: $(oc project -q)"
   sleep 8
 }
 

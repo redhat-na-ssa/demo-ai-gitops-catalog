@@ -3,14 +3,14 @@
 
 which oc >/dev/null && alias kubectl=oc
 
-wait_for_crd(){
+k8s_wait_for_crd(){
   CRD=${1}
   until kubectl get crd "${CRD}" >/dev/null 2>&1
     do sleep 1
   done
 }
 
-null_finalizers(){
+k8s_null_finalizers(){
   OBJ=${1}
 
   kubectl patch "${OBJ}" \
@@ -80,7 +80,7 @@ k8s_ns_delete_most_resources_force() {
   for i in $(k8s_get_most_api_resources)
   do
     echo "Resource:" "${i}"
-    null_finalizers "${i}"
+    k8s_null_finalizers "${i}"
     kubectl -n "${NAMESPACE}" \
       delete "${i}" \
       --all

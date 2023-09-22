@@ -2,120 +2,43 @@
 set -e
 
 check_shell(){
-  [[ "${0}" =~ "bash" ]] && return
+  [ -n "$BASH_VERSION" ] && return
   echo "Please verify you are running in bash shell"
+  sleep 10
 }
+
+check_git_root(){
+  if [ -d .git ] && [ -d scripts ]; then
+    GIT_ROOT=$(pwd)
+    export GIT_ROOT
+    echo "GIT_ROOT: ${GIT_ROOT}"
+  else
+    echo "Please run this script from the root of the git repo"
+    exit
+  fi
+}
+
+get_script_path(){
+  SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+  echo "SCRIPT_DIR: ${SCRIPT_DIR}"
+}
+
 
 check_shell
+check_git_root
+get_script_path
 
 # shellcheck source=/dev/null
-. "$(dirname "$0")/functions.sh"
-
-LANG=C
-SLEEP_SECONDS=8
-
-ARGO_NS="openshift-gitops"
-ARGO_CHANNEL="stable"
-ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
-
-# manage args passed to script
-if [ "${1}" == "demo=enter_name_here" ]; then
-  export NON_INTERACTIVE=true
-  
-  bootstrap_dir=bootstrap/overlays/workshop-rhdp
-  ocp_control_nodes_not_schedulable
-  ocp_create_machineset_autoscale 0 30
-  ocp_scale_all_machineset 1
-fi
-
-wait_for_gitops(){
-  echo "Waiting for operator to start"
-  until oc get deployment gitops-operator-controller-manager -n openshift-operators >/dev/null 2>&1
-  do
-    sleep 1
-  done
-
-  echo "Waiting for openshift-gitops namespace to be created"
-  until oc get ns ${ARGO_NS} >/dev/null 2>&1
-  do
-    sleep 1
-  done
-
-  echo "Waiting for deployments to start"
-  until oc get deployment cluster -n ${ARGO_NS} >/dev/null 2>&1
-  do
-    sleep 1
-  done
-
-  echo "Waiting for all pods to be created"
-  for i in "${ARGO_DEPLOY_STABLE[@]}"
-  do
-    echo "Waiting for deployment $i"
-    oc rollout status deployment "$i" -n ${ARGO_NS} >/dev/null 2>&1
-  done
-
-  echo
-  echo "OpenShift GitOps successfully installed."
-}
-
-install_gitops(){
-  echo
-  echo "Installing GitOps Operator."
-
-  # kustomize build components/operators/openshift-gitops-operator/operator/overlays/stable | oc apply -f -
-  oc apply -k "components/operators/openshift-gitops-operator/operator/overlays/${ARGO_CHANNEL}"
-
-  echo "Pause ${SLEEP_SECONDS} seconds for the creation of the gitops-operator..."
-  sleep ${SLEEP_SECONDS}
-
-  wait_for_gitops
-
-}
-
-select_bootstrap_folder(){
-  PS3="Please select a bootstrap folder by number: "
-  
-  echo
-  select bootstrap_dir in bootstrap/overlays/*/
-  do
-      test -n "$bootstrap_dir" && break
-      echo ">>> Invalid Selection <<<";
-  done
-
-  bootstrap_cluster
-}
-
-bootstrap_cluster(){
-
-  if [ -n "$bootstrap_dir" ]; then
-    echo "Selected: ${bootstrap_dir}"
-  else
-    select_bootstrap_folder
-  fi
-
-  # kustomize build "${bootstrap_dir}" | oc apply -f -
-  oc apply -k "${bootstrap_dir}"
-
-  wait_for_gitops
-  
-  # apply the cr you know and love
-  oc apply -k "components/operators/openshift-gitops-operator/instance/overlays/default"
-
-  echo
-  echo "GitOps has successfully deployed!  Check the status of the sync here:"
-
-  route=$(oc get route openshift-gitops-server -o jsonpath='{.spec.host}' -n ${ARGO_NS})
-
-  echo "https://${route}"
-}
+. "${SCRIPT_DIR}/functions.sh"
 
 # functions
-check_git_root
-setup_bin
+
+export SLEEP_SECONDS=8
+
 check_bin oc
 # check_bin kustomize
 # check_bin kubeseal
-check_oc_login
+ocp_check_info
 
 # bootstrap
 sealed_secret_check

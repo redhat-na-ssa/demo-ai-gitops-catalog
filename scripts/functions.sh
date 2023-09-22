@@ -1,13 +1,31 @@
 #!/bin/bash
 # shellcheck disable=SC1091
 
-COMPLETION_PATH=scratch
-BIN_PATH=${COMPLETION_PATH}/bin
-SEALED_SECRETS_FOLDER=components/operators/sealed-secrets/operator/overlays/default
-SEALED_SECRETS_SECRET=bootstrap/base/sealed-secrets-secret.yaml
+check_shell(){
+  [ -n "$BASH_VERSION" ] && return
+  echo "Please verify you are running in bash shell"
+  sleep 10
+}
+
+check_git_root(){
+  [ -n "${GIT_ROOT}" ] && return
+
+  if [ -d .git ] && [ -d scripts ]; then
+    GIT_ROOT=$(pwd)
+    export GIT_ROOT
+    echo "GIT_ROOT: ${GIT_ROOT}"
+    return
+  else
+    echo "Please run this script from the root of the git repo"
+    exit
+  fi
+}
 
 get_script_path(){
+  [ -n "${SCRIPT_DIR}" ] && return
+
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+  echo "SCRIPT_DIR: ${SCRIPT_DIR}"
 }
 
 source_library(){
@@ -20,36 +38,19 @@ source_library(){
   done
 }
 
-check_git_root(){
-  if [ -d .git ] && [ -d scripts ]; then
-    return
-  else
-    echo "Please run this script from the root of the git repo"
-    exit
-  fi
+setup_bin_path(){
+  [ -n "${GIT_ROOT}" ] || exit
+  BIN_PATH="${GIT_ROOT}/scratch/bin"
+  
+  mkdir -p "${BIN_PATH}"
+  echo "${PATH}" | grep -q "${BIN_PATH}" || \
+    PATH="${BIN_PATH}:${PATH}"
+    export PATH
 }
 
-get_script_path
-source_library
-
-debug(){
-echo "PWD:  $(pwd)"
-echo "PATH: ${PATH}"
-}
-
-# get functions
 get_functions(){
-  echo -e "functions:\n"
-  sed -n '/(){/ s/(){$//p' "${SCRIPT_DIR}/"{library/,}*.sh
-}
-
-usage(){
-  echo "
-  functions: loaded
-
-  usage: source scripts/funtions.sh
-         get_functions
-  "
+  echo -e "loaded functions:\n"
+  sed -n '/(){/ s/(){$//p' "${SCRIPT_DIR}/"{library/*,functions}.sh
 }
 
 is_sourced() {
@@ -61,147 +62,14 @@ is_sourced() {
   return 1  # NOT sourced.
 }
 
-setup_bin(){
-  mkdir -p "${BIN_PATH}"
-  echo "${PATH}" | grep -q "${BIN_PATH}" || \
-    PATH="$(pwd)/${BIN_PATH}:${PATH}"
-    export PATH
+check_shell
+check_git_root
+get_script_path
+source_library
+setup_bin_path
+
+usage(){
+  echo "USAGE: get_functions"
 }
 
-check_bin(){
-  name=$1
-  
-  which "${name}" || download_"${name}"
- 
-  case ${name} in
-    helm|kustomize|oc|odo|openshift-install|s2i)
-      echo "auto-complete: . <(${name} completion bash)"
-      
-      # shellcheck source=/dev/null
-      . <(${name} completion bash)
-      ${name} completion bash > "${COMPLETION_PATH}/${name}.bash"
-      
-      ${name} version
-      ;;
-    restic)
-      restic generate --bash-completion ${COMPLETION_PATH}/restic.bash
-      restic version
-      ;;
-    *)
-      echo
-      ${name} --version
-      ;;
-  esac
-  sleep 2
-}
-
-download_helm(){
-  BIN_VERSION=latest
-  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/ helm-linux-amd64
-  mv  ${BIN_PATH}/helm-linux-amd64  ${BIN_PATH}/helm
-}
-
-download_kustomize(){
-  cd "${BIN_PATH}" || return
-  curl -sL "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
-  cd ../..
-}
-
-download_oc(){
-  BIN_VERSION=4.10
-  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${BIN_VERSION}/openshift-client-linux.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/ oc kubectl
-}
-
-download_odo(){
-  BIN_VERSION=latest
-  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/odo/${BIN_VERSION}/odo-linux-amd64.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/
-}
-
-download_s2i(){
-  # BIN_VERSION=
-  DOWNLOAD_URL=https://github.com/openshift/source-to-image/releases/download/v1.3.2/source-to-image-v1.3.2-78363eee-linux-amd64.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar zx -C ${BIN_PATH}/
-}
-
-download_rclone(){
-  curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
-  unzip rclone-current-linux-amd64.zip
-  cd rclone-*-linux-amd64 || return
-
-  cp rclone ${BIN_PATH}
-  chown root:root ${BIN_PATH}/rclone
-  chmod 755 ${BIN_PATH}/rclone
-
-  cd ..
-  rm -rf rclone-*-linux-amd64
-}
-
-download_restic(){
-  BIN_VERSION=0.15.1
-  DOWNLOAD_URL=https://github.com/restic/restic/releases/download/v${BIN_VERSION}/restic_${BIN_VERSION}_linux_amd64.bz2
-  curl "${DOWNLOAD_URL}" -sL | bzcat > ${BIN_PATH}/restic
-  chmod 755 ${BIN_PATH}/restic
-}
-
-sealed_secret_create(){
-  read -r -p "Create NEW [${SEALED_SECRETS_SECRET}]? [y/N] " input
-  case $input in
-    [yY][eE][sS]|[yY])
-
-      oc apply -k "${SEALED_SECRETS_FOLDER}"
-
-      # sanity check
-      [ -e "${SEALED_SECRETS_SECRET}" ] && return
-
-      # TODO: explore using openssl
-      # oc -n sealed-secrets -o yaml \
-      #   create secret generic
-
-      # just wait for it
-      wait_for_crd sealedsecrets.bitnami.com
-      oc -n sealed-secrets \
-        rollout status deployment sealed-secrets-controller
-      sleep 10
-
-      oc -n sealed-secrets \
-        -o yaml \
-        get secret \
-        -l sealedsecrets.bitnami.com/sealed-secrets-key=active \
-        > ${SEALED_SECRETS_SECRET}
-
-      ;;
-    [nN][oO]|[nN])
-      echo
-      ;;
-    *)
-      echo
-      echo "!!NOTICE!!: Cluster automation MAY NOT WORK w/o a valid sealed secret"
-      echo "Choosing NO may have unintended results - see docs for more info"
-      echo "Contact a repo MAINTINAER to get a current sealed secrets key"
-      echo
-      echo 'You must choose yes or no to continue'
-      echo      
-      sealed_secret_create
-      ;;
-  esac
-}
-
-# Validate sealed secrets secret exists
-sealed_secret_check(){
-  if [ -f ${SEALED_SECRETS_SECRET} ]; then
-    echo "Exists: ${SEALED_SECRETS_SECRET}"
-    oc apply -f "${SEALED_SECRETS_FOLDER}/namespace.yaml"
-    oc apply -f "${SEALED_SECRETS_SECRET}" || return 0
-    oc apply -k "${SEALED_SECRETS_FOLDER}"
-  else
-    echo "Missing: ${SEALED_SECRETS_SECRET}"
-    echo "The master key is required to bootstrap sealed secrets and CANNOT be checked into git."
-    echo
-    [ -n "${NON_INTERACTIVE}" ] || sealed_secret_create
-  fi
-}
-
-is_sourced || usage
+usage
