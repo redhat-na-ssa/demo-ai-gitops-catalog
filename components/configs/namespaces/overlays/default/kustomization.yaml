@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - ../../instance/sandbox
+  - ../../instance/registry
 
 patches:
   - target:
