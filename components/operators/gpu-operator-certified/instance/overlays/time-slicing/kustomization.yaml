@@ -6,6 +6,13 @@ resources:
 
 patches:
   - target:
+      kind: ClusterPolicy
+      name: gpu-cluster-policy
+    patch: |-
+      - op: add
+        path: /spec/devicePlugin/config/name
+        value: device-plugin-config
+  - target:
       kind: ConfigMap
       name: device-plugin-config
     patch: |-
