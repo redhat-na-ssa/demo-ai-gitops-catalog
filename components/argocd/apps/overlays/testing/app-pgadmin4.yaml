@@ -10,7 +10,7 @@ spec:
   project: cluster-config
   source:
     path: components/configs/simple/pgadmin4
-    repoURL: https://github.com/codekow/demo-ai-gitops-catlog.git
+    repoURL: https://github.com/codekow/demo-ai-gitops-catalog.git
     targetRevision: main
   syncPolicy:
     automated: {}

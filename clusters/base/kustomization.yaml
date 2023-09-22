@@ -3,4 +3,5 @@ kind: Kustomization
 
 resources:
   - ../../components/argocd/projects/overlays/default
-  - argocd-ssh-repo-ss.yaml
+  - argocd-repo-https.yaml
+  # - argocd-repo-ssh-ss.yaml

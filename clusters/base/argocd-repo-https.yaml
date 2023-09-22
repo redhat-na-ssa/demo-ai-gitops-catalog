@@ -1,0 +1,15 @@
+apiVersion: v1
+stringData:
+  name: repo-https
+  project: cluster-config
+  type: git
+  url: https://github.com/codekow/demo-ai-gitops-catalog.git
+kind: Secret
+metadata:
+  annotations:
+    managed-by: argocd.argoproj.io
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: repo-https
+  namespace: openshift-gitops
+type: Opaque
