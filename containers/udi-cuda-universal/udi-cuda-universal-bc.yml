@@ -1,0 +1,25 @@
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: udi-cuda-universal
+spec:
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/devfile/developer-images.git'
+    contextDir: /universal/ubi8
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+      from:
+        kind: ImageStreamTag
+        name: 'udi-cuda:base'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: udi-cuda:latest
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange

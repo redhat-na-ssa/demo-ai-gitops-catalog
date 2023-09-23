@@ -1,0 +1,47 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: udi-cuda
+    app.kubernetes.io/component: udi-cuda
+    app.kubernetes.io/instance: udi-cuda
+  name: udi-cuda
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations:
+      openshift.io/imported-from: docker.io/nvidia/cuda:11.8.0-runtime-ubi8
+    from:
+      kind: DockerImage
+      name: docker.io/nvidia/cuda:11.8.0-runtime-ubi8
+    importPolicy: {}
+    name: 11.8.0-cuda
+    referencePolicy:
+      type: Source
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: udi-cuda-base
+spec:
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/devfile/developer-images.git'
+    contextDir: /base/ubi8
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+      from:
+        kind: ImageStreamTag
+        name: 'udi-cuda:11.8.0-cuda'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: udi-cuda:base
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange
