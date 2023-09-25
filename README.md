@@ -12,6 +12,11 @@ NOTICE: This repo is subject to frequent breaking changes
 
 - OpenShift 4.8+
 
+Red Hat Demo Platform Options
+
+  - `MLOps Demo: Data Science & Edge Practice`
+  - `Red Hat OpenShift Container Platform 4 Demo`
+
 ### Tools
 
 The following cli tools are required:
