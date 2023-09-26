@@ -92,11 +92,11 @@ ocp_scale_all_machineset(){
 }
 
 ocp_control_nodes_not_schedulable(){
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": false}}'
 }
 
 ocp_control_nodes_schedulable(){
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": false}}'
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
 }
 
 # save money in aws
