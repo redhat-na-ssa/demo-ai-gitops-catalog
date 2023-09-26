@@ -5,4 +5,3 @@ resources:
 - pipeline-build-worker.yaml
 - pipeline-train.yaml
 - pvc.yaml
-- python-task.yaml
