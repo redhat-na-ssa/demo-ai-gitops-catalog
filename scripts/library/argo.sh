@@ -73,7 +73,7 @@ if [ "${1}" == "demo=enter_name_here" ]; then
   bootstrap_dir=bootstrap/overlays/workshop-rhdp
   ocp_control_nodes_not_schedulable
   ocp_create_machineset_autoscale 0 30
-  ocp_scale_all_machineset 1
+  ocp_scale_machineset 1
 fi
 
 wait_for_gitops(){

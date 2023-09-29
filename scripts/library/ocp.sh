@@ -1,12 +1,16 @@
 #!/bin/sh
 
-# check login
-ocp_check_info(){
+ocp_check_login(){
   oc cluster-info | head -n1
   oc whoami || exit 1
-  
+  echo
+}
+
+ocp_check_info(){
+  ocp_check_login
+
   echo "NAMESPACE: $(oc project -q)"
-  sleep 8
+  sleep "${SLEEP_SECONDS:-8}"
 }
 
 ocp_aws_get_key(){
@@ -22,20 +26,38 @@ ocp_aws_get_key(){
   echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
 }
 
+ocp_aws_cluster_autoscaling(){
+  oc apply -k components/configs/autoscale/overlays/gpus
+
+  # MIG GPU type: p4d.24xlarge
+  ocp_aws_create_gpu_machineset g4dn.4xlarge
+  ocp_create_machineset_autoscale 0 3
+
+  ocp_control_nodes_schedulable
+
+  # scale workers to 1
+  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker)"
+  ocp_scale_machineset 1 "${WORKER_MS}"
+}
+
 ocp_aws_create_gpu_machineset(){
   # https://aws.amazon.com/ec2/instance-types/g4
   # single gpu: g4dn.{2,4,8,16}xlarge
   # multi gpu: g4dn.12xlarge
   # cheapest: g4ad.4xlarge
+  # a100 (MIG): p4d.24xlarge
+  # h100 (MIG): p5.48xlarge
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
-  oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
-    sed '/machine/ s/-worker/-gpu/g
-      /name/ s/-worker/-gpu/g
-      s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
-      s/replicas.*/replicas: 0/' | \
-    oc apply -f -
+  # check for an existing gpu machine set
+  oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu || \
+    oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
+      sed '/machine/ s/-worker/-gpu/g
+        /name/ s/-worker/-gpu/g
+        s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
+        s/replicas.*/replicas: 0/' | \
+      oc apply -f -
 
   MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
 
@@ -79,7 +101,7 @@ YAML
   done
 }
 
-ocp_scale_all_machineset(){
+ocp_scale_machineset(){
   REPLICAS=${1:-1}
   MACHINE_SETS=${2:-$(oc -n openshift-machine-api get machineset -o name)}
 
@@ -88,7 +110,6 @@ ocp_scale_all_machineset(){
     xargs \
       oc -n openshift-machine-api \
       scale --replicas="${REPLICAS}"
-
 }
 
 ocp_control_nodes_not_schedulable(){
@@ -105,7 +126,10 @@ ocp_save_money(){
   ocp_control_nodes_schedulable
 
   # scale to zero
-  ocp_scale_all_machineset 0
+  ocp_scale_machineset 0
+
+  # https://docs.openshift.com/container-platform/4.11/nodes/scheduling/nodes-scheduler-profiles.html
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "HighNodeUtilization"}}' 
 }
 
 ocp_expose_image_registry(){

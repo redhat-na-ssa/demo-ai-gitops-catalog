@@ -4,7 +4,7 @@ set -e
 check_shell(){
   [ -n "$BASH_VERSION" ] && return
   echo "Please verify you are running in bash shell"
-  sleep 10
+  sleep "${SLEEP_SECONDS:-8}"
 }
 
 check_git_root(){
@@ -28,12 +28,14 @@ check_shell
 check_git_root
 get_script_path
 
+################# standard init #################
+
+export SLEEP_SECONDS=8
+
 # shellcheck source=/dev/null
 . "${SCRIPT_DIR}/functions.sh"
 
-# functions
 
-export SLEEP_SECONDS=8
 
 check_bin oc
 # check_bin kustomize

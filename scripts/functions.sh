@@ -4,7 +4,7 @@
 check_shell(){
   [ -n "$BASH_VERSION" ] && return
   echo "Please verify you are running in bash shell"
-  sleep 10
+  sleep "${SLEEP_SECONDS:-8}"
 }
 
 check_git_root(){
