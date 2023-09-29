@@ -74,7 +74,11 @@ ocp_aws_create_gpu_machineset(){
     oc -n openshift-machine-api \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
-
+  
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_GPU}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
+  
 }
 
 ocp_create_machineset_autoscale(){

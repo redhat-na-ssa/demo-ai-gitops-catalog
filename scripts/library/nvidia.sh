@@ -29,7 +29,10 @@ nvidia_setup_mig_config(){
 
   oc apply -k components/operators/gpu-operator-certified/instance/overlays/mig-"${MIG_MODE}"
 
-  oc label node \
-    -l node-role.kubernetes.io/gpu \
-    nvidia.com/mig.config="$MIG_CONFIG" --overwrite
+  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_GPU}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/mig.config":"'"${MIG_CONFIG}"'"}}}}}}'
+
 }
