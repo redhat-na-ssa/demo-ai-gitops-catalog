@@ -29,7 +29,6 @@ ocp_aws_get_key(){
 ocp_aws_cluster_autoscaling(){
   oc apply -k components/configs/autoscale/overlays/gpus
 
-  # MIG GPU type: p4d.24xlarge
   ocp_aws_create_gpu_machineset g4dn.4xlarge
   ocp_create_machineset_autoscale 0 3
 
