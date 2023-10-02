@@ -12,7 +12,8 @@ rhdp_fix_api_certs(){
    echo "
   issue: RHDP can not start cluster due to ca.crt change
 
-  fix:
+  NOTICE: ssh to the RHDP bastion host and run the following commands:
+
     # user: lab-user
     sed -i.bak '/certificate-authority-data/d' ~/.kube/config
 
