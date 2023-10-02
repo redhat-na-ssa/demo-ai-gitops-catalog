@@ -1,0 +1,39 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: udi-cuda-patch
+  annotations:
+    app.openshift.io/vcs-ref: main
+    app.openshift.io/vcs-uri: https://github.com/redhat-na-ssa/demo-ocp-gpt2-keras-nlp.git
+  labels:
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.11-ubi8
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: udi-cuda:python
+  runPolicy: SerialLatestOnly
+  source:
+    type: dockerfile
+    dockerfile: |
+      FROM scratch
+
+      USER 0
+      
+      RUN yum install -y python39 python311 && \
+        alternatives --set python /usr/bin/python3.11 && \
+        yum clean all && \
+        rm -rf /var/cache/yum/*
+      
+      USER 1001
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: udi-cuda:base
+    type: Docker
+  triggers:
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange

@@ -1,0 +1,29 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: udi
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations:
+      openshift.io/imported-from: quay.io/devfile/base-developer-image:ubi8-latest
+    from:
+      kind: DockerImage
+      name: quay.io/devfile/base-developer-image:ubi8-latest
+    importPolicy: {}
+    name: ubi8-latest
+    referencePolicy:
+      type: Source
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: udi-cuda
+spec:
+  tags:
+  - name: latest
+    from:
+      kind: ImageStreamTag
+      name: udi-cuda:addon
