@@ -1,3 +1,0 @@
-- op: replace
-  path: /spec/channel
-  value: amq-streams-2.3.x
