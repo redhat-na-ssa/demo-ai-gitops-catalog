@@ -1,17 +1,11 @@
----
-kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
-
-namespace: rhacs-operator
+kind: Kustomization
 
 resources:
   - ../../base
 
 patches:
-  - patch: |-
-      - op: replace
-        path: /spec/channel
-        value: 'stable'
-    target:
+  - target:
       kind: Subscription
       name: rhacs-operator
+    path: patch-channel.yaml

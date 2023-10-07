@@ -1,43 +1,48 @@
-### Introduction
+# Advanced Cluster Security
 
-This folder installs the Red Hat Advanced Cluster Security operator into a cluster. It installs both Central as well as the SecureCluster with the sensors.
+Install Advanced Cluster Security.
 
-### Install with Kustomize
+Do not use the `base` directory directly, as you will need to patch the `channel` based on the version of OpenShift you are using, or the version of the operator you want to use.
 
-To install the operator and instance using kustomize, first install the operator as follows:
+The current *overlays* available are for the following channels:
+
+* [latest](operator/overlays/latest)
+* [rhacs-3.62](operator/overlays/rhacs-3.62)
+* [rhacs-3.64](operator/overlays/rhacs-3.64)
+* [rhacs-3.65](operator/overlays/rhacs-3.65)
+* [rhacs-3.66](operator/overlays/rhacs-3.66)
+* [rhacs-3.67](operator/overlays/rhacs-3.67)
+* [rhacs-3.68](operator/overlays/rhacs-3.68)
+* [rhacs-3.69](operator/overlays/rhacs-3.69)
+* [rhacs-3.70](operator/overlays/rhacs-3.70)
+* [rhacs-3.71](operator/overlays/rhacs-3.71)
+* [rhacs-3.72](operator/overlays/rhacs-3.72)
+* [rhacs-3.73](operator/overlays/rhacs-3.73)
+* [rhacs-3.74](operator/overlays/rhacs-3.74)
+* [rhacs-4.0](operator/overlays/rhacs-4.0)
+* [rhacs-4.1](operator/overlays/rhacs-4.1)
+* [rhacs-4.2](operator/overlays/rhacs-4.2)
+* [stable](operator/overlays/stable)
+
+## Usage
+
+If you have cloned the `gitops-catalog` repository, you can install Advanced Cluster Security based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
 
 ```
-oc apply -k advanced-cluster-security-operator/operator/overlays/stable 
+oc apply -k rhacs-operator/operator/overlays/<channel>
 ```
 
-Once the operator is running in `openshift-operators` you can then install an instance with the following command:
+Or, without cloning:
 
 ```
-oc apply -k advanced-cluster-security-operator/instance/overlays/default
+oc apply -k https://github.com/redhat-cop/gitops-catalog/rhacs-operator/operator/overlays/<channel>
 ```
 
-This will create a `stackrox` namespace and install `central` as well as a the `securedcluster`. Stackrox requires a cluster-init bundle to be deployed to link the two, a job will run to do this. If for some reason you do not see data in ACS and no cluster appears in the Settings check the job logs to see what happened.
-
-### Install with Argo CD
-
-There is an aggregate overlay for use with Argo CD that uses sync waves to push things out in order. For the sync wave to work you will need to add a health check for Central in the resources section of your configuration as follows:
+As part of a different overlay in your own GitOps repo:
 
 ```
-platform.stackrox.io/Central:
-  health.lua: |
-    hs = {}
-    if obj.status ~= nil and obj.status.conditions ~= nil then
-      for i, condition in ipairs(obj.status.conditions) do
-        if condition.status == "True" and (condition.reason == "InstallSuccessful" or condition.reason =="UpgradeSuccessful") then
-          hs.status = "Healthy"
-          hs.message = condition.message
-          return hs
-        end
-      end
-    end
-    hs.status = "Progressing"
-    hs.message = "Waiting for Central to deploy."
-    return hs
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://github.com/redhat-cop/gitops-catalog/rhacs-operator/operator/overlays/<channel>?ref=main
 ```
-
-A minimal overlay suitable for demos is also available at `advanced-cluster-security-operator/aggregate/minimal`, note this should never be used in production.

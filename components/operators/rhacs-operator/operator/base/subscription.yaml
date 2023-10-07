@@ -3,7 +3,7 @@ kind: Subscription
 metadata:
   name: rhacs-operator
 spec:
-  channel: patch-me-in-overlays
+  channel: patch-me-see-overlays-dir
   installPlanApproval: Automatic
   name: rhacs-operator
   source: redhat-operators
