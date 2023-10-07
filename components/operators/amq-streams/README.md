@@ -6,12 +6,10 @@ Do not use the `base` directory directly, as you will need to patch the `channel
 
 The current *overlays* available are for the following channels:
 
-* [amq-streams-1.8.x](operator/overlays/amq-streams-1.8.x)
-* [amq-streams-1.x](operator/overlays/amq-streams-1.x)
-* [amq-streams-2.0.x](operator/overlays/amq-streams-2.0.x)
-* [amq-streams-2.1.x](operator/overlays/amq-streams-2.1.x)
 * [amq-streams-2.2.x](operator/overlays/amq-streams-2.2.x)
 * [amq-streams-2.3.x](operator/overlays/amq-streams-2.3.x)
+* [amq-streams-2.4.x](operator/overlays/amq-streams-2.4.x)
+* [amq-streams-2.5.x](operator/overlays/amq-streams-2.5.x)
 * [amq-streams-2.x](operator/overlays/amq-streams-2.x)
 * [stable](operator/overlays/stable)
 

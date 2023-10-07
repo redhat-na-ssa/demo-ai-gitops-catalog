@@ -3,6 +3,3 @@ kind: OperatorGroup
 metadata:
   name: amq-streams-group
   namespace: amq-streams
-spec:
-  targetNamespaces:
-    - amq-streams

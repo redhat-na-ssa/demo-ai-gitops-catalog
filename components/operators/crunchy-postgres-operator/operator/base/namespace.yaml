@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/display-name: "Crunchy Postgres for Kubernetes"
+  labels:
+    openshift.io/cluster-monitoring: 'true'
+  name: crunchy-postgres-operator

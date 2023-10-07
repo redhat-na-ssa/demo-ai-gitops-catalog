@@ -85,6 +85,7 @@ scripts/lint.sh
 
 ## Additional Info
 
+- [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog)
 - [Repo Docs](docs) - not everything fits in your head
 - [Using this repo effectively](docs/APPS.md)
 - [Fix GitHub Oauth](docs/LOGIN.md)
