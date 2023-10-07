@@ -20,12 +20,12 @@ spec:
       FROM scratch
 
       USER 0
-      
+
       RUN yum install -y python39 python311 && \
         alternatives --set python /usr/bin/python3.11 && \
         yum clean all && \
         rm -rf /var/cache/yum/*
-      
+
       USER 1001
   strategy:
     dockerStrategy:
