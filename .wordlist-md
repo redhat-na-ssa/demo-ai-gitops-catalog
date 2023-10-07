@@ -2,6 +2,10 @@ ACK
 ACM
 ACS
 APIs
+ARN
+AdoptedResource
+AmazonS
+AmazonSageMakerFullAccess
 Ansible
 ArgoCD
 Bitnami
@@ -22,11 +26,13 @@ Devfile
 DotNET
 EOF
 Eventing
+FullAccess
 Gi
 GitOps
 HTPasswd
 Hashicorp
 IAM
+IOV
 IgnoreExtraneous
 Jaeger
 Jenkins
@@ -38,6 +44,7 @@ KokuMetricsConfig
 Kubernetes
 Kyverno
 LDAP
+LVM
 Lifecycle
 MTA
 MachineConfig
@@ -48,6 +55,7 @@ Noobaa
 NuGet
 OADP
 OAuth
+OCSInitialization
 OCSInitilization
 OLM
 Observability
@@ -60,19 +68,23 @@ PriorityClasses
 Prometheus
 RBAC
 README
+RHACM
 RollingUpdate
 Rollout
 SAR
+SNO
 SSO
 Sagemaker
 SecretManager
 SecureCluster
 ServiceMesh
+Skupper
 SonarQube
 Stackrox
 StorageCluster
 StorageSystem
 Strimzi
+TALM
 TBD
 TLS
 TODO
@@ -80,9 +92,11 @@ TaskRun
 Tekton
 Thanos
 UI
+VolSync
 Weaviate
 Workspaces
 ack
+acm
 addr
 adhoc
 adm
@@ -95,6 +109,7 @@ approver
 arg
 argocd
 argoproj
+arn
 auth
 autoscaler
 autoscaling
@@ -113,6 +128,7 @@ cli
 clientSecret
 clusterissuer
 clusterrolebinding
+composable
 conf
 config
 configmap
@@ -135,10 +151,12 @@ devworkspaces
 disableNameSuffixHash
 dns
 dotnet
+ec
 elasticsearch
 env
 eus
 eventing
+finalizer
 generatorOptions
 ghcr
 github
@@ -147,6 +165,7 @@ gitops-admins
 gmail
 godmode
 gp
+gpu
 gpus
 grafana
 gui
@@ -156,6 +175,7 @@ htpass
 htpasswd
 httpErrorCodePages
 https
+iam
 idp
 imageregistry
 inB
@@ -183,6 +203,7 @@ labeler
 ldap
 letsencrypt
 libvirt
+lifecycle
 linux
 machineset
 managementState
@@ -203,6 +224,7 @@ ocp
 ocs
 odf
 ok
+olm
 opendatahub
 openshift
 opentlc
