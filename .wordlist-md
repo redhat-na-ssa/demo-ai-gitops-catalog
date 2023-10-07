@@ -9,6 +9,7 @@ CICD
 CRD
 CRDs
 CSS
+CUDA
 CheCluster
 ClusterRoleBindings
 ClusterTask
@@ -91,6 +92,7 @@ api
 apiVersion
 apicast
 approver
+arg
 argocd
 argoproj
 auth
@@ -118,11 +120,14 @@ configs
 contrib
 cr
 creds
+cuda
+cudnn
 datasource
 defaultRoute
 deployable
 descheduler
 dev
+devel
 devfile
 devspaces
 devworkspace
@@ -135,6 +140,7 @@ env
 eus
 eventing
 generatorOptions
+ghcr
 github
 gitops
 gitops-admins
@@ -255,6 +261,8 @@ thanos
 tmp
 traefik
 triggerer
+ubi
+udi
 useable
 vSphere
 vscode

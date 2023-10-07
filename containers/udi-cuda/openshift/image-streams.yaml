@@ -1,0 +1,78 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: cuda
+    app.kubernetes.io/component: cuda
+    app.kubernetes.io/instance: cuda
+  name: cuda
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations:
+      openshift.io/imported-from: docker.io/nvidia/cuda:11.8.0-devel-ubi8
+    from:
+      kind: DockerImage
+      name: docker.io/nvidia/cuda:11.8.0-devel-ubi8
+    importPolicy: {}
+    name: 11.8.0-devel-ubi8
+    referencePolicy:
+      type: Source
+  - annotations:
+      openshift.io/imported-from: docker.io/nvidia/cuda:11.8.0-runtime-ubi8
+    from:
+      kind: DockerImage
+      name: docker.io/nvidia/cuda:11.8.0-runtime-ubi8
+    importPolicy: {}
+    name: 11.8.0-runtime-ubi8
+    referencePolicy:
+      type: Source
+  - annotations:
+      openshift.io/imported-from: docker.io/nvidia/cuda:11.8.0-cudnn8-devel-ubi8
+    from:
+      kind: DockerImage
+      name: docker.io/nvidia/cuda:11.8.0-cudnn8-devel-ubi8
+    importPolicy: {}
+    name: 11.8.0-cudnn8-devel-ubi8
+    referencePolicy:
+      type: Source
+  - annotations:
+      openshift.io/imported-from: docker.io/nvidia/cuda:11.8.0-cudnn8-runtime-ubi8
+    from:
+      kind: DockerImage
+      name: docker.io/nvidia/cuda:11.8.0-cudnn8-runtime-ubi8
+    importPolicy: {}
+    name: 11.8.0-cudnn8-runtime-ubi8
+    referencePolicy:
+      type: Source
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: udi-cuda
+spec:
+  tags:
+  - name: latest
+    from:
+      kind: ImageStreamTag
+      name: udi-cuda:11.8.0-cudnn8-devel-ubi8
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: udi
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations:
+      openshift.io/imported-from: quay.io/devfile/base-developer-image:ubi8-latest
+    from:
+      kind: DockerImage
+      name: quay.io/devfile/base-developer-image:ubi8-latest
+    importPolicy: {}
+    name: ubi8-latest
+    referencePolicy:
+      type: Source
