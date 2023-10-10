@@ -43,7 +43,7 @@ init(){
         display_help
         exit 0
         ;;
-      -*) echo >&2 "Invalid option: $@"
+      -*) echo >&2 "Invalid option: ${@}"
         exit 1
         ;;
     esac
