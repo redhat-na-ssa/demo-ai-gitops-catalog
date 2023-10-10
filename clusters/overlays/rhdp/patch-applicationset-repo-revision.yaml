@@ -1,6 +1,0 @@
-- op: replace
-  path: /spec/template/spec/source/repoURL
-  value: 'https://github.com/codekow/demo-ai-gitops-catalog.git'
-- op: replace
-  path: /spec/template/spec/source/targetRevision
-  value: main
