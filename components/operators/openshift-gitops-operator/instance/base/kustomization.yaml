@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: openshift-gitops
 
 resources:
+- argocd-ssh-known-hosts-cm.yaml
 - cluster-role-binding.yaml
 # - namespace.yaml
 - openshift-gitops-cr.yaml
