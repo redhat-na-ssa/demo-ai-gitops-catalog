@@ -56,8 +56,6 @@ process_kustomization(){
 
   for BUILD in $(find "${KUSTOMIZE_DIRS}" -name "kustomization.yaml" -exec dirname {} \;)
   do
-
-    # echo
     echo "${BUILD}"
 
     # echo "$KUSTOMIZE_BUILD_OUTPUT" | kubeval ${IGNORE_MISSING_SCHEMAS} --schema-location="file://${SCHEMA_LOCATION}" --force-color
