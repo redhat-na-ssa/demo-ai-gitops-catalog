@@ -1,6 +1,6 @@
 #!/bin/sh
 
-run_until_true(){
+until_true(){
   until "$@"
   do
     "$@"
