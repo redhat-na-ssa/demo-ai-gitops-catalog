@@ -69,12 +69,12 @@ download_s2i(){
 }
 
 download_rclone(){
-  curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
+  curl -LsO https://downloads.rclone.org/rclone-current-linux-amd64.zip
   unzip rclone-current-linux-amd64.zip
   cd rclone-*-linux-amd64 || return
 
   cp rclone "${BIN_PATH}"
-  chown root:root "${BIN_PATH}/rclone"
+  chgrp root "${BIN_PATH}/rclone"
   chmod 755 "${BIN_PATH}/rclone"
 
   cd ..
