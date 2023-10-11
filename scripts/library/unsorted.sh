@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 until_true(){
   echo "Running:" "${@}"
@@ -19,7 +19,7 @@ select_folder(){
 
   echo "Options"
 
-  pushd "${FOLDER}" >/dev/null
+  pushd "${FOLDER}" >/dev/null || return
   
   select selected in */
   do
@@ -30,8 +30,8 @@ select_folder(){
   if [ -n "${selected}" ]; then
     echo "Selected: ${selected}"
   else
-    select_folder
+    select_folder "${FOLDER}"
   fi
 
-  popd >/dev/null
+  popd >/dev/null || return
 }

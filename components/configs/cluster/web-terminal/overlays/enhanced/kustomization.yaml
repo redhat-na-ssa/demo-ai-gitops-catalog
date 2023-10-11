@@ -1,0 +1,44 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../default
+
+patches:
+  - target:
+      group: workspace.devfile.io
+      kind: DevWorkspaceTemplate
+    patch: |-
+      - op: replace
+        path: /spec/components/0/container/args
+        value:
+          - "/bin/bash"
+          - "-c"
+          - |
+            #!/bin/bash
+            GIT_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
+
+            git clone "${GIT_REPO}" gitops
+
+            cd gitops
+            . scripts/functions.sh
+
+            check_bin busybox
+            check_bin rclone
+            check_bin restic
+
+            echo "
+              echo
+              echo 'This terminal has been enhanced.'
+              echo See ${GIT_REPO}
+            
+              cd gitops; . scripts/functions.sh; cd ..
+
+            pc(){
+              git name-rev --name-only @ 2>/dev/null
+            }
+            
+            PS1='\e];\s\a\n\e[33m\w \e[36m\$(pc)\e[m$ '
+            " >> ~/.bashrc
+
+            sleep infinity

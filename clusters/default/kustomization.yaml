@@ -5,4 +5,5 @@ resources:
 - ../../components/configs/cluster/namespaces/overlays/default
 - ../../components/configs/cluster/console/overlays/default
 - ../../components/configs/cluster/rbac/overlays/default
+- ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/configs/cluster/web-terminal/overlays/default

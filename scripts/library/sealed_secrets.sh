@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 SEALED_SECRETS_FOLDER=components/operators/sealed-secrets/operator/overlays/default
 SEALED_SECRETS_SECRET=bootstrap/sealed-secrets-secret.yaml

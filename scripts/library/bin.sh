@@ -31,10 +31,10 @@ download_busybox(){
   DOWNLOAD_URL=https://www.busybox.net/downloads/binaries/1.35.0-x86_64-linux-musl/busybox
   curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/busybox"
   chmod +x "${BIN_PATH}/busybox"
-  pushd "${BIN_PATH}"
+  pushd "${BIN_PATH}" || return
   ln -s busybox unzip
   ln -s busybox bzcat
-  popd 
+  popd || return
 }
 
 download_helm(){

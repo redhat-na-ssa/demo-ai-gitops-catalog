@@ -54,4 +54,6 @@ ocp_check_info
 sealed_secret_check
 argo_install
 select_folder bootstrap
+
+# shellcheck disable=SC2154
 oc apply -k "bootstrap/${selected}"
