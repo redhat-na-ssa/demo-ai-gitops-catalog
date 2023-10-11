@@ -31,13 +31,13 @@ patches:
               echo
               echo 'This terminal has been enhanced.'
               echo See ${GIT_REPO}
-            
+
               cd gitops; . scripts/functions.sh; cd ..
 
             pc(){
               git name-rev --name-only @ 2>/dev/null
             }
-            
+
             PS1='\e];\s\a\n\e[33m\w \e[36m\$(pc)\e[m$ '
             " >> ~/.bashrc
 
