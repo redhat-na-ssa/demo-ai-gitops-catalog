@@ -35,7 +35,15 @@ export SLEEP_SECONDS=8
 # shellcheck source=/dev/null
 . "${SCRIPT_DIR}/functions.sh"
 
-
+# # manage args passed to script
+# if [ "${1}" == "demo=enter_name_here" ]; then
+#   export NON_INTERACTIVE=true
+  
+#   bootstrap_dir=bootstrap/overlays/workshop-rhdp
+#   ocp_control_nodes_not_schedulable
+#   ocp_create_machineset_autoscale 0 30
+#   ocp_scale_machineset 1
+# fi
 
 check_bin oc
 # check_bin kustomize
@@ -43,6 +51,9 @@ check_bin oc
 ocp_check_info
 
 # bootstrap
-sealed_secret_check
-install_gitops
-bootstrap_cluster
+# sealed_secret_check
+argo_install
+select_folder bootstrap
+
+# shellcheck disable=SC2154
+oc apply -k "bootstrap/${selected}"

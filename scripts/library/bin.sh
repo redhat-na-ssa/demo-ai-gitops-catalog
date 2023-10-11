@@ -27,6 +27,16 @@ check_bin(){
   sleep 2
 }
 
+download_busybox(){
+  DOWNLOAD_URL=https://www.busybox.net/downloads/binaries/1.35.0-x86_64-linux-musl/busybox
+  curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/busybox"
+  chmod +x "${BIN_PATH}/busybox"
+  pushd "${BIN_PATH}" || return
+  ln -s busybox unzip
+  ln -s busybox bzcat
+  popd || return
+}
+
 download_helm(){
   BIN_VERSION=latest
   DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
@@ -59,12 +69,12 @@ download_s2i(){
 }
 
 download_rclone(){
-  curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
+  curl -LsO https://downloads.rclone.org/rclone-current-linux-amd64.zip
   unzip rclone-current-linux-amd64.zip
   cd rclone-*-linux-amd64 || return
 
   cp rclone "${BIN_PATH}"
-  chown root:root "${BIN_PATH}/rclone"
+  chgrp root "${BIN_PATH}/rclone"
   chmod 755 "${BIN_PATH}/rclone"
 
   cd ..

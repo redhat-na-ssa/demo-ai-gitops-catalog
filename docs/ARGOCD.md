@@ -21,7 +21,7 @@ This repository deploys sealed-secrets and requires a sealed secret master key t
 
 The sealed secret(s) for bootstrap should be located at:
 ```sh
-bootstrap/base/sealed-secrets-secret.yaml
+bootstrap/sealed-secrets-secret.yaml
 ```
 
 If you do not plan to utilize existing sealed secrets you can instead bootstrap a new sealed-secrets controller and obtain a new secret. 

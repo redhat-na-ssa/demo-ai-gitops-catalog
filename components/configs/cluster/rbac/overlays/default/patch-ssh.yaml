@@ -1,0 +1,30 @@
+- op: remove
+  path: /spec/config/passwd/users/0/sshAuthorizedKeys/0
+
+- op: add
+  path: /spec/config/passwd/users/0/sshAuthorizedKeys/-
+  value: >-
+    ssh-rsa
+    AAAAB3NzaC1yc2EAAAADAQABAAABgQC5Ydtf2FA4Pj48KO7bhg0X3OWOA9Fx38RcCMumr+s6Pr4T30tbdp9qyu4036yl4wUoXMKQW5Ql5pKBy+6APdG/E7xAf8W9IV1MKxuwtg9kuYKmKL9YbPZ4C37p/OaudZp2iiubBxCDa4CM7sX+DgUKq7uVCH0L1ukYqwciv9eF4FRSK4ARn+TQ8Zx3tMX/VTUniriDKOBbTWqQpqPTxT+oW5hypEtei89si8jB/7wtm1TngzQlVOcHYCT/x14r0INJJpX8gvkEr7f1aZPwsPsULxYrskuitXEK0MzZcRjh6xtVq5e/8T6M1pdY4k4m7BK6m5NY1prL25ELtuOYYgJAfpuUc0z+pt0mhGv5CbFAf86E4VkIWn1wo7GbtSKgc8p0TeCOYQIslzN1MH8O/BZW1WyAsQJXaodfoAbm0UTsP32G+1mzM1d4yL8smw1SJdg+BbCAtVBhMaELMI3993jkO93RM/KNNYKNQKU1krC3+HuxYtGqnBb5TTDXMTvg/FU=
+    cory@macntoss
+
+- op: add
+  path: /spec/config/passwd/users/0/sshAuthorizedKeys/-
+  value: >-
+    ssh-rsa
+    AAAAB3NzaC1yc2EAAAADAQABAAABgQC4YQz9vhWtFC89pW+OdIjtngtYqoVHWfUQpqWqrS1OvvxFBGhMtA+AHd6er2rwXg+yg9v0vs9HJoHI0zzBueGy9zgeqZ73MydGLWSRkUZT/j345zz0z+lc9wgneUBn9gp1h7BBMajsrMVH+9xW+llsU7/CFOi8PAAF+DymBmUmvZU6Wvo+6JctO89p4dGZd+L1a9dbHbIO3crI+pc+JGooH16gdqnLUI/ZB1NencFezN5Wihkyazh2PvDr33TIXukzc2arpRcfW8rDWddFI661ieHjjHNaONohU7GRCUUgOor1a9Wy9U2goJ2BFuMpSrLu72HV9xjw0Q6Gqbp+zpJ7Yayg9NgtaPNCM7vAV+5u36Ip3/ADpXG2o5OKsg7uW0EvB3UdduPy10j+fyRzBmvAORBjdkHAssjRVZgYO0GsOPxW2RJHZY7xprm8CfvsJxLOy6tkh+dMZ9ufuWiYVbIHb536kz3W/c2f+DFsjVRPUee11r5LNZ/XO4xx7QpYIxc=
+    cory@kowdora
+
+- op: add
+  path: /spec/config/passwd/users/0/sshAuthorizedKeys/-
+  value: >-
+    ssh-rsa
+    AAAAB3NzaC1yc2EAAAADAQABAAABgQCiDkivcV1aY1A95hZ1Zmz0I5DRApnJ2ratLrXJ5Ty5pT/6IgukkSKjdcXEMYkjln7pN+7zNUJ0IOJVSHdmBIJtQeSg0BjYYIgybJiTXBT60vBIxop5f6dYYUFNeQtdxDYIBrkBNmkOoTF9WDVpjFV2QqIs2My0YY+CUVyxNLx7DZAYCg5ncD9dxLkvvuTh9F6+xt75+Z/lM/Y1WD9vqVSYlvPV8IZhL6ln3h2asZgjWYkwVW5gk5uQd2aLacMBd8BgcOgOvBo8XeRGtqHvmVqqMDuml3SuzB4fjSkwHO2NTwMvy1rJ/Z8on4j6aXl9AFqFWED682V5Ij4+n311azHhwL7x8FHipnN5m4eG7RD0fTvqzOPTOI43RsccUUOfOtAaVwBZ8QboZRxboQwZ1VZobCw0EzMAxvWhTSg/YNZnQaCb29mHF3mNjupxPd/Q38L9SLM1dIEQU/dgfe/Na2Ok8nNbRIyyplccq4LZgy1dG7/BvHBpG5fquwZKtvHrdQs=
+    cory@kowbuntu
+
+- op: add
+  path: /spec/config/passwd/users/0/sshAuthorizedKeys/-
+  value: >-
+    ssh-rsa
+    AAAAB3NzaC1yc2EAAAADAQABAAACAQCm1+pkpakcPp10Ql7TzTnvdhzenq5nuFa8MvOD/WeQPa36pJZQWeppkPZaxWfQzSmr8+/16nYgt1uWLiD/rlYsq5gNpGfA8Xk7Z6aUU6zfG8RDAhd9d8wgVCzeXrYj8z9FtzhdFTUfJZQkbgUu3kxAIXu0c66LsJ9C1fHI2bDRcVhYMk3ugFJWrpG0FPSOhE7CSwNHzeQcnPscjUq4w40nke90RnHtt4OgHD7dMW+clUT19kE7Jg9GSkbNrcTSH0JudXHApC49QfNnaKEn58y4hL6DnDViveNOu6ajki5JVUJAG550tw4NNBGZzq66masuHI3Jq4iTYzRYf802SiS/ylxwEWClxwmkor5MrhbVgMA8Jt3ijOdbDFs5DD6QGoIfFj2RsEtPxg8UXu6bYn2I14GlBIGpxmg7a+Gtsl0hgqMgPEbwjregOf7MqvQ6fg5pQHlMSxrNdqs5mfF2xqD7QptBdOBKaVDw9GJZaoO4ehEUSeAJIARBf+59THjvVm1zA/a7ZA2i+wb/fPCGvdSjb9M/4X/c8k0ySGym/wtwap+9lYUMaKU4zKsfx2Kjv57g5i5cEFneRbInZXaTaG8gxRyPend+VaLFcHOyL1hXoxApri5wVELZCjUxdlk9QNc5gUdKL/8c5TfzrfMjMly8Rlvd8GdATD8r9uoWglPtWw==
+    cory@pi

@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../../../operators/openshift-cert-manager-operator/examples/letsencrypt-route53-issuer
+  - ../../../../operators/openshift-cert-manager-operator/examples/openshift-api-certificate
+  - ../../../../operators/openshift-cert-manager-operator/examples/openshift-wildcard-certificate

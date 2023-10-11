@@ -7,7 +7,7 @@ Convert an existing secret into a sealed-secret that can be committed in git
 Dump current sealed secret cert
 
 ```
-SEALED_SECRETS_SECRET=bootstrap/base/sealed-secrets-secret.yaml
+SEALED_SECRETS_SECRET=bootstrap/sealed-secrets-secret.yaml
 
 oc -n sealed-secrets -o yaml \
   get secret \

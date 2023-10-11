@@ -2,13 +2,13 @@ name: Linting
 on:  # yamllint disable-line rule:truthy
   push:
     branches:
-      - "*"
+      - "main"
     paths-ignore:
       - README.md
       - docs/*.md
   pull_request:
     branches:
-      - "*"
+      - "main"
     paths-ignore:
       - README.md
       - docs/*.md
