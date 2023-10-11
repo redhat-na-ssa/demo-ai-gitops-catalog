@@ -36,7 +36,7 @@ patches:
             PS1='\e]\s\a\n\e[33m\w \e[36m\$(__git_branch)\e[m$ '
 
             [ -e ~/.venv/bin/activate ] && . ~/.venv/bin/activate
-            [ -e ~/gitops/scratch/bin/restic.bash ] && . ~/gitops/scratch/bin/restic.bash 
+            [ -e ~/gitops/scratch/bin/restic.bash ] && . ~/gitops/scratch/bin/restic.bash
 
             " >> ~/.bashrc
 
@@ -44,7 +44,7 @@ patches:
             . scripts/functions.sh
 
             [ -d ~/.venv ] || pyvenv-3.6 ~/.venv
-            
+
             check_bin busybox
             check_bin rclone
             check_bin restic
