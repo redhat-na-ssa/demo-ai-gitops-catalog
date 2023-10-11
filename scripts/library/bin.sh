@@ -78,7 +78,7 @@ download_rclone(){
   chmod 755 "${BIN_PATH}/rclone"
 
   cd ..
-  rm -rf rclone-*-linux-amd64
+  rm -rf rclone-*-linux-amd64*
 }
 
 download_restic(){
