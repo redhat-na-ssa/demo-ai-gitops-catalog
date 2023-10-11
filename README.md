@@ -46,9 +46,9 @@ Execute the following script:
 
 The `bootstrap.sh` script will:
 
-- Install the OpenShift GitOps Operator
-- Create an ArgoCD instance in the `openshift-gitops` namespace
-- Bootstrap a set of ArgoCD applications to configure the cluster
+- Install the [OpenShift GitOps Operator](components/operators/openshift-gitops-operator)
+- Create an [ArgoCD instance](components/operators/openshift-gitops-operator/instance/base/openshift-gitops-cr.yaml) in the `openshift-gitops` namespace
+<!-- - Bootstrap a set of ArgoCD applications to configure the cluster -->
 
 You can run individual [functions](scripts/functions.sh) in a `bash` shell:
 
@@ -56,7 +56,7 @@ You can run individual [functions](scripts/functions.sh) in a `bash` shell:
 source scripts/functions.sh
 ```
 
-### Sealed Secrets Bootstrap
+<!-- ### Sealed Secrets Bootstrap
 
 `bootstrap.sh` will attempt to deploy sealed-secrets and requires a sealed secret master key to manage existing deployments.  
 
@@ -68,7 +68,7 @@ The sealed secret(s) for bootstrap should be located at:
 bootstrap/sealed-secrets-secret.yaml
 ```
 
-If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a new sealed-secrets controller and obtain a new secret if it does not exist.
+If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a new sealed-secrets controller and obtain a new secret if it does not exist. -->
 
 ## Additional Configurations
 

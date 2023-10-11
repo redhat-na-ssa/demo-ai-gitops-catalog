@@ -51,7 +51,7 @@ check_bin oc
 ocp_check_info
 
 # bootstrap
-sealed_secret_check
+# sealed_secret_check
 argo_install
 select_folder bootstrap
 
