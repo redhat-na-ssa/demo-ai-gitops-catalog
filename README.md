@@ -6,6 +6,8 @@
 This project is a catalog of configurations used to provision infrastructure, on
 OpenShift, that supports machine learning (ML) and artificial intelligence (AI) workloads.
 
+The intention of this repository is to help support practical use of OpenShift for AI / ML workloads.
+
 **This repo is subject to frequent, breaking changes!**
 
 ## Prerequisites
