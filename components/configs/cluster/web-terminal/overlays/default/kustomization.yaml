@@ -27,7 +27,7 @@ patches:
             check_bin rclone
             check_bin restic
 
-            echo "echo 'This terminal has been enhanced.'" >> ~/.bashrc
+            echo "echo; echo 'This terminal has been enhanced.'" >> ~/.bashrc
             echo "echo See ${GIT_REPO}" >> ~/.bashrc
             echo "cd gitops; . scripts/functions.sh; cd .." >> ~/.bashrc
 
