@@ -3,7 +3,7 @@
 [![Spelling](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml)
 [![Linting](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/linting.yaml/badge.svg)](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/linting.yaml)
 
-This project is a catalog of configurations used to provision infrastructure, on 
+This project is a catalog of configurations used to provision infrastructure, on
 OpenShift, that supports machine learning (ML) and artificial intelligence (AI) workloads.
 
 NOTICE: This repo is subject to frequent breaking changes
@@ -14,8 +14,8 @@ NOTICE: This repo is subject to frequent breaking changes
 
 Red Hat Demo Platform Options
 
-  - `MLOps Demo: Data Science & Edge Practice`
-  - `Red Hat OpenShift Container Platform 4 Demo`
+- `MLOps Demo: Data Science & Edge Practice`
+- `Red Hat OpenShift Container Platform 4 Demo`
 
 ### Tools
 
@@ -30,7 +30,7 @@ The following cli tools are required:
 1. Verify you are logged into your cluster using `oc`.
 1. Clone this repository to your local environment.
 
-```
+```sh
 oc whoami
 git clone <repo>
 ```
@@ -79,7 +79,7 @@ The `sandbox` [namespace](components/configs/namespaces/instance/sandbox/namespa
 
 Please run the following before submitting a PR / commit
 
-```
+```sh
 scripts/lint.sh
 ```
 
