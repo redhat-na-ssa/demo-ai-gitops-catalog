@@ -6,7 +6,7 @@
 This project is a catalog of configurations used to provision infrastructure, on
 OpenShift, that supports machine learning (ML) and artificial intelligence (AI) workloads.
 
-NOTICE: This repo is subject to frequent breaking changes
+**This repo is subject to frequent, breaking changes!**
 
 ## Prerequisites
 
@@ -21,8 +21,9 @@ Red Hat Demo Platform Options
 
 The following cli tools are required:
 
+- `bash`
 - `oc` - Download [mac](https://formulae.brew.sh/formula/openshift-cli), [linux](https://mirror.openshift.com/pub/openshift-v4/clients)
-  - `kubectl` (optional) - Included in above bundle
+- `kubectl` (optional) - Included in `oc` bundle
 - `kustomize` (optional) - Download [mac](https://formulae.brew.sh/formula/kustomize), [linux](https://github.com/kubernetes-sigs/kustomize/releases)
 
 ## Bootstrapping a Cluster
