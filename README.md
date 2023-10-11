@@ -86,7 +86,6 @@ scripts/lint.sh
 
 ## Additional Info
 
-- [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog)
 - [Repo Docs](docs) - not everything fits in your head
 - [Using this repo effectively](docs/APPS.md)
 - [Fix GitHub Oauth](docs/LOGIN.md)
@@ -94,5 +93,6 @@ scripts/lint.sh
 
 ## External Links
 
+- [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog)
 - [ArgoCD - Example](https://github.com/gnunn-gitops/cluster-config)
 - [ArgoCD - Patterns](https://github.com/gnunn-gitops/standards)
