@@ -31,3 +31,8 @@
         name: config-sandbox-cleanup
         namespace: openshift-gitops
         path: components/configs/simple/sandbox-cleanup
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: config-prometheus-user-workload-monitoring
+    #     path: components/operators/prometheus-monitoring/instance/overlays/user-workload-monitoring
