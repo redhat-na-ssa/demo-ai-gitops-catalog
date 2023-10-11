@@ -4,3 +4,4 @@ metadata:
   name: cluster-admins-custom
 users:
   - opentlc-mgr
+  - admin

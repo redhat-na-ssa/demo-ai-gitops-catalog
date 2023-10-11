@@ -7,5 +7,3 @@ metadata:
       Try your ideas here.
       Reset weekly on Saturday
     openshift.io/display-name: Sandbox
-  labels:
-    argocd.argoproj.io/managed-by: cluster-config

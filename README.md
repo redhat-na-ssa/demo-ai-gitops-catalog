@@ -64,7 +64,7 @@ If managing an already bootstrapped cluster, the sealed-secrets key must be obta
 The sealed secret(s) for bootstrap should be located at:
 
 ```sh
-bootstrap/base/sealed-secrets-secret.yaml
+bootstrap/sealed-secrets-secret.yaml
 ```
 
 If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a new sealed-secrets controller and obtain a new secret if it does not exist.
