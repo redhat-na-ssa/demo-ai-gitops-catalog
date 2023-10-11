@@ -21,8 +21,8 @@
     #   values:
     #     name: sealed-secrets-operator
     #     path: components/operators/sealed-secrets/operator/overlays/default
-    # - cluster: local
-    #   url: https://kubernetes.default.svc
-    #   values:
-    #     name: web-terminal-operator
-    #     path: components/operators/web-terminal-operator/operator/overlays/fast
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: web-terminal-operator
+        path: components/operators/web-terminal-operator/operator/overlays/fast
