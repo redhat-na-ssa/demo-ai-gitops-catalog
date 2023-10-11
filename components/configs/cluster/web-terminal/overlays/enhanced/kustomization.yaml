@@ -33,16 +33,16 @@ patches:
               git name-rev --name-only @ 2>/dev/null
             }
 
-            PS1='\e];\s\a\n\e[33m\w \e[36m\$(__git_branch)\e[m$ '
+            PS1='\e]\s\a\n\e[33m\w \e[36m\$(__git_branch)\e[m$ '
 
-            [ -d .venv ] && . .venv/bin/activate
+            [ -e ~/.venv/bin/activate ] && . ~/.venv/bin/activate
 
             " >> ~/.bashrc
 
             cd gitops
             . scripts/functions.sh
 
-            [ -d .venv ] || pyvenv-3.6 .venv
+            [ -d ~/.venv ] || pyvenv-3.6 ~/.venv
             
             check_bin busybox
             check_bin rclone
