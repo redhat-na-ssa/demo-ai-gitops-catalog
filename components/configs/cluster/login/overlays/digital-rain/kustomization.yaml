@@ -13,6 +13,6 @@ patches:
     patch: |-
       - op: add
         path: /spec/templates
-        value: 
+        value:
           login:
             name: digital-rain
