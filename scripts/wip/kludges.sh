@@ -30,5 +30,7 @@ setup_ack_system(){
   done
 }
 
-# get functions
-# sed -n '/(){/ s/(){$//p' scripts/kludges.sh
+ocp_gcp_get_key(){
+  # get gcp creds
+  oc -n kube-system extract secret/gcp-credentials --keys=service_account.json --to=- | jq . > service_account.json
+}
