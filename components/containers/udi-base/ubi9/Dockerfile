@@ -7,7 +7,7 @@ FROM ${IMAGE_NAME}
 
 # labels for container catalog
 LABEL summary="devfile base developer image"
-LABEL description="Python image with base developers tools"
+LABEL description="image with base developers tools"
 LABEL io.k8s.display-name="devfile-developer-base"
 LABEL io.openshift.expose-services=""
 
@@ -45,9 +45,8 @@ COPY --chown=0:0 entrypoint.sh /
 # setup: user
 RUN \
     # setup $PS1 prompt
+    sed -i '/^export PS1=.*/d' /etc/skel/.bashrc
     echo "export PS1='\W \`git branch --show-current 2>/dev/null | sed -r -e \"s@^(.+)@\(\1\) @\"\`$ '" >> /etc/skel/.bashrc && \
-    echo 'NVIDIA_ENTRYPOINT=/opt/nvidia/entrypoint.d' >> /etc/skel/.bashrc && \
-    echo '[ -d "${NVIDIA_ENTRYPOINT}" ] && cat "${NVIDIA_ENTRYPOINT}"/*.txt' >> /etc/skel/.bashrc && \
     # copy global git configuration to user config
     cp /etc/gitconfig /etc/skel/.gitconfig && \
     useradd -u 1001 \
