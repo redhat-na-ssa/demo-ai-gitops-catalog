@@ -28,3 +28,11 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: grafana-serviceaccount
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-k8s-proxy
+type: Opaque
+data:
+  session_secret: Y2hhbmdlIG1lCg==
