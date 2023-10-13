@@ -3,6 +3,13 @@ kind: Kustomization
 
 resources:
   - ../../operator/overlays/all-namespaces
-  - grafana.yaml
+  - ../../instance/overlays/v1beta1
   - namespace.yaml
 
+patches:
+  - target:
+      kind: Grafana
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: grafana
