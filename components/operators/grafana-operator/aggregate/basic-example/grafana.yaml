@@ -15,3 +15,7 @@ spec:
       enabled: 'true'
     auth.anonymous:
       enabled: 'true'
+  route:
+    spec:
+      tls:
+        termination: edge
