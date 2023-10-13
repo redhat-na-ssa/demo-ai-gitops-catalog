@@ -27,9 +27,6 @@ py_check_bins(){
   which pip || exit 0
 }
 
-reset_wordlist(){
-  pyspelling | sort -u | grep -E -v ' |---|/|^$' > .wordlist-md
-}
 
 py_check_venv
 py_check_bins
@@ -41,6 +38,10 @@ which shellcheck && \
 # check spelling
 which aspell && \
   pyspelling -c .pyspelling.yml
+
+# check Dockerfiles
+which hadolint && \
+  find . \( -name Dockerfile -o -name Containerfile \) -exec hadolint {} \;
 
 # check yaml
 yamllint . && echo "YAML check passed :)"
