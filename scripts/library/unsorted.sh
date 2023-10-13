@@ -44,3 +44,7 @@ select_folder(){
 
   popd >/dev/null || return
 }
+
+reset_wordlist(){
+  pyspelling | sort -u | grep -E -v ' |---|/|^$' > .wordlist-md
+}
