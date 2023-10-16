@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 aws_check_cli(){
   aws --version || return
@@ -14,42 +14,42 @@ aws_get_instances() {
       AWS_TAGS="*$1*"
       echo "Setting AWS_TAGS = ${AWS_TAGS}"
   fi
-  echo AWS_PROFILE=${AWS_PROFILE}, AWS_REGION=${AWS_REGION}, AWS_TAGS=${AWS_TAGS}
-  aws ec2 describe-instances --profile=${AWS_PROFILE} --region=${AWS_REGION} --filter Name=tag-value,Values=${AWS_TAGS} --query 'Reservations[*].Instances[*].{Instance:InstanceId,State:State.Name,Name:Tags[?Key==`Name`]|[0].Value,DNS:PublicDnsName}' --output table
+  echo "AWS_PROFILE=${AWS_PROFILE}, AWS_REGION=${AWS_REGION}, AWS_TAGS=${AWS_TAGS}"
+  # shellcheck disable=SC2016
+  aws ec2 describe-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --filter Name=tag-value,Values="${AWS_TAGS}" --query 'Reservations[*].Instances[*].{Instance:InstanceId,State:State.Name,Name:Tags[?Key==`Name`]|[0].Value,DNS:PublicDnsName}' --output table
 }
 
 aws_start_instance() {
   if [ "$#" -ne 1 ]; then
-      echo "Usage:\n"
-      echo "$0 InstanceId\n"
-      exit 1
+    echo "Usage:
+    $0 InstanceId"
+    exit 1
   fi
 
   iid=$1
   
-  read -p "Start instance ${iid}? <y/N> " prompt
+  read -p -r "Start instance ${iid}? <y/N> " prompt
 
   if [[ $prompt =~ [yY](es)* ]]
   then
   echo "Starting instance ${iid}"
-  aws ec2 start-instances --profile=${AWS_PROFILE} --region=${AWS_REGION} --instance-ids=${iid}
+  aws ec2 start-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --instance-ids="${iid}"
   fi 
 }
 
 aws_stop_instance() {
   if [ "$#" -ne 1 ]; then
-      echo "Usage:\n"
-      echo "$0 InstanceId\n"
-      exit 1
+    echo "Usage:
+    $0 InstanceId"
+    exit 1
   fi
 
   iid=$1
   
-  read -p "Stop instance ${iid}? <y/N> " prompt
+  read -r -p "Stop instance ${iid}? <y/N> " prompt
 
-  if [[ $prompt =~ [yY](es)* ]]
-  then
-  echo "Stopping instance ${iid}"
-  aws ec2 stop-instances --profile=${AWS_PROFILE} --region=${AWS_REGION} --instance-ids=${iid}
+  if [[ $prompt =~ [yY](es)* ]]; then
+    echo "Stopping instance ${iid}"
+    aws ec2 stop-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --instance-ids="${iid}"
   fi 
 }
