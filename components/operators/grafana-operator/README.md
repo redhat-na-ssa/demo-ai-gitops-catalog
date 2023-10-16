@@ -1,11 +1,34 @@
-# Grafana
+# Grafana Operator
 
-This installs the grafana operator along with an instance of grafana for application monitoring. The base is split into folders, one for the operator and another for the actual grafana instance. If you haven't installed grafana before you need to install the operator first so the CRDs are added before deploying the instance.
+Install Grafana Operator.
 
-These bases cannot be deployed directly into a cluster, a a minimum you will need an overlay that creates a Namespace and an OperatorGroup, see the example overlay. Note only one OperatorGroup per namespace is permitted by OpenShift.
+Do not use the `base` directory directly, as you will need to patch the `channel` based on the version of OpenShift you are using, or the version of the operator you want to use.
 
-## Overlays
+The current *overlays* available are for the following channels:
 
-Two overlays are provided. The aggregate overlay deploys the operator and CR together, it relies on an ArgoCD feature to retry failures until the operator CRD has been created which it why it can be deployed together.
+* [alpha](operator/overlays/alpha)
+* [v4](operator/overlays/v4)
+* [v5](operator/overlays/v5)
 
-An example overlay shows how to use it in your projects and handle the namespace and operator group.
+## Usage
+
+If you have cloned the `gitops-catalog` repository, you can install Grafana Operator based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
+
+```
+oc apply -k grafana-operator/operator/overlays/<channel>
+```
+
+Or, without cloning:
+
+```
+oc apply -k https://github.com/redhat-cop/gitops-catalog/grafana-operator/operator/overlays/<channel>
+```
+
+As part of a different overlay in your own GitOps repo:
+
+```
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://github.com/redhat-cop/gitops-catalog/grafana-operator/operator/overlays/<channel>?ref=main
+```
