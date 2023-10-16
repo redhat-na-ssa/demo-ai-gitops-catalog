@@ -1,0 +1,20 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+spec:
+  config:
+    log:
+      mode: "console"
+      level: "warn"
+    auth:
+      disable_login_form: 'false'
+      disable_signout_menu: 'true'
+    auth.basic:
+      enabled: 'true'
+    auth.anonymous:
+      enabled: 'true'
+  route:
+    spec:
+      tls:
+        termination: edge

@@ -1,8 +1,8 @@
----
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: grafana
+  name: grafana-operator-group
+  namespace: grafana-operator
 spec:
   targetNamespaces:
-    - sandbox
+    - grafana-operator
