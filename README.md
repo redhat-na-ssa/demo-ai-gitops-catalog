@@ -14,8 +14,9 @@ The intention of this repository is to help support practical use of OpenShift f
 
 - OpenShift 4.8+
 
-Red Hat Demo Platform Options
+Red Hat Demo Platform Options (Tested)
 
+- `AWS with OpenShift Open Environment` - control plane size is `m5.4xlarge`
 - `MLOps Demo: Data Science & Edge Practice`
 - `Red Hat OpenShift Container Platform 4 Demo`
 
