@@ -11,7 +11,7 @@ until_true(){
   echo "[OK]"
 }
 
-local_argocd(){
+fake_argocd(){
   if [ ! -f "${1}/kustomization.yaml" ]; then
     echo "Please provide a dir with \"kustomization.yaml\""
     return
