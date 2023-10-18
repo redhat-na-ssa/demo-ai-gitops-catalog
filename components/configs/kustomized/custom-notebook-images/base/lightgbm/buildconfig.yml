@@ -8,6 +8,7 @@ metadata:
 spec:
   runPolicy: Serial
   triggers:
+    - type: ConfigChange
     - type: ImageChange
       imageChange:
         from:
@@ -16,7 +17,7 @@ spec:
   source:
     git:
       uri: https://github.com/codekow/demo-ai-gitops-catalog.git
-    contextDir: components/demos/instance/custom-notebook-images/lightgbm
+    contextDir: components/configs/kustomized/custom-notebook-images/base/lightgbm
   strategy:
     dockerStrategy:
       from:
