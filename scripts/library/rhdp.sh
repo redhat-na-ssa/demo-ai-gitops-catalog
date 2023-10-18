@@ -26,7 +26,8 @@ rhdp_fix_api_certs(){
 
   CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
   # API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
-  API_HOST_NAME=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@')
+  # API_HOST_NAME=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@')
+  API_HOST_NAME=api.$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')
 
   oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
     sed 's/namespace: .*/namespace: openshift-config/' | \

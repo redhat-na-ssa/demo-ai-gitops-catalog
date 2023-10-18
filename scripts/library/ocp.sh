@@ -123,16 +123,26 @@ ocp_control_nodes_schedulable(){
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
 }
 
+ocp_set_scheduler_profile(){
+  SCHED_PROFILE=${1:-LowNodeUtilization}
+
+  # LowNodeUtilization, HighNodeUtilization, NoScoring
+  echo "see https://docs.openshift.com/container-platform/4.11/nodes/scheduling/nodes-scheduler-profiles.html"
+
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}' 
+}
+
 # save money in aws
 ocp_save_money(){
+
   # run work on masters
   ocp_control_nodes_schedulable
 
   # scale to zero
   ocp_scale_machineset 0
 
-  # https://docs.openshift.com/container-platform/4.11/nodes/scheduling/nodes-scheduler-profiles.html
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "HighNodeUtilization"}}' 
+  # place as many pods on as few nodes as possible
+  ocp_set_scheduler_profile HighNodeUtilization
 }
 
 ocp_expose_image_registry(){
