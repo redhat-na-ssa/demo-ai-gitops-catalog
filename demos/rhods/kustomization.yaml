@@ -8,6 +8,7 @@ resources:
   - ../../components/configs/kustomized/rhods
   - ../../components/configs/kustomized/rhods-projects
   - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
+  - ../../components/configs/kustomized/model-serving-runtime
 
 patches:
   - target:
