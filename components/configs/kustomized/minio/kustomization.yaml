@@ -11,10 +11,11 @@ commonLabels:
   # app.kubernetes.io/part-of: minio
 
 resources:
+- data-connector-rb.yaml
 - deployment.yaml
 - namespace.yaml
 - pvc.yaml
 - route.yaml
-- secret.yaml
+# - secret.yaml
 - service.yaml
-# - setup-job.yaml
+- setup-root-user-job.yaml
