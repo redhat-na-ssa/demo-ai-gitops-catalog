@@ -7,11 +7,10 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
     description: Nvidia Triton Inference Server Runtime Definition
   labels:
-      opendatahub.io/configurable: "true"
-      opendatahub.io/dashboard: "true"
-      # opendatahub.io/ootb: "true"
+    opendatahub.io/configurable: "true"
+    opendatahub.io/dashboard: "true"
+    # opendatahub.io/ootb: "true"
   name: triton
-  namespace: redhat-ods-applications
 objects:
   - apiVersion: serving.kserve.io/v1alpha1
     kind: ServingRuntime
@@ -73,7 +72,7 @@ objects:
                 --strict-readiness=false \
                 --allow-http=true \
                 --allow-sagemaker=false
-              
+
           volumeMounts:
             - name: shm
               mountPath: /dev/shm
@@ -99,8 +98,7 @@ objects:
                     --fail \
                     --silent \
                     --show-error \
-                    --max-time \
-                    "9" \
+                    --max-time "8" \
                     http://localhost:8000/v2/health/live
             initialDelaySeconds: 5
             periodSeconds: 30

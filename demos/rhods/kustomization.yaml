@@ -7,8 +7,9 @@ resources:
   - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../components/configs/kustomized/rhods
   - ../../components/configs/kustomized/rhods-projects
+  - ../../components/configs/kustomized/rhods-model-runtimes
+  # - ../../components/configs/kustomized/rhods-model-instances
   - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
-  - ../../components/configs/kustomized/model-serving-runtime
   - ../../components/configs/kustomized/minio
 
 patches:
