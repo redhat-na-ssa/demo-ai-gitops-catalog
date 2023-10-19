@@ -19,7 +19,7 @@ spec:
         args:
         - -ec
         - |-
-          if [ -n "$(oc get secret minio-root-user -oname 2>/dev/null)" ]; then
+          if [ -n "$(oc get secret minio-root-user -o name 2>/dev/null)" ]; then
             echo "Secret already exists. Skipping." >&2
             exit 0
           fi

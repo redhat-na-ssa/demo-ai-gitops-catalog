@@ -2,7 +2,6 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: group-project-limit-range
-  namespace: group-project
 spec:
   limits:
     - type: Container

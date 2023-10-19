@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: individual-project
+  name: ds-individual-project
   annotations:
     openshift.io/description: |
       A personal project to explore alone

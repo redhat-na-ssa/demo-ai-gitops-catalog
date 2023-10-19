@@ -9,6 +9,7 @@ resources:
   - ../../components/configs/kustomized/rhods-projects
   - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
   - ../../components/configs/kustomized/model-serving-runtime
+  - ../../components/configs/kustomized/minio
 
 patches:
   - target:
@@ -20,7 +21,6 @@ patches:
         value: 'DEMO: Red Hat Open Data Science (RHODS)'
   - target:
       group: user.openshift.io
-      version: v1
       kind: Group
       name: workshop-users
     path: patch-workshop-users.yaml
