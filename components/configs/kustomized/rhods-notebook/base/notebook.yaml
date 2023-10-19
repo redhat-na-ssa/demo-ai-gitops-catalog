@@ -36,7 +36,6 @@ spec:
             --ServerApp.password=''
             --ServerApp.base_url=/notebook/ds-group-project/science
             --ServerApp.quit_button=False
-            # --ServerApp.tornado_settings={"user":"opentlc-2dmgr","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.example.com","hub_prefix":"/projects/ds-group-project"}
         - name: JUPYTER_IMAGE
           value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
         envFrom:
