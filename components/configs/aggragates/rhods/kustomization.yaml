@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../../configs/cluster/console/overlays/default
   - ../../../operators/rhods-operator/operator/overlays/stable
+  - ../../../operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../kustomized/rhods
   - ../../kustomized/rhods-projects
   - ../../kustomized/custom-notebook-images/overlays/rhods

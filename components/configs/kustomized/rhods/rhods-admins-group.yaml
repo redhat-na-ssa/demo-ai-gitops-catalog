@@ -3,5 +3,6 @@ apiVersion: user.openshift.io/v1
 metadata:
   name: rhods-admins
 users:
+  - b64:kube:admin
   - admin
   - opentlc-mgr
