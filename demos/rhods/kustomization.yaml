@@ -11,6 +11,7 @@ resources:
   - ../../components/configs/kustomized/rhods-model-instances
   - ../../components/configs/kustomized/rhods-notebook
   - ../../components/configs/kustomized/rhods-data-connector
+  - ../../components/configs/kustomized/rhods-pipelines
   - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
   - ../../components/configs/kustomized/minio
 
