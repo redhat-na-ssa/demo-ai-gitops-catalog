@@ -2,12 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../../configs/cluster/console/overlays/default
-  - ../../../operators/rhods-operator/operator/overlays/stable
-  - ../../../operators/openshift-pipelines-operator-rh/operator/overlays/latest
-  - ../../kustomized/rhods
-  - ../../kustomized/rhods-projects
-  - ../../kustomized/custom-notebook-images/overlays/rhods
+  - ../../clusters/default
+  - ../../components/operators/rhods-operator/operator/overlays/stable
+  - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
+  - ../../components/configs/kustomized/rhods
+  - ../../components/configs/kustomized/rhods-projects
+  - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
 
 patches:
   - target:
