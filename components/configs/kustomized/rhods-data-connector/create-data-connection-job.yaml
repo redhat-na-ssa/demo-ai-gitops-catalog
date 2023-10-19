@@ -27,7 +27,7 @@ spec:
           - name: AWS_S3_ENDPOINT
             value: http://minio.minio.svc:9000
           - name: AWS_S3_BUCKET
-            value: serving-demo
+            value: models
         command: ["/bin/bash"]
         args:
         - -ec

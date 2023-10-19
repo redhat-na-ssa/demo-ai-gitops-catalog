@@ -3,12 +3,14 @@ apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
   annotations:
-    openshift.io/display-name: stocks
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    openshift.io/display-name: Credit Card Fraud - v1
     serving.kserve.io/deploymentMode: ModelMesh
   labels:
-    name: stocks
+    name: open-vino-fraud
     opendatahub.io/dashboard: "true"
-  name: openvino-stocks
+  name: open-vino-fraud
 spec:
   predictor:
     model:
@@ -17,5 +19,6 @@ spec:
         version: "1"
       runtime: vino
       storage:
-        key: minio-connection
-        path: stocks.onnx
+        key: s3-connection-minio
+        # download here: https://ai-on-openshift.io/odh-rhods/img-triton/card.fraud.detection.onnx
+        path: fraud/
