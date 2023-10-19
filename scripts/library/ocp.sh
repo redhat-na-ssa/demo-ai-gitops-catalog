@@ -13,8 +13,14 @@ ocp_check_info(){
   sleep "${SLEEP_SECONDS:-8}"
 }
 
+ocp_aws_cluster(){
+  oc -n kube-system get secret/aws-creds -o name > /dev/null 2>&1 || return 1
+}
+
 ocp_aws_get_key(){
   # get aws creds
+  ocp_aws_cluster || return 1
+  
   AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
   AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
   AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-2}
@@ -50,15 +56,21 @@ ocp_aws_create_gpu_machineset(){
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
   # check for an existing gpu machine set
-  oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu || \
+  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu; then
+    echo "Exists: GPU machineset"
+  else
+    echo "Creating: GPU machineset"
     oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
       sed '/machine/ s/-worker/-gpu/g
         /name/ s/-worker/-gpu/g
         s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
         s/replicas.*/replicas: 0/' | \
       oc apply -f -
+  fi
 
   MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+
+  echo "Patching: GPU machineset"
 
   # cosmetic
   oc -n openshift-machine-api \
@@ -77,7 +89,6 @@ ocp_aws_create_gpu_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
-  
 }
 
 ocp_create_machineset_autoscale(){
