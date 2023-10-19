@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: group-project
+  name: ds-group-project
   annotations:
     openshift.io/description: |
       A friendly, open project to allow collaboration around unrestricted data

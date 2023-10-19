@@ -8,14 +8,14 @@ metadata:
   labels:
     name: stocks
     opendatahub.io/dashboard: "true"
-  name: stocks
+  name: openvino-stocks
 spec:
   predictor:
     model:
       modelFormat:
         name: onnx
         version: "1"
-      runtime: stocks
+      runtime: vino
       storage:
         key: minio-connection
         path: stocks.onnx

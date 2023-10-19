@@ -8,11 +8,11 @@ metadata:
     opendatahub.io/disable-gpu: "true"
     opendatahub.io/template-display-name: OpenVINO Model Server
     opendatahub.io/template-name: ovms
-    openshift.io/display-name: stocks
+    openshift.io/display-name: vino
   labels:
-    name: stocks
+    name: vino
     opendatahub.io/dashboard: "true"
-  name: stocks
+  name: vino
 spec:
   builtInAdapter:
     memBufferBytes: 134217728

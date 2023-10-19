@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../clusters/default
+  - ../../components/operators/rhods-operator/operator/overlays/stable
+  - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
+  - ../../components/configs/kustomized/rhods
+  - ../../components/configs/kustomized/rhods-projects
+  - ../../components/configs/kustomized/rhods-model-runtimes
+  # - ../../components/configs/kustomized/rhods-model-instances
+  - ../../components/configs/kustomized/rhods-notebook
+  - ../../components/configs/kustomized/rhods-data-connector
+  - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
+  - ../../components/configs/kustomized/minio
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-top
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'DEMO: Red Hat Open Data Science (RHODS)'
+  - target:
+      group: user.openshift.io
+      kind: Group
+      name: workshop-users
+    path: patch-workshop-users.yaml

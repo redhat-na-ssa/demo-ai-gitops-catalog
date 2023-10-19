@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: secret-project
+  name: ds-secret-project
   annotations:
     openshift.io/description: |
       A secret project to explore dark rainbows in space

@@ -7,3 +7,4 @@ resources:
 - ../../components/configs/cluster/rbac/overlays/default
 - ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/configs/cluster/web-terminal/overlays/enhanced
+- ../../components/configs/cluster/console-samples
