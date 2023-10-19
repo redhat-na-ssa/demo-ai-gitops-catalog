@@ -2,40 +2,20 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../kustomized/custom-notebook-images
+  - ../../../configs/cluster/console/overlays/default
+  - ../../../operators/rhods-operator/operator/overlays/stable
   - ../../kustomized/rhods
   - ../../kustomized/rhods-projects
+  - ../../kustomized/custom-notebook-images/overlays/rhods
 
 patches:
   - target:
-      group: image.openshift.io
-      kind: ImageStream
+      kind: ConsoleNotification
+      name: banner-top
     patch: |-
       - op: replace
-        path: /metadata/namespace
-        value: redhat-ods-applications
-  - target:
-      group: image.openshift.io
-      kind: ImageStreamTag
-    patch: |-
-      - op: replace
-        path: /metadata/namespace
-        value: redhat-ods-applications
-  - target:
-      group: build.openshift.io
-      kind: BuildConfig
-    patch: |-
-      - op: replace
-        path: /spec/output/to/namespace
-        value: redhat-ods-applications
-  - target:
-      group: build.openshift.io
-      kind: BuildConfig
-      # name: opencv-notebook-graphviz
-    patch: |-
-      - op: replace
-        path: /spec/strategy/dockerStrategy/from/namespace
-        value: redhat-ods-applications
+        path: /spec/text
+        value: 'DEMO: Red Hat Open Data Science (RHODS)'
   - target:
       group: user.openshift.io
       version: v1

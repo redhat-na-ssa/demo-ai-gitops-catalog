@@ -5,4 +5,4 @@ kind: Kustomization
 #   component: demo
 
 resources:
-- dspa.yaml
+  - dspa.yaml

@@ -7,7 +7,7 @@ spec:
     type: Git
     git:
       uri: https://github.com/codekow/demo-ai-gitops-catalog.git
-    contextDir: components/demos/instance/custom-notebook-images/opencv
+    contextDir: components/configs/kustomized/custom-notebook-images/base/opencv
   strategy:
     type: Docker
     dockerStrategy:
@@ -23,3 +23,4 @@ spec:
       namespace: custom-notebooks
   triggers:
     - type: ConfigChange
+    # - type: ImageChange
