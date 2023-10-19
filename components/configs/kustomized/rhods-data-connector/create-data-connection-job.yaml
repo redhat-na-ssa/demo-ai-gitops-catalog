@@ -21,7 +21,7 @@ spec:
           - name: MINIO_NAMESPACE
             value: minio
           - name: DATA_CONNECTION_NAME
-            value: aws-connection-minio
+            value: s3-connection-minio
           - name: AWS_DEFAULT_REGION
             value: us
           - name: AWS_S3_ENDPOINT

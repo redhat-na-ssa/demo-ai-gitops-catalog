@@ -6,10 +6,9 @@ metadata:
     notebooks.opendatahub.io/inject-oauth: "true"
     notebooks.opendatahub.io/last-image-selection: 'tensorflow:2023.1'
     notebooks.opendatahub.io/last-size-selection: Small
-    notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/pipelines-tutorial?notebookLogout=science
     opendatahub.io/username: user
     openshift.io/description: ""
-    openshift.io/display-name: Science Notebook
+    openshift.io/display-name: Exploration Notebook
   labels:
     app: science
     opendatahub.io/dashboard: "true"
@@ -35,20 +34,20 @@ spec:
             --ServerApp.port=8888
             --ServerApp.token=''
             --ServerApp.password=''
-            --ServerApp.base_url=/notebook/pipelines-tutorial/science
+            --ServerApp.base_url=/notebook/ds-group-project/science
             --ServerApp.quit_button=False
-            --ServerApp.tornado_settings={"user":"opentlc-2dmgr","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com","hub_prefix":"/projects/pipelines-tutorial"}
+            # --ServerApp.tornado_settings={"user":"opentlc-2dmgr","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.example.com","hub_prefix":"/projects/ds-group-project"}
         - name: JUPYTER_IMAGE
           value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
         envFrom:
         - secretRef:
-            name: aws-connection-minio
+            name: s3-connection-minio
         image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/pipelines-tutorial/science/api
+            path: /notebook/ds-group-project/science/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -63,7 +62,7 @@ spec:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/pipelines-tutorial/science/api
+            path: /notebook/ds-group-project/science/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -95,7 +94,7 @@ spec:
         - --email-domain=*
         - --skip-provider-button
         - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"science","namespace":"$(NAMESPACE)"}
-        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/pipelines-tutorial?notebookLogout=science
+        # - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/ds-group-project?notebookLogout=science
         env:
         - name: NAMESPACE
           valueFrom:
