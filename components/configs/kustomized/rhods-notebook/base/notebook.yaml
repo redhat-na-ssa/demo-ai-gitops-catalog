@@ -7,7 +7,7 @@ metadata:
     notebooks.opendatahub.io/last-image-selection: 'tensorflow:2023.1'
     notebooks.opendatahub.io/last-size-selection: Small
     opendatahub.io/username: user
-    openshift.io/description: ""
+    openshift.io/description: "Explore and experiment with your data"
     openshift.io/display-name: Exploration Notebook
   labels:
     app: science
