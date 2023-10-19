@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../clusters/default
+  - ../../components/operators/gpu-operator-certified/operator/overlays/stable
+  - ../../components/operators/gpu-operator-certified/instance/overlays/time-slicing-2
+  - ../../components/operators/nfd/operator/overlays/stable
+  - ../../components/operators/nfd/instance/overlays/only-nvidia
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-top
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'DEMO: Efficiently leveraging GPUs via autoscaling'
