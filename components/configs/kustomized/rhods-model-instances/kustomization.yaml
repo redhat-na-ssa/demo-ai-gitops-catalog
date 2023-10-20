@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: ds-group-project
 
 resources:
-- onnx-penvino
+- onnx-openvino
 - onnx-triton
 - tf-triton
