@@ -1,0 +1,23 @@
+---
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    openshift.io/display-name: GPT2 LLM - v1
+    serving.kserve.io/deploymentMode: ModelMesh
+  labels:
+    name: triton-tf-fraud
+    opendatahub.io/dashboard: "true"
+  name: triton-tf-fraud
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: tensorflow
+        version: "2"
+      runtime: triton
+      storage:
+        key: s3-connection-minio
+        path: gpt2/
