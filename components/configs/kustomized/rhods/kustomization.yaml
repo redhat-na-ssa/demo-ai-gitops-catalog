@@ -5,6 +5,8 @@ resources:
   - custom-notebooks-rb.yaml
   - nb-culler-config.yaml
   - odh-dashboard-config-cr.yaml
+  - rhods-admins-crb.yaml
   - rhods-admins-group.yaml
-  - rhods-self-provisioner-clusterrolebinding.yaml
+  - rhods-self-provisioner-crb.yaml
   - rhods-self-provisioner-group.yaml
+  - rhods-users-group.yaml

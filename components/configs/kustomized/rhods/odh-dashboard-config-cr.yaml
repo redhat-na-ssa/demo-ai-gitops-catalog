@@ -16,7 +16,7 @@ spec:
     disableTracking: false
   groupsConfig:
     adminGroups: 'rhods-admins,workshop-admins'
-    allowedGroups: 'system:authenticated'
+    allowedGroups: 'system:authenticated,rhods-users'
   modelServerSizes:
     - name: Small
       resources:
