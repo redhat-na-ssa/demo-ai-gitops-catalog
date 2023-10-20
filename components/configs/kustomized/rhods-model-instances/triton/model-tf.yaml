@@ -16,7 +16,7 @@ spec:
     model:
       modelFormat:
         name: tensorflow
-        version: "2"
+        version: "1"
       runtime: triton
       storage:
         key: s3-connection-minio
