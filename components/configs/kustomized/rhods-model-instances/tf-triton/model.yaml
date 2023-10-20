@@ -17,7 +17,7 @@ spec:
       modelFormat:
         name: tensorflow
         version: "2"
-      runtime: triton
+      runtime: triton-gpt2
       storage:
         key: s3-connection-minio
         path: gpt2/
