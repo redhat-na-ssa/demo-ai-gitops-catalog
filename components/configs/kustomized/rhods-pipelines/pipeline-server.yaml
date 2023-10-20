@@ -22,17 +22,18 @@ spec:
       pipelineDBName: mlpipeline
       pvcSize: 10Gi
       username: mlpipeline
+  mlmd:
+    deploy: false
   objectStorage:
     externalStorage:
       bucket: models
-      host: 'minio:9000'
+      host: 'minio.minio.svc:9000'
       port: ''
       s3CredentialsSecret:
         accessKey: AWS_ACCESS_KEY_ID
         secretKey: AWS_SECRET_ACCESS_KEY
-        secretName: minio-connection
+        secretName: data-connection-minio
       scheme: http
-      secure: false
   persistenceAgent:
     deploy: true
     numWorkers: 2

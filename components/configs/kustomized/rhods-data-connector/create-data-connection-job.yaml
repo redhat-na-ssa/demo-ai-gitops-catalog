@@ -1,16 +1,38 @@
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: data-connection-setup
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: data-connection-setup
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: data-connection-setup
+  namespace: ds-group-project
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
-  name: create-data-connection
+    argocd.argoproj.io/sync-wave: "2"
+  name: data-connection-setup
 spec:
   backoffLimit: 4
   template:
     spec:
-      serviceAccount: data-connector-setup
-      serviceAccountName: data-connector-setup
+      serviceAccount: data-connection-setup
+      serviceAccountName: data-connection-setup
       containers:
       - name: create-data-connection
         image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
@@ -21,13 +43,13 @@ spec:
           - name: MINIO_NAMESPACE
             value: minio
           - name: DATA_CONNECTION_NAME
-            value: s3-connection-minio
+            value: data-connection-minio
           - name: AWS_DEFAULT_REGION
             value: us
           - name: AWS_S3_ENDPOINT
             value: http://minio.minio.svc:9000
           - name: AWS_S3_BUCKET
-            value: serving-demo
+            value: models
         command: ["/bin/bash"]
         args:
         - -ec
@@ -35,13 +57,13 @@ spec:
           echo "MINIO_NAMESPACE: ${MINIO_NAMESPACE}"
           echo -n "Waiting for secret ${MINIO_SECRET_NAME}."
 
-          while [ -z "$(oc get secret -n minio ${MINIO_SECRET_NAME} -o name 2>/dev/null)" ]; do
+          while [ -z "$(oc get secret -n ${MINIO_NAMESPACE} ${MINIO_SECRET_NAME} -o name 2>/dev/null)" ]; do
             echo -n '.'
             sleep 1
           done; echo
 
-          id=$(oc get secret -n minio ${MINIO_SECRET_NAME} -o go-template='{{.data.MINIO_ROOT_USER|base64decode}}')
-          secret=$(oc get secret -n minio ${MINIO_SECRET_NAME} -o go-template='{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+          id=$(oc get secret -n ${MINIO_NAMESPACE} ${MINIO_SECRET_NAME} -o go-template='{{.data.MINIO_ROOT_USER|base64decode}}')
+          secret=$(oc get secret -n ${MINIO_NAMESPACE} ${MINIO_SECRET_NAME} -o go-template='{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
 
           echo "Creating secret ${DATA_CONNECTION_NAME}"
           cat << EOF | oc apply -f-
@@ -64,25 +86,3 @@ spec:
             AWS_S3_BUCKET: ${AWS_S3_BUCKET}
           EOF
       restartPolicy: Never
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-  name: data-connector-setup
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-  name: data-connector-setup-edit
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: edit
-subjects:
-- kind: ServiceAccount
-  name: data-connector-setup
-  namespace: ds-group-project

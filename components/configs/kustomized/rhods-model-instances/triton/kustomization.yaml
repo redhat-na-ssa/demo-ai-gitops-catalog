@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: ds-group-project
 
 resources:
-- model.yaml
+- model-onnx.yaml
+- model-tf.yaml
 - server.yaml

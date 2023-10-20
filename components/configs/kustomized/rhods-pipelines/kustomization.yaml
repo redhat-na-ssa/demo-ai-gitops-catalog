@@ -4,6 +4,4 @@ kind: Kustomization
 namespace: ds-group-project
 
 resources:
-- openvino
-- triton
-- upload-model-fraud-job.yaml
+  - pipeline-server.yaml

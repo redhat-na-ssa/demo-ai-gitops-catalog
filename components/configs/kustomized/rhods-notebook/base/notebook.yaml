@@ -2,7 +2,7 @@ apiVersion: kubeflow.org/v1
 kind: Notebook
 metadata:
   annotations:
-    notebooks.kubeflow.org/last-activity: "The Recent Past"
+    kubeflow-resource-stopped: "The Recent Past"
     notebooks.opendatahub.io/inject-oauth: "true"
     notebooks.opendatahub.io/last-image-selection: 'tensorflow:2023.1'
     notebooks.opendatahub.io/last-size-selection: Small
@@ -36,12 +36,11 @@ spec:
             --ServerApp.password=''
             --ServerApp.base_url=/notebook/ds-group-project/science
             --ServerApp.quit_button=False
-            # --ServerApp.tornado_settings={"user":"opentlc-2dmgr","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.example.com","hub_prefix":"/projects/ds-group-project"}
         - name: JUPYTER_IMAGE
           value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
         envFrom:
         - secretRef:
-            name: s3-connection-minio
+            name: data-connection-minio
         image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
         imagePullPolicy: Always
         livenessProbe:

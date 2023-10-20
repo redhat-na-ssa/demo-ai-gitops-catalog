@@ -8,7 +8,7 @@ metadata:
     opendatahub.io/disable-gpu: "true"
     opendatahub.io/template-display-name: OpenVINO Model Server
     opendatahub.io/template-name: ovms
-    openshift.io/display-name: vino
+    openshift.io/display-name: OpenVINO
   labels:
     name: vino
     opendatahub.io/dashboard: "true"

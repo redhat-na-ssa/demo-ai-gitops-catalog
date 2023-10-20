@@ -50,6 +50,10 @@ spec:
     updateStrategy: RollingUpdate
     rollingUpdate:
       maxUnavailable: '1'
+    tolerations:
+      - effect: NoSchedule
+        key: gpu-required
+        operator: Exists
   devicePlugin:
     enabled: true
     config:

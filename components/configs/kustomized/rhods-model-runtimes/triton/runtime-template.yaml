@@ -63,8 +63,8 @@ objects:
             - |
               #!/bin/sh
               mkdir -p /models/_triton_models
-
               chmod 775 /models/_triton_models
+
               exec tritonserver \
                 --model-repository=/models/_triton_models \
                 --model-control-mode=explicit \
