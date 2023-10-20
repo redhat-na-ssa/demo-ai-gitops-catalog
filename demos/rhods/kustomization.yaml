@@ -14,6 +14,7 @@ resources:
   - ../../components/configs/kustomized/rhods-pipelines
   - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
   - ../../components/configs/kustomized/minio
+  - ../../components/operators/aikit-operator-rhmp/aggregate
 
 patches:
   - target:

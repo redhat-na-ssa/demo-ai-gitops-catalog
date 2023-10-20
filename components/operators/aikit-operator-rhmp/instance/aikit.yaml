@@ -1,0 +1,16 @@
+kind: AIKitContainer
+apiVersion: aikit.intel/v1alpha1
+metadata:
+  name: intel-aikit-container
+  namespace: redhat-ods-applications
+spec:
+  fullnameOverride: ''
+  imagestream:
+    name: oneapi-aikit
+    namespace: redhat-ods-applications
+    registry:
+      root: registry.connect.redhat.com
+      repo: intel
+      name: oneapi-aikit
+      version: 2023.1.0
+  nameOverride: ''
