@@ -12,9 +12,9 @@ metadata:
     opendatahub.io/template-name: triton
     openshift.io/display-name: Triton
   labels:
-    name: triton
+    name: triton-gpt2
     opendatahub.io/dashboard: "true"
-  name: triton
+  name: triton-gpt2
 spec:
   builtInAdapter:
     memBufferBytes: 134217728

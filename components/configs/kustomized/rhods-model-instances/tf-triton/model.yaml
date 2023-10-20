@@ -8,9 +8,9 @@ metadata:
     openshift.io/display-name: GPT2 LLM - v1
     serving.kserve.io/deploymentMode: ModelMesh
   labels:
-    name: triton-tf-fraud
+    name: triton-tf-gpt2
     opendatahub.io/dashboard: "true"
-  name: triton-tf-fraud
+  name: triton-tf-gp2
 spec:
   predictor:
     model:
