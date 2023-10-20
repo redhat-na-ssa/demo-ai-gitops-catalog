@@ -2,44 +2,57 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  annotations:
-    todo: improve security for role
-  name: setup-aws-gpu-machineset
+  name: aws-gpu-machineset-setup
 rules:
 - apiGroups:
-  - '*'
+  - machine.openshift.io
   resources:
-  - '*'
+  - machinesets
   verbs:
   - '*'
-- nonResourceURLs:
-  - '*'
+- apiGroups:
+  - autoscaling.openshift.io
+  resources:
+  - machineautoscalers
   verbs:
   - '*'
+- apiGroups:
+  - ''
+  resources:
+  - secrets
+  resourceNames: 
+  - aws-creds
+  verbs:
+  - get
+  - list
+# - nonResourceURLs:
+#   - '*'
+#   verbs:
+#   - '*'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: setup-aws-gpu-machineset
+  name: aws-gpu-machineset-setup
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: setup-aws-gpu-machineset
+  name: aws-gpu-machineset-setup
 subjects:
   - kind: ServiceAccount
-    name: setup-aws-gpu-machineset
+    name: aws-gpu-machineset-setup
     namespace: nvidia-gpu-operator
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: setup-aws-gpu-machineset
+  name: aws-gpu-machineset-setup
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: setup-aws-gpu-machineset-
-  name: setup-aws-gpu-machineset
+  generateName: aws-gpu-machineset-setup-
+  name: aws-gpu-machineset-setup
   annotations:
     argocd.argoproj.io/hook: Sync
     # argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -47,7 +60,7 @@ spec:
   template:
     spec:
       containers:
-        - name: setup-aws-gpu-machineset
+        - name: aws-gpu-machineset-setup
           image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
           env:
             - name: NAMESPACE
@@ -150,5 +163,5 @@ spec:
 
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
-      serviceAccount: setup-aws-gpu-machineset
-      serviceAccountName: setup-aws-gpu-machineset
+      serviceAccount: aws-gpu-machineset-setup
+      serviceAccountName: aws-gpu-machineset-setup
