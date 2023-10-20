@@ -6,9 +6,9 @@ metadata:
 rules:
   - apiGroups:
     - user.openshift.io
-    resources: 
+    resources:
     - groups
-    resourceNames: 
+    resourceNames:
     - rhods-users
     verbs:
     - update

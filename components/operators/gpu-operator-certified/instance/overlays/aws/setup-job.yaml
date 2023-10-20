@@ -20,7 +20,7 @@ rules:
   - ''
   resources:
   - secrets
-  resourceNames: 
+  resourceNames:
   - aws-creds
   verbs:
   - get
