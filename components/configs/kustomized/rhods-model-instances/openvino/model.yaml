@@ -19,6 +19,6 @@ spec:
         version: "1"
       runtime: vino
       storage:
-        key: s3-connection-minio
+        key: data-connection-minio
         # download here: https://ai-on-openshift.io/odh-rhods/img-triton/card.fraud.detection.onnx
         path: fraud/
