@@ -6,3 +6,4 @@ namespace: ds-group-project
 resources:
 - openvino
 - triton
+- upload-model-fraud-job.yaml

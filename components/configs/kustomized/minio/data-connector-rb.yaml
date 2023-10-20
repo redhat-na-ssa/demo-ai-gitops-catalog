@@ -4,12 +4,12 @@ kind: RoleBinding
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  name: data-connector-setup-edit
+  name: data-connection-setup
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: edit
 subjects:
 - kind: ServiceAccount
-  name: data-connector-setup
+  name: data-connection-setup
   namespace: ds-group-project
