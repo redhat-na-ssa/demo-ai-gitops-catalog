@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e
 
 # 8 seconds is usually enough time for the average user to realize they foobar
 export SLEEP_SECONDS=8
@@ -37,21 +37,26 @@ get_script_path
 # shellcheck source=/dev/null
 . "${SCRIPT_DIR}/functions.sh"
 
-# manage args passed to script
-if [ -z ${1+x} ]; then
-  export NON_INTERACTIVE=true
-
-  echo "NON INTERACTIVE MODE"
-  echo "You are running ${1}"
-fi
+is_sourced && return
 
 bin_check oc
-set -x
-ocp_check_info
-set +x
-# bootstrap
-argo_install
-select_folder bootstrap
+ocp_check_info || exit
 
-# shellcheck disable=SC2154
-oc apply -k "bootstrap/${selected}"
+main(){
+  # argo bootstrap
+  argo_install
+  select_folder bootstrap
+
+  # shellcheck disable=SC2154
+  oc apply -k "bootstrap/${selected}"
+}
+
+# manage args passed to script
+if [ ! -z ${1+x} ]; then
+  export NON_INTERACTIVE=true
+
+  echo "MODE: NON INTERACTIVE"
+  echo "You are running ${1}"
+else
+  main
+fi
