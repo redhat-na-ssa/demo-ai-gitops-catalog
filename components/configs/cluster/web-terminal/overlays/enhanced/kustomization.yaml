@@ -5,10 +5,14 @@ resources:
   - ../default
 
 patches:
+  # https://github.com/redhat-developer/web-terminal-operator
   - target:
       group: workspace.devfile.io
       kind: DevWorkspaceTemplate
     patch: |-
+      - op: add
+        path: /metadata/annotations/web-terminal.redhat.com~1unmanaged-state
+        value: 'true'
       - op: replace
         path: /spec/components/0/container/args
         value:
