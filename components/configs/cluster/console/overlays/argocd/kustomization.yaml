@@ -22,4 +22,4 @@ patches:
       #   value: '#54FF00'
       - op: replace
         path: /spec/backgroundColor
-        value: '#FF0066'
+        value: '#FF9900'
