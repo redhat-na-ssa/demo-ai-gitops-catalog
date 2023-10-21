@@ -9,10 +9,21 @@ nvidia_setup_dashboard_monitor(){
   rm dcgm-exporter-dashboard.json
 }
 
-nvidia_setup_dashboard_admin(){
+nvidia_setup_console_plugin_dump_helm(){
+  which helm || return 1
   helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
   helm repo update > /dev/null 2>&1
-  helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu > /dev/null 2>&1
+  helm template --output-dir components/operators/gpu-operator-certified/instance/base rh-ecosystem-edge/console-plugin-nvidia-gpu
+}
+
+nvidia_setup_console_plugin(){
+  if which helm; then
+    helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
+    helm repo update > /dev/null 2>&1
+    helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu > /dev/null 2>&1
+  else
+    return
+  fi
 
   if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
     oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
