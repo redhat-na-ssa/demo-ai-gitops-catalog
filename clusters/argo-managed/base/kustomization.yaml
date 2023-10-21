@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../components/operators/openshift-gitops-operator/operator/overlays/stable
-  # - ../../../components/operators/openshift-gitops-operator/instance/overlays/default
+  - ../../../components/operators/openshift-gitops-operator/instance/overlays/default
   - ../../../components/argocd/projects/overlays/default
   - argocd-repo-https.yaml
   # - argocd-repo-ssh-ss.yaml
