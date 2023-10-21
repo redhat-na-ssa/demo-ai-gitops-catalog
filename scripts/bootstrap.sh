@@ -52,11 +52,11 @@ main(){
 }
 
 # manage args passed to script
-if [ ! -z ${1+x} ]; then
+if [ -z ${1+x} ]; then
+  main
+else
   export NON_INTERACTIVE=true
 
   echo "MODE: NON INTERACTIVE"
   echo "You are running ${1}"
-else
-  main
 fi

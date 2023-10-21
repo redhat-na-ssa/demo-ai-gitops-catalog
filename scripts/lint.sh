@@ -41,7 +41,7 @@ which aspell && \
 
 # check Dockerfiles
 which hadolint && \
-  find . \( -name Dockerfile -o -name Containerfile \) -exec hadolint {} \;
+  find . -not -path "./scratch/*" \( -name Dockerfile -o -name Containerfile \) -exec hadolint {} \;
 
 # check yaml
 yamllint . && echo "YAML check passed :)"
