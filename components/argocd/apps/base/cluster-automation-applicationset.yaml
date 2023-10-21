@@ -22,8 +22,6 @@ spec:
       annotations:
         argocd.argoproj.io/compare-options: IgnoreExtraneous
         argocd.argoproj.io/sync-options: Prune=false
-      labels:
-        app.kubernetes.io/instance: cluster-config-app-of-apps
     spec:
       project: cluster-config
       syncPolicy:

@@ -7,13 +7,6 @@ resources:
 
 patches:
   - target:
-      kind: Secret
-      name: repo-https
-    patch: |-
-      - op: replace
-        path: /stringData/url
-        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
-  - target:
       group: argoproj.io
       kind: Application
       name: cluster-config-app-of-apps
@@ -21,6 +14,13 @@ patches:
       - op: replace
         path: /spec/source/path
         value: clusters/argo-managed/overlays/default
+  - target:
+      kind: Secret
+      name: repo-https
+    patch: |-
+      - op: replace
+        path: /stringData/url
+        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
   - target:
       group: argoproj.io
       kind: ApplicationSet
@@ -31,16 +31,16 @@ patches:
       - op: replace
         path: /spec/template/spec/source/targetRevision
         value: updates
-  - target:
-      group: argoproj.io
-      kind: Application
-    patch: |-
-      - op: replace
-        path: /spec/source/repoURL
-        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
-      - op: replace
-        path: /spec/source/targetRevision
-        value: updates
+  # - target:
+  #     group: argoproj.io
+  #     kind: Application
+  #   patch: |-
+  #     - op: replace
+  #       path: /spec/source/repoURL
+  #       value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
+  #     - op: replace
+  #       path: /spec/source/targetRevision
+  #       value: updates
   # Uncomment patches to disable automatic sync
   # - target:
   #     group: argoproj.io
