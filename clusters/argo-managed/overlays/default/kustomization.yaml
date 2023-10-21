@@ -27,15 +27,15 @@ patches:
         path: /spec/source/targetRevision
         value: updates
   # Uncomment patches to disable automatic sync
-  - target:
-      group: argoproj.io
-      kind: Application
-    patch: |-
-      - op: remove
-        path: /spec/syncPolicy
-  - target:
-      group: argoproj.io
-      kind: ApplicationSet
-    patch: |-
-      - op: remove
-        path: /spec/template/spec/syncPolicy
+  # - target:
+  #     group: argoproj.io
+  #     kind: Application
+  #   patch: |-
+  #     - op: remove
+  #       path: /spec/syncPolicy
+  # - target:
+  #     group: argoproj.io
+  #     kind: ApplicationSet
+  #   patch: |-
+  #     - op: remove
+  #       path: /spec/template/spec/syncPolicy
