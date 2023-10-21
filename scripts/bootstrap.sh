@@ -48,7 +48,7 @@ main(){
   select_folder bootstrap
 
   # shellcheck disable=SC2154
-  oc apply -k "bootstrap/${selected}"
+  oc apply -k "bootstrap/${selected_folder}"
 }
 
 # manage args passed to script
