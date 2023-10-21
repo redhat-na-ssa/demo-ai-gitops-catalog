@@ -31,16 +31,16 @@ patches:
       - op: replace
         path: /spec/template/spec/source/targetRevision
         value: updates
-  # - target:
-  #     group: argoproj.io
-  #     kind: Application
-  #   patch: |-
-  #     - op: replace
-  #       path: /spec/source/repoURL
-  #       value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
-  #     - op: replace
-  #       path: /spec/source/targetRevision
-  #       value: updates
+  - target:
+      group: argoproj.io
+      kind: Application
+    patch: |-
+      - op: replace
+        path: /spec/source/repoURL
+        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
+      - op: replace
+        path: /spec/source/targetRevision
+        value: updates
   # Uncomment patches to disable automatic sync
   # - target:
   #     group: argoproj.io
