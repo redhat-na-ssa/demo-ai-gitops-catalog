@@ -7,5 +7,5 @@ spec:
   location: ApplicationMenu
   text: GitHub - NA SSA
   applicationMenu:
-    section: Tools
+    section: Git Repos
     imageURL: https://img.icons8.com/fluency/512/github.png

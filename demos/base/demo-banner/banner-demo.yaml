@@ -1,9 +1,9 @@
 apiVersion: console.openshift.io/v1
 kind: ConsoleNotification
 metadata:
-  name: banner-top
+  name: banner-demo
 spec:
-  text: "< see overlays - if you are seeing this you have mistaken >"
+  text: "DEMO: < your demo here >"
   # valid locations: BannerTop, BannerBottom, BannerTopBottom
   location: BannerTop
   # https://htmlcolorcodes.com/color-picker

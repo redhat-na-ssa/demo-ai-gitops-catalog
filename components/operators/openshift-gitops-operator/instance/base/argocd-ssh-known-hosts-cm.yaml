@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
+    kludge: "true"
   name: argocd-ssh-known-hosts-cm
 data:
   ssh_known_hosts: |

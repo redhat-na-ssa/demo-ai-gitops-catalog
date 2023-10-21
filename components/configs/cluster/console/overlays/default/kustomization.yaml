@@ -11,7 +11,7 @@ resources:
 patches:
   - target:
       kind: ConsoleNotification
-      name: banner-top
+      name: banner-cluster
     patch: |-
       - op: replace
         path: /spec/text

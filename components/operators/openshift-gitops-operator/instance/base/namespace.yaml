@@ -3,4 +3,5 @@ kind: Namespace
 metadata:
   annotations:
     openshift.io/display-name: OpenShift GitOps
+    openshift.io/description: The default instance of ArgoCD on OpenShift
   name: openshift-gitops
