@@ -6,3 +6,12 @@ resources:
   - cluster-config-app-of-apps.yaml
   - cluster-configs-applicationset.yaml
   - cluster-operators-applicationset.yaml
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-cluster
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'This cluster is being managed by ArgoCD'

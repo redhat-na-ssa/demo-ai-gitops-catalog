@@ -1,13 +1,13 @@
 #!/bin/sh
 
 ocp_check_login(){
+  oc whoami || return 1
   oc cluster-info | head -n1
-  oc whoami || exit 1
   echo
 }
 
 ocp_check_info(){
-  ocp_check_login
+  ocp_check_login || return 1
 
   echo "NAMESPACE: $(oc project -q)"
   sleep "${SLEEP_SECONDS:-8}"

@@ -1,6 +1,9 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
+  annotations:
+    kludge: 'true'
+    todo: 'improve cluster security'
   name: argocd-application-controller-cluster-admin
 subjects:
   - kind: ServiceAccount

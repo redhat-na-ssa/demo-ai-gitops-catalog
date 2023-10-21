@@ -1,11 +1,11 @@
 apiVersion: console.openshift.io/v1
 kind: ConsoleLink
 metadata:
-  name: github-catalog
+  name: github-ssa
 spec:
-  href: 'https://github.com/codekow/demo-ai-gitops-catalog'
+  href: 'https://github.com/redhat-na-ssa'
   location: ApplicationMenu
-  text: GitHub - GitOps Catalog
+  text: GitHub - NA SSA
   applicationMenu:
     section: Git Repos
     imageURL: https://img.icons8.com/fluency/512/github.png

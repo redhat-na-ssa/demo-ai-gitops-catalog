@@ -39,9 +39,9 @@ source_library(){
 }
 
 setup_bin_path(){
-  [ -n "${GIT_ROOT}" ] || exit
+  [ -z ${GIT_ROOT+x} ] && return 1
   BIN_PATH="${GIT_ROOT}/scratch/bin"
-  
+
   mkdir -p "${BIN_PATH}"
   echo "${PATH}" | grep -q "${BIN_PATH}" || \
     PATH="${BIN_PATH}:${PATH}"

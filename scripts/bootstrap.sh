@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e
 
 # 8 seconds is usually enough time for the average user to realize they foobar
 export SLEEP_SECONDS=8
@@ -37,25 +37,26 @@ get_script_path
 # shellcheck source=/dev/null
 . "${SCRIPT_DIR}/functions.sh"
 
+is_sourced && return
+
+bin_check oc
+ocp_check_info || exit
+
+main(){
+  # argo bootstrap
+  argo_install
+  select_folder bootstrap
+
+  # shellcheck disable=SC2154
+  oc apply -k "bootstrap/${selected}"
+}
+
 # manage args passed to script
 if [ -z ${1+x} ]; then
+  main
+else
   export NON_INTERACTIVE=true
 
-  echo "NON INTERACTIVE MODE"
+  echo "MODE: NON INTERACTIVE"
   echo "You are running ${1}"
-  exit 0
-
 fi
-
-check_bin oc
-# check_bin kustomize
-# check_bin kubeseal
-ocp_check_info
-
-# bootstrap
-# sealed_secret_check
-argo_install
-select_folder bootstrap
-
-# shellcheck disable=SC2154
-oc apply -k "bootstrap/${selected}"

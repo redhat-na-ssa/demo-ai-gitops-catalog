@@ -12,8 +12,11 @@ k8s_wait_for_crd(){
 
 k8s_null_finalizers(){
   OBJ=${1}
+  NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
-  kubectl patch "${OBJ}" \
+  kubectl \
+    patch "${OBJ}" \
+    -n "${NAMESPACE}" \
     --type=merge \
     -p '{"metadata":{"finalizers":null}}'
 
@@ -22,6 +25,15 @@ k8s_null_finalizers(){
   #   -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
 }
 
+k8s_null_finalizers_for_all_resource(){
+  RESOURCE=${1}
+  NAMESPACE=${NAMESPACE:-$(oc project -q)}
+
+  for OBJ in $(oc -n "${NAMESPACE}" get "${RESOURCE}" -o name)
+  do
+    k8s_null_finalizers "${OBJ}"
+  done
+}
 
 # get all resources
 k8s_get_api_resources() {
@@ -80,7 +92,7 @@ k8s_ns_delete_most_resources_force() {
   for i in $(k8s_get_most_api_resources)
   do
     echo "Resource:" "${i}"
-    k8s_null_finalizers "${i}"
+    k8s_null_finalizers_for_all_resource "${i}"
     kubectl -n "${NAMESPACE}" \
       delete "${i}" \
       --all

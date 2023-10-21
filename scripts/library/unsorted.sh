@@ -30,14 +30,14 @@ select_folder(){
 
   pushd "${FOLDER}" >/dev/null || return
   
-  select selected in */
+  select selected_folder in */
   do
-    [ -d "${selected}" ] && break
+    [ -d "${selected_folder}" ] && break
     echo ">>> Invalid Selection <<<";
   done
 
-  if [ -n "${selected}" ]; then
-    echo "Selected: ${selected}"
+  if [ -n "${selected_folder}" ]; then
+    echo "Selected: ${selected_folder}"
   else
     select_folder "${FOLDER}"
   fi

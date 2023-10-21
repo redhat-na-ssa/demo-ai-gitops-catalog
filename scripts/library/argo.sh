@@ -9,11 +9,11 @@ ARGO_KUSTOMIZE_OPERATOR="components/operators/openshift-gitops-operator/operator
 ARGO_KUSTOMIZE_INSTANCE="components/operators/openshift-gitops-operator/instance/overlays/default"
 
 argo_print_info(){
+  route=$(oc get route openshift-gitops-server -o jsonpath='{.spec.host}' -n ${ARGO_NS} 2>/dev/null)
+
+  [ -z ${route+x} ] || return
   echo
-  echo "Access your cluster here:"
-
-  route=$(oc get route openshift-gitops-server -o jsonpath='{.spec.host}' -n ${ARGO_NS})
-
+  echo "Access ArgoCD here:"
   echo "https://${route}"
   echo
 }

@@ -1,4 +1,5 @@
-FROM quay.io/modh/odh-generic-data-science-notebook:v2-2023a-20230322
+ARG BASE_IMAGE=quay.io/modh/odh-generic-data-science-notebook:v2-2023a-20230322
+FROM ${BASE_IMAGE}
 
 COPY Pipfile.lock /opt/app-root/bin/
 

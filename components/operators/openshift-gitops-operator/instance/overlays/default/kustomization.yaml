@@ -5,18 +5,25 @@ namespace: openshift-gitops
 
 resources:
   - ../../base
-  - gitops-admin-group.yaml
 
 patches:
-  - patch: |-
+  - target:
+      kind: Group
+    patch: |-
+      - op: replace
+        path: /users
+        value:
+          - admin
+          - opentlc-mgr
+  - target:
+      kind: ArgoCD
+    patch: |-
       - op: replace
         path: /spec/rbac/policy
         value: |
           g, gitops-admins, role:admin
           g, system:cluster-admins, role:admin
           g, cluster-admins, role:admin
-    target:
+  - target:
       kind: ArgoCD
-  - path: patch-resource-customizations.yaml
-    target:
-      kind: ArgoCD
+    path: patch-resource-customizations.yaml

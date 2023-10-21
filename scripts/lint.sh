@@ -22,14 +22,14 @@ py_check_venv(){
   [ -e requirements.txt ] && pip install -q -r requirements.txt
 }
 
-py_check_bins(){
+py_bin_checks(){
   which python || exit 0
   which pip || exit 0
 }
 
 
 py_check_venv
-py_check_bins
+py_bin_checks
 
 # chcek scripts
 which shellcheck && \
@@ -41,7 +41,7 @@ which aspell && \
 
 # check Dockerfiles
 which hadolint && \
-  find . \( -name Dockerfile -o -name Containerfile \) -exec hadolint {} \;
+  find . -not -path "./scratch/*" \( -name Dockerfile -o -name Containerfile \) -exec hadolint {} \;
 
 # check yaml
 yamllint . && echo "YAML check passed :)"
