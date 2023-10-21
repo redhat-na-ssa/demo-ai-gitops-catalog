@@ -4,8 +4,7 @@ kind: Kustomization
 commonLabels:
   kustomize: gpu-operator
 
-namespace: nvidia-gpu-operator
-
 resources:
   - cluster-policy.yaml
   - device-plugin-config.yaml
+  - setup-dashboard-job.yaml
