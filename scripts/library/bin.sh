@@ -1,6 +1,6 @@
 #!/bin/bash
 
-check_bin(){
+bin_check(){
   name=${1}
 
   which "${name}" || download_"${name}"

@@ -22,14 +22,14 @@ py_check_venv(){
   [ -e requirements.txt ] && pip install -q -r requirements.txt
 }
 
-py_check_bins(){
+py_bin_checks(){
   which python || exit 0
   which pip || exit 0
 }
 
 
 py_check_venv
-py_check_bins
+py_bin_checks
 
 # chcek scripts
 which shellcheck && \

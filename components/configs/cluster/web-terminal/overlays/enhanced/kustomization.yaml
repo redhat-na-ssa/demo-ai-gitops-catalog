@@ -49,8 +49,8 @@ patches:
 
             [ -d ~/.venv ] || pyvenv-3.6 ~/.venv
 
-            check_bin busybox
-            check_bin rclone
-            check_bin restic
+            bin_check busybox
+            bin_check rclone
+            bin_check restic
 
             sleep infinity

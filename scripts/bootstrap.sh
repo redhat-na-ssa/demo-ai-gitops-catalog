@@ -43,17 +43,13 @@ if [ -z ${1+x} ]; then
 
   echo "NON INTERACTIVE MODE"
   echo "You are running ${1}"
-  exit 0
-
 fi
 
-check_bin oc
-# check_bin kustomize
-# check_bin kubeseal
+bin_check oc
+set -x
 ocp_check_info
-
+set +x
 # bootstrap
-# sealed_secret_check
 argo_install
 select_folder bootstrap
 

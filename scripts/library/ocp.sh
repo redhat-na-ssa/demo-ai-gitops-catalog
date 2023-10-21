@@ -2,7 +2,7 @@
 
 ocp_check_login(){
   oc cluster-info | head -n1
-  oc whoami || exit 1
+  oc whoami || return 1
   echo
 }
 

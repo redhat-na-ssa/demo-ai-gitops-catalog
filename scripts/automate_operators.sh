@@ -44,7 +44,7 @@ is_sourced() {
 check_oc(){
   echo "Are you on the right OCP cluster?"
 
-  oc whoami || exit 0
+  oc whoami || return 1
   oc status
 
   sleep 4
