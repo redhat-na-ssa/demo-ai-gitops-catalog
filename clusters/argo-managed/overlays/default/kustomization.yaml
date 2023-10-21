@@ -7,6 +7,21 @@ resources:
 
 patches:
   - target:
+      kind: Secret
+      name: repo-https
+    patch: |-
+      - op: replace
+        path: /stringData/url
+        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
+  - target:
+      group: argoproj.io
+      kind: Application
+      name: cluster-config-app-of-apps
+    patch: |-
+      - op: replace
+        path: /spec/source/path
+        value: clusters/argo-managed/overlays/default
+  - target:
       group: argoproj.io
       kind: ApplicationSet
     patch: |-
