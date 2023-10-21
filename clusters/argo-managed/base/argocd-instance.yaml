@@ -4,7 +4,8 @@ metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-options: Prune=false
-name: config-cluster-gitops=
+name: config-cluster-gitops
+namespace: openshift-gitops
 spec:
   destination:
     namespace: openshift-gitops
