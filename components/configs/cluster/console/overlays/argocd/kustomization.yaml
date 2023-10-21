@@ -17,9 +17,9 @@ patches:
         path: /spec/text
         value: 'This cluster is managed by OpenShift GitOps'
       # https://htmlcolorcodes.com/color-picker
-      - op: replace
-        path: /spec/color
-        value: '#54FF00'
+      # - op: replace
+      #   path: /spec/color
+      #   value: '#54FF00'
       - op: replace
         path: /spec/backgroundColor
-        value: '#FF00F3'
+        value: '#FF9900'
