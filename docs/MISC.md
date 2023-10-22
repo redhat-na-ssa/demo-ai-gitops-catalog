@@ -12,4 +12,3 @@ oc patch statefulset/airflow-worker --patch '{"spec":{"template":{"spec":{"initC
 
 oc patch statefulset/airflow-worker --patch '{"spec":{"template":{"spec":{"containers":[{"name":"git-sync","securityContext":null}]}}}}'
 
-oc mirror list operators --catalog registry.redhat.io/redhat/redhat-operator-index:v4.12 --package rhods-operator

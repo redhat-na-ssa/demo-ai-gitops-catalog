@@ -5,7 +5,7 @@ resources:
   - ../../clusters/default
   - ../base
   - ../base/nvidia-gpu-autoscale
-  - ../base/rhods
+  - ../base/devspaces
 
 patches:
   - target:
@@ -14,4 +14,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'DEMO: Red Hat Open Data Science (RHODS) w/ GPUs'
+        value: 'DEMO: Red Hat OpenShift Dev Spaces w/ GPUs'

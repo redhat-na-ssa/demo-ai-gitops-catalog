@@ -50,6 +50,8 @@ patches:
             [ -d ~/.venv ] || pyvenv-3.6 ~/.venv
 
             bin_check busybox
+
+            bin_check oc-mirror
             bin_check rclone
             bin_check restic
 

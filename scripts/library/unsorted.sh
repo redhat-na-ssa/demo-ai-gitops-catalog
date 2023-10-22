@@ -1,25 +1,5 @@
 #!/bin/bash
 
-until_true(){
-  echo "Running:" "${@}"
-  until "${@}"
-  do
-    sleep 1
-    echo "and again..."
-  done
-
-  echo "[OK]"
-}
-
-fake_argocd(){
-  if [ ! -f "${1}/kustomization.yaml" ]; then
-    echo "Please provide a dir with \"kustomization.yaml\""
-    return
-  fi
-
-  until_true oc apply -k "${1}"
-}
-
 select_folder(){
   FOLDER="${1:-options}"
   PS3="Select by number: "
@@ -43,6 +23,38 @@ select_folder(){
   fi
 
   popd >/dev/null || return
+}
+
+operator_list(){
+  VERSION=4.12
+  INDEX=${1:-registry.redhat.io/redhat/redhat-operator-index:v${VERSION}}
+
+  which oc-mirror >/dev/null 1>&2 || return
+
+  echo "Please be patient. This process is slow..." 1>&2
+  echo "oc mirror list operators --catalog ${INDEX}" 1>&2
+  echo "INDEX: ${INDEX}"
+
+  oc mirror list operators --catalog "${INDEX}"
+  
+  echo ""
+}
+
+operator_list_all(){
+  VERSION=4.12
+  # redhat-operators
+  INDEX_LIST="registry.redhat.io/redhat/redhat-operator-index:v${VERSION}"
+  # certified-operators
+  INDEX_LIST="${INDEX_LIST} registry.redhat.io/redhat/certified-operator-index:v${VERSION}"
+  # redhat-marketplace
+  INDEX_LIST="${INDEX_LIST} registry.redhat.io/redhat/redhat-marketplace-index:v${VERSION}"
+  # community-operators
+  INDEX_LIST="${INDEX_LIST} registry.redhat.io/redhat/community-operator-index:v${VERSION}"
+
+  for index in ${INDEX_LIST}
+  do
+    operator_list "${index}"
+  done
 }
 
 reset_wordlist(){

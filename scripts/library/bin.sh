@@ -6,14 +6,14 @@ bin_check(){
   which "${name}" || download_"${name}"
  
   case ${name} in
-    helm|kustomize|oc|odo|openshift-install|s2i|tkn)
+    helm|kustomize|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
       echo "auto-complete: . <(${name} completion bash)"
       
       # shellcheck source=/dev/null
       . <(${name} completion bash)
       ${name} completion bash > "${BIN_PATH}/${name}.bash"
       
-      ${name} version
+      ${name} version 2>&1 || ${name} --version
       ;;
     restic)
       restic generate --bash-completion "${BIN_PATH}/restic.bash"
@@ -41,7 +41,7 @@ download_helm(){
   BIN_VERSION=latest
   DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}"/ helm-linux-amd64
-  mv  "${BIN_PATH}/helm-linux-amd64"  "${BIN_PATH}/helm"
+  mv "${BIN_PATH}/helm-linux-amd64"  "${BIN_PATH}/helm"
 }
 
 download_kustomize(){
@@ -51,14 +51,27 @@ download_kustomize(){
 }
 
 download_oc(){
-  BIN_VERSION=4.10
+  BIN_VERSION=4.12
   DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${BIN_VERSION}/openshift-client-linux.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" oc kubectl
+}
+
+download_oc-mirror(){
+  BIN_VERSION=4.12
+  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${BIN_VERSION}/oc-mirror.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
+  chmod +x "${BIN_PATH}/oc-mirror"
 }
 
 download_odo(){
   BIN_VERSION=latest
   DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/odo/${BIN_VERSION}/odo-linux-amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
+}
+
+download_opm(){
+  BIN_VERSION=latest
+  DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/${BIN_VERSION}/opm-linux.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
 }
 

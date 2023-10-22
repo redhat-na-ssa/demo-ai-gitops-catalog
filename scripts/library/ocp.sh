@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ocp_check_login(){
   oc whoami || return 1
@@ -181,6 +181,12 @@ ocp_remove_kubeadmin(){
   [ ! -e scratch/kubeadmin.yaml ] && \
     oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
   oc delete secret kubeadmin -n kube-system
+}
+
+ocp_release_info(){
+  VERSION=${1:-stable-4.12}
+  echo "VERSION: ${VERSION}"
+  curl -sL "https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/${VERSION}/release.txt"
 }
 
 ocp_upgrade_cluster(){

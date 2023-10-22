@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../clusters/default
-  - ../base/demo-info
+  - ../base
   - ../base/nvidia-gpu-autoscale
 
 patches:

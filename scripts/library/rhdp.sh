@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 rhdp_get_uuid(){
   oc whoami || exit 0
