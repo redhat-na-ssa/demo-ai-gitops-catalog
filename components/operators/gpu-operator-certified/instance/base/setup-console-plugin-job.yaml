@@ -8,6 +8,13 @@ rules:
   - ''
   resources:
   - configmaps
+  - services
+  verbs:
+  - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
   verbs:
   - '*'
 - apiGroups:
@@ -22,8 +29,12 @@ rules:
   - console.openshift.io
   resources:
   - consoleplugins
-  resourceNames:
-  - release-name-console-plugin-nvidia-gpu
+  verbs:
+  - '*'
+- apiGroups:
+  - nvidia.com
+  resources:
+  - clusterpolicies
   verbs:
   - '*'
 ---
@@ -85,8 +96,6 @@ spec:
             - -c
             - |
               #!/usr/bin/env bash
-              set -x
-
               cd /tmp
 
               nvidia_install_console_plugin(){
