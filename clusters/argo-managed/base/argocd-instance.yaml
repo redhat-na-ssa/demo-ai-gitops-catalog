@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Prune=false
+  name: config-openshift-gitops
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: openshift-gitops
+    server: https://kubernetes.default.svc
+  project: cluster-config
+  source:
+    path: components/operators/openshift-gitops-operator/instance/overlays/default
+    repoURL: https://github.com/codekow/demo-ai-gitops-catalog.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      selfHeal: true

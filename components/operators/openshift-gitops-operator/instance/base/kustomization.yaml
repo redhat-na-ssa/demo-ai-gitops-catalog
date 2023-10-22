@@ -7,5 +7,5 @@ resources:
 - argocd-ssh-known-hosts-cm.yaml
 - cluster-role-binding.yaml
 - gitops-admin-group.yaml
-# - namespace.yaml
+- namespace.yaml
 - openshift-gitops-cr.yaml

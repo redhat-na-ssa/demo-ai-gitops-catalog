@@ -1,3 +1,4 @@
+
 ACK
 ACM
 ACS
@@ -149,6 +150,7 @@ devfile
 devspaces
 devworkspace
 devworkspaces
+dir
 disableNameSuffixHash
 dns
 dotnet
@@ -210,6 +212,7 @@ localhost
 machineset
 managementState
 mastersSchedulable
+mkdir
 mufg
 na
 namespace
@@ -253,6 +256,7 @@ redhat
 redistributions
 repo
 reusability
+rh
 rhdp
 rhel
 rhods
@@ -288,6 +292,8 @@ traefik
 triggerer
 ubi
 udi
+untar
+untardir
 useable
 vSphere
 vscode

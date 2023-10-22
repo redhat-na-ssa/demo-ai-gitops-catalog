@@ -7,5 +7,5 @@ spec:
   # valid locations: BannerTop, BannerBottom, BannerTopBottom
   location: BannerTop
   # https://htmlcolorcodes.com/color-picker
-  color: '#fff'
-  backgroundColor: '#0066ff'
+  color: '#FFF'
+  backgroundColor: '#9F0000'

@@ -2,23 +2,61 @@
 
 nvidia_setup_dashboard_monitor(){
   curl -sLfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
-  oc create configmap nvidia-dcgm-exporter-dashboard -n openshift-config-managed --from-file=dcgm-exporter-dashboard.json || true
-  oc label configmap nvidia-dcgm-exporter-dashboard -n openshift-config-managed "console.openshift.io/dashboard=true" --overwrite
-  oc label configmap nvidia-dcgm-exporter-dashboard -n openshift-config-managed "console.openshift.io/odc-dashboard=true" --overwrite
+  oc -n openshift-config-managed create configmap nvidia-dcgm-exporter-dashboard --from-file=dcgm-exporter-dashboard.json || true
+  oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/dashboard=true" --overwrite
+  oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/odc-dashboard=true" --overwrite
   oc -n openshift-config-managed get cm nvidia-dcgm-exporter-dashboard --show-labels
   rm dcgm-exporter-dashboard.json
 }
 
-nvidia_setup_dashboard_admin(){
-  helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
-  helm repo update
-  helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu
+nvidia_install_console_plugin_dump_helm(){
+  # kludge: find a better way
+  OUTPUT_PATH=components/operators/gpu-operator-certified/instance/base
 
-  oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" || true
-  oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge || true
-  oc patch consoles.operator.openshift.io cluster --patch '[{"op": "add", "path": "/spec/plugins/-", "value": "console-plugin-nvidia-gpu" }]' --type=json || true
-  oc patch clusterpolicies.nvidia.com gpu-cluster-policy --patch '{ "spec": { "dcgmExporter": { "config": { "name": "console-plugin-nvidia-gpu" } } } }' --type=merge || true
-  oc -n nvidia-gpu-operator get all -l app.kubernetes.io/name=console-plugin-nvidia-gpu
+  which helm || return 1
+  helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
+  helm repo update > /dev/null 2>&1
+
+  # rm -rf "${OUTPUT_PATH}/console-plugin-nvidia-gpu"
+  helm template \
+    --repo https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu \
+    -n nvidia-gpu-operator \
+    --output-dir "${OUTPUT_PATH}" \
+    console-plugin-nvidia-gpu
+  rm -rf "${OUTPUT_PATH}/console-plugin-nvidia-gpu/templates/tests"
+  sed -i '
+    0,/instance: release-name/{//d;}
+    s/instance: release-name$/instance: console-plugin-nvidia-gpu/g
+    s/name: release-name-/name: /g' "${OUTPUT_PATH}/console-plugin-nvidia-gpu/templates/"*
+}
+
+nvidia_install_console_plugin(){
+  GIT_URL=https://github.com/codekow/demo-ai-gitops-catalog.git
+
+  if which helm; then
+    helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
+    helm repo update > /dev/null 2>&1
+    helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu > /dev/null 2>&1
+  else
+    oc apply -k "${GIT_URL}/components/operators/gpu-operator-certified/instance/base/console-plugin-nvidia-gpu"
+  fi
+}
+
+nvidia_activate_console_plugin(){
+  if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
+    oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
+  else
+    oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" | grep -q console-plugin-nvidia-gpu || \
+      oc patch consoles.operator.openshift.io cluster --patch '[{"op": "add", "path": "/spec/plugins/-", "value": "console-plugin-nvidia-gpu" }]' --type=json
+  fi
+
+  oc patch clusterpolicies.nvidia.com gpu-cluster-policy --patch '{ "spec": { "dcgmExporter": { "config": { "name": "console-plugin-nvidia-gpu" } } } }' --type=merge
+  oc -n nvidia-gpu-operator get deploy -l app.kubernetes.io/name=console-plugin-nvidia-gpu
+}
+
+nvidia_setup_console_plugin(){
+  nvidia_install_console_plugin || return
+  nvidia_activate_console_plugin || return
 }
 
 nvidia_setup_mig_config(){
