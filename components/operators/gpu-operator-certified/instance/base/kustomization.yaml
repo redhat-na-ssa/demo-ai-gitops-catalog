@@ -1,11 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-commonLabels:
-  kustomize: gpu-operator
-
 resources:
-  # - console-plugin-nvidia-gpu
+  - console-plugin-nvidia-gpu
   - cluster-policy.yaml
   - device-plugin-config.yaml
   - setup-console-plugin-job.yaml
