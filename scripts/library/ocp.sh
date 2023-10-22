@@ -183,6 +183,12 @@ ocp_remove_kubeadmin(){
   oc delete secret kubeadmin -n kube-system
 }
 
+ocp_release_info(){
+  VERSION=${1:-stable-4.12}
+  echo "VERSION: ${VERSION}"
+  curl -sL "https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/${VERSION}/release.txt"
+}
+
 ocp_upgrade_cluster(){
   OCP_VERSION="${1:-latest}"
 
