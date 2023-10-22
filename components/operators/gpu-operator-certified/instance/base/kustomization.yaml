@@ -5,6 +5,7 @@ commonLabels:
   kustomize: gpu-operator
 
 resources:
+  # - console-plugin-nvidia-gpu
   - cluster-policy.yaml
   - device-plugin-config.yaml
   - setup-console-plugin-job.yaml
