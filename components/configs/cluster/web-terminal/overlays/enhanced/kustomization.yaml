@@ -51,7 +51,7 @@ patches:
 
             bin_check busybox
 
-            bin_check oc_mirror
+            bin_check oc-mirror
             bin_check rclone
             bin_check restic
 

@@ -6,7 +6,7 @@ bin_check(){
   which "${name}" || download_"${name}"
  
   case ${name} in
-    helm|kustomize|oc|odo|openshift-install|opm|s2i|tkn)
+    helm|kustomize|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
       echo "auto-complete: . <(${name} completion bash)"
       
       # shellcheck source=/dev/null
@@ -56,7 +56,7 @@ download_oc(){
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" oc kubectl
 }
 
-download_oc_mirror(){
+download_oc-mirror(){
   BIN_VERSION=4.12
   DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${BIN_VERSION}/oc-mirror.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
