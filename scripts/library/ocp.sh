@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ocp_check_login(){
   oc whoami || return 1

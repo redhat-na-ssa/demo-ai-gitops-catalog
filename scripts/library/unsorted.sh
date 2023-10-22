@@ -1,24 +1,3 @@
-#!/bin/bash
-
-until_true(){
-  echo "Running:" "${@}"
-  until "${@}"
-  do
-    sleep 1
-    echo "and again..."
-  done
-
-  echo "[OK]"
-}
-
-fake_argocd(){
-  if [ ! -f "${1}/kustomization.yaml" ]; then
-    echo "Please provide a dir with \"kustomization.yaml\""
-    return
-  fi
-
-  until_true oc apply -k "${1}"
-}
 
 select_folder(){
   FOLDER="${1:-options}"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 nvidia_setup_dashboard_monitor(){
   curl -sLfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
