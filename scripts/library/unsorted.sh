@@ -1,3 +1,4 @@
+#!/bin/bash
 
 select_folder(){
   FOLDER="${1:-options}"

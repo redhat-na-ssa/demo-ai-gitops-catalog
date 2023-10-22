@@ -13,7 +13,7 @@ bin_check(){
       . <(${name} completion bash)
       ${name} completion bash > "${BIN_PATH}/${name}.bash"
       
-      ${name} version
+      ${name} version 2>&1 || ${name} --version
       ;;
     restic)
       restic generate --bash-completion "${BIN_PATH}/restic.bash"
