@@ -74,7 +74,7 @@ spec:
     spec:
       containers:
         - name: nvidia-gpu-console-setup
-          image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
           env:
             - name: NAMESPACE
               valueFrom:
@@ -89,15 +89,19 @@ spec:
 
               cd /tmp
 
-              nvidia_setup_console_plugin(){
+              nvidia_install_console_plugin(){
+                GIT_URL=https://github.com/codekow/demo-ai-gitops-catalog.git
+
                 if which helm; then
                   helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
                   helm repo update > /dev/null 2>&1
                   helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu > /dev/null 2>&1
                 else
-                  return
+                  oc apply -k "${GIT_URL}/components/operators/gpu-operator-certified/instance/base/console-plugin-nvidia-gpu"
                 fi
+              }
 
+              nvidia_activate_console_plugin(){
                 if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
                   oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
                 else
@@ -109,8 +113,12 @@ spec:
                 oc -n nvidia-gpu-operator get deploy -l app.kubernetes.io/name=console-plugin-nvidia-gpu
               }
 
-              nvidia_setup_console_plugin
+              nvidia_setup_console_plugin(){
+                nvidia_install_console_plugin || return
+                nvidia_activate_console_plugin || return
+              }
 
+              nvidia_setup_console_plugin
 
       restartPolicy: Never
       terminationGracePeriodSeconds: 30

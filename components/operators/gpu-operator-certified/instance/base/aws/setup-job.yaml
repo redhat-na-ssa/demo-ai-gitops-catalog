@@ -61,7 +61,7 @@ spec:
     spec:
       containers:
         - name: aws-gpu-machineset-setup
-          image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
           env:
             - name: NAMESPACE
               valueFrom:
