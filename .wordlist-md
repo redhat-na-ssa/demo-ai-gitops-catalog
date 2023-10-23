@@ -27,6 +27,7 @@ arn
 ARN
 auth
 authfile
+autoscale
 autoscaler
 autoscaling
 aws
