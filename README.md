@@ -49,7 +49,14 @@ Use the following script:
 # load functions
 . scripts/functions.sh
 
+# setup a basic cluster
 local_argocd clusters/default
+
+# setup a dev spaces demo with gpu things
+local_argocd demos/devspaces-nvidia-gpu-autoscale
+
+# setup a rhods /w all the things demo
+local_argocd demos/rhods-nvidia-gpu-autoscale
 ```
 
 Many common operational tasks are provided in the [scripts library](scripts/library/). You can run individual [functions](scripts/functions.sh) in a `bash` shell:
