@@ -38,29 +38,33 @@ The following cli tools are required:
 
 ```sh
 oc whoami
-git clone <repo>
+git clone < repo url >
 ```
 
 ### Cluster Quick Start for OpenShift GitOps
 
-Execute the following script:
+Use the following script:
 
 ```sh
-./scripts/bootstrap.sh
+# load functions
+. scripts/functions.sh
+
+local_argocd clusters/default
+```
+
+Many common operational tasks are provided in the [scripts library](scripts/library/). You can run individual [functions](scripts/functions.sh) in a `bash` shell:
+
+```sh
+# load functions
+. scripts/functions.sh
+
+get_functions
 ```
 
 The `bootstrap.sh` script will:
 
 - Install the [OpenShift GitOps Operator](components/operators/openshift-gitops-operator)
 - Create an [ArgoCD instance](components/operators/openshift-gitops-operator/instance/base/openshift-gitops-cr.yaml) in the `openshift-gitops` namespace
-
-Many common operational tasks are provided in the [scripts library](scripts/library/). You can run individual [functions](scripts/functions.sh) in a `bash` shell:
-
-```sh
-source scripts/functions.sh
-
-get_functions
-```
 
 <!-- ### Sealed Secrets Bootstrap
 
