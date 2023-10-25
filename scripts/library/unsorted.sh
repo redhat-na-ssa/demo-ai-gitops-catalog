@@ -60,3 +60,15 @@ operator_list_all(){
 reset_wordlist(){
   pyspelling | sort -u | grep -E -v ' |---|/|^$' > .wordlist-md
 }
+
+setup_namespace(){
+  NAMESPACE=${1}
+
+  oc new-project "${NAMESPACE}" 2>/dev/null || \
+    oc project "${NAMESPACE}"
+}
+
+ocp_gcp_get_key(){
+  # get gcp creds
+  oc -n kube-system extract secret/gcp-credentials --keys=service_account.json --to=- | jq . > service_account.json
+}
