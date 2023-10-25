@@ -53,3 +53,20 @@ aws_stop_instance() {
     aws ec2 stop-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --instance-ids="${iid}"
   fi 
 }
+
+aws_setup_ack_system(){
+  NAMESPACE=ack-system
+
+  setup_namespace ${NAMESPACE}
+
+  oc apply -k components/operators/${NAMESPACE}/aggregate/popular
+
+  for type in ec2 ecr iam s3 sagemaker
+  do
+    oc apply -k openshift/operators/ack-${type}-controller/operator/overlays/alpha
+
+    < openshift/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
+      sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
+      oc -n ${NAMESPACE} apply -f -
+  done
+}
