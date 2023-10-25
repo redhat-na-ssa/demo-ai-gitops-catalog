@@ -18,7 +18,7 @@ check_cluster_version(){
   fi
 }
 
-local_argocd(){
+apply_firmly(){
   if [ ! -f "${1}/kustomization.yaml" ]; then
     echo "Please provide a dir with \"kustomization.yaml\""
     return
