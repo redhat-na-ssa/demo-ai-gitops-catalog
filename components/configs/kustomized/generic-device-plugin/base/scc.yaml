@@ -23,7 +23,10 @@ metadata:
   name: generic-device-plugin
 readOnlyRootFilesystem: true
 requiredDropCapabilities:
+# - KILL
 - MKNOD
+# - SETUID
+# - SETGID
 runAsUser:
   type: RunAsAny
 seLinuxContext:
