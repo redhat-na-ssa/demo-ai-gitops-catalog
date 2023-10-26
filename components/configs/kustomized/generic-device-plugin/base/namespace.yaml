@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: generic-device-plugin
+  annotations:
+    openshift.io/display-name: "Generic Device Plugin"
+    argocd.argoproj.io/sync-wave: "0"

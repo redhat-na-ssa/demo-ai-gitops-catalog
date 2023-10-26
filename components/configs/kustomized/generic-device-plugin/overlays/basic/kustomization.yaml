@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: generic-device-plugin
+
+resources:
+- ../../base
+
+patches:
+  - target:
+      group: apps
+      kind: DaemonSet
+      name: generic-device-plugin
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/args
+        value:
+          - '--log-level'
+          - 'info'
+          - '--domain'
+          - 'device'
+          - '--device'
+          - |
+            name: ch340
+            groups:
+              - usb:
+                - vendor: '1A86'
+                - product: '7523'
+          - '--device'
+          - |
+            name: serial
+            groups:
+              - paths:
+                  - path: /dev/ttyUSB*
+          - '--device'
+          - |
+            name: video
+            groups:
+              - paths:
+                  - path: /dev/video0
