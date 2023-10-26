@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: generic-device-plugin
+
+resources:
+- ../../base
+
+patches:
+  - target:
+      group: apps
+      kind: DaemonSet
+      name: generic-device-plugin
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/args
+        value:
+          - '--log-level'
+          - 'debug'
+          - '--domain'
+          - 'devices.custom.io'
+          - '--device'
+          - |
+            name: c920
+            groups:
+              - usb:
+                - vendor: '046D'
+                - product: '08E5'
