@@ -18,7 +18,7 @@ patches:
           - '--log-level'
           - 'info'
           - '--domain'
-          - 'device'
+          - 'devices.custom.io'
           - '--device'
           - |
             name: ch340
