@@ -101,14 +101,14 @@ k8s_ns_delete_most_resources_force() {
 
 k8s_api_start_proxy(){
   echo "k8s api proxy: starting..."
-  kubectl proxy -p 8080 &
+  kubectl proxy -p 8001 &
   API_PROXY_PID=$!
   sleep 3
 }
 
 # do core resources first, which are at a separate api location
 k8s_api_dump_core(){
-  SERVER=${1:-http://localhost:8080}
+  SERVER=${1:-http://localhost:8001}
   api="core"
   curl -s "${SERVER}/api/v1" | \
     jq -r --arg api "$api" \
@@ -117,7 +117,7 @@ k8s_api_dump_core(){
 
 # now do non-core resources
 k8s_api_dump_noncore(){
-  SERVER=${1:-http://localhost:8080}
+  SERVER=${1:-http://localhost:8001}
   APIS=$(curl -s "${SERVER}/apis" | jq -r '[.groups | .[].name] | join(" ")')
 
   for api in ${APIS}; do
@@ -132,6 +132,24 @@ k8s_api_dump_resources(){
   k8s_api_start_proxy
   k8s_api_dump_core
   k8s_api_dump_noncore
+
+  echo "k8s api proxy: stopping..."
+  kill "${API_PROXY_PID}"
+}
+
+k8s_delete_extended_resource_on_all_nodes(){
+  RESOURCE_NAME=${1:-devices.custom.io~1tpm}
+
+  k8s_api_start_proxy
+
+  for node in $(kubectl get nodes -o name | sed 's/node.//')
+  do
+    echo "modifying: ${node}"
+    curl --header "Content-Type: application/json-patch+json" \
+      --request PATCH \
+      --data '[{"op": "remove", "path": "/status/capacity/'"${RESOURCE_NAME}"'"}]' \
+      "http://localhost:8001/api/v1/nodes/${node}/status"
+  done
 
   echo "k8s api proxy: stopping..."
   kill "${API_PROXY_PID}"
