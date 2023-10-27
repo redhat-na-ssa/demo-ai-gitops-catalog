@@ -38,7 +38,7 @@ aws_setup_ack_system(){
 
   oc apply -k components/operators/${NAMESPACE}/aggregate/popular
 
-  for type in ec2 ecr iam s3 sagemaker
+  for type in ec2 ecr iam lambda route53 s3 sagemaker
   do
     oc apply -k openshift/operators/ack-${type}-controller/operator/overlays/alpha
 
