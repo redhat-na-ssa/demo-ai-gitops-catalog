@@ -8,7 +8,7 @@ sandbox_cleanup(){
   echo "CTRL + C to cancel"
   sleep 8
     
-  k8s_ns_delete_most_resources sandbox
+  k8s_ns_delete_most_resources_force sandbox
 }
 
 sandbox_cleanup
