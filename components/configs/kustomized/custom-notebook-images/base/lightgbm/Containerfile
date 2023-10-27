@@ -1,8 +1,10 @@
 ARG BASE_IMAGE=quay.io/modh/odh-generic-data-science-notebook:v2-2023a-20230322
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE}
 
 COPY Pipfile.lock /opt/app-root/bin/
 
+# hadolint ignore=DL3003
 RUN cd /opt/app-root/bin \
  && micropipenv install \
  && rm -f Pipfile.lock \

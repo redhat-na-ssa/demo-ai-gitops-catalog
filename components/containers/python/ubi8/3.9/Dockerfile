@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.3-labs
 ARG IMAGE_NAME=ghcr.io/redhat-na-ssa/udi-cuda:11.8.0-cudnn8-devel-ubi8
+# hadolint ignore=DL3006
 FROM ${IMAGE_NAME}
 
 # cherry picked from below

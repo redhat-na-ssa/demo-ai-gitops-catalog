@@ -1,4 +1,5 @@
 ARG BASE_IMAGE=quay.io/modh/cuda-notebooks:cuda-jupyter-tensorflow-ubi9-python-3.9-2023a-weekly
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE}
 
 USER 0

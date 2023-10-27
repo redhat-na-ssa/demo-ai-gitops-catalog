@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.3-labs
 ARG IMAGE_NAME=docker.io/nvidia/cuda:11.8.0-cudnn8-devel-ubi8
+# hadolint ignore=DL3006
 FROM ${IMAGE_NAME}
 
 # cherry picked from below
@@ -14,6 +15,7 @@ LABEL io.openshift.expose-services=""
 USER 0
 
 # install: common tools
+# hadolint ignore=DL3033
 RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
     dnf install -y bash curl diffutils git git-lfs iproute jq less lsof man nano procps p7zip p7zip-plugins \
                    perl-Digest-SHA net-tools openssh-clients rsync socat sudo time vim wget zip && \
