@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../clusters/default
+  - ../base
+  - ../base/devspaces
+  - ../base/nvidia-gpu-autoscale
+  - ../base/rhods
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-demo
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'DEMO: Red Hat Open Data Science (RHODS) and Dev Spaces w/ GPUs'
