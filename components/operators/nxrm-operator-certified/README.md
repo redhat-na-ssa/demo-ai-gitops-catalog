@@ -1,16 +1,16 @@
-# 
+# Nexus Repository Operator
 
-Install .
+Install Nexus Repository Operator.
 
 Do not use the `base` directory directly, as you will need to patch the `channel` based on the version of OpenShift you are using, or the version of the operator you want to use.
 
 The current *overlays* available are for the following channels:
 
-
+* [stable](operator/overlays/stable)
 
 ## Usage
 
-If you have cloned the `gitops-catalog` repository, you can install  based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
+If you have cloned the `gitops-catalog` repository, you can install Nexus Repository Operator based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
 
 ```
 oc apply -k nxrm-operator-certified/operator/overlays/<channel>
