@@ -36,14 +36,17 @@ aws_setup_ack_system(){
 
   setup_namespace ${NAMESPACE}
 
-  oc apply -k components/operators/${NAMESPACE}/aggregate/popular
+  oc apply -k ../${NAMESPACE}/aggregate/popular
 
   for type in ec2 ecr iam lambda route53 s3 sagemaker
   do
-    oc apply -k openshift/operators/ack-${type}-controller/operator/overlays/alpha
+    oc apply -k ../ack-${type}-controller/operator/overlays/alpha
 
-    < openshift/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
+    < ../ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
       sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
       oc -n ${NAMESPACE} apply -f -
   done
 }
+
+ocp_aws_get_key
+aws_setup_ack_system
