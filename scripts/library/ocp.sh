@@ -7,6 +7,7 @@ ocp_check_login(){
 }
 
 ocp_check_info(){
+  echo "OCP INFO:"
   ocp_check_login || return 1
 
   echo "NAMESPACE: $(oc project -q)"
