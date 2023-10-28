@@ -24,12 +24,12 @@ apply_firmly(){
     return
   fi
 
-  until_true oc apply -k "${1}"
+  until_true oc apply -k "${1}" 2>/dev/null
 }
 
 until_true(){
   echo "Running:" "${@}"
-  until "${@}"
+  until "${@}" 1>&2
   do
     echo "again..."
     sleep 2
