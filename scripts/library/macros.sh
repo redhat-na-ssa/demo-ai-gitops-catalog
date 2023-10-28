@@ -31,9 +31,3 @@ setup_namespaces(){
   # setup namespaces
   oc apply -k components/configs/namespaces/overlays/default
 }
-
-demo_default(){
-  selected_folder=bootstrap/default
-  
-  apply_firmly "${selected_folder}"
-}
