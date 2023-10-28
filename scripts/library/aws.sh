@@ -1,15 +1,11 @@
 #!/bin/bash
 
-alias aws=aws_cli
-
-aws_cli(){
-  #shellcheck disable=SC2068
-  aws_check_cli && aws ${@}
-}
-
 aws_check_cli(){
-  aws --version || return
+  which aws || \
+    pip install awscli -q || return
 }
+
+aws_check_cli
 
 aws_get_all_ec2(){
   aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g'
@@ -59,21 +55,4 @@ aws_stop_instance(){
     echo "Stopping instance ${iid}"
     aws ec2 stop-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --instance-ids="${iid}"
   fi 
-}
-
-aws_setup_ack_system(){
-  NAMESPACE=ack-system
-
-  setup_namespace ${NAMESPACE}
-
-  oc apply -k "${GIT_ROOT}"/components/operators/${NAMESPACE}/aggregate/popular
-
-  for type in ec2 ecr iam s3 sagemaker
-  do
-    oc apply -k "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha
-
-    < "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
-      sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-      oc -n ${NAMESPACE} apply -f -
-  done
 }
