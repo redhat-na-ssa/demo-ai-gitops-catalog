@@ -32,7 +32,7 @@ until_true(){
   until "${@}" 1>&2
   do
     echo "again..."
-    sleep 2
+    sleep 20
   done
 
   echo "[OK]"
