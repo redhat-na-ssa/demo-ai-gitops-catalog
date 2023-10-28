@@ -16,10 +16,10 @@ USER 0
 
 # install: common tools
 # hadolint ignore=DL3033
-RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
-    dnf install -y bash curl diffutils git git-lfs iproute jq less lsof man nano procps p7zip p7zip-plugins \
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
+    yum install -y bash curl diffutils git git-lfs iproute jq less lsof man nano procps p7zip p7zip-plugins \
                    perl-Digest-SHA net-tools openssh-clients rsync socat sudo time vim wget zip && \
-                   dnf clean all && \
+                   yum clean all && \
                    rm -rf /var/cache/yum/*
 
 # install: other bins
@@ -32,6 +32,7 @@ RUN yum install -y libGL bash-completion && \
 ARG OC4_URL="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/stable/openshift-client-linux.tar.gz"
 ARG TKN_URL="https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/latest/tkn-linux-amd64.tar.gz"
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sL "${OC4_URL}" | \
       tar -C /usr/local/bin -vzxf- oc kubectl && \
       /usr/local/bin/oc completion bash > /etc/bash_completion.d/oc && \
@@ -45,6 +46,7 @@ RUN curl -sL "${OC4_URL}" | \
 COPY --chown=0:0 entrypoint.sh /
 
 # setup: user
+# hadolint ignore=SC2016
 RUN \
     # setup $PS1 prompt
     echo "export PS1='\W \`git branch --show-current 2>/dev/null | sed -r -e \"s@^(.+)@\(\1\) @\"\`$ '" >> /etc/skel/.bashrc && \
