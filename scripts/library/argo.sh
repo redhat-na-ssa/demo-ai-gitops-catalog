@@ -11,7 +11,7 @@ ARGO_KUSTOMIZE_INSTANCE="components/operators/openshift-gitops-operator/instance
 argo_print_info(){
   route=$(oc get route openshift-gitops-server -o jsonpath='{.spec.host}' -n ${ARGO_NS} 2>/dev/null)
 
-  [ -z ${route+x} ] || return
+  [ -n ${route+x} ] || return
   echo
   echo "Access ArgoCD here:"
   echo "https://${route}"
