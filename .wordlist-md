@@ -20,6 +20,7 @@ APIs
 apiVersion
 approver
 arg
+argo
 argocd
 ArgoCD
 argoproj
@@ -50,6 +51,7 @@ clusterissuer
 clusterrolebinding
 ClusterRoleBindings
 ClusterTask
+cmd
 CodeReady
 composable
 conf

@@ -26,10 +26,12 @@ Red Hat Demo Platform Options (Tested)
 
 The following cli tools are required:
 
-- `bash`
-- `oc` - Download [mac](https://formulae.brew.sh/formula/openshift-cli), [linux](https://mirror.openshift.com/pub/openshift-v4/clients)
+- `bash`, `git`
+- `oc` - Download [mac](https://formulae.brew.sh/formula/openshift-cli), [linux](https://mirror.openshift.com/pub/openshift-v4/clients/ocp), [windows](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-windows.zip)
 - `kubectl` (optional) - Included in `oc` bundle
 - `kustomize` (optional) - Download [mac](https://formulae.brew.sh/formula/kustomize), [linux](https://github.com/kubernetes-sigs/kustomize/releases)
+
+NOTE: `bash`, `git`, and `oc` are available in the [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html)
 
 ## Bootstrapping a Cluster
 
@@ -49,17 +51,30 @@ Use the following script:
 # load functions
 . scripts/functions.sh
 
-# setup a basic cluster
-apply_firmly clusters/default
+# setup an enhanced web terminal on a default cluster
+# alt cmd: until oc apply -k bootstrap/web-terminal; do : ; done
+apply_firmly bootstrap/web-terminal
 
-# setup a dev spaces demo with gpu things
+# setup a basic instance of argocd managing a default cluster
+apply_firmly bootstrap/argo-managed
+```
+
+Setup a demo
+
+```sh
+# setup a dev spaces demo /w gpu
 apply_firmly demos/devspaces-nvidia-gpu-autoscale
 
-# setup a rhods /w all the things demo
+# setup a rhods demo /w gpu
 apply_firmly demos/rhods-nvidia-gpu-autoscale
+
+# install all the things
+demo_all
 ```
 
 Many common operational tasks are provided in the [scripts library](scripts/library/). You can run individual [functions](scripts/functions.sh) in a `bash` shell:
+
+These functions are available in an [enhanced web terminal](components/configs/cluster/web-terminal/overlays/enhanced/kustomization.yaml) (see above)
 
 ```sh
 # load functions
