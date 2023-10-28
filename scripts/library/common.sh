@@ -21,7 +21,7 @@ check_cluster_version(){
 apply_firmly(){
   if [ ! -f "${1}/kustomization.yaml" ]; then
     echo "Please provide a dir with \"kustomization.yaml\""
-    return
+    return 1
   fi
 
   until_true oc apply -k "${1}" 2>/dev/null

@@ -4,7 +4,7 @@
 which oc >/dev/null && alias kubectl=oc
 
 k8s_wait_for_crd(){
-  CRD=${1}
+  CRD=${1:-projects.config.openshift.io}
   until kubectl get crd "${CRD}" >/dev/null 2>&1
     do sleep 1
   done
@@ -12,6 +12,8 @@ k8s_wait_for_crd(){
 
 k8s_null_finalizers(){
   OBJ=${1}
+  [ -z ${OBJ+x} ] && return 1
+
   NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
   kubectl \
@@ -27,6 +29,8 @@ k8s_null_finalizers(){
 
 k8s_null_finalizers_for_all_resource(){
   RESOURCE=${1}
+  [ -z ${RESOURCE+x} ] && return 1
+
   NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
   for OBJ in $(oc -n "${NAMESPACE}" get "${RESOURCE}" -o name)
@@ -36,7 +40,7 @@ k8s_null_finalizers_for_all_resource(){
 }
 
 # get all resources
-k8s_get_api_resources() {
+k8s_get_api_resources(){
     kubectl api-resources \
       --verbs=list \
       --namespaced \
@@ -46,7 +50,7 @@ k8s_get_api_resources() {
         sort | uniq
 }
 
-k8s_get_most_api_resources() {
+k8s_get_most_api_resources(){
     kubectl api-resources \
         --verbs=list \
         --namespaced \
@@ -74,7 +78,7 @@ k8s_ns_get_resources(){
   done
 }
 
-k8s_ns_delete_most_resources() {
+k8s_ns_delete_most_resources(){
   NAMESPACE=${1:-sandbox}
 
   for i in $(k8s_get_most_api_resources)
@@ -86,7 +90,7 @@ k8s_ns_delete_most_resources() {
   done
 }
 
-k8s_ns_delete_most_resources_force() {
+k8s_ns_delete_most_resources_force(){
   NAMESPACE=${1:-sandbox}
 
   for i in $(k8s_get_most_api_resources)

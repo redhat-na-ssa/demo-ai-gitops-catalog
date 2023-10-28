@@ -57,10 +57,6 @@ operator_list_all(){
   done
 }
 
-reset_wordlist(){
-  pyspelling | sort -u | grep -E -v ' |---|/|^$' > .wordlist-md
-}
-
 setup_namespace(){
   NAMESPACE=${1}
 
@@ -70,5 +66,14 @@ setup_namespace(){
 
 ocp_gcp_get_key(){
   # get gcp creds
-  oc -n kube-system extract secret/gcp-credentials --keys=service_account.json --to=- | jq . > service_account.json
+  oc -n kube-system extract secret/gcp-credentials --keys=service_account.json --to=- | jq . > scratch/service_account.json
+}
+
+lint_reset_wordlist(){
+  pyspelling | sort -u | grep -Ev ' |---|/|^$' > .wordlist-md
+}
+
+lint_sort_wordlist(){
+  LC_COLLATE=C sort -u < .wordlist-md > tmp
+  mv tmp .wordlist-md
 }

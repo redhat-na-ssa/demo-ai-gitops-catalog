@@ -34,7 +34,7 @@ ocp_aws_get_key(){
 }
 
 ocp_aws_cluster_autoscaling(){
-  oc apply -k components/configs/autoscale/overlays/gpus
+  oc apply -k "${GIT_ROOT}"/components/configs/autoscale/overlays/gpus
 
   ocp_aws_create_gpu_machineset g4dn.4xlarge
   ocp_create_machineset_autoscale 0 3
@@ -179,9 +179,16 @@ ocp_expose_image_registry(){
 }
 
 ocp_remove_kubeadmin(){
-  [ ! -e scratch/kubeadmin.yaml ] && \
-    oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml
-  oc delete secret kubeadmin -n kube-system
+  FORCE=${1:-No}
+
+  if [ "${FORCE}" = "YES" ]; then
+    [ ! -e scratch/kubeadmin.yaml ] && \
+      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml && \
+      oc delete secret kubeadmin -n kube-system
+  else
+    echo "WARNING: you must run ocp_remove_kubeadmin YES"
+    return 1
+  fi
 }
 
 ocp_release_info(){

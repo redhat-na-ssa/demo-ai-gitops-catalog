@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SEALED_SECRETS_FOLDER=components/operators/sealed-secrets/operator/overlays/default
-SEALED_SECRETS_SECRET=bootstrap/sealed-secrets-secret.yaml
+SEALED_SECRETS_FOLDER="${GIT_ROOT}/components/operators/sealed-secrets/operator/overlays/default"
+SEALED_SECRETS_SECRET="${GIT_ROOT}/bootstrap/sealed-secrets-secret.yaml"
 
 sealed_secret_create(){
   read -r -p "Create NEW [${SEALED_SECRETS_SECRET}]? [y/N] " input
@@ -27,7 +27,7 @@ sealed_secret_create(){
         -o yaml \
         get secret \
         -l sealedsecrets.bitnami.com/sealed-secrets-key=active \
-        > ${SEALED_SECRETS_SECRET}
+        > "${SEALED_SECRETS_SECRET}"
 
       ;;
     [nN][oO]|[nN])
@@ -47,10 +47,10 @@ sealed_secret_create(){
 }
 
 sealed_secret_check(){
-  if [ -f ${SEALED_SECRETS_SECRET} ]; then
+  if [ -f "${SEALED_SECRETS_SECRET}" ]; then
     echo "Exists: ${SEALED_SECRETS_SECRET}"
     oc apply -f "${SEALED_SECRETS_FOLDER}/namespace.yaml"
-    oc apply -f "${SEALED_SECRETS_SECRET}" || return
+    oc apply -f "${SEALED_SECRETS_SECRET}" || return 1
     oc apply -k "${SEALED_SECRETS_FOLDER}"
   else
     echo "Missing: ${SEALED_SECRETS_SECRET}"

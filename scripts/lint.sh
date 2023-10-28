@@ -27,7 +27,6 @@ py_bin_checks(){
   which pip || exit 0
 }
 
-
 py_check_venv
 py_bin_checks
 

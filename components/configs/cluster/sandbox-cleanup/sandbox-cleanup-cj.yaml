@@ -25,7 +25,7 @@ spec:
               - |
                 #!/bin/sh
 
-                get_most_api_resources() {
+                get_most_api_resources(){
                   oc api-resources \
                     --verbs=list \
                     --namespaced \
@@ -41,7 +41,7 @@ spec:
                       sort | uniq
                 }
 
-                oc_delete_most() {
+                oc_delete_most(){
                   NAMESPACE=${1:-sandbox}
                   echo ${NAMESPACE}
                   sleep 3

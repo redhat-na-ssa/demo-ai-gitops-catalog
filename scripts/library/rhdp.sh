@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rhdp_get_uuid(){
-  oc whoami || exit 0
+  oc whoami || return 1
   UUID=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@; s@api.*-@@; s@[.].*$@@')
   export UUID
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 bin_check(){
-  name=${1}
+  name=${1:-oc}
 
   which "${name}" || download_"${name}"
  

@@ -5,13 +5,13 @@ SLEEP_SECONDS="${SLEEP_SECONDS:-8}"
 
 ARGO_NS="openshift-gitops"
 ARGO_CHANNEL="stable"
-ARGO_KUSTOMIZE_OPERATOR="components/operators/openshift-gitops-operator/operator/overlays/${ARGO_CHANNEL}"
-ARGO_KUSTOMIZE_INSTANCE="components/operators/openshift-gitops-operator/instance/overlays/default"
+ARGO_KUSTOMIZE_OPERATOR="${GIT_ROOT}/components/operators/openshift-gitops-operator/operator/overlays/${ARGO_CHANNEL}"
+ARGO_KUSTOMIZE_INSTANCE="${GIT_ROOT}/components/operators/openshift-gitops-operator/instance/overlays/default"
 
 argo_print_info(){
   route=$(oc get route openshift-gitops-server -o jsonpath='{.spec.host}' -n ${ARGO_NS} 2>/dev/null)
 
-  [ -n ${route+x} ] || return
+  [ -z ${route+x} ] && return 1
   echo
   echo "Access ArgoCD here:"
   echo "https://${route}"

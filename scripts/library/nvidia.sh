@@ -13,6 +13,8 @@ nvidia_install_console_plugin_dump_helm(){
   # kludge: find a better way
   OUTPUT_PATH=components/operators/gpu-operator-certified/instance/base
 
+  [ -d "${OUTPUT_PATH}" ] || return 1
+
   which helm || return 1
   helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
   helm repo update > /dev/null 2>&1
@@ -65,7 +67,7 @@ nvidia_setup_mig_config(){
 
   ocp_aws_create_gpu_machineset p4d.24xlarge
 
-  oc apply -k components/operators/gpu-operator-certified/instance/overlays/mig-"${MIG_MODE}"
+  oc apply -k "${GIT_ROOT}"/components/operators/gpu-operator-certified/instance/overlays/mig-"${MIG_MODE}"
 
   MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
 
