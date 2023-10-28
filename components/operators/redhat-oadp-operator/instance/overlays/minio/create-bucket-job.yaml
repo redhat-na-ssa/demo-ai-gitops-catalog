@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: create-minio-bucket
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: create-minio-bucket
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: create-minio-bucket
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-minio-bucket
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: create-minio-bucket
+      serviceAccountName: create-minio-bucket
+      initContainers:
+      - name: wait-for-minio
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: data-connection-minio
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          echo -n "Waiting for ${AWS_S3_ENDPOINT}"
+          while ! curl -I "${AWS_S3_ENDPOINT}/minio/health/live" 2>/dev/null; do
+            echo -n .
+            sleep 5
+          done; echo
+      containers:
+      - name: create-bucket
+        image: image-registry.openshift-image-registry.svc:5000/openshift/python:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          pip install boto3 -q
+
+          cat << 'EOF' | python3
+          import os, boto3
+
+          bucket = os.getenv("AWS_S3_BUCKET", "ocp-cluster")
+
+          s3 = boto3.client("s3",
+                            endpoint_url=os.getenv("AWS_S3_ENDPOINT", "http://minio.minio.svc:9000"),
+                            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID", "minioadmin"),
+                            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY", "minioadmin"))
+
+          if bucket not in [bu["Name"] for bu in s3.list_buckets()["Buckets"]]:
+            s3.create_bucket(Bucket=bucket)
+          print(f'created: {bucket}')
+          EOF
+        envFrom:
+        - secretRef:
+            name: data-connection-minio
+      restartPolicy: Never

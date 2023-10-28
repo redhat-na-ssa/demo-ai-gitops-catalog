@@ -1,0 +1,33 @@
+---
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: default
+spec:
+  configuration:
+    velero:
+      defaultPlugins:
+        - openshift
+        - aws
+    restic:
+      enable: true
+  backupLocations:
+    - velero:
+        provider: aws
+        default: true
+        objectStorage:
+          bucket: ocp-cluster
+          prefix: patch-see-overlay
+        config:
+          insecureSkipTLSVerify: "false"
+          profile: "backupStorage"
+          region: us-east-1
+        credential:
+          key: cloud
+          name: cloud-credentials
+  snapshotLocations:
+    - velero:
+        provider: aws
+        config:
+          region: us-west-2
+          profile: "volumeSnapshot"
