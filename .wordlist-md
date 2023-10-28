@@ -159,6 +159,7 @@ devworkspaces
 dir
 disableNameSuffixHash
 dns
+dockerconfigjson
 dotnet
 ec
 elasticsearch
@@ -221,6 +222,7 @@ managementState
 mastersSchedulable
 mkdir
 mufg
+mv
 na
 namespace
 namespaces
