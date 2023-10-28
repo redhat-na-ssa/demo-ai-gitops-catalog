@@ -7,7 +7,9 @@
 podman login --authfile scratch/pull-secret.txt registry.redhat.io
 
 # kludge: copy registry key to podman auth
-cp scratch/pull-secret.txt ${XDG_RUNTIME_DIR}/containers/auth.json
+DOCKER_CONFIG=~/.docker
+oc -n openshift-config extract secret/pull-secret --keys=.dockerconfigjson
+mkdir -p ~/.docker && mv .dockerconfigjson ~/.docker/config.json
 
 # redhat-operators
 INDEX=registry.redhat.io/redhat/redhat-operator-index:v4.12

@@ -25,6 +25,12 @@ select_folder(){
   popd >/dev/null || return
 }
 
+oc_mirror_init(){
+  export DOCKER_CONFIG="${GIT_ROOT}/scratch"
+  oc -n openshift-config extract secret/pull-secret --keys=.dockerconfigjson
+  mkdir -p "${DOCKER_CONFIG}" && mv .dockerconfigjson "${DOCKER_CONFIG}/config.json"
+}
+
 operator_list(){
   VERSION=4.12
   INDEX=${1:-registry.redhat.io/redhat/redhat-operator-index:v${VERSION}}
