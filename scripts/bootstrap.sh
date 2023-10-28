@@ -55,8 +55,16 @@ main(){
 if [ -z ${1+x} ]; then
   main
 else
+
+  # this is specifically intended for demo.redhat.com
   export NON_INTERACTIVE=true
 
   echo "MODE: NON INTERACTIVE"
-  echo "You are running ${1}"
+
+  if get_functions | grep -q "${1}"; then
+    echo "running: ${1}"
+    "${1}"
+  else
+    echo "error: ${1} is not a valid function"
+  fi
 fi
