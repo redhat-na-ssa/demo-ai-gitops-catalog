@@ -1,8 +1,7 @@
 #!/bin/bash
 
 aws_check_cli(){
-  which aws >/dev/null 2>&1 || \
-    pip install awscli -q || return
+  which aws >/dev/null 2>&1 || return 1
 }
 
 aws_check_cli
