@@ -27,3 +27,9 @@ patches:
         value:
           bucket: ocp-cluster
           prefix: default
+      - op: replace
+        path: /spec/configuration/restic/podConfig
+        value:
+          tolerations:
+            - effect: NoSchedule
+              operator: Exists

@@ -79,4 +79,26 @@ spec:
             AWS_S3_ENDPOINT: ${AWS_S3_ENDPOINT}
             AWS_S3_BUCKET: ${AWS_S3_BUCKET}
           EOF
+
+          echo "Creating secret cloud-credentials"
+          cat << EOF | oc apply -f-
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: cloud-credentials
+          type: Opqaue
+          stringData:
+            cloud: |
+              [default]
+              aws_access_key_id=${id}
+              aws_secret_access_key=${secret}
+
+              [backupStorage]
+              aws_access_key_id=${id}
+              aws_secret_access_key=${secret}
+
+              [volumeSnapshot]
+              aws_access_key_id=${id}
+              aws_secret_access_key=${secret}
+          EOF
       restartPolicy: Never
