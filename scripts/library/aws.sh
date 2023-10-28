@@ -3,7 +3,8 @@
 alias aws=aws_cli
 
 aws_cli(){
-  aws_check_cli && alias aws=aws
+  #shellcheck disable=SC2068
+  aws_check_cli && aws ${@}
 }
 
 aws_check_cli(){
