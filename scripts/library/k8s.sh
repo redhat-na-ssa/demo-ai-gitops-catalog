@@ -27,7 +27,7 @@ k8s_null_finalizers(){
   #   -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
 }
 
-k8s_null_finalizers_for_all_resource(){
+k8s_null_finalizers_for_all_resource_instances(){
   RESOURCE=${1}
   [ -z ${RESOURCE+x} ] && return 1
 
@@ -96,7 +96,7 @@ k8s_ns_delete_most_resources_force(){
   for i in $(k8s_get_most_api_resources)
   do
     echo "Resource:" "${i}"
-    k8s_null_finalizers_for_all_resource "${i}"
+    k8s_null_finalizers_for_all_resource_instances "${i}"
     kubectl -n "${NAMESPACE}" \
       delete "${i}" \
       --all
