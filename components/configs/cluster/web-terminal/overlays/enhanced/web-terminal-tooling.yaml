@@ -21,8 +21,8 @@ spec:
             echo "
               echo
               GIT_REPO=${GIT_REPO}
-              printf 'This terminal has been \e[0;32m~Enhanced~\e[0m !\n'
-              printf 'See \e[0;31m'${GIT_REPO}'\e[0m\n'
+              printf 'This terminal has been \e[0;32m~Enhanced~\e[0m\n'
+              printf 'See \033[34;1;1m'${GIT_REPO}'\e[0m\n\n'
             " >> ~/.bashrc
 
             git clone "${GIT_REPO}" gitops
