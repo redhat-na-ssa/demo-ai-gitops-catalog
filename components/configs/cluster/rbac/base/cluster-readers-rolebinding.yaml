@@ -1,6 +1,7 @@
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
+  # added `-group` to name to be consistent with cluster-admins
   name: cluster-readers-group
 subjects:
   - kind: Group
