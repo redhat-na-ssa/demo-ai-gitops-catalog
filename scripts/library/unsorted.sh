@@ -25,7 +25,7 @@ select_folder(){
   popd >/dev/null || return
 }
 
-oc_mirror_init(){
+operator_list_init(){
   export DOCKER_CONFIG="${GIT_ROOT}/scratch"
   oc -n openshift-config extract secret/pull-secret --keys=.dockerconfigjson
   mkdir -p "${DOCKER_CONFIG}" && mv .dockerconfigjson "${DOCKER_CONFIG}/config.json"
@@ -75,11 +75,11 @@ ocp_gcp_get_key(){
   oc -n kube-system extract secret/gcp-credentials --keys=service_account.json --to=- | jq . > scratch/service_account.json
 }
 
-lint_reset_wordlist(){
+lint_wordlist_reset(){
   pyspelling | sort -u | grep -Ev ' |---|/|^$' > .wordlist-md
 }
 
-lint_sort_wordlist(){
+lint_wordlist_sort(){
   LC_COLLATE=C sort -u < .wordlist-md > tmp
   mv tmp .wordlist-md
 }

@@ -49,8 +49,8 @@ setup_bin_path(){
 }
 
 get_functions(){
-  echo -e "loaded functions:\n"
-  sed -n '/(){/ s/(){$//p' "${SCRIPT_DIR}/"{library/*,functions}.sh
+  # echo -e "loaded functions:\n"
+  sed -n '/(){/ s/(){$//p' "${SCRIPT_DIR}/"{library/*,functions}.sh | sort
 }
 
 is_sourced(){
