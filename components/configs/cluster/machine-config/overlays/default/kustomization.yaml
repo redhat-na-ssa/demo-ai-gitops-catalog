@@ -5,4 +5,5 @@ resources:
   - ../../base
 
 patches:
-  - path: exclude-self-provisioner.yaml
+  - path: exclude-ssh-master.yaml
+  - path: exclude-ssh-worker.yaml
