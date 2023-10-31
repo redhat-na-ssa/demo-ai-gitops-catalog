@@ -1,12 +1,11 @@
-kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
 metadata:
-  name: sandbox-cleanup
-  namespace: sandbox
+  name: namespace-cleanup
 subjects:
 - kind: ServiceAccount
-  name: sandbox-cleanup
-  namespace: openshift-gitops
+  name: namespace-cleanup
+  namespace: openshift-config
 roleRef:
   kind: ClusterRole
   name: edit
