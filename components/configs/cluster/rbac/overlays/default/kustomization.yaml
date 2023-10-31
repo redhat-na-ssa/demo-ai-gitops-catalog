@@ -5,15 +5,6 @@ resources:
   - ../../base
 
 patches:
-  - target:
-      group: machineconfiguration.openshift.io
-      version: v1
-      kind: MachineConfig
-      name: 99-master-ssh
-    path: patch-ssh.yaml
-  - target:
-      group: machineconfiguration.openshift.io
-      version: v1
-      kind: MachineConfig
-      name: 99-worker-ssh
-    path: patch-ssh.yaml
+  - path: exclude-self-provisioner.yaml
+  - path: exclude-ssh-master.yaml
+  - path: exclude-ssh-worker.yaml
