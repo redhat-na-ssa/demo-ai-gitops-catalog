@@ -26,6 +26,9 @@ patches:
         path: /metadata/name
         value: sandbox-cleanup
       - op: replace
+        path: /metadata/namespace
+        value: sandbox
+      - op: replace
         path: /subjects/0/name
         value: sandbox-cleanup
   - target:
