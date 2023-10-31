@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: sandbox
 
 resources:
-  # - group-admin.yaml
   - limit-range.yaml
   - namespace.yaml
   - quota.yaml

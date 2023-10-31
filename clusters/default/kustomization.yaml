@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../../components/configs/cluster/sandbox-cleanup
 - ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/configs/cluster/web-terminal/overlays/enhanced
+- ../../components/configs/cluster/namespace-cleanup/overlays/sandbox
 - ../../components/configs/cluster/namespaces/overlays/default
 - ../../components/configs/cluster/console/overlays/default
 - ../../components/configs/cluster/rbac/overlays/default
