@@ -8,6 +8,8 @@ OpenShift, that supports machine learning (ML) and artificial intelligence (AI) 
 
 The intention of this repository is to help support practical use of OpenShift for AI / ML workloads.
 
+Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog) if you only need to automate an operator install.
+
 **This repo is subject to frequent, breaking changes!**
 
 ## Prerequisites

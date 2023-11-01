@@ -36,6 +36,7 @@ which shellcheck && \
 
 # check spelling
 which aspell && \
+  [ -e .pyspelling.yml ] && \
   pyspelling -c .pyspelling.yml
 
 # check Dockerfiles
