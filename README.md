@@ -10,7 +10,7 @@ The intention of this repository is to help support practical use of OpenShift f
 
 Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog) if you only need to automate an operator install.
 
-**This repo is subject to frequent, breaking changes!**
+***This repo is currently subject to frequent, breaking changes!***
 
 ## Prerequisites
 
