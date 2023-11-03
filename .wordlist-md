@@ -14,6 +14,7 @@ Bitnami
 CICD
 CRD
 CRDs
+CRs
 CSS
 CUDA
 CheCluster
@@ -64,6 +65,7 @@ OLM
 Observability
 OpenDataHub
 OpenShift
+OpenVINO
 OperatorGroup
 PV
 PolicyReport
@@ -201,6 +203,7 @@ james
 jenkins
 jharmison
 json
+jupyter
 kafka
 kataconfig
 kiali
@@ -244,6 +247,8 @@ oneAPI
 opendatahub
 openshift
 opentlc
+openvino
+openvinotoolkit
 operatorGroup
 operatorGroups
 patchesJson
