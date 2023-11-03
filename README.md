@@ -59,6 +59,9 @@ apply_firmly bootstrap/web-terminal
 
 # setup a basic instance of argocd managing a default cluster
 apply_firmly bootstrap/argo-managed
+
+# setup a default cluster w/o argocd managing it
+apply_firmly cluster/default
 ```
 
 Setup a demo
