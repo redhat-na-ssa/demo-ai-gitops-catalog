@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: nvidia-gpu-operator
 
 resources:
-  - setup-job.yaml
+  - setup-machineset.yaml
