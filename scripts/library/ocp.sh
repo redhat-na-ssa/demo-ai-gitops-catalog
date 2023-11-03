@@ -33,16 +33,22 @@ ocp_aws_get_key(){
   echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
 }
 
-ocp_aws_setup_ack_system(){
+aws_setup_ack_system(){
   NAMESPACE=ack-system
 
   setup_namespace ${NAMESPACE}
 
   oc apply -k "${GIT_ROOT}"/components/operators/${NAMESPACE}/aggregate/popular
 
-  for type in ec2 ecr iam s3 sagemaker
+  for type in ec2 ecr iam lambda route53 s3 sagemaker
   do
+    
     oc apply -k "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha
+
+    if oc -n "${NAMESPACE}" get secret "${type}-user-secrets" -o name; then
+      echo "Found: ${type}-user-secrets - not replacing"
+      continue
+    fi
 
     < "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
       sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
