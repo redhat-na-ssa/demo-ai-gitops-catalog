@@ -6,7 +6,8 @@ metadata:
     openshift.io/description: |
       A personal project to explore alone
       I made this for you!
-    openshift.io/display-name: Llama Fury
+    # openshift.io/display-name: Llama Fury
+    openshift.io/display-name: A Single User Project
     openshift.io/requester: claymore
   labels:
     kubernetes.io/metadata.name: individual-project
