@@ -40,7 +40,13 @@ aws_setup_ack_system(){
 
   for type in ec2 ecr iam lambda route53 s3 sagemaker
   do
+
     oc apply -k ../ack-${type}-controller/operator/overlays/alpha
+
+    if oc -n "${NAMESPACE}" get secret "${type}-user-secrets" -o name; then
+      echo "Found: ${type}-user-secrets - not replacing"
+      continue
+    fi
 
     < ../ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
       sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
