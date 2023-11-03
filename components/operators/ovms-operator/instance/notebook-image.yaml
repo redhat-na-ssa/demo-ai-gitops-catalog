@@ -1,0 +1,10 @@
+apiVersion: intel.com/v1alpha1
+kind: Notebook
+metadata:
+  name: v2022.3
+  namespace: redhat-ods-applications
+spec:
+  auto_update_image: true
+  git_ref: main
+  git_uri: 'https://github.com/openvinotoolkit/openvino_notebooks'
+  reconcile_duration_multiplier: 120

@@ -7,5 +7,5 @@ resources:
 patches:
   - target:
       kind: Subscription
-      name: aikit-operator-rhmp
+      name: intel-device-plugins-operator
     path: patch-channel.yaml

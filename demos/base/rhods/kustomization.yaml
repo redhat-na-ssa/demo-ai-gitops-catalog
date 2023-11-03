@@ -11,7 +11,6 @@ resources:
   - ../../../components/configs/kustomized/rhods-notebook
   - ../../../components/configs/kustomized/rhods-pipelines
   - ../../../components/configs/kustomized/rhods-projects
-  - ../../../components/operators/aikit-operator-rhmp/aggregate
   - ../../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../../components/operators/rhods-operator/operator/overlays/stable
 
