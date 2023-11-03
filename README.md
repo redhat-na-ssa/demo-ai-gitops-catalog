@@ -20,7 +20,7 @@ Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog
 
 - [AWS with OpenShift Open Environment](https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.sandbox-ocp.prod&utm_source=webapp&utm_medium=share-link)
   - 1 x Control Plane - `m5.4xlarge`
-  - 0 x Workers - `m5.2xlarge`
+  - 1 x Workers - `m5.2xlarge`
 - [MLOps Demo: Data Science & Edge Practice](https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-mlops-wksp.prod&utm_source=webapp&utm_medium=share-link)
 - [Red Hat OpenShift Container Platform 4 Demo](https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.ocp4-demo.prod&utm_source=webapp&utm_medium=share-link)
 
