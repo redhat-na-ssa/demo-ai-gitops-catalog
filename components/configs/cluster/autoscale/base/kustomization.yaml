@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - autoscaling.yaml
+  - setup-machineset.yaml
