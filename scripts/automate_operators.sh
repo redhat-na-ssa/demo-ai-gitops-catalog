@@ -139,15 +139,15 @@ create_operator_base(){
 
   echo "create_operator_base:" "${@}"
 
-  if [ "${NS_OWN}" == "false" ]; then
+  if [ "${NS_OWN}" == "false" ]  && [ "${NAMESPACE}" == "<none>" ]; then
     BASE_DIR="${NAME}"
     create_operator_base_files_wo_ns
-  elif [ ! "${NS_OWN}" == "<none>" ] && [ ! "${NAMESPACE}" == "<none>" ]; then
-    BASE_DIR="${NAME}"
-    create_operator_base_files_w_ns
   elif [ "${NS_OWN}" == "true" ] && [ "${NAMESPACE}" == "<none>" ]; then
     BASE_DIR="${NAME}"
     NAMESPACE="${NAME}"
+    create_operator_base_files_w_ns
+  elif [ ! "${NS_OWN}" == "<none>" ] && [ ! "${NAMESPACE}" == "<none>" ]; then
+    BASE_DIR="${NAME}"
     create_operator_base_files_w_ns
   else
     BASE_DIR="${NAME}"
