@@ -173,6 +173,8 @@ ocp_set_scheduler_profile(){
 
   # LowNodeUtilization, HighNodeUtilization, NoScoring
   echo "see https://docs.openshift.com/container-platform/4.11/nodes/scheduling/nodes-scheduler-profiles.html"
+  echo "OPTIONS: LowNodeUtilization, HighNodeUtilization, NoScoring"
+  echo "SCHED_PROFILE: ${SCHED_PROFILE}"
 
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}' 
 }
