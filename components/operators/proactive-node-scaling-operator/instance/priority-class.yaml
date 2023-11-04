@@ -1,0 +1,16 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: proactive-node-autoscaling-pods
+value: 0
+globalDefault: false
+description: "This priority class is for proactive node scaling."
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: normal-workload
+value: 1000
+globalDefault: true
+description: "This priority class if for normal workloads and is the cluster default"

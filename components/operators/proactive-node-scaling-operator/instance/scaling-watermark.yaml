@@ -1,0 +1,10 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: NodeScalingWatermark
+metadata:
+  name: workers
+  namespace: proactive-node-scaling-operator
+spec:
+  priorityClassName: proactive-node-autoscaling-pods
+  watermarkPercentage: 20
+  nodeSelector:
+    node-role.kubernetes.io/worker: ''
