@@ -21,6 +21,8 @@ Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog
 - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.sandbox-ocp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">AWS with OpenShift Open Environment</a>
   - 1 x Control Plane - `m5.4xlarge`
   - 1 x Workers - `m5.2xlarge`
+<!-- - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.ocp4-single-node.prod&utm_source=webapp&utm_medium=share-link" target="_blank">One Node OpenShift</a>
+  - 1 x Control Plane - `m5.4xlarge` -->
 - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-mlops-wksp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">MLOps Demo: Data Science & Edge Practice</a>
 
 ### Tools
@@ -37,7 +39,7 @@ NOTE: `bash`, `git`, and `oc` are available in the [OpenShift Web Terminal](http
 ## Bootstrapping a Cluster
 
 1. Verify you are logged into your cluster using `oc`.
-1. Clone this repository to your local environment.
+1. Clone this repository to your local environment or the [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html).
 
 ```sh
 oc whoami
