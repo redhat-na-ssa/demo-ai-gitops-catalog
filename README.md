@@ -18,11 +18,10 @@ Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog
 
 [Red Hat Demo Platform](https://demo.redhat.com) Options (Tested)
 
-- [AWS with OpenShift Open Environment](https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.sandbox-ocp.prod&utm_source=webapp&utm_medium=share-link)
+- <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.sandbox-ocp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">AWS with OpenShift Open Environment</a>
   - 1 x Control Plane - `m5.4xlarge`
   - 1 x Workers - `m5.2xlarge`
-- [MLOps Demo: Data Science & Edge Practice](https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-mlops-wksp.prod&utm_source=webapp&utm_medium=share-link)
-- [Red Hat OpenShift Container Platform 4 Demo](https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.ocp4-demo.prod&utm_source=webapp&utm_medium=share-link)
+- <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-mlops-wksp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">MLOps Demo: Data Science & Edge Practice</a>
 
 ### Tools
 
