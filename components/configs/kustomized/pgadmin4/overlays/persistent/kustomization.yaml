@@ -12,7 +12,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/template/spec/containers/0/volumeMounts/0/name
-        value: pgadmin-data
+        value: pgadmin4-data
       - op: replace
         path: /spec/template/spec/volumes
         value:
