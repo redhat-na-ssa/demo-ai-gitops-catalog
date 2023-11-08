@@ -8,7 +8,7 @@ spec:
     dbConfigConMaxLifetimeSec: 120
     applyTektonCustomResource: true
     deploy: true
-    enableSamplePipeline: false
+    enableSamplePipeline: true
     autoUpdatePipelineDefaultVersion: true
     archiveLogs: false
     terminateStatus: Cancelled
@@ -27,8 +27,8 @@ spec:
   objectStorage:
     externalStorage:
       bucket: models
-      host: 'minio.minio.svc:9000'
-      port: ''
+      host: 'minio.minio.svc'
+      port: '9000'
       s3CredentialsSecret:
         accessKey: AWS_ACCESS_KEY_ID
         secretKey: AWS_SECRET_ACCESS_KEY
