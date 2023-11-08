@@ -123,10 +123,16 @@ objects:
 
         USER root
 
-        # install your own customizations here
-        # RUN apt-get update && \
-        #     apt-get -y install --no-install-recommends awesome-tool && \
+        # add: ubuntu dependencies
+        # RUN apt update && \
+        #     apt -y install --no-install-recommends tree && \
         #     rm -rf /var/lib/apt/lists/*
+
+        # add: rhel dependencies
+        # RUN yum makecache && \
+        #     yum -y install tree && \
+        #     yum -y clean all  && \
+        #     rm -rf /var/cache
 
         USER 1001
 
