@@ -11,6 +11,7 @@ metadata:
     template: standalone-notebook
   annotations:
     openshift.io/display-name: A Standalone Jupyter Notebook
+    openshift.io/provider-display-name: Community
     description: Data Science Notebook in OpenShift
     iconClass: icon-python
     tags: python
