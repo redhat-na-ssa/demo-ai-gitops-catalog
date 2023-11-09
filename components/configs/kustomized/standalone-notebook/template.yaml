@@ -15,7 +15,7 @@ metadata:
     description: Data Science Notebook in OpenShift
     iconClass: icon-python
     tags: python
-    openshift.io/documentation-url: "https://github.com/codekow/demo-ai-gitops-catalog" 
+    openshift.io/documentation-url: "https://github.com/codekow/demo-ai-gitops-catalog"
     openshift.io/support-url: "https://github.com/codekow/demo-ai-gitops-catalog/issues"
     template.openshift.io/bindable: "false"
 parameters:
@@ -65,7 +65,7 @@ message: |-
   The following application has been created in your project: ${APPLICATION_NAME}.
 
   For more information about using this template, including OpenShift considerations,
-  see "https://github.com/codekow/demo-ai-gitops-catalog" 
+  see "https://github.com/codekow/demo-ai-gitops-catalog"
 objects:
 - kind: ImageStream
   apiVersion: image.openshift.io/v1
