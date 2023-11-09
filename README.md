@@ -10,11 +10,15 @@ The intention of this repository is to help support practical use of OpenShift f
 
 Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog) if you only need to automate an operator install.
 
+In this repo, look at various [kustomized configs](components/configs) and [argo apps](components/argocd/apps) for ideas.
+
 ***This repo is currently subject to frequent, breaking changes!***
 
 ## Prerequisites
 
 - OpenShift 4.8+
+  - role: `cluster-admin` - for all [demo](demos) or [cluster](clusters) configs
+  - role: `self-provisioner` - for namespaced components
 
 [Red Hat Demo Platform](https://demo.redhat.com) Options (Tested)
 
@@ -48,7 +52,7 @@ git clone < repo url >
 
 ### Cluster Quick Start for OpenShift GitOps
 
-Use the following script:
+Basic cluster config
 
 ```sh
 # load functions
@@ -57,9 +61,6 @@ Use the following script:
 # setup an enhanced web terminal on a default cluster
 # alt cmd: until oc apply -k bootstrap/web-terminal; do : ; done
 apply_firmly bootstrap/web-terminal
-
-# setup a basic instance of argocd managing a default cluster
-apply_firmly bootstrap/argo-managed
 
 # setup a default cluster w/o argocd managing it
 apply_firmly cluster/default
@@ -75,7 +76,14 @@ apply_firmly demos/devspaces-nvidia-gpu-autoscale
 apply_firmly demos/rhods-nvidia-gpu-autoscale
 
 # install all the things
-demo_all
+apply_firmly demos/all-the-things
+```
+
+Setup an ArgoCD managed cluster
+
+```sh
+# setup a basic instance of argocd managing a default cluster
+apply_firmly bootstrap/argo-managed
 ```
 
 Many common operational tasks are provided in the [scripts library](scripts/library/). You can run individual [functions](scripts/functions.sh) in a `bash` shell:
