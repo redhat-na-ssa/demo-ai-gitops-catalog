@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+- ../../components/operators/cluster-kube-descheduler-operator/aggregate/overlays/automatic
 - ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/configs/cluster/autoscale/overlays/default
 - ../../components/configs/cluster/web-terminal/overlays/enhanced

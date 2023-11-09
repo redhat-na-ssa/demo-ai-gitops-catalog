@@ -5,4 +5,4 @@ metadata:
     openshift.io/display-name: "Kube Descheduler Operator"
   labels:
     openshift.io/cluster-monitoring: 'true'
-  name: cluster-kube-descheduler-operator
+  name: openshift-kube-descheduler-operator
