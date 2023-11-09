@@ -6,6 +6,7 @@ resources:
   - ../base/devspaces
   - ../base/nvidia-gpu-autoscale
   - ../base/rhods
+  - ../base/rhods-intel
 
 patches:
   - target:

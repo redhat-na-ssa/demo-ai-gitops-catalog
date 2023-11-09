@@ -16,13 +16,6 @@ resources:
 
 patches:
   - target:
-      kind: ConsoleNotification
-      name: banner-top
-    patch: |-
-      - op: replace
-        path: /spec/text
-        value: 'DEMO: Red Hat Open Data Science (RHODS)'
-  - target:
       group: user.openshift.io
       kind: Group
       name: workshop-users
