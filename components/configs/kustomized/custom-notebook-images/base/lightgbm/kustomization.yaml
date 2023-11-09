@@ -4,9 +4,6 @@ kind: Kustomization
 
 namespace: redhat-ods-applications
 
-commonLabels:
-  component: lightgbm-notebook-image
-
 resources:
 - imagestream.yml
 - buildconfig.yml

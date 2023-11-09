@@ -1,4 +1,3 @@
-
 ACK
 ACM
 ACS
@@ -30,6 +29,7 @@ DotNET
 EOF
 Eventing
 FullAccess
+GPUs
 Gi
 GitOps
 HTPasswd
@@ -214,6 +214,7 @@ kubernetes
 kubeseal
 kustomization
 kustomize
+kustomized
 labeler
 ldap
 letsencrypt
@@ -229,6 +230,7 @@ mufg
 mv
 na
 namespace
+namespaced
 namespaces
 newman
 nfd

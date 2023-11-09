@@ -4,9 +4,7 @@ kind: Kustomization
 resources:
   - ../base
   - ../base/rhods
-  - ../../components/operators/aikit-operator/aggregate
-  - ../../components/operators/intel-device-plugins-operator/operator/overlays/alpha
-  - ../../components/operators/ovms-operator/aggregate
+  - ../base/rhods-intel
 
 patches:
   - target:

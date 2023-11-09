@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../components/configs/kustomized/custom-notebook-images/overlays/rhods
-  - ../../../components/configs/kustomized/minio
+  - ../../../components/configs/kustomized/minio/overlays/with-namespace
   - ../../../components/configs/kustomized/rhods
   - ../../../components/configs/kustomized/rhods-data-connector
   - ../../../components/configs/kustomized/rhods-model-runtimes
@@ -15,13 +15,6 @@ resources:
   - ../../../components/operators/rhods-operator/operator/overlays/stable
 
 patches:
-  - target:
-      kind: ConsoleNotification
-      name: banner-top
-    patch: |-
-      - op: replace
-        path: /spec/text
-        value: 'DEMO: Red Hat Open Data Science (RHODS)'
   - target:
       group: user.openshift.io
       kind: Group

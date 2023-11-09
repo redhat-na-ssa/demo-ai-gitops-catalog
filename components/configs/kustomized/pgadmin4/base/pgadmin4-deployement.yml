@@ -36,7 +36,6 @@ spec:
         resources: {}
         volumeMounts:
         - mountPath: /var/lib/pgadmin
-          # name: pgadmin4-volume-1
           name: empty
       volumes:
       - emptyDir: {}

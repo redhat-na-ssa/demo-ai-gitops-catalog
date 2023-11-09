@@ -5,6 +5,7 @@ resources:
 - ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/configs/cluster/autoscale/overlays/default
 - ../../components/configs/cluster/web-terminal/overlays/enhanced
+- ../../components/configs/cluster/etcd-backup
 - ../../components/configs/cluster/namespace-cleanup/overlays/sandbox
 - ../../components/configs/cluster/namespaces/overlays/default
 - ../../components/configs/cluster/console/overlays/default
