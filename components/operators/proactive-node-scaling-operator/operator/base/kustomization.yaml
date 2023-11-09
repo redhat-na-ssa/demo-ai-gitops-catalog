@@ -2,10 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-<<<<<<<< HEAD:components/operators/proactive-node-scaling-operator/operator/base/kustomization.yaml
   - namespace.yaml
   - operator-group.yaml
   - subscription.yaml
-========
-  - dpa.yaml
->>>>>>>> 56a2b1f (add: velero config):components/operators/redhat-oadp-operator/instance/base/kustomization.yaml

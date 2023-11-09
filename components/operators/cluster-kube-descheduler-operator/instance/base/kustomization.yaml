@@ -2,8 +2,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-<<<<<<<< HEAD:components/operators/redhat-oadp-operator/instance/base/kustomization.yaml
-  - dpa.yaml
-========
   - descheduler.yaml
->>>>>>>> 366c13a (update: misc components (#37)):components/operators/cluster-kube-descheduler-operator/instance/base/kustomization.yaml
