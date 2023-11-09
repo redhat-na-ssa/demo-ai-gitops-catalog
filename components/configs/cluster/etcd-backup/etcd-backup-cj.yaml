@@ -1,0 +1,133 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+spec:
+  # schedule: "* * * * *"
+  schedule: "13 */1 * * *"
+  successfulJobsHistoryLimit: 3  # Remove after successful completion
+  failedJobsHistoryLimit: 3  # Retain failed so that we see it
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            node-role.kubernetes.io/master: ''
+          restartPolicy: Never
+          initContainers:
+            - resources:
+                requests:
+                  cpu: 5m
+                  memory: 50Mi
+              name: verify-storage
+              command:
+                - cluster-etcd-operator
+                - verify
+                - backup-storage
+              securityContext:
+                privileged: true
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: etc-kubernetes-cluster-backup
+                  mountPath: /etc/kubernetes/cluster-backup
+                - name: etcd-client
+                  mountPath: /var/run/secrets/etcd-client
+                - name: etcd-ca
+                  mountPath: /var/run/configmaps/etcd-ca
+              image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:37a874b2f606872fa1394032e3a51be17ee65b373e44aef29a7291f732fff2a3
+          serviceAccountName: default
+          priority: 2000001000
+          schedulerName: default-scheduler
+          hostNetwork: true
+          enableServiceLinks: true
+          terminationGracePeriodSeconds: 30
+          preemptionPolicy: PreemptLowerPriority
+          containers:
+            - resources:
+                requests:
+                  cpu: 10m
+                  memory: 80Mi
+              name: cluster-backup
+              command:
+                - /bin/sh
+                - '-c'
+                - |
+                  #!/bin/sh
+                  set -euo pipefail
+
+                  BACKUP_TIME=$(date +%Y-%M-%d_%H.%M.%S)
+                  # OC_VERSION=$(oc version | sed -n 's/Server Version: //p')
+
+                  list_backups(){
+                    find ${CLUSTER_BACKUP_PATH} -type d -name 'daily-backup-*' | sort
+                  }
+
+                  prune_backups(){
+                    LIMIT=${1:-6}  # GB
+
+                    FREE=$(df -h | awk 'FNR == 2 {print $4}')
+
+                    if [ "${FREE%?}" -lt "${LIMIT}" ]; then
+                      echo "pruning: less than ${LIMIT}G free"
+                      list_backups | head -n 2 | xargs rm -rfv
+                    fi
+
+                    list_backups
+                    df -h ${CLUSTER_BACKUP_PATH}
+                    echo ""
+                  }
+                  prune_backups
+
+                  /usr/local/bin/cluster-backup.sh --force ${CLUSTER_BACKUP_PATH}/daily-backup-${OC_VERSION:-4.x}-${BACKUP_TIME}
+              env:
+                - name: CLUSTER_BACKUP_PATH
+                  value: /etc/kubernetes/cluster-backup
+              securityContext:
+                privileged: true
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: usr-local-bin
+                  mountPath: /usr/local/bin
+                - name: resources-dir
+                  mountPath: /etc/kubernetes/static-pod-resources
+                - name: cert-dir
+                  mountPath: /etc/kubernetes/static-pod-certs
+                - name: static-pod-dir
+                  mountPath: /etc/kubernetes/manifests
+                - name: etc-kubernetes-cluster-backup
+                  mountPath: /etc/kubernetes/cluster-backup
+              terminationMessagePolicy: FallbackToLogsOnError
+              image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a37e5fcb058911022fbc3e6589c1b7414d746decffb3ba2788249e011190cca1
+          serviceAccount: default
+          volumes:
+            - name: usr-local-bin
+              hostPath:
+                path: /usr/local/bin
+                type: ''
+            - name: etc-kubernetes-cluster-backup
+              persistentVolumeClaim:
+                claimName: etcd-backup
+            - name: static-pod-dir
+              hostPath:
+                path: /etc/kubernetes/manifests
+                type: ''
+            - name: resources-dir
+              hostPath:
+                path: /etc/kubernetes/static-pod-resources
+                type: ''
+            - name: cert-dir
+              hostPath:
+                path: /etc/kubernetes/static-pod-resources/etcd-certs
+                type: ''
+            - name: etcd-client
+              secret:
+                secretName: etcd-client
+                defaultMode: 420
+            - name: etcd-ca
+              configMap:
+                name: etcd-ca-bundle
+                defaultMode: 420
+          tolerations:
+            - operator: Exists
+          priorityClassName: system-node-critical
