@@ -104,7 +104,7 @@ ocp_aws_create_gpu_machineset(){
   # taint nodes for gpu-only workloads
   # oc -n openshift-machine-api \
   #   patch "${MACHINE_SET_GPU}" \
-  #   --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"gpu-required","value":"yes","effect":"NoSchedule"}]}}}}'
+  #   --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
   
   # should use the default profile
   # oc -n openshift-machine-api \
@@ -230,4 +230,14 @@ ocp_upgrade_cluster(){
   else
     oc adm upgrade --to="${OCP_VERSION}"
   fi
+}
+
+ocp_taint_gpu_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
+  oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
+  oc adm uncordon -l node-role.kubernetes.io/gpu
+}
+
+ocp_untaint_gpu_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }

@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: minio
-
 commonLabels:
   component: minio
   # app.kubernetes.io/component: minio
@@ -13,7 +11,6 @@ commonLabels:
 resources:
 - data-connector-rb.yaml
 - deployment.yaml
-- namespace.yaml
 - pvc.yaml
 - route.yaml
 # - secret.yaml

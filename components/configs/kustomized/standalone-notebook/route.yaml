@@ -1,0 +1,40 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: jupyter-console
+  labels:
+    app: jupyter
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  port:
+    targetPort: 8787
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: jupyter
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: jupyter-demo
+  labels:
+    app: jupyter
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  port:
+    targetPort: 8000
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: jupyter
+    weight: 100
+  wildcardPolicy: None

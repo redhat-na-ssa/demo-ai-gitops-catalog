@@ -1,0 +1,365 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  template: standalone-notebook
+  app.kubernetes.io/part-of: standalone-notebook
+  app.kubernetes.io/component: ide
+metadata:
+  name: standalone-notebook
+  labels:
+    template: standalone-notebook
+  annotations:
+    openshift.io/display-name: A Standalone Jupyter Notebook
+    openshift.io/provider-display-name: Community
+    description: Data Science Notebook in OpenShift
+    iconClass: icon-python
+    tags: python
+    openshift.io/documentation-url: "https://github.com/codekow/demo-ai-gitops-catalog"
+    openshift.io/support-url: "https://github.com/codekow/demo-ai-gitops-catalog/issues"
+    template.openshift.io/bindable: "false"
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application Name
+  required: true
+  value: standalone-notebook
+- name: VOLUME_SIZE
+  displayName: Volume Size
+  value: 5Gi
+  required: true
+- name: NOTEBOOK_MEM_LIMIT
+  displayName: Notebook Memory Limit
+  value: 1792Mi
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: NOTEBOOK_CPU_LIMIT
+  displayName: Notebook CPU Limit
+  value: 1700m
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: WEBDAV_MEM_LIMIT
+  displayName: WebDav Memory Limit
+  value: 256M
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: WEBDAV_CPU_LIMIT
+  displayName: WebDav CPU Limit
+  value: 300m
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: NOTEBOOK_PASSWORD
+  displayName: Notebook Password
+  from: "[A-Za-z0-9]{32}"
+  generate: expression
+  required: true
+  description: Password for Notebook
+- name: NOTEBOOK_IMAGE
+  description: The base image for notebook
+  value: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+  required: true
+- name: WEBDAV_NODE_IMAGE
+  description: The base image for WebDav
+  value: quay.io/codekow/webdav:latest
+  required: true
+message: |-
+  The following application has been created in your project: ${APPLICATION_NAME}.
+
+  For more information about using this template, including OpenShift considerations,
+  see "https://github.com/codekow/demo-ai-gitops-catalog"
+objects:
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - name: base
+      from:
+        kind: DockerImage
+        name: ${NOTEBOOK_IMAGE}
+      importPolicy:
+        scheduled: true
+      referencePolicy:
+        type: Source
+- kind: ImageStream
+  apiVersion: image.openshift.io/v1
+  metadata:
+    labels:
+      app: webdav-node
+      app.kubernetes.io/name: webdav-node
+    name: webdav-node
+  spec:
+    lookupPolicy:
+      local: true
+    tags:
+    - name: latest
+      from:
+        kind: DockerImage
+        name: ${WEBDAV_NODE_IMAGE}
+      importPolicy:
+        scheduled: true
+      referencePolicy:
+        type: Source
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: standalone-notebook
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: '${APPLICATION_NAME}:latest'
+    runPolicy: SerialLatestOnly
+    source:
+      dockerfile: |
+        FROM ${APPLICATION_NAME}:base
+
+        USER root
+
+        # add: ubuntu dependencies
+        # RUN apt update && \
+        #     apt -y install --no-install-recommends tree && \
+        #     rm -rf /var/lib/apt/lists/*
+
+        # add: rhel dependencies
+        # RUN yum makecache && \
+        #     yum -y install tree && \
+        #     yum -y clean all  && \
+        #     rm -rf /var/cache
+
+        USER 1001
+
+      type: Dockerfile
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: '${APPLICATION_NAME}:base'
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+      - type: ImageChange
+        imageChange:
+          from:
+            kind: ImageStreamTag
+            name: '${APPLICATION_NAME}:base'
+      - type: ConfigChange
+- kind: Secret
+  apiVersion: v1
+  type: kubernetes.io/basic-auth
+  metadata:
+    name: "${APPLICATION_NAME}-secret"
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+  stringData:
+    password: ${NOTEBOOK_PASSWORD}
+    username: coder
+- kind: PersistentVolumeClaim
+  apiVersion: v1
+  metadata:
+    name: "${APPLICATION_NAME}-data"
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: "${VOLUME_SIZE}"
+- kind: Deployment
+  apiVersion: apps/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: ${APPLICATION_NAME}
+        deployment: ${APPLICATION_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+          deployment: ${APPLICATION_NAME}
+      spec:
+        containers:
+          - name: standalone-notebook
+            image: ${APPLICATION_NAME}:latest
+            imagePullPolicy: Always
+            env:
+              - name: PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: "${APPLICATION_NAME}-secret"
+            ports:
+              - containerPort: 8787
+                protocol: TCP
+              - containerPort: 8000
+                protocol: TCP
+            readinessProbe:
+              failureThreshold: 2
+              httpGet:
+                path: /
+                port: 8787
+                scheme: HTTP
+              initialDelaySeconds: 10
+              periodSeconds: 10
+              successThreshold: 1
+              timeoutSeconds: 3
+            livenessProbe:
+              failureThreshold: 2
+              httpGet:
+                path: /
+                port: 8787
+                scheme: HTTP
+              initialDelaySeconds: 10
+              periodSeconds: 10
+              successThreshold: 1
+              timeoutSeconds: 3
+            resources:
+              limits:
+                cpu: ${NOTEBOOK_CPU_LIMIT}
+                memory: ${NOTEBOOK_MEM_LIMIT}
+            volumeMounts:
+              - mountPath: /home/coder
+                name: coder-home
+          - name: webdav-server
+            image: webdav-node:latest
+            ports:
+              - containerPort: 1338
+                protocol: TCP
+            env:
+              - name: WEBDAV_USER
+                value: coder
+              - name: WEBDAV_PASS
+                valueFrom:
+                  secretKeyRef:
+                    key: password
+                    name: "${APPLICATION_NAME}-secret"
+              - name: WEBDAV_PATH
+                value: /home/coder
+              - name: WEBDAV_PORT
+                value: "1338"
+            resources:
+              limits:
+                cpu: ${WEBDAV_CPU_LIMIT}
+                memory: ${WEBDAV_MEM_LIMIT}
+            volumeMounts:
+              - mountPath: /home/coder
+                name: coder-home
+        volumes:
+          - name: coder-home
+            persistentVolumeClaim:
+              claimName: "${APPLICATION_NAME}-data"
+    triggers:
+      - type: ConfigChange
+      - type: ImageChange
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - standalone-notebook
+          from:
+            kind: ImageStreamTag
+            name: "${APPLICATION_NAME}:latest"
+      - type: ImageChange
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - webdav-server
+          from:
+            kind: ImageStreamTag
+            name: "webdav-node:latest"
+- kind: Service
+  apiVersion: v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - name: 8787-tcp
+      protocol: TCP
+      port: 8787
+      targetPort: 8787
+    - name: 1338-tcp
+      port: 1338
+      targetPort: 1338
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    selector:
+      app: ${APPLICATION_NAME}
+      deployment: ${APPLICATION_NAME}
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+  spec:
+    host: ""
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    port:
+      targetPort: 8787-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-webdav"
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+      app.kubernetes.io/component: webdav-server
+  spec:
+    host: ""
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    port:
+      targetPort: 1338-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+- kind: Route
+  apiVersion: route.openshift.io/v1
+  metadata:
+    name: "${APPLICATION_NAME}-demo"
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+  spec:
+    host: ""
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+      weight: 100
+    port:
+      targetPort: 8080-tcp
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
