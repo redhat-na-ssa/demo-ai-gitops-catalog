@@ -64,12 +64,12 @@ spec:
                   }
 
                   prune_backups(){
-                    LIMIT=${1:-6}  # GB
+                    LIMIT=${1:-75}  # GB
 
-                    FREE=$(df -h | awk 'FNR == 2 {print $4}')
+                    FREE=$(df -h | awk 'FNR == 2 {print $5}')
 
                     if [ "${FREE%?}" -lt "${LIMIT}" ]; then
-                      echo "pruning: less than ${LIMIT}G free"
+                      echo "pruning: less than ${LIMIT}% free"
                       list_backups | head -n 2 | xargs rm -rfv
                     fi
 
