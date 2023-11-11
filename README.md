@@ -88,7 +88,7 @@ apply_firmly bootstrap/argo-managed
 
 Many common operational tasks are provided in the [scripts library](scripts/library/). You can run individual [functions](scripts/functions.sh) in a `bash` shell:
 
-These functions are available in an [enhanced web terminal](components/configs/cluster/web-terminal/overlays/enhanced/kustomization.yaml) (see above)
+These functions are available in an [enhanced web terminal](components/operators/web-terminal/instance/overlays/enhanced/kustomization.yaml) (see above)
 
 ```sh
 # load functions

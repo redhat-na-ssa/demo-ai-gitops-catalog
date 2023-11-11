@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
 - ../../components/operators/web-terminal/operator/overlays/fast
-- ../../components/configs/cluster/web-terminal/overlays/enhanced
+- ../../components/operators/web-terminal/instance/overlays/enhanced
