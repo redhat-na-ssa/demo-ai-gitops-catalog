@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SEALED_SECRETS_FOLDER="${GIT_ROOT}/components/operators/sealed-secrets/operator/overlays/default"
+SEALED_SECRETS_FOLDER="${GIT_ROOT}/components/operators/sealed-secrets-operator/operator/overlays/default"
 SEALED_SECRETS_SECRET="${GIT_ROOT}/bootstrap/sealed-secrets-secret.yaml"
 
 sealed_secret_create(){
