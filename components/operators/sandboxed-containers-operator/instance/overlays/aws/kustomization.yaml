@@ -12,7 +12,7 @@ patches:
     patch: |-
       - op: add
         path: /spec/kataConfigPoolSelector
-        value:      
+        value:
           matchExpressions:
             - operator: Exists
               key: node-role.kubernetes.io/metal
