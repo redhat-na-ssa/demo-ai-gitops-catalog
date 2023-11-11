@@ -32,7 +32,7 @@ py_bin_checks
 
 # chcek scripts
 which shellcheck && \
-  shellcheck scripts/{library/,}*.sh
+  find . -name '*.sh' -print0 | xargs shellcheck
 
 # check spelling
 which aspell && \
