@@ -4,7 +4,7 @@ GIT_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
 
 term_init(){
 # avoid making everyone mad
-grep -q 'OpenShift Web Terminal' ~/.bashrc && return 1
+grep -q 'OpenShift Web Terminal' ~/.bashrc || return 1
 
 # shellcheck disable=SC2028
 echo "
