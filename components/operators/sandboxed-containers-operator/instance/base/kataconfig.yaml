@@ -5,4 +5,5 @@ metadata:
 spec:
   checkNodeEligibility: true
   enablePeerPods: false
+  kataConfigPoolSelector: null
   logLevel: debug

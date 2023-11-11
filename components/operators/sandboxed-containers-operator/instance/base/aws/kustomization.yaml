@@ -5,15 +5,3 @@ namespace: openshift-sandboxed-containers-operator
 
 resources:
   - setup-machineset.yaml
-
-patches:
-  - target:
-      group: kataconfiguration.openshift.io
-      kind: KataConfig
-    patch: |-
-      - op: add
-        path: /spec/kataConfigPoolSelector
-        value:      
-          matchExpressions:
-            - operator: Exists
-              key: node-role.kubernetes.io/metal
