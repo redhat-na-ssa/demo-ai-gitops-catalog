@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: http-kata
+  name: http-normal
 spec:
   containers:
     - name: http
@@ -11,4 +11,3 @@ spec:
       command: ["python3"]
       args: [ "-m", "http.server", "8080"]
       resources: {}
-  runtimeClassName: kata
