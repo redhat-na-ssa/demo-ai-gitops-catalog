@@ -69,6 +69,40 @@ ocp_aws_cluster_autoscaling(){
   ocp_scale_machineset 1 "${WORKER_MS}"
 }
 
+ocp_aws_create_metal_machineset(){
+  # https://aws.amazon.com/ec2/instance-types/m5zn
+  # m5.metal
+  # m5n.metal
+  INSTANCE_TYPE=${1:-m5zn.metal}
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
+
+  # check for an existing gpu machine set
+  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep metal; then
+    echo "Exists: METAL machineset"
+  else
+    echo "Creating: METAL machineset"
+    oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
+      sed '/machine/ s/-worker/-metal/g
+        /name/ s/-worker/-metal/g
+        s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
+        s/replicas.*/replicas: 0/' | \
+      oc apply -f -
+  fi
+
+  MACHINE_SET_METAL=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+
+  echo "Patching: Metal machineset"
+
+  # cosmetic
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_METAL}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/metal":""}}}}}}'
+
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_METAL}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
+}
+
 ocp_aws_create_gpu_machineset(){
   # https://aws.amazon.com/ec2/instance-types/g4
   # single gpu: g4dn.{2,4,8,16}xlarge
