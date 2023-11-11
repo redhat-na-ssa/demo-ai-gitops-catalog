@@ -76,7 +76,7 @@ ocp_aws_create_metal_machineset(){
   INSTANCE_TYPE=${1:-m5zn.metal}
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
-  # check for an existing gpu machine set
+  # check for an existing metal machine set
   if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep metal; then
     echo "Exists: METAL machineset"
   else
@@ -89,7 +89,7 @@ ocp_aws_create_metal_machineset(){
       oc apply -f -
   fi
 
-  MACHINE_SET_METAL=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+  MACHINE_SET_METAL=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep metal | head -n1)
 
   echo "Patching: Metal machineset"
 
