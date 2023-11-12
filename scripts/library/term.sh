@@ -41,6 +41,4 @@ fi
   bin_check oc-mirror
   bin_check rclone
   bin_check restic
-
-  sleep infinity  # just in case
 }
