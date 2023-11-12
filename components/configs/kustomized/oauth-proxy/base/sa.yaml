@@ -1,0 +1,24 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  annotations:
+    serviceaccounts.openshift.io/oauth-redirectreference.oauth-proxy: >-
+      {"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"oauth-proxy"}}
+  name: oauth-proxy
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   # Without this role your oauth-proxy will output
+#   # Failed to make webhook authenticator request: tokenreviews.authentication.k8s.io is forbidden: 
+#   # User "system:serviceaccount:reverse-words:reversewords" cannot create resource "tokenreviews" in API 
+#   # group "authentication.k8s.io" at the cluster scope
+#   name: oauth-proxy-tokenreviews
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: system:auth-delegator
+# subjects:
+# - kind: ServiceAccount
+#   name: oauth-proxy
