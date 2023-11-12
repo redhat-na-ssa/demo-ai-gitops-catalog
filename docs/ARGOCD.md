@@ -20,11 +20,12 @@ Next, clone this repository to your local environment.
 This repository deploys sealed-secrets and requires a sealed secret master key to bootstrap.  If you plan to reuse sealed-secrets created using another key you must obtain that key from the person that created the sealed-secrets.
 
 The sealed secret(s) for bootstrap should be located at:
+
 ```sh
 bootstrap/sealed-secrets-secret.yaml
 ```
 
-If you do not plan to utilize existing sealed secrets you can instead bootstrap a new sealed-secrets controller and obtain a new secret. 
+If you do not plan to utilize existing sealed secrets you can instead bootstrap a new sealed-secrets controller and obtain a new secret.
 
 `bootstrap.sh` can also be to used to create the file if it doesn't already exist.
 
@@ -126,6 +127,7 @@ Explanation:
 Argo utilizes a `Health Check` to validate if an object has been successfully applied and updated, failed, or is progressing by the cluster.  The health check for the `Subscription` object looks at the `Condition` field in the `Subscription` which is updated by the `OLM`.  Once the `Subscription` is applied to the cluster, `OLM` creates several other objects in order to install the Operator.  Once the Operator has been installed `OLM` will report the status back to the `Subscription` object.  This reconciliation process may take several minutes even after the Operator has successfully installed.
 
 Resolution/Troubleshooting:
+
 - Validate that the Operator has successfully installed via the `Installed Operators` section of the OpenShift Web Console.
 - If the Operator has not installed, additional troubleshooting is required.
 - If the Operator has successfully installed, feel free to ignore the `Progressing` state and proceed.  `OLM` should reconcile the status after several minutes and Argo will update the state to `Healthy`.

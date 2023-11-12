@@ -11,8 +11,8 @@ metadata:
 # kind: ClusterRoleBinding
 # metadata:
 #   # Without this role your oauth-proxy will output
-#   # Failed to make webhook authenticator request: tokenreviews.authentication.k8s.io is forbidden: 
-#   # User "system:serviceaccount:reverse-words:reversewords" cannot create resource "tokenreviews" in API 
+#   # Failed to make webhook authenticator request: tokenreviews.authentication.k8s.io is forbidden:
+#   # User "system:serviceaccount:reverse-words:reversewords" cannot create resource "tokenreviews" in API
 #   # group "authentication.k8s.io" at the cluster scope
 #   name: oauth-proxy-tokenreviews
 # roleRef:

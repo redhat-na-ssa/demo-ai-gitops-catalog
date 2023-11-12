@@ -43,12 +43,24 @@ NOTE: `bash`, `git`, and `oc` are available in the [OpenShift Web Terminal](http
 ## Bootstrapping a Cluster
 
 1. Verify you are logged into your cluster using `oc`.
-1. Clone this repository to your local environment or the [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html).
+1. Clone this repository
+
+To a local environment
 
 ```sh
 oc whoami
 git clone < repo url >
 ```
+
+Use an [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html)
+
+```
+YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
+. <(curl -s "${YOLO_URL}")
+term_init
+```
+
+NOTE: open a new terminal to activate new configuration
 
 ### Cluster Quick Start for OpenShift GitOps
 
@@ -63,7 +75,7 @@ Basic cluster config
 apply_firmly bootstrap/web-terminal
 
 # setup a default cluster w/o argocd managing it
-apply_firmly cluster/default
+apply_firmly clusters/default
 ```
 
 Setup a demo

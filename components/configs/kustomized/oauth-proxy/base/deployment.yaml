@@ -7,7 +7,7 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels:  
+    matchLabels:
       name: oauth-proxy
   template:
     metadata:
@@ -15,7 +15,7 @@ spec:
         name: oauth-proxy
     spec:
       containers:
-        - name: oauth-proxy 
+        - name: oauth-proxy
           env:
             - name: UPSTREAM
               value: http://httpd:8080
@@ -40,7 +40,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: oauth-proxy
-              containerPort: 8888    
+              containerPort: 8888
               protocol: TCP
           volumeMounts:
             # - mountPath: /etc/tls/private
