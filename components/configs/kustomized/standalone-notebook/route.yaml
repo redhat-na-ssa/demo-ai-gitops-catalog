@@ -2,7 +2,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: jupyter-console
+  name: jupyter
   labels:
     app: jupyter
   annotations:
