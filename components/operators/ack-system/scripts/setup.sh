@@ -7,8 +7,8 @@
 setup_namespace(){
   NAMESPACE=${1}
 
-  oc new-project ${NAMESPACE} 2>/dev/null || \
-    oc project ${NAMESPACE}
+  oc new-project "${NAMESPACE}" 2>/dev/null || \
+    oc project "${NAMESPACE}"
 }
 
 ocp_aws_cluster(){
@@ -34,9 +34,9 @@ ocp_aws_get_key(){
 aws_setup_ack_system(){
   NAMESPACE=ack-system
 
-  setup_namespace ${NAMESPACE}
+  setup_namespace "${NAMESPACE}"
 
-  oc apply -k ../${NAMESPACE}/aggregate/popular
+  oc apply -k ../"${NAMESPACE}"/aggregate/popular
 
   for type in ec2 ecr iam lambda route53 s3 sagemaker
   do
@@ -50,7 +50,7 @@ aws_setup_ack_system(){
 
     < ../ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
       sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-      oc -n ${NAMESPACE} apply -f -
+      oc -n "${NAMESPACE}" apply -f -
   done
 }
 

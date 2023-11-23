@@ -103,7 +103,6 @@ YAML
 
   oc create secret generic \
     -n openshift-adp \
-    $(basename "${VELERO_SECRET}") \
+    "$(basename ${VELERO_SECRET})" \
     --from-file cloud="${VELERO_SECRET}" 
 }
-

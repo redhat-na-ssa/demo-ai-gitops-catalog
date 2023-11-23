@@ -12,12 +12,12 @@ KUBECTL=oc
 
 # Force delete klusterlet
 echo "attempt to delete klusterlet"
-${KUBECTL} delete klusterlet klusterlet --timeout=60s
-${KUBECTL} delete namespace ${KLUSTERLET_NAMESPACE} --wait=false
+"${KUBECTL}" delete klusterlet klusterlet --timeout=60s
+"${KUBECTL}" delete namespace "${KLUSTERLET_NAMESPACE}" --wait=false
 echo "force removing klusterlet"
-${KUBECTL} patch klusterlet klusterlet --type="json" -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
+"${KUBECTL}" patch klusterlet klusterlet --type="json" -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
 echo "removing klusterlet crd"
-${KUBECTL} delete crd klusterlets.operator.open-cluster-management.io --timeout=30s
+"${KUBECTL}" delete crd klusterlets.operator.open-cluster-management.io --timeout=30s
 
 # managedclustermutators.admission.cluster.open-cluster-management.io
 
@@ -69,19 +69,20 @@ component_crds=(
 for vwc in "${component_vwc[@]}"
 do
   echo "delete validatingwebhookconfigurations ${vwc} resources..."
-  ${KUBECTL} delete validatingwebhookconfigurations ${vwc}
+  "${KUBECTL}" delete validatingwebhookconfigurations "${vwc}"
 done
 
 for crd in "${component_crds[@]}"; do
 	echo "force delete all CustomResourceDefinition ${crd} resources..."
-	for resource in `${KUBECTL} get ${crd} -o name -n ${OPERATOR_NAMESPACE}`; do
+	for resource in $("${KUBECTL}" get "${crd}" -o name -n "${OPERATOR_NAMESPACE}")
+  do
 		echo "attempt to delete ${crd} resource ${resource}..."
-		${KUBECTL} delete ${resource} -n ${OPERATOR_NAMESPACE} --timeout=30s
+		"${KUBECTL}" delete "${resource}" -n "${OPERATOR_NAMESPACE}" --timeout=30s
 		echo "force remove ${crd} resource ${resource}..."
-		${KUBECTL} patch ${resource} -n ${OPERATOR_NAMESPACE} --type="json" -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
+		"${KUBECTL}" patch "${resource}" -n "${OPERATOR_NAMESPACE}" --type="json" -p '[{"op": "remove", "path":"/metadata/finalizers"}]'
 	done
 	echo "force delete all CustomResourceDefinition ${crd} resources..."
-	${KUBECTL} delete crd ${crd}
+	"${KUBECTL}" delete crd "${crd}"
 done
 
-${KUBECTL} delete namespace ${OPERATOR_NAMESPACE}
+"${KUBECTL}" delete namespace "${OPERATOR_NAMESPACE}"
