@@ -37,7 +37,7 @@ spec:
                   set -euo pipefail
 
                   # OC_VERSION=$(oc version | sed -n 's/Server Version: //p')
-                  BACKUP_TIME=$(date +%Y-%M-%d_%H.%M.%S)
+                  BACKUP_TIME=$(date +%Y-%m-%d_%H.%M.%S)
                   BACKUP_INSTANCE=${CLUSTER_BACKUP_PATH:-/tmp}/etcd-backup-${OC_VERSION:-4.x}-${BACKUP_TIME}
 
                   list_backups(){
