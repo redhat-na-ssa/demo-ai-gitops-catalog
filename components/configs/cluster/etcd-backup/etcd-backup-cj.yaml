@@ -68,7 +68,7 @@ spec:
 
                     FREE=$(df -h | awk 'FNR == 2 {print $5}')
 
-                    if [ "${FREE%?}" -lt "${LIMIT}" ]; then
+                    if [ "${FREE%?}" -gt "${LIMIT}" ]; then
                       echo "pruning: less than ${LIMIT}% free"
                       list_backups | head -n 2 | xargs rm -rfv
                     fi
