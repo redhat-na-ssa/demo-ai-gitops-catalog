@@ -1,5 +1,5 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: proactive-node-scaling-operator-group
+  name: proactive-node-scaling-operator
   namespace: proactive-node-scaling-operator

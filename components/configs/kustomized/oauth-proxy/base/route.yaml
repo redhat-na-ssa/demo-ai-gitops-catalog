@@ -1,0 +1,20 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: oauth-proxy
+  labels:
+    app: oauth-proxy
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  port:
+    targetPort: 8888
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: oauth-proxy
+    weight: 100
+  wildcardPolicy: None

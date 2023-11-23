@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth-proxy
+  labels:
+    name: oauth-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: oauth-proxy
+  template:
+    metadata:
+      labels:
+        name: oauth-proxy
+    spec:
+      containers:
+        - name: oauth-proxy
+          env:
+            - name: UPSTREAM
+              value: http://httpd:8080
+            - name: SAR
+              value: '{"resource":"namespaces","resourceName":"reverse-words","namespace":"reverse-words","verb":"get"}'
+          args:
+            - -provider=openshift
+            - -https-address=
+            - -http-address=:8888
+            - -email-domain=*
+            - -upstream=$(UPSTREAM)
+            - -openshift-sar=$(SAR)
+            # - -tls-cert=/etc/tls/private/tls.crt
+            # - -tls-key=/etc/tls/private/tls.key
+            - -skip-provider-button
+            - -cookie-expire=8h0m0s
+            - -cookie-secret-file=/etc/proxy/secrets/session_secret
+            - -openshift-service-account=oauth-proxy
+            - -openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            - -skip-auth-regex=^/metrics
+          image: quay.io/openshift/origin-oauth-proxy:4.12
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: oauth-proxy
+              containerPort: 8888
+              protocol: TCP
+          volumeMounts:
+            # - mountPath: /etc/tls/private
+            #   name: oauth-proxy-tls
+            - mountPath: /etc/proxy/secrets
+              name: oauth-proxy
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          readinessProbe:
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+      serviceAccountName: oauth-proxy
+      volumes:
+        # - name: oauth-proxy-tls
+        #   secret:
+        #     defaultMode: 420
+        #     secretName: oauth-proxy-tls
+        - name: oauth-proxy
+          secret:
+            defaultMode: 420
+            secretName: oauth-proxy

@@ -254,7 +254,7 @@ cat <<YAML > "${BASE_PATH}/operator-group.yaml"
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: ${NAME}-group
+  name: ${NAME}
   namespace: ${NAMESPACE}
 YAML
 

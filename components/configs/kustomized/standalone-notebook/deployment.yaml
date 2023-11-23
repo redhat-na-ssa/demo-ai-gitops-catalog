@@ -27,16 +27,13 @@ spec:
         # - /bin/bash
         # - -c
         image: quay.io/opendatahub-contrib/workbench-images:rstudio-c9s-py39_2023b_latest
-        envFrom:
-        - secretRef:
-            name: jupyter-login
         ports:
         - containerPort: 8787
           protocol: TCP
-          name: api
+          name: notebook
         - containerPort: 8000
           protocol: TCP
-          name: console
+          name: demo
         resources:
           requests:
             cpu: 200m
