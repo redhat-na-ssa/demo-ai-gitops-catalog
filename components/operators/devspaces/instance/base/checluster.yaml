@@ -16,6 +16,11 @@ spec:
         show: false
         text: >-
           It's time to get your Dev on!
+    # kludge: https://github.com/eclipse-che/che-dashboard/pull/990
+      deployment:
+        containers:
+          - image: quay.io/eclipse/che-dashboard:pr-990
+    # kludge: end
     # database:
     #   credentialsSecretName: postgres-credentials
     #   externalDb: false
