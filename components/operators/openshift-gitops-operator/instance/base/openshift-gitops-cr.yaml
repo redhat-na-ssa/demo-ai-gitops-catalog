@@ -3,12 +3,67 @@ kind: ArgoCD
 metadata:
   name: openshift-gitops
 spec:
+  server:
+    autoscale:
+      enabled: false
+    grpc:
+      ingress:
+        enabled: false
+    ingress:
+      enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 125m
+        memory: 128Mi
+    route:
+      enabled: true
+      tls:
+        termination: reencrypt
+    service:
+      type: ''
+  grafana:
+    enabled: false
+    ingress:
+      enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+    route:
+      enabled: false
+  monitoring:
+    enabled: false
+  notifications:
+    enabled: false
+  prometheus:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
   initialSSHKnownHosts: {}
+  sso:
+    dex:
+      openShiftOAuth: true
   rbac:
     defaultPolicy: ''
-    policy: |
+    policy: |-
       g, system:cluster-admins, role:admin
     scopes: '[groups]'
+  repo:
+    resources:
+      limits:
+        cpu: '1'
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 256Mi
   resourceExclusions: |
     - apiGroups:
       - tekton.dev
@@ -17,13 +72,32 @@ spec:
       kinds:
       - TaskRun
       - PipelineRun
-  server:
-    route:
-      enabled: true
-      tls:
-        termination: reencrypt
-  sso:
-    dex:
-      openShiftOAuth: true
+  ha:
+    enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
   tls:
     ca: {}
+  redis:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  controller:
+    processors: {}
+    resources:
+      limits:
+        cpu: '2'
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 1Gi
+    sharding: {}
