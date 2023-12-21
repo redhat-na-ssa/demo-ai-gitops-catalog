@@ -43,8 +43,6 @@ bin_check oc
 ocp_check_info || exit
 
 main(){
-  # argo bootstrap
-  apply_firmly bootstrap/argo-managed
   select_folder bootstrap
 
   # shellcheck disable=SC2154

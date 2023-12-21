@@ -70,7 +70,7 @@ argo_install(){
 
 }
 
-argo_disable_management(){
+argo_uninstall(){
   ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
 
   for i in "${ARGO_DEPLOY_STABLE[@]}"
@@ -81,11 +81,16 @@ argo_disable_management(){
 
   # shellcheck disable=SC2034 
   NAMESPACE="${ARGO_NS}"
+
   k8s_null_finalizers_for_all_resource_instances applicationsets.argoproj.io
   oc delete applicationsets.argoproj.io -n "${ARGO_NS}" --all
+
   k8s_null_finalizers_for_all_resource_instances application.argoproj.io
   oc delete application.argoproj.io -n "${ARGO_NS}" --all
 
   oc delete -k "${ARGO_KUSTOMIZE_OPERATOR}"
   oc delete -k "${ARGO_KUSTOMIZE_INSTANCE}"
+  
+  oc delete project "${ARGO_NS}"-operator
+  oc delete project "${ARGO_NS}"
 }
