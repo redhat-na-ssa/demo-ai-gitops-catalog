@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - secret.yaml
+
+patches:
+  - path: exclude-job.yaml
+  - path: exclude-rb-connect.yaml
+  - path: exclude-rb-secret.yaml
+  - path: exclude-sa.yaml
