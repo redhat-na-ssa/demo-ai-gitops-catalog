@@ -13,3 +13,6 @@ subjects:
 - kind: ServiceAccount
   name: data-connection-setup
   namespace: ds-group-project
+- kind: ServiceAccount
+  name: data-connection-setup
+  namespace: openshift-adp

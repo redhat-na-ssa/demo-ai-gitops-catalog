@@ -6,7 +6,7 @@ if [ ! -d "${HOME}" ]; then
 fi
 
 # kludge: initalize home
-cp -an /etc/skel/.{bash,profile,gitconfig}* ${HOME} 2>/dev/null || true
+cp -an /etc/skel/.{bash,profile,gitconfig}* "${HOME}" 2>/dev/null || true
 
 # Add current (arbitrary) user to /etc/passwd and /etc/group
 if ! whoami &> /dev/null; then
@@ -20,12 +20,12 @@ fi
 # address issue for some storage classes
 # where sticky bit in home modifies
 # .ssh folder on pod restarts
-if [ -f ${HOME}/.ssh/id_rsa ]; then
-    chmod 700 ${HOME}/.ssh
-    chmod 600 ${HOME}/.ssh/id_rsa*
+if [ -f "${HOME}"/.ssh/id_rsa ]; then
+    chmod 700 "${HOME}"/.ssh
+    chmod 600 "${HOME}"/.ssh/id_rsa*
 
-    if [ -f ${HOME}/.ssh/known_hosts ]; then
-        chmod 600 ${HOME}/.ssh/known_hosts
+    if [ -f "${HOME}"/.ssh/known_hosts ]; then
+        chmod 600 "${HOME}"/.ssh/known_hosts
     fi
 fi
 

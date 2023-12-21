@@ -1,0 +1,104 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: data-connection-setup
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: data-connection-setup
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: data-connection-setup
+  namespace: openshift-adp
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: data-connection-setup
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: data-connection-setup
+      serviceAccountName: data-connection-setup
+      containers:
+      - name: create-data-connection
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MINIO_SECRET_NAME
+            value: minio-root-user
+          - name: MINIO_NAMESPACE
+            value: minio
+          - name: DATA_CONNECTION_NAME
+            value: data-connection-minio
+          - name: AWS_DEFAULT_REGION
+            value: us
+          - name: AWS_S3_ENDPOINT
+            value: http://minio.minio.svc:9000
+          - name: AWS_S3_BUCKET
+            value: ocp-cluster
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |
+          echo "MINIO_NAMESPACE: ${MINIO_NAMESPACE}"
+          echo -n "Waiting for secret ${MINIO_SECRET_NAME}."
+
+          while [ -z "$(oc get secret -n ${MINIO_NAMESPACE} ${MINIO_SECRET_NAME} -o name 2>/dev/null)" ]; do
+            echo -n '.'
+            sleep 1
+          done; echo
+
+          id=$(oc get secret -n ${MINIO_NAMESPACE} ${MINIO_SECRET_NAME} -o go-template='{{.data.MINIO_ROOT_USER|base64decode}}')
+          secret=$(oc get secret -n ${MINIO_NAMESPACE} ${MINIO_SECRET_NAME} -o go-template='{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+
+          echo "Creating secret ${DATA_CONNECTION_NAME}"
+          cat << EOF | oc apply -f-
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: ${DATA_CONNECTION_NAME}
+          type: Opaque
+          stringData:
+            AWS_ACCESS_KEY_ID: ${id}
+            AWS_SECRET_ACCESS_KEY: ${secret}
+            AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+            AWS_S3_ENDPOINT: ${AWS_S3_ENDPOINT}
+            AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+          EOF
+
+          echo "Creating secret cloud-credentials"
+          cat << EOF | oc apply -f-
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: cloud-credentials
+          type: Opqaue
+          stringData:
+            cloud: |
+              [default]
+              aws_access_key_id=${id}
+              aws_secret_access_key=${secret}
+
+              [backupStorage]
+              aws_access_key_id=${id}
+              aws_secret_access_key=${secret}
+
+              [volumeSnapshot]
+              aws_access_key_id=${id}
+              aws_secret_access_key=${secret}
+          EOF
+      restartPolicy: Never

@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: openshift-adp
+
+resources:
+  - ../../base
+  - create-bucket-job.yaml
+  - create-data-connection-job.yaml
+
+patches:
+  - target:
+      group: oadp.openshift.io
+      kind: DataProtectionApplication
+      name: default
+    patch: |-
+      - op: replace
+        path: /spec/backupLocations/0/velero/config
+        value:
+          insecureSkipTLSVerify: "false"
+          profile: "backupStorage"
+          region: minio
+          s3ForcePathStyle: "true"
+          s3Url: http://minio.minio.svc:9000
+      - op: replace
+        path: /spec/backupLocations/0/velero/objectStorage
+        value:
+          bucket: ocp-cluster
+          prefix: default
+      - op: replace
+        path: /spec/configuration/restic/podConfig
+        value:
+          tolerations:
+            - effect: NoSchedule
+              operator: Exists

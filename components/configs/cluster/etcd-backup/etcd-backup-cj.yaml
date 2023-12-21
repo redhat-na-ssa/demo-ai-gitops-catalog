@@ -14,28 +14,8 @@ spec:
         spec:
           nodeSelector:
             node-role.kubernetes.io/master: ''
+          activeDeadlineSeconds: 3000
           restartPolicy: Never
-          initContainers:
-            - resources:
-                requests:
-                  cpu: 5m
-                  memory: 50Mi
-              name: verify-storage
-              command:
-                - cluster-etcd-operator
-                - verify
-                - backup-storage
-              securityContext:
-                privileged: true
-              imagePullPolicy: IfNotPresent
-              volumeMounts:
-                - name: etc-kubernetes-cluster-backup
-                  mountPath: /etc/kubernetes/cluster-backup
-                - name: etcd-client
-                  mountPath: /var/run/secrets/etcd-client
-                - name: etcd-ca
-                  mountPath: /var/run/configmaps/etcd-ca
-              image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:37a874b2f606872fa1394032e3a51be17ee65b373e44aef29a7291f732fff2a3
           serviceAccountName: default
           priority: 2000001000
           schedulerName: default-scheduler
@@ -56,78 +36,59 @@ spec:
                   #!/bin/sh
                   set -euo pipefail
 
-                  BACKUP_TIME=$(date +%Y-%M-%d_%H.%M.%S)
                   # OC_VERSION=$(oc version | sed -n 's/Server Version: //p')
+                  BACKUP_TIME=$(date +%Y-%m-%d_%H.%M.%S)
+                  BACKUP_INSTANCE=${CLUSTER_BACKUP_PATH:-/tmp}/etcd-backup-${OC_VERSION:-4.x}-${BACKUP_TIME}
 
                   list_backups(){
-                    find ${CLUSTER_BACKUP_PATH} -type d -name 'daily-backup-*' | sort
+                    find /backups -type d -name 'etcd-backup-*' | sort
                   }
 
                   prune_backups(){
-                    LIMIT=${1:-75}  # GB
+                    LIMIT=${1:-69}  # percent
+                    USE=$(df -h /backups | awk 'FNR == 2 {print $5}')
 
-                    FREE=$(df -h | awk 'FNR == 2 {print $5}')
-
-                    if [ "${FREE%?}" -lt "${LIMIT}" ]; then
+                    while [ "${USE%?}" -gt "${LIMIT}" ]
+                    do
                       echo "pruning: less than ${LIMIT}% free"
-                      list_backups | head -n 2 | xargs rm -rfv
-                    fi
+                      list_backups | head -n 1 | xargs rm -rfv
+                      USE=$(df -h /backups | awk 'FNR == 2 {print $5}')
+                    done
 
-                    list_backups
-                    df -h ${CLUSTER_BACKUP_PATH}
+                    list_backups | xargs du -hs
+                    echo ""
+                    df -h /host
+                    df -h /backups
                     echo ""
                   }
                   prune_backups
 
-                  /usr/local/bin/cluster-backup.sh --force ${CLUSTER_BACKUP_PATH}/daily-backup-${OC_VERSION:-4.x}-${BACKUP_TIME}
+                  chroot /host sudo -E /usr/local/bin/cluster-backup.sh ${BACKUP_INSTANCE}
+                  gzip -9 /host/${BACKUP_INSTANCE}/*.db
+                  mv -v /host${CLUSTER_BACKUP_PATH}/etcd-backup-* /backups
               env:
                 - name: CLUSTER_BACKUP_PATH
-                  value: /etc/kubernetes/cluster-backup
+                  value: /home/core/backups
               securityContext:
                 privileged: true
               imagePullPolicy: IfNotPresent
               volumeMounts:
-                - name: usr-local-bin
-                  mountPath: /usr/local/bin
-                - name: resources-dir
-                  mountPath: /etc/kubernetes/static-pod-resources
-                - name: cert-dir
-                  mountPath: /etc/kubernetes/static-pod-certs
-                - name: static-pod-dir
-                  mountPath: /etc/kubernetes/manifests
-                - name: etc-kubernetes-cluster-backup
-                  mountPath: /etc/kubernetes/cluster-backup
+                - name: etcd-backup
+                  mountPath: /backups
+                - name: host
+                  mountPath: /host
               terminationMessagePolicy: FallbackToLogsOnError
-              image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a37e5fcb058911022fbc3e6589c1b7414d746decffb3ba2788249e011190cca1
+              # image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a37e5fcb058911022fbc3e6589c1b7414d746decffb3ba2788249e011190cca1
+              image: image-registry.openshift-image-registry.svc:5000/openshift/tools
           serviceAccount: default
           volumes:
-            - name: usr-local-bin
+            - name: host
               hostPath:
-                path: /usr/local/bin
+                path: /
                 type: ''
-            - name: etc-kubernetes-cluster-backup
+            - name: etcd-backup
               persistentVolumeClaim:
                 claimName: etcd-backup
-            - name: static-pod-dir
-              hostPath:
-                path: /etc/kubernetes/manifests
-                type: ''
-            - name: resources-dir
-              hostPath:
-                path: /etc/kubernetes/static-pod-resources
-                type: ''
-            - name: cert-dir
-              hostPath:
-                path: /etc/kubernetes/static-pod-resources/etcd-certs
-                type: ''
-            - name: etcd-client
-              secret:
-                secretName: etcd-client
-                defaultMode: 420
-            - name: etcd-ca
-              configMap:
-                name: etcd-ca-bundle
-                defaultMode: 420
           tolerations:
             - operator: Exists
           priorityClassName: system-node-critical

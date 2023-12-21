@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# https://docs.openshift.com/container-platform/4.12/backup_and_restore/application_backup_and_restore/troubleshooting.html#velero-obtaining-by-accessing-binary_oadp-troubleshooting
+alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
+
+genpass(){
+  < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-32}"
+}
+
 check_cluster_version(){
   OCP_VERSION=$(oc version | sed -n '/Server Version: / s/Server Version: //p')
   AVOID_VERSIONS=()

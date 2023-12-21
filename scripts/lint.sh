@@ -32,8 +32,7 @@ py_bin_checks
 
 # chcek scripts
 which shellcheck && \
-  find . -name '*.sh' -print0 | xargs shellcheck
-
+  find . -name '*.sh' -not \( -path '*/venv/*' -o -path '*/scratch/*' \) -print0 | xargs -0 shellcheck
 # check spelling
 which aspell && \
   [ -e .pyspelling.yml ] && \

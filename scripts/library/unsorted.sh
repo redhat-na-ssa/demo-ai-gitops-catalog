@@ -83,3 +83,26 @@ lint_wordlist_sort(){
   LC_COLLATE=C sort -u < .wordlist-md > tmp
   mv tmp .wordlist-md
 }
+
+velero_create_secret(){
+  VELERO_SECRET=scratch/credentials-velero
+
+cat << YAML > "${VELERO_SECRET}"
+[default]
+aws_access_key_id=${AWS_ACCESS_KEY_ID}
+aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
+
+[backupStorage]
+aws_access_key_id=${AWS_ACCESS_KEY_ID}
+aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
+
+[volumeSnapshot]
+aws_access_key_id=${AWS_ACCESS_KEY_ID}
+aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
+YAML
+
+  oc create secret generic \
+    -n openshift-adp \
+    "$(basename ${VELERO_SECRET})" \
+    --from-file cloud="${VELERO_SECRET}"
+}
