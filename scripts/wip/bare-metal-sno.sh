@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2155
 
 download_openshift-baremetal-install(){
   export VERSION=stable-4.12
