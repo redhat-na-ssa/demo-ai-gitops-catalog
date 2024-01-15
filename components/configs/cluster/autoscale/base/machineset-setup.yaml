@@ -69,6 +69,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: MACHINE_MIN
+              value: '0'
+            - name: MACHINE_MAX
+              value: '4'
           command:
             - /bin/bash
             - -c
@@ -99,7 +103,7 @@ spec:
                 done
               }
 
-              ocp_create_machineset_autoscale
+              ocp_create_machineset_autoscale ${MACHINE_MIN} ${MACHINE_MAX}
 
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
