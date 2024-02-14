@@ -13,6 +13,6 @@ patches:
       - op: replace
         path: /spec/template/spec/tolerations
         value:
-          - key: nvidia.com/gpu
+          - key: nvidia-gpu-only
             operator: Exists
             effect: NoSchedule
