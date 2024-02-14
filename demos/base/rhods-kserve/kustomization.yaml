@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # - ../../../components/configs/kustomized/custom-notebook-images/overlays/rhods
+  # - ../../../components/configs/kustomized/minio/overlays/with-namespace
+  # - ../../../components/configs/kustomized/rhods
+  # - ../../../components/configs/kustomized/rhods-data-connector
+  # - ../../../components/configs/kustomized/rhods-model-runtimes
+  # - ../../../components/configs/kustomized/rhods-model-instances
+  # - ../../../components/configs/kustomized/rhods-notebook
+  # - ../../../components/configs/kustomized/rhods-pipelines
+  # - ../../../components/configs/kustomized/rhods-projects
+  # - ../../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
+  - ../../../components/operators/rhods-operator/operator/overlays/stable
+  - ../../../components/operators/rhods-operator/instance/overlays/2.6
+  - ../../../components/operators/serverless-operator/operator/overlays/stable
+  - ../../../components/operators/servicemeshoperator/operator/overlays/stable
+
+patches:
+  - target:
+      group: user.openshift.io
+      kind: Group
+      name: workshop-users
+    path: patch-workshop-users.yaml
