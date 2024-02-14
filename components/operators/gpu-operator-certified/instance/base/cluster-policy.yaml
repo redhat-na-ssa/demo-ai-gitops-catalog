@@ -53,7 +53,7 @@ spec:
       maxUnavailable: '1'
     tolerations:
       - effect: NoSchedule
-        key: nvidia.com/gpu
+        key: nvidia-gpu-only
         operator: Exists
   devicePlugin:
     enabled: true

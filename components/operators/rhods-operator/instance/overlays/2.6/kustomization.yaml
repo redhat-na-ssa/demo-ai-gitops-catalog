@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - datasciencecluster.yaml
+  - profile-nvidia.yaml
