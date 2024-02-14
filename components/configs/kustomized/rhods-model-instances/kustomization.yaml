@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: ds-group-project
 
 resources:
+- caikit-tgis
 - openvino
 - triton
 - upload-model-fraud-job.yaml
