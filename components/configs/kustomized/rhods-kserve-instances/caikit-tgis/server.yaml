@@ -7,6 +7,8 @@ metadata:
     opendatahub.io/template-display-name: Caikit TGIS ServingRuntime for KServe
     opendatahub.io/template-name: caikit-tgis-runtime
     openshift.io/display-name: Flan T5 Small Caikit
+  labels:
+    opendatahub.io/dashboard: 'true'
   name: caikit-tgis-runtime-grpc
 spec:
   containers:
