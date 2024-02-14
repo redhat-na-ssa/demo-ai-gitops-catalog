@@ -10,8 +10,10 @@ patches:
       version: v1
       kind: Deployment
     patch: |-
-      - op: replace
+      - op: remove
         path: /spec/template/spec/containers/0/args
+      - op: remove
+        path: /spec/template/spec/containers/0/command
       - op: replace
         path: /spec/template/spec/tolerations
         value:
