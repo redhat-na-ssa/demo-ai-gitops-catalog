@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ds-group-project
+  annotations:
+    openshift.io/description: |
+      A friendly, open project to allow collaboration around unrestricted data
+      Now with Kserve!
+    openshift.io/display-name: A Group Project w/ Kserve
+    openshift.io/requester: admin
+  labels:
+    kubernetes.io/metadata.name: kserve-project
+    maistra.io/member-of: istio-system
+    modelmesh-enabled: 'false'
+    opendatahub.io/dashboard: 'true'
