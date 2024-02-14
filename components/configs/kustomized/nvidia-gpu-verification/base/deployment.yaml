@@ -15,7 +15,7 @@ spec:
         app: nvidia-vector-add
     spec:
 #      tolerations:
-#        - key: nvidia.com/gpu
+#        - key: nvidia-gpu-only
 #          operator: Exists
 #          effect: NoSchedule
       containers:
