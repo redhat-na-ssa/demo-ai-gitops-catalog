@@ -13,6 +13,8 @@ resources:
   - ../../../components/configs/kustomized/rhods-projects
   - ../../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../../components/operators/rhods-operator/operator/overlays/stable
+  - ../../../components/operators/serverless-operator/operator/overlays/stable
+  - ../../../components/operators/servicemeshoperator/operator/overlays/stable
 
 patches:
   - target:
