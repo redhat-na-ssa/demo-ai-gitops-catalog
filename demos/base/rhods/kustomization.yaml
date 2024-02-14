@@ -7,6 +7,7 @@ resources:
   - ../../../components/configs/kustomized/rhods
   - ../../../components/configs/kustomized/rhods-data-connector
   - ../../../components/configs/kustomized/rhods-model-runtimes
+  - ../../../components/configs/kustomized/rhods-kserve-instances
   - ../../../components/configs/kustomized/rhods-model-instances
   - ../../../components/configs/kustomized/rhods-notebook
   - ../../../components/configs/kustomized/rhods-pipelines
