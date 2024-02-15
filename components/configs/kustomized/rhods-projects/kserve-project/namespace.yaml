@@ -6,7 +6,7 @@ metadata:
     openshift.io/description: |
       A friendly, open project to allow collaboration around unrestricted data
       Now with Kserve!
-    openshift.io/display-name: A Group Project for Kserve
+    openshift.io/display-name: A Group Project for Everyone with Kserve
     openshift.io/requester: admin
   labels:
     kubernetes.io/metadata.name: kserve-project
