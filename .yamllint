@@ -15,7 +15,7 @@ rules:
     ignore: .github/workflows/
   trailing-spaces:
     ignore: |
-      components/operators/openshift-gitops-operator/instance/overlays/default/patch-resource-customizations.yaml
+    #   components/operators/openshift-gitops-operator/instance/overlays/default/patch-resource-customizations.yaml
   empty-lines:
     ignore: |
       components/operators/ack-controllers/base/adoptedresources-crd.yaml

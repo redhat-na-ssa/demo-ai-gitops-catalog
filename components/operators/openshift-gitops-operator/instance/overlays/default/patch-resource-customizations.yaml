@@ -51,7 +51,7 @@
               elseif (condition.type == "StorageSystemInvalid" and condition.status == "True") or (condition.type == "VendorCsvReady" and condition.status == "False") or (condition.type == "VendorSystemPresent" and condition.status == "False") then
                 health_status.status = "Degraded"
               end
-              
+
             end
 
             health_status.message = msg

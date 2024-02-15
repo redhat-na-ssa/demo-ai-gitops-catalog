@@ -11,13 +11,6 @@ spec:
         enabled: false
     ingress:
       enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 125m
-        memory: 128Mi
     route:
       enabled: true
       tls:
@@ -28,13 +21,6 @@ spec:
     enabled: false
     ingress:
       enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
     route:
       enabled: false
   monitoring:
@@ -56,14 +42,7 @@ spec:
     policy: |-
       g, system:cluster-admins, role:admin
     scopes: '[groups]'
-  repo:
-    resources:
-      limits:
-        cpu: '1'
-        memory: 1Gi
-      requests:
-        cpu: 250m
-        memory: 256Mi
+  repo: {}
   resourceExclusions: |
     - apiGroups:
       - tekton.dev
@@ -72,32 +51,12 @@ spec:
       kinds:
       - TaskRun
       - PipelineRun
+  resourceTrackingMethod: annotation
   ha:
     enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
   tls:
     ca: {}
-  redis:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
+  redis: {}
   controller:
     processors: {}
-    resources:
-      limits:
-        cpu: '2'
-        memory: 2Gi
-      requests:
-        cpu: 250m
-        memory: 1Gi
     sharding: {}
