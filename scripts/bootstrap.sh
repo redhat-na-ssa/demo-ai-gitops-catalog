@@ -47,7 +47,7 @@ main(){
 
   #   # kludge
   # if [ ${selected_folder} == "argo-managed" ]; then
-  #   oc apply -k components/operators/openshift-gitops-operator/operator/overlays/stable
+  #   oc apply -k components/operators/openshift-gitops-operator/operator/overlays/latest
     
   #   echo "Waiting for OpenShift GitOps deployments to start"
   #   until oc get deployment cluster -n openshift-gitops >/dev/null 2>&1
