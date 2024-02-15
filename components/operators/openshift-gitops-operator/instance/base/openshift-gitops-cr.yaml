@@ -51,7 +51,7 @@ spec:
       kinds:
       - TaskRun
       - PipelineRun
-  resourceTrackingMethod: annotations
+  resourceTrackingMethod: annotation
   ha:
     enabled: false
   tls:
