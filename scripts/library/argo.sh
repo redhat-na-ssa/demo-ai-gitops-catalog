@@ -88,6 +88,9 @@ argo_uninstall(){
   k8s_null_finalizers_for_all_resource_instances application.argoproj.io
   oc delete application.argoproj.io -n "${ARGO_NS}" --all
 
+  k8s_null_finalizers_for_all_resource_instances argocds.argoproj.io
+  oc delete argocds.argoproj.io -n "${ARGO_NS}" --all
+
   oc delete -k "${ARGO_KUSTOMIZE_OPERATOR}"
   oc delete -k "${ARGO_KUSTOMIZE_INSTANCE}"
   
