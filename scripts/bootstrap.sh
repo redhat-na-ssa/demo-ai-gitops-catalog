@@ -45,16 +45,16 @@ ocp_check_info || exit
 main(){
   select_folder bootstrap
 
-  #   # kludge
-  # if [ ${selected_folder} == "argo-managed" ]; then
-  #   oc apply -k components/operators/openshift-gitops-operator/operator/overlays/latest
+    # kludge
+  if [ ${selected_folder} == "argo-managed" ]; then
+    oc apply -k components/operators/openshift-gitops-operator/operator/overlays/latest
     
-  #   echo "Waiting for OpenShift GitOps deployments to start"
-  #   until oc get deployment cluster -n openshift-gitops >/dev/null 2>&1
-  #   do
-  #     sleep 1
-  #   done
-  # fi
+    echo "Waiting for OpenShift GitOps deployments to start"
+    until oc get deployment cluster -n openshift-gitops >/dev/null 2>&1
+    do
+      sleep 1
+    done
+  fi
 
   # shellcheck disable=SC2154
   apply_firmly "bootstrap/${selected_folder}"
