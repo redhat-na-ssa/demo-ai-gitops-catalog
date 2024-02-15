@@ -46,7 +46,7 @@ main(){
   select_folder bootstrap
 
     # kludge
-  if [ ${selected_folder} == "argo-managed/" ]; then
+  if [ "${selected_folder}" == "argo-managed/" ]; then
     oc apply -k components/operators/openshift-gitops-operator/operator/overlays/latest
     
     echo "Waiting for OpenShift GitOps deployments to start"
