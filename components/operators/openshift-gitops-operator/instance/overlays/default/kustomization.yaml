@@ -24,3 +24,6 @@ patches:
           g, gitops-admins, role:admin
           g, system:cluster-admins, role:admin
           g, cluster-admins, role:admin
+  # - target:
+  #     kind: ArgoCD
+  #   path: patch-resource-customizations.yaml
