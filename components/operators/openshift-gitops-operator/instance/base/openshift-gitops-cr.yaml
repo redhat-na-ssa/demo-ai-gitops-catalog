@@ -34,12 +34,23 @@ spec:
     route:
       enabled: false
   initialSSHKnownHosts: {}
+  sso:
+    dex:
+      openShiftOAuth: true
   rbac:
     defaultPolicy: ''
     policy: |-
       g, system:cluster-admins, role:admin
     scopes: '[groups]'
   repo: {}
+  resourceExclusions: |
+    - apiGroups:
+      - tekton.dev
+      clusters:
+      - '*'
+      kinds:
+      - TaskRun
+      - PipelineRun
   ha:
     enabled: false
   tls:
