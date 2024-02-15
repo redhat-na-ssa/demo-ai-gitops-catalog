@@ -6,9 +6,9 @@ resources:
   - ../../../components/configs/kustomized/minio/overlays/with-namespace
   - ../../../components/configs/kustomized/rhods
   - ../../../components/configs/kustomized/rhods-data-connector
-  - ../../../components/configs/kustomized/rhods-model-runtimes
+  - ../../../components/configs/kustomized/rhods-modelmesh-instances
+  - ../../../components/configs/kustomized/rhods-modelmesh-runtimes
   - ../../../components/configs/kustomized/rhods-kserve-instances
-  - ../../../components/configs/kustomized/rhods-model-instances
   - ../../../components/configs/kustomized/rhods-notebook
   - ../../../components/configs/kustomized/rhods-pipelines
   - ../../../components/configs/kustomized/rhods-projects
