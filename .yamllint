@@ -14,7 +14,7 @@ rules:
   truthy:
     ignore: .github/workflows/
   trailing-spaces:
-    # ignore: |
+    ignore: |
     #   components/operators/openshift-gitops-operator/instance/overlays/default/patch-resource-customizations.yaml
   empty-lines:
     ignore: |
