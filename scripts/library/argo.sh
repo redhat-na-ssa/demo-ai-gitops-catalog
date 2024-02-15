@@ -4,7 +4,7 @@
 SLEEP_SECONDS="${SLEEP_SECONDS:-8}"
 
 ARGO_NS="openshift-gitops"
-ARGO_CHANNEL="stable"
+ARGO_CHANNEL="latest"
 ARGO_KUSTOMIZE_OPERATOR="${GIT_ROOT}/components/operators/openshift-gitops-operator/operator/overlays/${ARGO_CHANNEL}"
 ARGO_KUSTOMIZE_INSTANCE="${GIT_ROOT}/components/operators/openshift-gitops-operator/instance/overlays/default"
 
