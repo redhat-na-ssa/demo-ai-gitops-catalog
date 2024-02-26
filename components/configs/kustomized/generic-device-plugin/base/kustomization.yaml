@@ -1,31 +1,34 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+labels:
+- includeSelectors: true
+  pairs:
+    component: generic-device-plugin
+
 namespace: generic-device-plugin
 
-commonLabels:
-  component: generic-device-plugin
   # app.kubernetes.io/component: minio
   # app.kubernetes.io/instance: minio
   # app.kubernetes.io/name: minio
   # app.kubernetes.io/part-of: minio
 
 resources:
-  - https://raw.githubusercontent.com/squat/generic-device-plugin/main/manifests/generic-device-plugin.yaml
-  - https://raw.githubusercontent.com/squat/generic-device-plugin/main/manifests/podmonitor.yaml
-  - namespace.yaml
-  - rolebinding.yaml
-  - scc.yaml
+- https://raw.githubusercontent.com/squat/generic-device-plugin/main/manifests/generic-device-plugin.yaml
+- https://raw.githubusercontent.com/squat/generic-device-plugin/main/manifests/podmonitor.yaml
+- namespace.yaml
+- rolebinding.yaml
+- scc.yaml
 
 patches:
-  - target:
-      group: apps
-      kind: DaemonSet
-      name: generic-device-plugin
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/securityContext
-        value: null
-      - op: replace
-        path: /spec/template/spec/containers/0/image
-        value: ghcr.io/squat/generic-device-plugin:latest
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/securityContext
+      value: null
+    - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: ghcr.io/squat/generic-device-plugin:latest
+  target:
+    group: apps
+    kind: DaemonSet
+    name: generic-device-plugin
