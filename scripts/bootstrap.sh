@@ -45,7 +45,8 @@ ocp_check_info || exit
 main(){
   select_folder bootstrap
 
-    # kludge
+  # kludge
+  # shellcheck disable=SC2154
   if [ "${selected_folder}" == "argo-managed/" ]; then
     oc apply -k components/operators/openshift-gitops-operator/operator/overlays/latest
     
