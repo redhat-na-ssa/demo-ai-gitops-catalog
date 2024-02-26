@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: generic-device-plugin
 
-commonLabels:
+labels:
   component: generic-device-plugin
   # app.kubernetes.io/component: minio
   # app.kubernetes.io/instance: minio
