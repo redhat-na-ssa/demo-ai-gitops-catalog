@@ -9,5 +9,5 @@ resources:
 - ../../components/configs/cluster/namespace-cleanup/overlays/sandbox
 - ../../components/configs/cluster/namespaces/overlays/default
 - ../../components/configs/cluster/console/overlays/default
-- ../../components/configs/cluster/rbac/overlays/no-self-provisioner
 - ../../components/configs/cluster/console-samples
+- ../../components/configs/cluster/rbac/overlays/no-self-provisioner
