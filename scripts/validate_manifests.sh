@@ -50,16 +50,21 @@ init(){
   done
 }
 
-process_kustomization(){
+kustomization_auto_fix(){
+  BUILD_PATH=${1}
 
-  echo "Validating..."
+  [ "${KUSTOMIZE_CMD}" == "kustomize build" ] || return
+  FIX_CMD="${FIX_CMD:-kustomize edit fix}"
 
-  for BUILD in $(find "${KUSTOMIZE_DIRS}" -name "kustomization.yaml" -exec dirname {} \;)
-  do
-    echo "${BUILD}"
+  pushd "${BUILD_PATH}" || return
+  ${FIX_CMD}
+  popd || return
+}
 
-    # echo "$KUSTOMIZE_BUILD_OUTPUT" | kubeval ${IGNORE_MISSING_SCHEMAS} --schema-location="file://${SCHEMA_LOCATION}" --force-color
+kustomization_build(){
+    BUILD=${1}
     KUSTOMIZE_BUILD_OUTPUT=$(${KUSTOMIZE_CMD} "${BUILD}")
+    # echo "$KUSTOMIZE_BUILD_OUTPUT" | kubeval ${IGNORE_MISSING_SCHEMAS} --schema-location="file://${SCHEMA_LOCATION}" --force-color
 
     build_response=$?
 
@@ -69,6 +74,19 @@ process_kustomization(){
     fi
 
     echo "[OK]"
+}
+
+process_kustomization(){
+
+  echo "Validating..."
+
+  for BUILD in $(find "${KUSTOMIZE_DIRS}" -name "kustomization.yaml" -exec dirname {} \;)
+  do
+    echo "${BUILD}"
+
+    kustomization_build "${BUILD}"
+    # kustomization_auto_fix "${BUILD}"
+
   done
 }
 
