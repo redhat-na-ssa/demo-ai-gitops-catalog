@@ -5,9 +5,9 @@ resources:
 - ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/operators/web-terminal/instance/overlays/enhanced
 - ../../components/configs/cluster/autoscale/overlays/default
-# - ../../components/configs/cluster/etcd-backup
+- ../../components/configs/cluster/etcd-backup/overlays/default
 - ../../components/configs/cluster/namespace-cleanup/overlays/sandbox
 - ../../components/configs/cluster/namespaces/overlays/default
 - ../../components/configs/cluster/console/overlays/default
-- ../../components/configs/cluster/rbac/overlays/default
+- ../../components/configs/cluster/rbac/overlays/no-self-provisioner
 - ../../components/configs/cluster/console-samples
