@@ -13,12 +13,5 @@ patches:
       name: devspaces
     patch: |-
       - op: replace
-        path: /spec/components/dashboard/headerMessage/show
-        value: true
-      - op: replace
-        path: /spec/components/dashboard/headerMessage/text
-        value: |
-          Please be patient... GPUs may take up to 12 min to be available!
-      - op: replace
         path: /spec/devEnvironments/startTimeoutSeconds
         value: 720
