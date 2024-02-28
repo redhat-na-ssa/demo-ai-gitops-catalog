@@ -1,3 +1,4 @@
+# https://eclipse.dev/che/docs/stable/administration-guide/checluster-custom-resource-fields-reference
 apiVersion: org.eclipse.che/v2
 kind: CheCluster
 metadata:
