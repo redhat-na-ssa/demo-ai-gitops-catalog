@@ -1,6 +1,8 @@
 #!/bin/bash
 
-GIT_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
+GIT_AI_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
+GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
+
 
 term_init(){
 # avoid making everyone mad
@@ -9,9 +11,9 @@ grep -q 'OpenShift Web Terminal' ~/.bashrc || return 1
 # shellcheck disable=SC2028
 echo "
 echo
-GIT_REPO=${GIT_REPO}
+GIT_AI_REPO=${GIT_AI_REPO}
 printf 'This terminal has been \e[0;32m~Enhanced~\e[0m\n'
-printf 'See \033[34;1;1m'${GIT_REPO}'\e[0m\n\n'
+printf 'See \033[34;1;1m'${GIT_AI_REPO}'\e[0m\n\n'
 
 __git_branch(){
   git name-rev --name-only @ 2>/dev/null
@@ -29,8 +31,9 @@ fi
 
 " >> ~/.bashrc
 
-  git clone "${GIT_REPO}" gitops
-  cd gitops || return
+  git clone "${GIT_AI_REPO}" ai_ops
+  git clone "${GIT_OPS_REPO}" ops
+  cd ai_ops || return
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
