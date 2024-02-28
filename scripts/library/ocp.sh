@@ -267,11 +267,11 @@ ocp_upgrade_cluster(){
 }
 
 ocp_taint_gpu_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule --overwrite
   oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
   oc adm uncordon -l node-role.kubernetes.io/gpu
 }
 
 ocp_untaint_gpu_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule-
 }
