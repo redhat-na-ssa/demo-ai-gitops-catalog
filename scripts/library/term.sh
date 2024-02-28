@@ -21,13 +21,13 @@ __git_branch(){
 
 PS1='\e]\s\a\n\e[33m\w \e[36m\$(__git_branch)\e[m$ '
 
-if [ -e gitops ]; then
-  cd gitops
+if [ -e ai_ops ]; then
+  cd ai_ops
   . scripts/functions.sh
 fi
 
 [ -e ~/.venv/bin/activate ] && . ~/.venv/bin/activate
-[ -e ~/gitops/scratch/bin/restic.bash ] && . ~/gitops/scratch/bin/restic.bash
+[ -e ~/gitops/scratch/bin/restic.bash ] && . ~/ai_ops/scratch/bin/restic.bash
 
 " >> ~/.bashrc
 
