@@ -27,7 +27,7 @@ if [ -e ai_ops ]; then
 fi
 
 [ -e ~/.venv/bin/activate ] && . ~/.venv/bin/activate
-[ -e ~/gitops/scratch/bin/restic.bash ] && . ~/ai_ops/scratch/bin/restic.bash
+[ -e ~/ai_ops/scratch/bin/restic.bash ] && . ~/ai_ops/scratch/bin/restic.bash
 
 " >> ~/.bashrc
 
