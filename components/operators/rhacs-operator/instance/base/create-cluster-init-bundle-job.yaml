@@ -43,7 +43,7 @@ spec:
 
                 echo "Configuring cluster-init bundle"
                 export DATA={\"name\":\"local-cluster\"}
-                curl -k -o /tmp/bundle.json -X POST -u "admin:$PASSWORD" -H "Content-Type: application/json" --data $DATA https://central/v1/cluster-init/init-bundles
+                curl -k -o /tmp/bundle.json -X POST -u "admin:${PASSWORD}" -H "Content-Type: application/json" --data ${DATA} https://central/v1/cluster-init/init-bundles
 
                 echo "Bundle received"
                 cat /tmp/bundle.json
