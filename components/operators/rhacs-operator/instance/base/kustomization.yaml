@@ -8,8 +8,8 @@ commonAnnotations:
   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 
 resources:
-  - namespace.yaml
-  - create-cluster-init-bundle-sa.yaml
   - central.yaml
   - create-cluster-init-bundle-job.yaml
+  - create-cluster-init-bundle-sa.yaml
+  - namespace.yaml
   - secured-cluster.yaml

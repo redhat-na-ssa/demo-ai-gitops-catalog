@@ -53,12 +53,13 @@ SecuredCluster is the configuration template for the RHACS Secured Cluster servi
 
 #### Installation Prerequisites
 
-Before deploying a SecuredCluster resource, you need to create an cluster init bundle secret.
+Before deploying a SecuredCluster resource, you need to create a cluster init bundle secret.
 
 - **Through the RHACS UI:** To create a cluster init bundle secret through the RHACS UI, navigate to `Platform Configuration > Clusters`, and then click `Manage Tokens` in the top-right corner. Select `Cluster Init Bundle`, and click `Generate Bundle`. Select `Download Kubernetes secrets file`, and store the file under a name of your choice (for example, `cluster-init-secrets.yaml`).
 - **Through the `roxctl` CLI:** To create a cluster init bundle secret through the `roxctl` command-line interface, run `roxctl central init-bundles generate <name> --output-secrets <file name>`. Choose any `name` and `file name` that you like.
 
-Then, run `oc create -f init-bundle.yaml`. If you have chosen a name other than `init-bundle.yaml`, specify that file name instead. If you want to deploy Secured Cluster Service in another namespace, additionally pass the `-n <namespace>` flag.
+Run `oc project` and check that it reports the correct namespace where you intend to deploy SecuredCluster. In case you want to install SecuredCluster to a different namespace, select it by running `oc project <namespace>`.
+Then, run `oc create -f init-bundle.yaml`. If you have chosen a name other than `init-bundle.yaml`, specify that file name instead.
 
 #### Required Fields
 
