@@ -51,7 +51,12 @@ spec:
                     while [ "${USE%?}" -gt "${LIMIT}" ]
                     do
                       echo "pruning: more than ${LIMIT}% used"
-                      list_backups | head -n 1 | xargs rm -rfv
+                      LAST_BACKUP=$(list_backups | head -n 1)
+
+                      [ "${LAST_BACKUP}" == "" ] && break
+
+                      rm -rf "${LAST_BACKUP}"
+
                       USE=$(df -h /backups | awk 'FNR == 2 {print $5}')
                     done
 
