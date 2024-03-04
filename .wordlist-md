@@ -162,6 +162,7 @@ kubeseal
 kustomization
 kustomize
 kustomized
+kyverno
 Kyverno
 labeler
 ldap
