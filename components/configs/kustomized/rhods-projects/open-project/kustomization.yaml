@@ -3,9 +3,6 @@ kind: Kustomization
 
 namespace: ds-open-project
 
-commonLabels:
-  opendatahub.io/dashboard: 'true'
-
 resources:
   - admin-rolebinding.yaml
   - edit-rolebinding.yaml
