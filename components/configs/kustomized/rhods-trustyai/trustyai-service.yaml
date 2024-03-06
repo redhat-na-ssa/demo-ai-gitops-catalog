@@ -1,0 +1,14 @@
+apiVersion: trustyai.opendatahub.io/v1alpha1
+kind: TrustyAIService
+metadata:
+  name: trustyai-service
+spec:
+  data:
+    filename: data.csv
+    format: CSV
+  metrics:
+    schedule: 5s
+  storage:
+    folder: /inputs
+    format: PVC
+    size: 1Gi
