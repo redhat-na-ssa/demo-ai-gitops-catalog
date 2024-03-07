@@ -14,9 +14,9 @@ spec:
           - tail
           - '-f'
           - /dev/null
-        cpuLimit: 400m
+        cpuLimit: 500m
         cpuRequest: 100m
-        image: registry.redhat.io/web-terminal/web-terminal-tooling-rhel8@sha256:657874adad93a9e6c2b746b836015de410d2e280f85c079c81e24ae81343fa6c
+        image: registry.redhat.io/web-terminal/web-terminal-tooling-rhel8:latest
         memoryLimit: 512Mi
         memoryRequest: 128Mi
         mountSources: false

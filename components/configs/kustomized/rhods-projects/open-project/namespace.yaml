@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ds-open-project
+  annotations:
+    openshift.io/description: |
+      A friendly, open project to allow collaboration around unrestricted data
+    # openshift.io/display-name: The Allen Parsons Project
+    openshift.io/display-name: A Group Project for Everyone
+    openshift.io/requester: admin
+  labels:
+    kubernetes.io/metadata.name: group-project
+    modelmesh-enabled: 'true'
+    opendatahub.io/dashboard: 'true'

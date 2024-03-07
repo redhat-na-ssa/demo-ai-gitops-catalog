@@ -5,4 +5,5 @@ namespace: ds-individual-project
 
 resources:
   - admin-rolebinding.yaml
+  - edit-rolebinding.yaml
   - namespace.yaml

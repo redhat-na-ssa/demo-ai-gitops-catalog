@@ -36,6 +36,8 @@ ocp_aws_get_key(){
 aws_setup_ack_system(){
   NAMESPACE=ack-system
 
+  ocp_aws_get_key
+
   setup_namespace ${NAMESPACE}
 
   oc apply -k "${GIT_ROOT}"/components/operators/${NAMESPACE}/aggregate/popular
@@ -242,8 +244,8 @@ ocp_remove_kubeadmin(){
 
   if [ "${FORCE}" = "YES" ]; then
     [ ! -e scratch/kubeadmin.yaml ] && \
-      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml && \
-      oc delete secret kubeadmin -n kube-system
+      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
+    oc delete secret kubeadmin -n kube-system
   else
     echo "WARNING: you must run ocp_remove_kubeadmin YES"
     return 1
