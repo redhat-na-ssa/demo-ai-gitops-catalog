@@ -244,8 +244,8 @@ ocp_remove_kubeadmin(){
 
   if [ "${FORCE}" = "YES" ]; then
     [ ! -e scratch/kubeadmin.yaml ] && \
-      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml && \
-      oc delete secret kubeadmin -n kube-system
+      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
+    oc delete secret kubeadmin -n kube-system
   else
     echo "WARNING: you must run ocp_remove_kubeadmin YES"
     return 1
