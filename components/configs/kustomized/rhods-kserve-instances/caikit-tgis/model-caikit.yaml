@@ -1,4 +1,3 @@
----
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
@@ -15,7 +14,6 @@ metadata:
   name: caikit-tgis-isvc-grpc
 spec:
   predictor:
-    serviceAccountName: sa
     model:
       modelFormat:
         name: caikit
