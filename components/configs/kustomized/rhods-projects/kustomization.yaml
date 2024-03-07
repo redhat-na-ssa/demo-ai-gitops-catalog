@@ -5,4 +5,4 @@ resources:
   - group-project
   - individual-project
   - kserve-project
-  - secret-project
+  - open-project

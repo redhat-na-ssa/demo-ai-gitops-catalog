@@ -6,6 +6,4 @@ namespace: ds-group-project
 resources:
   - admin-rolebinding.yaml
   - edit-rolebinding.yaml
-  - limit-range.yaml
   - namespace.yaml
-  - quota.yaml

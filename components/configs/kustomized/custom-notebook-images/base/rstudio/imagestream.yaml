@@ -4,6 +4,7 @@ metadata:
   name: rstudio
   annotations:
     argocd.argoproj.io/sync-wave: "5"
+    opendatahub.io/notebook-image-creator: ai-catalog
     opendatahub.io/notebook-image-desc: |
       RStudio
 

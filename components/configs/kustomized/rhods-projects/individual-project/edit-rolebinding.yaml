@@ -4,15 +4,12 @@ metadata:
   labels:
     opendatahub.io/dashboard: 'true'
     opendatahub.io/project-sharing: 'true'
-  name: group-project-admin
+  name: group-project-edit
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: admin
+  name: edit
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: darkrainbow
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: rhods-admins
+  name: claymore

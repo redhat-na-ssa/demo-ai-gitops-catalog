@@ -1,0 +1,14 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: ubi8
+spec:
+  tags:
+  - from:
+      kind: DockerImage
+      name: registry.redhat.io/ubi8/ubi:latest
+    name: latest
+    referencePolicy:
+      type: Source
+    importPolicy:
+      scheduled: true

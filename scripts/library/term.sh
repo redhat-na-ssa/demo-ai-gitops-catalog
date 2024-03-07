@@ -37,7 +37,7 @@ fi
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
-  [ -d ~/.venv ] || pyvenv-3.6 ~/.venv
+  [ -d ~/.venv ] || platform-python -m venv ~/.venv
 
   bin_check busybox
 

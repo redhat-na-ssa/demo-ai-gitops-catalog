@@ -4,7 +4,8 @@ kind: Kustomization
 resources:
   - ../../../components/configs/kustomized/custom-notebook-images/overlays/rhods
   - ../../../components/configs/kustomized/minio/overlays/with-namespace
-  - ../../../components/configs/kustomized/rhods
+  - ../../../components/configs/kustomized/rhods-config
+  - ../../../components/configs/kustomized/rhods-config-patches
   - ../../../components/configs/kustomized/rhods-data-connector
   - ../../../components/configs/kustomized/rhods-modelmesh-instances
   - ../../../components/configs/kustomized/rhods-modelmesh-runtimes
@@ -12,6 +13,7 @@ resources:
   - ../../../components/configs/kustomized/rhods-notebook
   - ../../../components/configs/kustomized/rhods-pipelines
   - ../../../components/configs/kustomized/rhods-projects
+  - ../../../components/configs/kustomized/rhods-trustyai
   - ../../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../../components/operators/rhods-operator/operator/overlays/stable
   - ../../../components/operators/rhods-operator/instance/overlays/2.6
