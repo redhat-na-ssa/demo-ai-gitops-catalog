@@ -34,6 +34,8 @@ ocp_aws_get_key(){
 aws_setup_ack_system(){
   NAMESPACE=ack-system
 
+  ocp_aws_get_key
+
   setup_namespace "${NAMESPACE}"
 
   oc apply -k ../"${NAMESPACE}"/aggregate/popular
@@ -54,5 +56,4 @@ aws_setup_ack_system(){
   done
 }
 
-ocp_aws_get_key
 aws_setup_ack_system
