@@ -19,7 +19,6 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: data-connection-setup
-  namespace: ds-group-project
 ---
 apiVersion: batch/v1
 kind: Job

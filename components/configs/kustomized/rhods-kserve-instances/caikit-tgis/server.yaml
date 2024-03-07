@@ -1,0 +1,64 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: ServingRuntime
+metadata:
+  annotations:
+    opendatahub.io/accelerator-name: ''
+    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
+    opendatahub.io/template-display-name: Caikit TGIS ServingRuntime for KServe
+    opendatahub.io/template-name: caikit-tgis-runtime
+    openshift.io/display-name: Flan T5 Small Caikit
+  labels:
+    opendatahub.io/dashboard: 'true'
+  name: caikit-tgis-runtime-grpc
+spec:
+  containers:
+    - args:
+        - '--model-name=/mnt/models/artifacts/'
+      command:
+        - text-generation-launcher
+      env:
+        - name: TRANSFORMERS_CACHE
+          value: /tmp/transformers_cache
+      image: >-
+        quay.io/modh/text-generation-inference@sha256:a17a2868644929ee844ceb2778ac3f6db0936824d9b89d11ea7aa059466fcd0b
+      name: kserve-container
+      resources:
+        limits:
+          cpu: '2'
+          memory: 8Gi
+        requests:
+          cpu: '1'
+          memory: 4Gi
+      volumeMounts:
+        - mountPath: /dev/shm
+          name: shm
+    - env:
+        - name: RUNTIME_LOCAL_MODELS_DIR
+          value: /mnt/models
+        - name: RUNTIME_GRPC_SERVER_THREAD_POOL_SIZE
+          value: '64'
+      image: >-
+        quay.io/modh/caikit-tgis-serving@sha256:ce6b66bb847608dac5eacd7f9123d2a076a06893d7f37f2da5876a8930527513
+      name: transformer-container
+      ports:
+        - containerPort: 8080
+          protocol: TCP
+      resources:
+        limits:
+          cpu: '2'
+          memory: 8Gi
+        requests:
+          cpu: '1'
+          memory: 4Gi
+      volumeMounts:
+        - mountPath: /dev/shm
+          name: shm
+  multiModel: false
+  supportedModelFormats:
+    - autoSelect: true
+      name: caikit
+  volumes:
+    - emptyDir:
+        medium: Memory
+        sizeLimit: 2Gi
+      name: shm

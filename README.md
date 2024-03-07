@@ -58,6 +58,9 @@ Use an [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.
 YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
 . <(curl -s "${YOLO_URL}")
 term_init
+
+# make custom web terminal persistent
+apply_firmly bootstrap/web-terminal
 ```
 
 NOTE: open a new terminal to activate new configuration
