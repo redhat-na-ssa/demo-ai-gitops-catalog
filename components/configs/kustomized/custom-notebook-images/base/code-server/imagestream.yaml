@@ -4,6 +4,7 @@ metadata:
   name: custom-code-server
   annotations:
     argocd.argoproj.io/sync-wave: "5"
+    opendatahub.io/notebook-image-creator: ai-catalog
     opendatahub.io/notebook-image-desc: |
       VS Code in a web browser!
 
@@ -14,6 +15,9 @@ metadata:
     opendatahub.io/notebook-image-url: https://github.com/opendatahub-io-contrib/workbench-images
     opendatahub.io/notebook-image-order: '10'
   labels:
+    # note: the following label allows the notebook to show up in the dashboard
+    # note: byon = bring your own notebook?
+    app.kubernetes.io/created-by: byon
     opendatahub.io/dashboard: "true"
     opendatahub.io/notebook-image: "true"
 spec:

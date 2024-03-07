@@ -2,6 +2,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   annotations:
+    opendatahub.io/notebook-image-creator: ai-catalog
     opendatahub.io/notebook-image-desc: |
       TensorFlow OpenCV Notebook
 
@@ -12,6 +13,9 @@ metadata:
       https://github.com/codekow/demo-ai-gitops-catalog
   name: opencv-notebook
   labels:
+    # note: the following label allows the notebook to show up in the dashboard
+    # note: byon = bring your own notebook?
+    app.kubernetes.io/created-by: byon
     component.opendatahub.io/name: jupyterhub
     opendatahub.io/component: 'true'
     opendatahub.io/notebook-image: 'true'

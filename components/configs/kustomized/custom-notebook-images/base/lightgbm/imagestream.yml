@@ -2,6 +2,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   annotations:
+    opendatahub.io/notebook-image-creator: ai-catalog
     opendatahub.io/notebook-image-desc: >
       Jupyter notebook image built on top of a set of data science libraries
       that advanced AI/ML notebooks will use as a base image, with the addition
@@ -10,6 +11,9 @@ metadata:
     opendatahub.io/notebook-image-url: https://git.jharmison.com/james/mufg.git
     argocd.argoproj.io/sync-wave: "3"
   labels:
+    # note: the following label allows the notebook to show up in the dashboard
+    # note: byon = bring your own notebook?
+    app.kubernetes.io/created-by: byon
     opendatahub.io/dashboard: "true"
     opendatahub.io/notebook-image: "true"
   name: lightgbm
