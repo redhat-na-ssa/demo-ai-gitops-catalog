@@ -1,5 +1,7 @@
 # Consistent list of issues with RHODS
 
+## General Issues
+
 - [ ] Notebook GPU toleration not configurable
 - [ ] Current RHODS documentation [does not explain GPU operation](https://ai-on-openshift.io/odh-rhods/nvidia-gpus/) with RHODS well
 - [ ] `odh-dashboard-conf` needs `gpuSetting` to [consistently show GPUs when autoscaling](../../components/configs/kustomized/rhods-config/dashboard-config-cr.yaml) - over-engineered dashboard
@@ -7,6 +9,14 @@
   - [ ] Why are [data sci projects](components/configs/kustomized/rhods-projects) different than regular projects?
 - [ ] You can't customize the list of potential notebook images per namespace for multi-homed use cases.
   - Ex: everyone on the cluster sees the same notebook images.
+
+## Data Science Pipelines
+
+- [ ] Do they really work? Maybe, Sometimes, No
+- [ ] Pipelines are stored in the mariadb instance instead of cluster resources like a CR
+  - Table `run_details` contains field `WorkflowSpecManifest` contains `PipelineRun`
+- [ ] `mariadb-pipelines-definition` Deployment sets env var `MYSQL_ALLOW_EMPTY_PASSWORD=true` (Security: Data Exposure)
+  - `mysqldump -u root -A -n < svc >`
 
 ## Potential enhancements
 
