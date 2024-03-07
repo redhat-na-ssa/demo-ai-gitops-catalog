@@ -43,6 +43,7 @@ spec:
           - name: MINIO_NAMESPACE
             value: minio
           - name: DATA_CONNECTION_NAME
+            # note: default prefix is aws-connection-
             value: data-connection-minio
           - name: AWS_DEFAULT_REGION
             value: us
