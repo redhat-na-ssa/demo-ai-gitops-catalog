@@ -16,3 +16,14 @@ patches:
           - key: nvidia-gpu-only
             operator: Exists
             effect: NoSchedule
+  - target:
+      group: Pod
+      version: v1
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/tolerations
+        value:
+          - key: nvidia-gpu-only
+            operator: Exists
+            effect: NoSchedule
