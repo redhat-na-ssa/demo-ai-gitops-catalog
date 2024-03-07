@@ -9,6 +9,7 @@
   - [ ] Why are [data sci projects](components/configs/kustomized/rhods-projects) different than regular projects?
 - [ ] You can't customize the list of potential notebook images per namespace for multi-homed use cases.
   - Ex: everyone on the cluster sees the same notebook images.
+- [ ] CUDA based images do not use Nvidia's CUDA as the official base (Poor Maintenance)
 
 ## Data Science Pipelines
 
