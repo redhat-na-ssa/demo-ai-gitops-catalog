@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: ds-group-project
 
 resources:
-  - ../../base
+  - ../group-project
