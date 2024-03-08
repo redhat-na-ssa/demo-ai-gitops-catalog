@@ -24,35 +24,33 @@ spec:
   lookupPolicy:
     local: true
   tags:
-    - name: "4.9.1"
+    - name: "4.16.1"
       annotations:
         opendatahub.io/default-image: 'true'
         opendatahub.io/workbench-image-recommended: 'true'
         opendatahub.io/notebook-python-dependencies: >-
-          [{"name":"JupyterLab","version": "3.2"},
-          {"name":"Notebook","version": "6.4"},
-          {"name":"Coder Code Server","version": "4.9.1"}]
+          [{"name":"Coder Code Server","version": "4.16.1"}]
         opendatahub.io/notebook-software: >-
-          [{"name":"Coder Code Server","version":"4.9.1"}]
-        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+          [{"name":"Python","version":"v3.9"},
+          {"name":"Python","version":"v3.11"}]
+        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:vscode-datascience-c9s-py311_2023c_latest
       from:
         kind: DockerImage
-        name: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+        name: quay.io/opendatahub-contrib/workbench-images:vscode-datascience-c9s-py311_2023c_latest
       referencePolicy:
         type: Local
-    - name: "4.9.1-cuda"
+    - name: "4.16.1-cuda"
       annotations:
         opendatahub.io/notebook-python-dependencies: >-
-          [{"name":"JupyterLab","version": "3.2"},
-          {"name":"Notebook","version": "6.4"},
-          {"name":"CUDA","version": "11.8"},
-          {"name":"Coder Code Server","version": "4.9.1"}]
+          [{"name":"Coder Code Server","version": "4.16.1"},
+          {"name":"CUDA","version": "11.8"}]
         opendatahub.io/notebook-software: >-
-          [{"name":"Coder Code Server","version": "v4.9.1"},
+          [{"name":"Python","version":"v3.9"},
+          {"name":"Python","version":"v3.11"},
           {"name":"CUDA","version":"11.8"}]
-        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:cuda-code-server-ubi9-py39_2023b_latest
+        openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:cuda-vscode-pytorch-c9s-py311_2023c_latest
       from:
         kind: DockerImage
-        name: quay.io/opendatahub-contrib/workbench-images:cuda-code-server-ubi9-py39_2023b_latest
+        name: quay.io/opendatahub-contrib/workbench-images:cuda-vscode-pytorch-c9s-py311_2023c_latest
       referencePolicy:
         type: Local
