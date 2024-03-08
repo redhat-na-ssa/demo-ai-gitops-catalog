@@ -43,11 +43,11 @@ spec:
       annotations:
         opendatahub.io/notebook-python-dependencies: >-
           [{"name":"Coder Code Server","version": "4.16.1"},
-          {"name":"CUDA","version": "11.8"}]
+          {"name":"CUDA","version": "12.4"}]
         opendatahub.io/notebook-software: >-
           [{"name":"Python","version":"v3.9"},
           {"name":"Python","version":"v3.11"},
-          {"name":"CUDA","version":"11.8"}]
+          {"name":"CUDA","version":"12.4"}]
         openshift.io/imported-from: quay.io/opendatahub-contrib/workbench-images:cuda-vscode-pytorch-c9s-py311_2023c_latest
       from:
         kind: DockerImage
