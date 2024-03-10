@@ -1,0 +1,58 @@
+#!/bin/bash
+# see https://ksingh7.medium.com/lets-automate-let-s-encrypt-tls-certs-for-openshift-4-211d6c081875
+
+AWS_ACCESS_KEY_ID=ID
+AWS_SECRET_ACCESS_KEY=KEY
+EMAIL=koree@redhat.com
+
+SCRATCH=./scratch
+ACME_DIR=${SCRATCH}/acme
+CERT_DIR=${SCRATCH}/le-certs
+CERT_NAME=letsencrypt-cert
+
+# openshift env
+export LE_API=$(oc whoami --show-server | cut -f 2 -d ':' | cut -f 3 -d '/' | sed 's/-api././')
+export LE_WILDCARD=$(oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.status.domain}')
+
+# setup acme.sh
+[ ! -d "${ACME_DIR}" ] && git clone https://github.com/acmesh-official/acme.sh.git ${ACME_DIR}
+
+# init acme
+${ACME_DIR}/acme.sh \
+  --register-account \
+  -m ${EMAIL}
+
+${ACME_DIR}/acme.sh \
+  --issue -d ${LE_API} \
+  -d *.${LE_WILDCARD} \
+  --dns dns_aws
+
+# get certs
+[ ! -d "${CERT_DIR}" ] && mkdir -p ${CERT_DIR}
+
+${ACME_DIR}/acme.sh \
+  --install-cert -d "${LE_API}" \
+  -d "*.${LE_WILDCARD}" \
+  --cert-file ${CERT_DIR}/cert.pem \
+  --key-file ${CERT_DIR}/key.pem \
+  --fullchain-file ${CERT_DIR}/fullchain.pem \
+  --ca-file ${CERT_DIR}/ca.cer
+
+# update router certs
+
+oc create secret tls ${CERT_NAME} \
+  --cert=${CERT_DIR}/fullchain.pem \
+  --key=${CERT_DIR}/key.pem \
+  -n openshift-ingress
+
+oc patch ingresscontroller default \
+  -n openshift-ingress-operator \
+  --type=merge \
+  --patch='{"spec": { "defaultCertificate": { "name": "letsencrypt-cert" }}}'
+
+# let masters be workers (small clusters)
+oc patch --type merge \
+  schedulers.config.openshift.io cluster \
+  --patch '{"spec": {"mastersSchedulable": true}}'
+
+echo "oc get po -n openshift-ingress"
