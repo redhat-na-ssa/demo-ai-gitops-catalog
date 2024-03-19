@@ -7,11 +7,13 @@ metadata:
 spec:
   clusterName: local-cluster
   admissionControl:
-    listenOnCreates: false
+    contactImageScanners: ScanIfMissing
+    listenOnCreates: true
     listenOnEvents: true
-    listenOnUpdates: false
+    listenOnUpdates: true
+    timeoutSeconds: 10
   perNode:
     collector:
-      collection: EBPF
+      collection: CORE_BPF
       imageFlavor: Regular
     taintToleration: TolerateTaints
