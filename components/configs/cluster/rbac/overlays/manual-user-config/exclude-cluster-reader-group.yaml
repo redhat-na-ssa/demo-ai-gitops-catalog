@@ -1,0 +1,5 @@
+$patch: delete
+kind: Group
+apiVersion: user.openshift.io/v1
+metadata:
+  name: cluster-readers

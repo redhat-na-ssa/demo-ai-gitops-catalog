@@ -277,3 +277,7 @@ ocp_gpu_taint_nodes(){
 ocp_gpu_untaint_nodes(){
   oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule-
 }
+
+ocp_gpu_label_nodes_from_nfd(){
+  oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
+}

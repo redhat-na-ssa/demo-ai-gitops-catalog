@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/source/path
+  value: components/argocd/apps/overlays/manual-user-config
