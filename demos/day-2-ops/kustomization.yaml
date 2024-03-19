@@ -4,6 +4,9 @@ kind: Kustomization
 resources:
 - ../base
 
+
+# One Time Apply
+
 # Banner Notice
 # - banner-data.yaml
 
@@ -28,6 +31,17 @@ resources:
 
 # NmState Operator
 - ../../components/operators/kubernetes-nmstate-operator/operator/overlays/stable
+
+# Local Storage
+- ../../components/operators/local-storage/instance/overlays/default
+- ../../components/operators/local-storage/operator/overlays/stable
+
+# OpenShift Virtualization
+- ../../components/operators/kubevirt-hyperconverged/instance/overlays/default
+- ../../components/operators/kubevirt-hyperconverged/operator/overlays/stable
+
+# Compliance
+- ../../components/operators/compliance-operator/operator/overlays/stable
 
 # Loki
 - ../../components/operators/loki-operator/operator/overlays/stable-5.8
@@ -60,5 +74,5 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        # value: 'DEMO: Day 2 Operations w/ GitOps'
-        value: 'This is a lab environment - DATA MAY BE DELETED at any time - no expectations for privacy or uptime'
+        value: 'DEMO: Day 2 Operations w/ GitOps'
+        # value: 'This is a lab environment - DATA MAY BE DELETED at any time - no expectations for privacy or uptime'

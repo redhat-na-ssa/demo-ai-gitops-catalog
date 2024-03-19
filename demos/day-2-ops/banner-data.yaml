@@ -6,4 +6,4 @@ spec:
   text: "This is a lab environment - DATA MAY BE DELETED at any time - no expectations for privacy or uptime"
   location: BannerTop
   backgroundColor: '#ff9900'
-  color: '#fff'
+  color: '#000'
