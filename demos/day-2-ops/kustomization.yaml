@@ -4,6 +4,9 @@ kind: Kustomization
 resources:
 - ../base
 
+# Cluster Login
+- ../../components/configs/cluster/login/overlays/htpasswd
+
 # Image Registry Config
 - ../../components/configs/cluster/registry/overlays/empty-dir
 
