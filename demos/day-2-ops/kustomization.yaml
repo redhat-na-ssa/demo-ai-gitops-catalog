@@ -4,6 +4,9 @@ kind: Kustomization
 resources:
 - ../base
 
+
+# One Time Apply
+
 # Banner Notice
 # - banner-data.yaml
 
@@ -36,6 +39,9 @@ resources:
 # OpenShift Virtualization
 - ../../components/operators/kubevirt-hyperconverged/instance/overlays/default
 - ../../components/operators/kubevirt-hyperconverged/operator/overlays/stable
+
+# Compliance
+- ../../components/operators/compliance-operator/operator/overlays/stable
 
 # Loki
 - ../../components/operators/loki-operator/operator/overlays/stable-5.8
