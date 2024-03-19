@@ -10,6 +10,9 @@ resources:
 # Image Registry Config
 - ../../components/configs/cluster/registry/overlays/empty-dir
 
+# OpenShift Logging
+- ../../components/operators/cluster-logging/operator/overlays/stable
+
 # Node Maintenance Operator
 - ../../components/operators/node-maintenance-operator/operator/overlays/stable
 
