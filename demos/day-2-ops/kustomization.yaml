@@ -68,5 +68,5 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        # value: 'DEMO: Day 2 Operations w/ GitOps'
-        value: 'This is a lab environment - DATA MAY BE DELETED at any time - no expectations for privacy or uptime'
+        value: 'DEMO: Day 2 Operations w/ GitOps'
+        # value: 'This is a lab environment - DATA MAY BE DELETED at any time - no expectations for privacy or uptime'
