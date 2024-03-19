@@ -1,0 +1,23 @@
+- op: add
+  path: /spec/generators/0/list/elements
+  value:
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-openshift-gitops
+        path: components/operators/openshift-gitops-operator/operator/overlays/latest
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: operator-openshift-logging
+    #     path: components/operators/openshift-logging/aggregate/overlays/default
+    # - cluster: local
+    #   url: https://kubernetes.default.svc
+    #   values:
+    #     name: operator-sealed-secrets
+    #     path: components/operators/sealed-secrets-operator/operator/overlays/default
+    - cluster: local
+      url: https://kubernetes.default.svc
+      values:
+        name: operator-web-terminal
+        path: components/operators/web-terminal/operator/overlays/fast
