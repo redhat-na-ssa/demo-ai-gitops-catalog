@@ -4,4 +4,4 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
     openshift.io/display-name: Advanced Cluster Security - Central
-  name: acs
+  name: stackrox
