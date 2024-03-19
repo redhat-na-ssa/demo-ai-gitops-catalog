@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../base
+
+# Image Registry Config
+- ../../components/configs/cluster/registry/overlays/empty-dir
+
+# Nvidia
+- ../../components/operators/gpu-operator-certified/instance/overlays/default
+- ../../components/operators/gpu-operator-certified/operator/overlays/stable
+
+# Node Feature Discovery - for Nvidia
+- ../../components/operators/nfd/instance/overlays/only-nvidia
+- ../../components/operators/nfd/operator/overlays/stable
+# OpenShift Service Mesh
+- ../../components/operators/servicemeshoperator/operator/overlays/stable
+# OpenShift Web Terminal
+- ../../components/operators/web-terminal/operator/overlays/fast
+- ../../components/operators/web-terminal/instance/overlays/enhanced
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-demo
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'DEMO: Day 2 Operations w/ GitOps'
