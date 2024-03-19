@@ -5,7 +5,7 @@ resources:
 - ../base
 
 # Banner Notice
-- banner-data.yaml
+# - banner-data.yaml
 
 # Cluster Login
 # - ../../components/configs/cluster/login/overlays/htpasswd
