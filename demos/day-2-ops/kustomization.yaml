@@ -17,6 +17,9 @@ resources:
 - ../../components/operators/gpu-operator-certified/instance/overlays/default
 - ../../components/operators/gpu-operator-certified/operator/overlays/stable
 
+# Loki
+- ../../components/operators/loki-operator/operator/overlays/stable-5.8
+
 # Node Feature Discovery - for Nvidia
 - ../../components/operators/nfd/instance/overlays/only-nvidia
 - ../../components/operators/nfd/operator/overlays/stable
