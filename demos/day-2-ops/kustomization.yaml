@@ -14,11 +14,20 @@ resources:
 # Node Feature Discovery - for Nvidia
 - ../../components/operators/nfd/instance/overlays/only-nvidia
 - ../../components/operators/nfd/operator/overlays/stable
+
+# OpenShift Pipelines
+- ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
+
+# Advanced Cluster Security
+- ../../components/operators/advanced-cluster-security/instance/overlays/default
+- ../../components/operators/advanced-cluster-security/operator/overlays/latest
+
 # OpenShift Service Mesh
 - ../../components/operators/servicemeshoperator/operator/overlays/stable
+
 # OpenShift Web Terminal
-- ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/operators/web-terminal/instance/overlays/enhanced
+- ../../components/operators/web-terminal/operator/overlays/fast
 
 patches:
   - target:
