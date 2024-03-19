@@ -10,7 +10,7 @@ patches:
       name: cluster
     patch: |-
       - op: replace
-        path: /spec/text
+        path: /spec
         value:
             managementState: Managed
             replicas: 1
