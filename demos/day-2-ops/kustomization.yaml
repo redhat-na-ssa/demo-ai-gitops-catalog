@@ -29,6 +29,10 @@ resources:
 # NmState Operator
 - ../../components/operators/kubernetes-nmstate-operator/operator/overlays/stable
 
+# Local Storage
+- ../../components/operators/local-storage/instance/overlays/default
+- ../../components/operators/local-storage/operator/overlays/stable
+
 # Loki
 - ../../components/operators/loki-operator/operator/overlays/stable-5.8
 
