@@ -33,6 +33,10 @@ resources:
 - ../../components/operators/local-storage/instance/overlays/default
 - ../../components/operators/local-storage/operator/overlays/stable
 
+# OpenShift Virtualization
+- ../../components/operators/kubevirt-hyperconverged/instance/overlays/default
+- ../../components/operators/kubevirt-hyperconverged/operator/overlays/stable
+
 # Loki
 - ../../components/operators/loki-operator/operator/overlays/stable-5.8
 
