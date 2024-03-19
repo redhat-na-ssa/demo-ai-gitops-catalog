@@ -1,0 +1,7 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: rhel9-demo-ssh-key
+stringData:
+  key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCMchVse1VYh6QP6fmkr3mX1B1lbOv43nSAXltH83h8yU9YyRKz5tW6ueEGXLP9g1QZyn0vQEzy6jZIbQFezvqpiINQ87gWGQrrj90w3k5ABxj8/YIGjw0b+RSSt/QIHM8elabhkKwlO45pQzzNvgQinGceCSor05Bnb4NVECMZ7Y4OAZ1br2tEQXOhTR7wjuPK59F6yjCuHOSpWgtBybwkTmuIccf/JarLpIGc7nL+4tfUM/K/GI9L79r/3idJ6xthgdvjtDdGuugoWCQuHkCvo3r9QsKD7CeaiH7tjxTPPjbx+S2+gs+EH39uNoe41dQhIAabN2DvBJAc6nsHdFfhRi0yPydhYnOs+oKmcbUu71Opbt9YaDKi1sW/ucM33hXAT/tpVX/7ZCkFN6gjOXEP1TrGbwoYLkUENukHGKtWlEvMB0RaiCVyxajt24aBv/VSadqYjRo7jzbt1JNFApRcuWF6VBoeSBUzYObqKzhdlQO4MFXpV/yWqCU6e2V6Mpk= redhat@csctmp-c6525-8.hpc.local
+type: Opaque
