@@ -7,6 +7,9 @@ resources:
 # Image Registry Config
 - ../../components/configs/cluster/registry/overlays/empty-dir
 
+# Node Maintenance Operator
+- ../../components/operators/node-maintenance-operator/operator/overlays/stable
+
 # Nvidia
 - ../../components/operators/gpu-operator-certified/instance/overlays/default
 - ../../components/operators/gpu-operator-certified/operator/overlays/stable
@@ -21,6 +24,9 @@ resources:
 # Advanced Cluster Security
 - ../../components/operators/advanced-cluster-security/instance/overlays/default
 - ../../components/operators/advanced-cluster-security/operator/overlays/latest
+
+# Red Hat SSO
+- ../../components/operators/rhsso-operator/operator/overlays/stable
 
 # OpenShift Service Mesh
 - ../../components/operators/servicemeshoperator/operator/overlays/stable
