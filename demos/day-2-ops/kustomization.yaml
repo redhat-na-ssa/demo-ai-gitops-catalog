@@ -5,7 +5,7 @@ resources:
 - ../base
 
 # Cluster Login
-- ../../components/configs/cluster/login/overlays/htpasswd
+# - ../../components/configs/cluster/login/overlays/htpasswd
 
 # Image Registry Config
 - ../../components/configs/cluster/registry/overlays/empty-dir
@@ -13,9 +13,15 @@ resources:
 # Node Maintenance Operator
 - ../../components/operators/node-maintenance-operator/operator/overlays/stable
 
-# Nvidia
+# Nvidia GPU Operator
 - ../../components/operators/gpu-operator-certified/instance/overlays/default
 - ../../components/operators/gpu-operator-certified/operator/overlays/stable
+
+# Nvidia Network Operator
+- ../../components/operators/nvidia-network-operator/operator/overlays/24.1.0
+
+# NmState Operator
+- ../../components/operators/kubernetes-nmstate-operator/operator/overlays/stable
 
 # Loki
 - ../../components/operators/loki-operator/operator/overlays/stable-5.8
