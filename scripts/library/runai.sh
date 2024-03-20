@@ -17,6 +17,7 @@ runai_setup(){
 
   helm repo add runai-backend https://backend-charts.storage.googleapis.com
   helm repo update
+  
   helm upgrade -i runai-backend -n runai-backend runai-backend/control-plane \
     --set global.domain=runai.apps."${OCP_CLUSTER_DOMAIN}" \
     --set global.config.kubernetesDistribution=openshift
@@ -33,6 +34,7 @@ runai_setup_cluster(){
 
   helm repo add runai https://run-ai-charts.storage.googleapis.com
   helm repo update
+
   helm upgrade -i runai-cluster runai/runai-cluster -n runai \
     --set controlPlane.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
     --set cluster.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
