@@ -22,8 +22,8 @@ kludge_tunnel(){
 
 kludge_test(){
   curl -k \
-    --connect-to 18.116.38.68:443:example-codekow.apps.cluster1.example.com:443 \
-    https://example-codekow.apps.cluster1.example.com
+    --connect-to "${PUBLIC_IP}":443:example.apps.cluster1.example.com:443 \
+    https://example.apps.cluster1.example.com
 }
 
 kludge_iptables(){
