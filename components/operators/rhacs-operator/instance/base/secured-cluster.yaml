@@ -14,6 +14,6 @@ spec:
     timeoutSeconds: 10
   perNode:
     collector:
-      collection: CORE_BPF
+      collection: EBPF
       imageFlavor: Regular
     taintToleration: TolerateTaints
