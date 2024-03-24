@@ -258,6 +258,32 @@ ocp_release_info(){
   curl -sL "https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/${VERSION}/release.txt"
 }
 
+ocp_run_on_all_nodes(){
+  case $1 in
+    --confirm)
+      shift
+ 
+      COMMAND=${@:-uptime}
+      ALL_NODES=$(oc get nodes --show-kind --no-headers|awk '/node/{print $1}')
+
+      for node in ${ALL_NODES}
+        do
+          # wipefs -af /dev/nvme0n1
+          # oc debug $node -- chroot /host  bash -c "$(cat -)"
+          oc debug $node -- chroot /host ${COMMAND}
+      done
+      ;; 
+   *)
+      echo "-------------------------------------------------------------------"
+      echo "WARNING. This runs as root on all nodes!"
+      echo "You can DESTROY ALL DATA, without recovery, if used incorrectly!"
+      echo "-------------------------------------------------------------------"
+      echo "Usage:"
+      echo "  ocp_run_on_all_nodes --confirm < command >"
+  esac
+
+}
+
 ocp_upgrade_cluster(){
   OCP_VERSION="${1:-latest}"
 
