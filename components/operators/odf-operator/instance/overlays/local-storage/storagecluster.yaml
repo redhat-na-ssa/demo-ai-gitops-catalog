@@ -1,0 +1,29 @@
+apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: ocs-storagecluster
+  namespace: openshift-storage
+spec:
+  storageDeviceSets:
+    - config: {}
+      count: 1
+      dataPVCTemplate:
+        metadata: {}
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: '1'
+          storageClassName: localblock-sc
+          volumeMode: Block
+        status: {}
+      name: ocs-deviceset-localblock-sc
+      placement: {}
+      preparePlacement: {}
+      replica: 3
+      resources: {}
+  encryption:
+    clusterWide: true
+    enable: true
+    kms: {}

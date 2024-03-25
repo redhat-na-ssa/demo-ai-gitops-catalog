@@ -13,6 +13,10 @@ resources:
 # Cluster Login
 # - ../../components/configs/cluster/login/overlays/htpasswd
 
+# Run AI
+# BUG: currently not installing
+# - ../../components/operators/run-ai/operator/overlays/stable
+
 # Image Registry Config
 - ../../components/configs/cluster/registry/overlays/empty-dir
 
