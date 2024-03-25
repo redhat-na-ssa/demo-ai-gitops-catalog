@@ -263,14 +263,14 @@ ocp_run_on_all_nodes(){
     --confirm)
       shift
  
-      COMMAND=${@:-uptime}
+      COMMAND=${*:-uptime}
       ALL_NODES=$(oc get nodes --show-kind --no-headers|awk '/node/{print $1}')
 
       for node in ${ALL_NODES}
         do
           # wipefs -af /dev/nvme0n1
           # oc debug $node -- chroot /host  bash -c "$(cat -)"
-          oc debug $node -- chroot /host ${COMMAND}
+          oc debug "$node" -- chroot /host ${COMMAND}
       done
       ;; 
    *)
