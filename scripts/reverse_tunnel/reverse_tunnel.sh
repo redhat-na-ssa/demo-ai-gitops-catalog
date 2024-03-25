@@ -8,7 +8,7 @@ usage(){
     Install script and env into /usr/local/bin
 
     cp reverse_tunnel.sh /usr/local/bin/
-    cp reverse_tunnel.sh /usr/local/bin/
+    cp reverse_tunnel.env /usr/local/bin/
     cp reverse-tunnel.service /etc/systemd/system/
   "
   exit 0
