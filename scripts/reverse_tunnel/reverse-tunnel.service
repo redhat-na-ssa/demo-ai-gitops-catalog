@@ -1,0 +1,17 @@
+# NOTE: install to /etc/systemd/system/
+#
+# systemctl daemon-reload
+# systemctl enable reverse-tunnel --now
+[Unit]
+Description=SSH Tunnel
+After=network.target
+
+[Service]
+Restart=always
+RestartSec=20
+EnvironmentFile=/usr/local/bin/reverse_tunnel.env
+User=redhat
+ExecStart=/usr/local/bin/reverse_tunnel.sh
+
+[Install]
+WantedBy=multi-user.target
