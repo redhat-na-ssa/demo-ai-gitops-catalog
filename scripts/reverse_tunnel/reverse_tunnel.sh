@@ -10,6 +10,9 @@ usage(){
     cp reverse_tunnel.sh /usr/local/bin/
     cp reverse_tunnel.env /usr/local/bin/
     cp reverse-tunnel.service /etc/systemd/system/
+
+    systemctl enable reverse-tunnel --now
+    systemctl status reverse-tunnel
   "
   exit 0
 }
