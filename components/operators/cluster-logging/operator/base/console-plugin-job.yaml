@@ -20,7 +20,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: enable-logging-console-plugin
-    namespace: openshift-gitops
+    namespace: openshift-logging
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
