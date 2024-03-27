@@ -270,6 +270,7 @@ ocp_run_on_all_nodes(){
         do
           # wipefs -af /dev/nvme0n1
           # oc debug $node -- chroot /host  bash -c "$(cat -)"
+          # shellcheck disable=SC2086
           oc debug "$node" -- chroot /host ${COMMAND}
       done
       ;; 
