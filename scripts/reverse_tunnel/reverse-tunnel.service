@@ -12,7 +12,7 @@ Restart=always
 RestartSec=20
 WorkingDirectory=/usr/local/bin
 EnvironmentFile=/usr/local/bin/reverse_tunnel.env
-User=redhat
+User=reverse-tunnel
 ExecStart=/usr/local/bin/reverse_tunnel.sh
 
 [Install]
