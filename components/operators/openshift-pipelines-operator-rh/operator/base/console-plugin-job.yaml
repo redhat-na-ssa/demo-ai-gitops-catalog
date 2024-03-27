@@ -20,7 +20,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: enable-tekton-console-plugin
-    namespace: openshift-storage
+    namespace: openshift-operators
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -53,6 +53,8 @@ spec:
             - |
                 echo "Attempting to enable ${PLUGIN_NAME} plugin"
                 echo ""
+
+                oc whoami
 
                 # Create the plugins section on the object if it doesn't exist
                 if [ -z $(oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}') ]; then
