@@ -4,3 +4,7 @@
 
 - https://github.com/open-policy-agent/gatekeeper
 - https://kyverno.io
+
+## SOPS
+
+https://github.com/getsops/sops

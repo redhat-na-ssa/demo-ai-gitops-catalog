@@ -44,4 +44,6 @@ fi
   bin_check oc-mirror
   bin_check rclone
   bin_check restic
+  bin_check sops
+  bin_check age
 }

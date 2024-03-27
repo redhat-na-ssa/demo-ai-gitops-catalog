@@ -88,7 +88,7 @@ download_rclone(){
 
   cp rclone "${BIN_PATH}"
   chgrp root "${BIN_PATH}/rclone"
-  chmod 755 "${BIN_PATH}/rclone"
+  chmod +x "${BIN_PATH}/rclone"
 
   cd ..
   rm -rf rclone-*-linux-amd64*
@@ -98,11 +98,27 @@ download_restic(){
   BIN_VERSION=0.15.1
   DOWNLOAD_URL=https://github.com/restic/restic/releases/download/v${BIN_VERSION}/restic_${BIN_VERSION}_linux_amd64.bz2
   curl "${DOWNLOAD_URL}" -sL | bzcat > "${BIN_PATH}/restic"
-  chmod 755 "${BIN_PATH}/restic"
+  chmod +x "${BIN_PATH}/restic"
 }
 
 download_tkn(){
   BIN_VERSION=latest
   DOWNLOAD_URL=https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/${BIN_VERSION}/tkn-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
+}
+
+download_sops(){
+  BIN_VERSION=3.8.1
+  DOWNLOAD_URL=https://github.com/getsops/sops/releases/download/v${BIN_VERSION}/sops-v${BIN_VERSION}.linux.amd64
+  curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/sops"
+  chmod +x "${BIN_PATH}/sops"
+}
+
+download_age(){
+  set -x
+  BIN_VERSION=1.1.1
+  DOWNLOAD_URL=https://github.com/FiloSottile/age/releases/download/v${BIN_VERSION}/age-v${BIN_VERSION}-linux-amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar vzx --strip-components 1 -C "${BIN_PATH}/"
+  chmod +x "${BIN_PATH}/age"
+  set +x
 }

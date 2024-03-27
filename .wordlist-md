@@ -34,8 +34,6 @@ Gi
 GitOps
 HTPasswd
 Hashicorp
-heartexlabs
-http
 IAM
 IOV
 IgnoreExtraneous
@@ -177,6 +175,7 @@ eus
 eventing
 finalizer
 generatorOptions
+getsops
 ghcr
 github
 githubusercontent
@@ -189,10 +188,12 @@ gpu
 gpus
 grafana
 gui
+heartexlabs
 homelab
 html
 htpass
 htpasswd
+http
 httpErrorCodePages
 https
 iam
