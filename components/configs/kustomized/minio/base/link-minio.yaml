@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: link-minio
+spec:
+  href: "https://minio-console-minio.apps.<patch clustername>"
+  location: ApplicationMenu
+  text: MinIO Console
+  applicationMenu:
+    section: AI Applications
+    imageURL: https://min.io/resources/favs/favicon-32x32.png

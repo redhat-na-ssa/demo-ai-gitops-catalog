@@ -11,6 +11,7 @@ commonLabels:
 resources:
 - data-connector-rb.yaml
 - deployment.yaml
+# - link-minio.yaml
 - pvc.yaml
 - route.yaml
 # - secret.yaml
