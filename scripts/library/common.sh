@@ -7,22 +7,32 @@ genpass(){
   < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-32}"
 }
 
-check_cluster_version(){
-  OCP_VERSION=$(oc version | sed -n '/Server Version: / s/Server Version: //p')
-  AVOID_VERSIONS=()
-  TESTED_VERSIONS=("4.12.33")
+create_kubeadmin(){
+  PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
-  echo "Current OCP version: ${OCP_VERSION}"
-  echo "Tested OCP version(s): ${TESTED_VERSIONS[*]}"
-  echo ""
+  which htpasswd >/dev/null || return
 
-  # shellcheck disable=SC2076
-  if [[ " ${AVOID_VERSIONS[*]} " =~ " ${OCP_VERSION} " ]]; then
-    echo "OCP version ${OCP_VERSION} is known to have issues with this demo"
-    echo ""
-    echo 'Recommend: "oc adm upgrade --to-latest=true"'
-    echo ""
-  fi
+  HTPASSWD=$(htpasswd -nbB -C10 null "${PASS}")
+  HASH=${HTPASSWD##*:}
+
+  echo "
+  PASSWORD: ${PASS}
+  HASH:     ${HASH}
+
+  oc apply -f scratch/kubeadmin.yaml
+  "
+
+cat << YAML > scratch/kubeadmin.yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: kubeadmin
+  namespace: kube-system
+stringData:
+  kubeadmin: ${HASH}
+  password: ${PASS}
+type: Opaque
+YAML
 }
 
 apply_firmly(){
