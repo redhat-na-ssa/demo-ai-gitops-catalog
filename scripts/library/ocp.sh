@@ -112,23 +112,28 @@ ocp_aws_create_gpu_machineset(){
   # cheapest: g4ad.4xlarge
   # a100 (MIG): p4d.24xlarge
   # h100 (MIG): p5.48xlarge
+
+  # 8x gaudi: dl1.24xlarge
+
+  echo "usage: ocp_aws_create_gpu_machineset 
+
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
   # check for an existing gpu machine set
-  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu; then
-    echo "Exists: GPU machineset"
+  if oc -n openshift-machine-api get machinesets.machine.openshift.io -l acelerator="${INSTANCE_TYPE}" -o name; then
+    echo "Exists: GPU machineset - ${INSTANCE_TYPE}"
   else
-    echo "Creating: GPU machineset"
+    echo "Creating: GPU machineset - ${INSTANCE_TYPE}"
     oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
-      sed '/machine/ s/-worker/-gpu/g
-        /name/ s/-worker/-gpu/g
+      sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
+        /name/ s/-worker/-'"${INSTANCE_TYPE}"'/g
         s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
         s/replicas.*/replicas: 0/' | \
-      oc apply -f -
+      oc apply -l accelerator="${INSTANCE_TYPE}" -f -
   fi
 
-  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -l acelerator="${INSTANCE_TYPE}" -o name | head -n1)
 
   echo "Patching: GPU machineset"
 
