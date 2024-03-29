@@ -118,11 +118,12 @@ ocp_aws_clone_machineset(){
     echo "Exists: machineset - ${INSTANCE_TYPE}"
   else
     echo "Creating: machineset - ${INSTANCE_TYPE}"
-    oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
-      sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
-        /name/ s/-worker/-'"${INSTANCE_TYPE%.*}"'/g
-        s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
-        s/replicas.*/replicas: 0/' | \
+    oc -n openshift-machine-api \
+      get "${MACHINE_SET}" -o yaml | \
+        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
+          /name/ s/-worker/-'"${INSTANCE_TYPE%.*}"'/g
+          s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
+          s/replicas.*/replicas: 0/' | \
       oc apply -f -
   fi
 }
