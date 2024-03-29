@@ -130,10 +130,10 @@ ocp_aws_create_gpu_machineset(){
         /name/ s/-worker/-'"${INSTANCE_TYPE}"'/g
         s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
         s/replicas.*/replicas: 0/' | \
-      oc apply -l accelerator="${INSTANCE_TYPE}" -f -
+      oc apply -f -
   fi
 
-  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -l acelerator="${INSTANCE_TYPE}" -o name | head -n1)
+  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -l accelerator="${INSTANCE_TYPE}" -o name | head -n1)
 
   echo "Patching: ${MACHINE_SET_GPU}"
 
