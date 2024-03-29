@@ -133,13 +133,12 @@ ocp_aws_create_gpu_machineset(){
       oc apply -f -
   fi
 
-  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -l accelerator="${INSTANCE_TYPE}" -o name | head -n1)
+  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep -q "${INSTANCE_TYPE}" | head -n1)
 
   echo "Patching: ${MACHINE_SET_GPU}"
 
   # cosmetic
   oc -n openshift-machine-api \
-    -l acelerator="${INSTANCE_TYPE}" \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
 
