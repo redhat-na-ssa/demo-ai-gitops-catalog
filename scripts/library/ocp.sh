@@ -58,106 +58,98 @@ aws_setup_ack_system(){
   done
 }
 
-ocp_aws_cluster_autoscaling(){
-  oc apply -k "${GIT_ROOT}"/components/configs/autoscale/overlays/gpus
+ocp_aws_clone_machineset(){
+  [ -z "${1}" ] && \
+  echo "
+    usage: ocp_aws_create_gpu_machineset < instance type, default g4dn.4xlarge >
+  "
 
-  ocp_aws_create_gpu_machineset g4dn.4xlarge
-  ocp_create_machineset_autoscale 0 3
+  INSTANCE_TYPE=${1:-g4dn.4xlarge}
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
-  ocp_control_nodes_schedulable
-
-  # scale workers to 1
-  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker)"
-  ocp_scale_machineset 1 "${WORKER_MS}"
+  # check for an existing instance machine set
+  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep -q "${INSTANCE_TYPE%.*}"; then
+    echo "Exists: machineset - ${INSTANCE_TYPE}"
+  else
+    echo "Creating: machineset - ${INSTANCE_TYPE}"
+    oc -n openshift-machine-api \
+      get "${MACHINE_SET}" -o yaml | \
+        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
+          /name/ s/-worker/-'"${INSTANCE_TYPE%.*}"'/g
+          s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
+          s/replicas.*/replicas: 0/' | \
+      oc apply -f -
+  fi
 }
 
 ocp_aws_create_metal_machineset(){
   # https://aws.amazon.com/ec2/instance-types/m5zn
   # m5.metal
   # m5n.metal
-  INSTANCE_TYPE=${1:-m5zn.metal}
-  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
+  
+  INSTANCE_TYPE=${1:-m5n.metal}
 
-  # check for an existing metal machine set
-  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep metal; then
-    echo "Exists: METAL machineset"
-  else
-    echo "Creating: METAL machineset"
-    oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
-      sed '/machine/ s/-worker/-metal/g
-        /name/ s/-worker/-metal/g
-        s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
-        s/replicas.*/replicas: 0/' | \
-      oc apply -f -
-  fi
+  ocp_aws_clone_machineset "${INSTANCE_TYPE}"
 
-  MACHINE_SET_METAL=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep metal | head -n1)
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
-  echo "Patching: Metal machineset"
+  echo "Patching: ${MACHINE_SET_TYPE}"
 
   # cosmetic
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_METAL}" \
+    patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/metal":""}}}}}}'
 
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_METAL}" \
+    patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
 
 ocp_aws_create_gpu_machineset(){
   # https://aws.amazon.com/ec2/instance-types/g4
   # single gpu: g4dn.{2,4,8,16}xlarge
-  # multi gpu: g4dn.12xlarge
-  # cheapest: g4ad.4xlarge
+  # multi gpu:  g4dn.12xlarge
+  # practical:  g4ad.4xlarge
   # a100 (MIG): p4d.24xlarge
   # h100 (MIG): p5.48xlarge
+
+  # https://aws.amazon.com/ec2/instance-types/dl1
+  # 8 x gaudi:  dl1.24xlarge
+
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
-  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
-  # check for an existing gpu machine set
-  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu; then
-    echo "Exists: GPU machineset"
-  else
-    echo "Creating: GPU machineset"
-    oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
-      sed '/machine/ s/-worker/-gpu/g
-        /name/ s/-worker/-gpu/g
-        s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
-        s/replicas.*/replicas: 0/' | \
-      oc apply -f -
-  fi
+  ocp_aws_clone_machineset "${INSTANCE_TYPE}"
 
-  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
-  echo "Patching: GPU machineset"
+  echo "Patching: ${MACHINE_SET_TYPE}"
 
   # cosmetic
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_GPU}" \
+    patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
 
   # taint nodes for gpu-only workloads
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_GPU}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
+    patch "${MACHINE_SET_TYPE}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
   
   # should use the default profile
   # oc -n openshift-machine-api \
-  #   patch "${MACHINE_SET_GPU}" \
+  #   patch "${MACHINE_SET_TYPE}" \
   #   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"no-time-sliced"}}}}}}'
 
   # should help auto provisioner
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_GPU}" \
+    patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
   
     oc -n openshift-machine-api \
-    patch "${MACHINE_SET_GPU}" \
+    patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
   
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_GPU}" \
+    patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
 
@@ -183,6 +175,19 @@ spec:
     name: "${set}"
 YAML
   done
+}
+
+ocp_aws_cluster_autoscaling(){
+  oc apply -k "${GIT_ROOT}"/components/configs/autoscale/overlays/gpus
+
+  ocp_aws_create_gpu_machineset g4dn.4xlarge
+  ocp_create_machineset_autoscale 0 3
+
+  ocp_control_nodes_schedulable
+
+  # scale workers to 1
+  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker)"
+  ocp_scale_machineset 1 "${WORKER_MS}"
 }
 
 ocp_scale_machineset(){
