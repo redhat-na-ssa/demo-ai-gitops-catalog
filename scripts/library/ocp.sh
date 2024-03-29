@@ -127,7 +127,7 @@ ocp_aws_create_gpu_machineset(){
     echo "Creating: GPU machineset - ${INSTANCE_TYPE}"
     oc -n openshift-machine-api get "${MACHINE_SET}" -o yaml | \
       sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
-        /name/ s/-worker/-'"${INSTANCE_TYPE}"'/g
+        /name/ s/-worker/-'"${INSTANCE_TYPE%.*}"'/g
         s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
         s/replicas.*/replicas: 0/' | \
       oc apply -f -
