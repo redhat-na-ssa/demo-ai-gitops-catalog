@@ -136,7 +136,7 @@ ocp_aws_create_gpu_machineset(){
   MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE}" | head -n1)
 
   echo "Patching: ${MACHINE_SET_GPU}"
-set -x
+
   # cosmetic
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_GPU}" \
@@ -164,7 +164,6 @@ set -x
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
-set +x
 }
 
 ocp_create_machineset_autoscale(){
