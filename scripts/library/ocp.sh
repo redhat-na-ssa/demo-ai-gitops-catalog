@@ -72,6 +72,7 @@ ocp_aws_cluster_autoscaling(){
 }
 
 ocp_aws_clone_machineset(){
+  [ -z "${1}" ] && \
   echo "
     usage: ocp_aws_create_gpu_machineset < instance type, default g4dn.4xlarge >  
   "
