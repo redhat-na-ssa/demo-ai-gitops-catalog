@@ -1,0 +1,20 @@
+apiVersion: nmstate.io/v1alpha1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: nncp-br-cnv
+spec:
+  nodeSelector:
+    # node-role.kubernetes.io/worker: ""
+    kubernetes.io/hostname: csctmp-r760-16.hpc.local
+  desiredState:
+    interfaces:
+      - name: br-cnv
+        description: Linux bridge on nodes
+        type: linux-bridge
+        state: up
+        bridge:
+          options:
+            stp:
+              enabled: false
+          port:
+            - name: eno12399
