@@ -121,7 +121,7 @@ ocp_aws_create_gpu_machineset(){
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
   # check for an existing gpu machine set
-  if oc -n openshift-machine-api get machinesets.machine.openshift.io -l acelerator="${INSTANCE_TYPE}" -o name; then
+  if oc -n openshift-machine-api get machinesets.machine.openshift.io -l acelerator="${INSTANCE_TYPE}" -o=jsonpath='{.status}'; then
     echo "Exists: GPU machineset - ${INSTANCE_TYPE}"
   else
     echo "Creating: GPU machineset - ${INSTANCE_TYPE}"
