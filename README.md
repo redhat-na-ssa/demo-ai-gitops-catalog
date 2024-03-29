@@ -40,6 +40,11 @@ The following cli tools are required:
 
 NOTE: `bash`, `git`, and `oc` are available in the [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html)
 
+The following are used to encrypt secrets and are optional:
+
+- `age` - [Info](https://github.com/FiloSottile/age)
+- `sops` - [Info](https://github.com/getsops/sops)
+
 ## Bootstrapping a Cluster
 
 1. Verify you are logged into your cluster using `oc`.
