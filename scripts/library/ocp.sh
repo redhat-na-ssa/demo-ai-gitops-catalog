@@ -113,7 +113,7 @@ ocp_aws_create_gpu_machineset(){
   # a100 (MIG): p4d.24xlarge
   # h100 (MIG): p5.48xlarge
 
-  # 8x gaudi: dl1.24xlarge
+  # 8 x gaudi: dl1.24xlarge
 
   echo "usage: ocp_aws_create_gpu_machineset < instance type >"
 
