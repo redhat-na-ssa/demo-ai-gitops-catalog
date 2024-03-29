@@ -61,7 +61,7 @@ aws_setup_ack_system(){
 ocp_aws_clone_machineset(){
   [ -z "${1}" ] && \
   echo "
-    usage: ocp_aws_create_gpu_machineset < instance type, default g4dn.4xlarge >  
+    usage: ocp_aws_create_gpu_machineset < instance type, default g4dn.4xlarge >
   "
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}

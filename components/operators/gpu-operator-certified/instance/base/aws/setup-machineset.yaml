@@ -80,7 +80,7 @@ spec:
               ocp_aws_clone_machineset(){
                 [ -z "${1}" ] && \
                 echo "
-                  usage: ocp_aws_create_gpu_machineset < instance type, default g4dn.4xlarge >  
+                  usage: ocp_aws_create_gpu_machineset < instance type, default g4dn.4xlarge >
                 "
 
                 INSTANCE_TYPE=${1:-g4dn.4xlarge}
@@ -129,7 +129,7 @@ spec:
                 oc -n openshift-machine-api \
                   patch "${MACHINE_SET_TYPE}" \
                   --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
-                
+
                 # should use the default profile
                 # oc -n openshift-machine-api \
                 #   patch "${MACHINE_SET_TYPE}" \
@@ -139,11 +139,11 @@ spec:
                 oc -n openshift-machine-api \
                   patch "${MACHINE_SET_TYPE}" \
                   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
-                
+
                   oc -n openshift-machine-api \
                   patch "${MACHINE_SET_TYPE}" \
                   --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
-                
+
                 oc -n openshift-machine-api \
                   patch "${MACHINE_SET_TYPE}" \
                   --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
