@@ -1,9 +1,0 @@
-apiVersion: console.openshift.io/v1
-kind: ConsoleNotification
-metadata:
-  name: banner-data
-spec:
-  text: "This is a lab environment - DATA MAY BE DELETED at any time - no expectations for privacy or uptime"
-  location: BannerTop
-  backgroundColor: '#ff9900'
-  color: '#000'
