@@ -58,19 +58,6 @@ aws_setup_ack_system(){
   done
 }
 
-ocp_aws_cluster_autoscaling(){
-  oc apply -k "${GIT_ROOT}"/components/configs/autoscale/overlays/gpus
-
-  ocp_aws_create_gpu_machineset g4dn.4xlarge
-  ocp_create_machineset_autoscale 0 3
-
-  ocp_control_nodes_schedulable
-
-  # scale workers to 1
-  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker)"
-  ocp_scale_machineset 1 "${WORKER_MS}"
-}
-
 ocp_aws_clone_machineset(){
   [ -z "${1}" ] && \
   echo "
@@ -188,6 +175,19 @@ spec:
     name: "${set}"
 YAML
   done
+}
+
+ocp_aws_cluster_autoscaling(){
+  oc apply -k "${GIT_ROOT}"/components/configs/autoscale/overlays/gpus
+
+  ocp_aws_create_gpu_machineset g4dn.4xlarge
+  ocp_create_machineset_autoscale 0 3
+
+  ocp_control_nodes_schedulable
+
+  # scale workers to 1
+  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker)"
+  ocp_scale_machineset 1 "${WORKER_MS}"
 }
 
 ocp_scale_machineset(){
