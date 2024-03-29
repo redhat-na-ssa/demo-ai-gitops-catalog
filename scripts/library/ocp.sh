@@ -115,7 +115,7 @@ ocp_aws_create_gpu_machineset(){
 
   # 8x gaudi: dl1.24xlarge
 
-  echo "usage: ocp_aws_create_gpu_machineset 
+  echo "usage: ocp_aws_create_gpu_machineset d4dn.4xlarge"
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
