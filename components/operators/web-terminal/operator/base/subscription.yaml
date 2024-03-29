@@ -9,5 +9,5 @@ spec:
   name: web-terminal
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  # kludge: fix v1.9.0 bug 
+  # kludge: fix v1.9.0 bug
   startingCSV: web-terminal.v1.7.0
