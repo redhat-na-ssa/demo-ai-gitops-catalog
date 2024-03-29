@@ -145,7 +145,7 @@ set -x
   # taint nodes for gpu-only workloads
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_GPU}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":nvidia-gpu-only","value":null,"effect":"NoSchedule"}]}}}}'
   
   # should use the default profile
   # oc -n openshift-machine-api \
