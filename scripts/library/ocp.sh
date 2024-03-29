@@ -139,29 +139,35 @@ ocp_aws_create_gpu_machineset(){
 
   # cosmetic
   oc -n openshift-machine-api \
+    -l acelerator="${INSTANCE_TYPE}" \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
 
   # taint nodes for gpu-only workloads
   oc -n openshift-machine-api \
+    -l acelerator="${INSTANCE_TYPE}" \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
   
   # should use the default profile
   # oc -n openshift-machine-api \
+  #   -l acelerator="${INSTANCE_TYPE}" \
   #   patch "${MACHINE_SET_GPU}" \
   #   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"no-time-sliced"}}}}}}'
 
   # should help auto provisioner
   oc -n openshift-machine-api \
+    -l acelerator="${INSTANCE_TYPE}" \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
   
     oc -n openshift-machine-api \
+    -l acelerator="${INSTANCE_TYPE}" \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
   
   oc -n openshift-machine-api \
+    -l acelerator="${INSTANCE_TYPE}" \
     patch "${MACHINE_SET_GPU}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
