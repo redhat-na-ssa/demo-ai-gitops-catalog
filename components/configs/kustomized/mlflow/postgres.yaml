@@ -1,0 +1,32 @@
+---
+# Source: mlflow-server/charts/postgrescluster/templates/postgres.yaml
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: release-name
+spec:
+  postgresVersion: 14
+  instances:
+    - name: "instance1"
+      replicas: 2
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "1Gi"
+  backups:
+    pgbackrest:
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: "1Gi"
+  proxy:
+    pgBouncer:
+      replicas: 2
+  openshift: true

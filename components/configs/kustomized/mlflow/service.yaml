@@ -1,0 +1,28 @@
+---
+# Source: mlflow-server/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-mlflow-server
+  annotations:
+     service.alpha.openshift.io/serving-cert-secret-name: release-name-mlflow-server-tls
+  labels:
+    helm.sh/chart: mlflow-server-0.6.4
+    app.kubernetes.io/name: mlflow-server
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "2.10"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: mlflow-server
+      protocol: TCP
+      name: mlflow-server
+    - port: 8443
+      targetPort: oauth-proxy
+      protocol: TCP
+      name: oauth
+  selector:
+    app.kubernetes.io/name: mlflow-server
+    app.kubernetes.io/instance: release-name
