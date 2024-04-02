@@ -6,7 +6,7 @@ bin_check(){
   which "${name}" || download_"${name}"
  
   case ${name} in
-    helm|kustomize|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
+    helm|kustomize|kubectl-operator|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
       echo "auto-complete: . <(${name} completion bash)"
       
       # shellcheck source=/dev/null
