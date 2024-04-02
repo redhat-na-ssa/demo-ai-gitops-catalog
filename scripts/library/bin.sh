@@ -115,10 +115,15 @@ download_sops(){
 }
 
 download_age(){
-  set -x
   BIN_VERSION=1.1.1
   DOWNLOAD_URL=https://github.com/FiloSottile/age/releases/download/v${BIN_VERSION}/age-v${BIN_VERSION}-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar vzx --strip-components 1 -C "${BIN_PATH}/"
   chmod +x "${BIN_PATH}/age"
-  set +x
+}
+
+download_kubectl-operator(){
+  BIN_VERSION=0.5.0
+  DOWNLOAD_URL=https://github.com/operator-framework/kubectl-operator/releases/download/v${BIN_VERSION}/kubectl-operator_v${BIN_VERSION}_linux_amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
+  chmod +x "${BIN_PATH}/"
 }
