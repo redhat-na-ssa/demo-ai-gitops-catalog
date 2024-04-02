@@ -131,7 +131,7 @@ download_kubectl-krew(){
   curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
   mv "${BIN_PATH}/${KREW}" "${BIN_PATH}/kubectl-krew"
   chmod +x "${BIN_PATH}/kubectl-krew"
-  krew install krew
+  kubectl-krew install krew
 }
 
 download_kubectl-operator(){
