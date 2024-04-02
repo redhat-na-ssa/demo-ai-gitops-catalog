@@ -21,7 +21,7 @@ __git_branch(){
 
 PS1='\e]\s\a\n\e[33m\w \e[36m\$(__git_branch)\e[m$ '
 
-if [ -e ai_ops ]; then
+if [ -e ~/ai_ops ]; then
   cd ai_ops
   . scripts/functions.sh
 fi
