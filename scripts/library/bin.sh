@@ -9,7 +9,7 @@ bin_check(){
   which "${name}" || download_"${name}"
  
   case ${name} in
-    helm|kustomize|kubectl-krew|kubectl-operator|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
+    helm|kustomize|krew|kubectl-operator|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
       echo "auto-complete: . <(${name} completion bash)"
       
       # shellcheck source=/dev/null
@@ -124,14 +124,14 @@ download_age(){
   chmod +x "${BIN_PATH}/age"
 }
 
-download_kubectl-krew(){
+download_krew(){
   BIN_VERSION=latest
   KREW="krew-${OS}_${ARCH}"
   DOWNLOAD_URL="https://github.com/kubernetes-sigs/krew/releases/${BIN_VERSION}/download/${KREW}.tar.gz"
   curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
-  mv "${BIN_PATH}/${KREW}" "${BIN_PATH}/kubectl-krew"
-  chmod +x "${BIN_PATH}/kubectl-krew"
-  kubectl-krew install krew
+  mv "${BIN_PATH}/${KREW}" "${BIN_PATH}/krew"
+  chmod +x "${BIN_PATH}/krew"
+  krew install krew
 }
 
 download_kubectl-operator(){
