@@ -42,6 +42,7 @@ fi
   bin_check busybox
 
   bin_check oc-mirror
+  bin_check kubectl-krew
   bin_check kubectl-operator
   bin_check rclone
   bin_check restic

@@ -3,10 +3,13 @@
 bin_check(){
   name=${1:-oc}
 
+  OS="$(uname | tr '[:upper:]' '[:lower:]')"
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
+
   which "${name}" || download_"${name}"
  
   case ${name} in
-    helm|kustomize|kubectl-operator|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
+    helm|kustomize|kubectl-krew|kubectl-operator|oc|oc-mirror|odo|openshift-install|opm|s2i|tkn)
       echo "auto-complete: . <(${name} completion bash)"
       
       # shellcheck source=/dev/null
@@ -121,9 +124,19 @@ download_age(){
   chmod +x "${BIN_PATH}/age"
 }
 
+download_kubectl-krew(){
+  BIN_VERSION=latest
+  KREW="krew-${OS}_${ARCH}"
+  DOWNLOAD_URL="https://github.com/kubernetes-sigs/krew/releases/${BIN_VERSION}/download/${KREW}.tar.gz"
+  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
+  mv "${BIN_PATH}/${KREW}" "${BIN_PATH}/kubectl-krew"
+  chmod +x "${BIN_PATH}/kubectl-krew"
+  krew install krew
+}
+
 download_kubectl-operator(){
   BIN_VERSION=0.5.0
   DOWNLOAD_URL=https://github.com/operator-framework/kubectl-operator/releases/download/v${BIN_VERSION}/kubectl-operator_v${BIN_VERSION}_linux_amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
-  chmod +x "${BIN_PATH}/"
+  chmod +x "${BIN_PATH}/kubectl-operator"
 }
