@@ -17,3 +17,4 @@
 - https://github.com/rh-dttl-edge-virt-demo/edge-virt/blob/main/bootstrap/kustomization.yaml#L8
 - https://github.com/rh-dttl-edge-virt-demo/edge-virt/blob/main/applications/alertmanager.yaml#L21
 - https://github.com/rh-dttl-edge-virt-demo/edge-virt/blob/main/encrypt-chart-secrets.sh
+- https://krew.sigs.k8s.io/docs/user-guide/setup/install/#bash
