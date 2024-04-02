@@ -72,3 +72,15 @@ pkg_manifests_save_all_details(){
   echo -e "# created: $(date -u)\n# script: dump_operator_info" > operator_info.txt
   pkg_manifests_get_all_details >> operator_info.txt
 }
+
+pkg_manifest_get_installed_operators(){
+
+  which kubectl-operator > /dev/null || return
+
+  mkdir -p docs/operators
+  for op in $(oc operator list | awk '{print $1}' | sed '1d')
+  do
+    echo "======================================================"
+    pkg_manifest_get_description $op > docs/operators/$op.md
+  done
+}
