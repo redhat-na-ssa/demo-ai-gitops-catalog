@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: release-name-mlflow-server
+  name: mlflow-server
   annotations:
     app.openshift.io/vcs-uri: github.com/strangiato/mlflow-server
   labels:
@@ -24,7 +24,7 @@ spec:
         app.kubernetes.io/name: mlflow-server
         app.kubernetes.io/instance: release-name
     spec:
-      serviceAccountName: release-name-mlflow-server
+      serviceAccountName: mlflow-server
       securityContext:
         {}
       containers:
@@ -50,28 +50,28 @@ spec:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: release-name-mlflow-server
+                  name: mlflow-server
                   key: AWS_ACCESS_KEY_ID
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: release-name-mlflow-server
+                  name: mlflow-server
                   key: AWS_SECRET_ACCESS_KEY
             - name: MLFLOW_S3_BUCKET_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: release-name-mlflow-server
+                  name: mlflow-server
                   key: BUCKET_NAME
             
             - name: BUCKET_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: release-name-mlflow-server
+                  name: mlflow-server
                   key: BUCKET_HOST
             - name: BUCKET_PORT
               valueFrom:
                 configMapKeyRef:
-                  name: release-name-mlflow-server
+                  name: mlflow-server
                   key: BUCKET_PORT
             - name: MLFLOW_S3_ENDPOINT_URL
               value: 'https://$(BUCKET_HOST):$(BUCKET_PORT)'
@@ -84,29 +84,29 @@ spec:
             - name: PGBOUNCE_HOST
               valueFrom:
                 secretKeyRef:
-                  name: release-name-pguser-release-name
+                  name: pguser-release-name
                   key: pgbouncer-host
             - name: PGBOUNCE_PORT
               valueFrom:
                 secretKeyRef:
-                  name: release-name-pguser-release-name
+                  name: pguser-release-name
                   key: pgbouncer-port
             - name: MLFLOW_DATABASE_HOST
               value: $(PGBOUNCE_HOST):$(PGBOUNCE_PORT)
             - name: MLFLOW_DATABASE_NAME
               valueFrom:
                 secretKeyRef:
-                  name: release-name-pguser-release-name
+                  name: pguser-release-name
                   key: dbname
             - name: MLFLOW_DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: release-name-pguser-release-name
+                  name: pguser-release-name
                   key: password
             - name: MLFLOW_DATABASE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: release-name-pguser-release-name
+                  name: pguser-release-name
                   key: user
             - name: MLFLOW_PORT
               value: '8080'
@@ -121,8 +121,8 @@ spec:
           args:
             - --https-address=:8443
             - --provider=openshift
-            - --openshift-sar={"namespace":"default","resource":"services","resourceName":"release-name-mlflow-server","verb":"get"}
-            - --openshift-service-account=release-name-mlflow-server
+            - --openshift-sar={"namespace":"default","resource":"services","resourceName":"mlflow-server","verb":"get"}
+            - --openshift-service-account=mlflow-server
             - --upstream=http://localhost:8080
             - --tls-cert=/etc/tls/private/tls.crt
             - --tls-key=/etc/tls/private/tls.key
@@ -145,4 +145,4 @@ spec:
       volumes:
         - name: oauth-tls
           secret:
-            secretName: release-name-mlflow-server-tls
+            secretName: mlflow-server-tls

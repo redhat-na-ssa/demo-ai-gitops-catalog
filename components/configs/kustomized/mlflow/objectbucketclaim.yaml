@@ -3,7 +3,7 @@
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
-  name: release-name-mlflow-server
+  name: mlflow-server
   labels:
     helm.sh/chart: mlflow-server-0.6.4
     app.kubernetes.io/name: mlflow-server
@@ -13,5 +13,5 @@ metadata:
 spec:
   additionalConfig:
     bucketclass: noobaa-default-bucket-class
-  generateBucketName: release-name-mlflow-server
+  generateBucketName: mlflow-server
   storageClassName: openshift-storage.noobaa.io
