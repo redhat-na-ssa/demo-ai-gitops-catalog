@@ -29,6 +29,8 @@ fi
 [ -e ~/.venv/bin/activate ] && . ~/.venv/bin/activate
 [ -e ~/ai_ops/scratch/bin/restic.bash ] && . ~/ai_ops/scratch/bin/restic.bash
 
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
 " >> ~/.bashrc
 
   git clone "${GIT_AI_REPO}" ai_ops
