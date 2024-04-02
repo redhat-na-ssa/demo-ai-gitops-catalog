@@ -73,7 +73,7 @@ pkg_manifests_save_all_details(){
   pkg_manifests_get_all_details >> operator_info.txt
 }
 
-pkg_manifests_save_all_installed_operators(){
+pkg_manifests_save_all_installed_operator_info(){
 
   which kubectl-operator > /dev/null || return
 
