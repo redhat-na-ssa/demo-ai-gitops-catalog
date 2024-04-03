@@ -50,8 +50,9 @@ kludge_tunnel(){
   api.${OCP_DNS_NAME}     ${PUBLIC_IP}
   "
 
-  ssh -N -p 443 \
+  ssh -NT -p 443 \
     root@"${PUBLIC_IP}" \
+    -o "ExitOnForwardFailure yes" \
     -o "ServerAliveInterval 60" \
     -o "StrictHostKeyChecking no" \
     -R 0.0.0.0:80:"${OCP_APP_IP}":80 \
