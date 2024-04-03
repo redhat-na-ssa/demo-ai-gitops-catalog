@@ -80,6 +80,6 @@ pkg_manifests_save_all_installed_operator_info(){
   mkdir -p docs/operators
   for op in $(oc operator list | awk '{print $1}' | sed '1d')
   do
-    pkg_manifest_get_description $op > docs/operators/$op.md
+    pkg_manifest_get_description "$op" > docs/operators/"$op".md
   done
 }
