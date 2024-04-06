@@ -316,10 +316,13 @@ ocp_gpu_label_nodes_from_nfd(){
   oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
 }
 
+
 ocp_mirror_get_pull_secret(){
+  export DOCKER_CONFIG="${GIT_ROOT}/scratch"
+
   oc -n openshift-config \
     extract secret/pull-secret \
-    --to=- > scratch/pull-secret 
+    --to=- | tee "${GIT_ROOT}/scratch/pull-secret" > "${DOCKER_CONFIG}/config.json"
   
   # cat scratch/pull-secret | jq .
 }
@@ -361,4 +364,36 @@ ocp_mirror_dry_run(){
   echo "
   SAVED TO: ${REMOVABLE_MEDIA_PATH}/{cmd,dryrun}.${TIME_STAMP}
   "
+}
+
+ocp_mirror_operator_list(){
+  VERSION=${1:-4.14}
+  INDEX=${2:-registry.redhat.io/redhat/redhat-operator-index:v${VERSION}}
+
+  which oc-mirror >/dev/null 1>&2 || return
+
+  echo "Please be patient. This process is slow..." 1>&2
+  echo "oc mirror list operators --catalog ${INDEX}" 1>&2
+  echo "INDEX: ${INDEX}"
+
+  oc mirror list operators --catalog "${INDEX}"
+  
+  echo ""
+}
+
+ocp_mirror_operator_list_all(){
+  VERSION=4.12
+  # redhat-operators
+  INDEX_LIST="registry.redhat.io/redhat/redhat-operator-index:v${VERSION}"
+  # certified-operators
+  INDEX_LIST="${INDEX_LIST} registry.redhat.io/redhat/certified-operator-index:v${VERSION}"
+  # redhat-marketplace
+  INDEX_LIST="${INDEX_LIST} registry.redhat.io/redhat/redhat-marketplace-index:v${VERSION}"
+  # community-operators
+  INDEX_LIST="${INDEX_LIST} registry.redhat.io/redhat/community-operator-index:v${VERSION}"
+
+  for index in ${INDEX_LIST}
+  do
+    operator_list "${index}"
+  done
 }
