@@ -313,3 +313,40 @@ ocp_gpu_untaint_nodes(){
 ocp_gpu_label_nodes_from_nfd(){
   oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
 }
+
+ocp_mirror_get_pull_secret(){
+  oc -n openshift-config \
+    extract secret/pull-secret \
+    --to=- | tee scratch/pull-secret | jq .
+}
+
+ocp_mirror_dry_run(){
+  # https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-installation-images.html
+  # https://mirror.openshift.com/pub/openshift-v4/
+
+  TIME_STAMP=$(date +%s)
+
+  LOCAL_SECRET_JSON=${1:-scratch/pull-secret}
+  PRODUCT_REPO=${2:-openshift-release-dev}
+  RELEASE_NAME=${3:-ocp-release}
+  OCP_RELEASE=${4:-4.14.20}
+  ARCHITECTURE=${5:-x86_64}
+
+  LOCAL_REGISTRY=${6:-localhost:5000}
+  LOCAL_REPOSITORY=${7:-ocp4/openshift4}
+
+  REMOVABLE_MEDIA_PATH=scratch/mirror_media
+
+  [ -d "${REMOVABLE_MEDIA_PATH}" ] || mkdir -p "${REMOVABLE_MEDIA_PATH}"
+
+  ocp_mirror_get_pull_secret
+
+  echo oc adm release mirror \
+    -a ${LOCAL_SECRET_JSON}  \
+    --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} \
+    --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
+    --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE} \
+    --dry-run | bash 2>&1 | tee "${REMOVABLE_MEDIA_PATH}/dryrun.${TIME_STAMP}"
+
+  # sed '0,/use the following/d ; /^$/d' scratch/dryrun
+}
