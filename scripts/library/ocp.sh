@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# https://mirror.openshift.com/pub/openshift-v4
+
 ocp_check_login(){
   oc whoami || return 1
   oc cluster-info | head -n1
@@ -321,8 +323,9 @@ ocp_mirror_get_pull_secret(){
 }
 
 ocp_mirror_dry_run(){
-  # https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-installation-images.html
-  # https://mirror.openshift.com/pub/openshift-v4/
+  DOC_URL=https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-installation-images.html
+
+  echo "See: ${DOC_URL}"
 
   TIME_STAMP=$(date +%s)
 
@@ -342,11 +345,13 @@ ocp_mirror_dry_run(){
   ocp_mirror_get_pull_secret
 
   echo oc adm release mirror \
-    -a ${LOCAL_SECRET_JSON}  \
-    --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} \
-    --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
-    --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE} \
-    --dry-run | bash 2>&1 | tee "${REMOVABLE_MEDIA_PATH}/dryrun.${TIME_STAMP}"
+    -a "${LOCAL_SECRET_JSON}"  \
+    --from="quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE}" \
+    --to="${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}" \
+    --to-release-image="${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}" \
+    --dry-run | \
+      tee "${REMOVABLE_MEDIA_PATH}/cmd.${TIME_STAMP}" | \
+      bash 2>&1 | tee "${REMOVABLE_MEDIA_PATH}/dryrun.${TIME_STAMP}"
 
   # sed '0,/use the following/d ; /^$/d' scratch/dryrun
 }
