@@ -316,7 +316,6 @@ ocp_gpu_label_nodes_from_nfd(){
   oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
 }
 
-
 ocp_mirror_get_pull_secret(){
   export DOCKER_CONFIG="${GIT_ROOT}/scratch"
 
@@ -348,7 +347,7 @@ ocp_mirror_dry_run(){
 
   [ -d "${REMOVABLE_MEDIA_PATH}" ] || mkdir -p "${REMOVABLE_MEDIA_PATH}"
 
-  ocp_mirror_get_pull_secret
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_get_pull_secret
 
   echo oc adm release mirror \
     -a "${LOCAL_SECRET_JSON}"  \
@@ -366,11 +365,13 @@ ocp_mirror_dry_run(){
   "
 }
 
-ocp_mirror_operator_list(){
+ocp_mirror_operator_catalog_list(){
   VERSION=${1:-4.14}
   INDEX=${2:-registry.redhat.io/redhat/redhat-operator-index:v${VERSION}}
 
   which oc-mirror >/dev/null 1>&2 || return
+
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_get_pull_secret
 
   echo "Please be patient. This process is slow..." 1>&2
   echo "oc mirror list operators --catalog ${INDEX}" 1>&2
@@ -381,7 +382,7 @@ ocp_mirror_operator_list(){
   echo ""
 }
 
-ocp_mirror_operator_list_all(){
+ocp_mirror_operator_catalog_list_all(){
   VERSION=4.12
   # redhat-operators
   INDEX_LIST="registry.redhat.io/redhat/redhat-operator-index:v${VERSION}"
@@ -394,6 +395,6 @@ ocp_mirror_operator_list_all(){
 
   for index in ${INDEX_LIST}
   do
-    operator_list "${index}"
+    ocp_mirror_operator_list "${index}"
   done
 }
