@@ -69,7 +69,7 @@ pkg_manifest_get_description(){
 }
 
 pkg_manifests_save_all_details(){
-  echo -e "# created: $(date -u)\n# script: dump_operator_info" > operator_info.txt
+  echo -e "# created: $(date -u)\n# script: pkg_manifests_save_all_details" > operator_info.txt
   pkg_manifests_get_all_details >> operator_info.txt
 }
 
