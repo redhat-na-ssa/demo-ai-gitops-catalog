@@ -327,7 +327,8 @@ ocp_mirror_dry_run(){
 
   echo "See: ${DOC_URL}"
 
-  TIME_STAMP=$(date +%s)
+  # TIME_STAMP=$(date +%s)
+  TIME_STAMP=$(date +%Y.%m.%d)
 
   LOCAL_SECRET_JSON=${1:-scratch/pull-secret}
   PRODUCT_REPO=${2:-openshift-release-dev}
@@ -354,4 +355,8 @@ ocp_mirror_dry_run(){
       bash 2>&1 | tee "${REMOVABLE_MEDIA_PATH}/dryrun.${TIME_STAMP}"
 
   # sed '0,/use the following/d ; /^$/d' scratch/dryrun
+
+  echo "
+  SAVED TO: ${REMOVABLE_MEDIA_PATH}/{cmd,dryrun}.${TIME_STAMP}
+  "
 }
