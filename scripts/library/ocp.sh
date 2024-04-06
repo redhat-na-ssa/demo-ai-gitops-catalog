@@ -319,7 +319,9 @@ ocp_gpu_label_nodes_from_nfd(){
 ocp_mirror_get_pull_secret(){
   oc -n openshift-config \
     extract secret/pull-secret \
-    --to=- | tee scratch/pull-secret | jq .
+    --to=- > scratch/pull-secret 
+  
+  # cat scratch/pull-secret | jq .
 }
 
 ocp_mirror_dry_run(){
