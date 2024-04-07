@@ -319,6 +319,8 @@ ocp_gpu_label_nodes_from_nfd(){
 ocp_mirror_get_pull_secret(){
   export DOCKER_CONFIG="${GIT_ROOT}/scratch"
 
+  [ -e "${DOCKER_CONFIG}/config.json" ] && return
+
   oc -n openshift-config \
     extract secret/pull-secret \
     --to=- | tee "${GIT_ROOT}/scratch/pull-secret" > "${DOCKER_CONFIG}/config.json"
