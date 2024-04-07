@@ -30,6 +30,7 @@ fi
 [ -e ~/ai_ops/scratch/bin/restic.bash ] && . ~/ai_ops/scratch/bin/restic.bash
 
 export PATH=${KREW_ROOT:-$HOME/.krew}/bin:$PATH
+export PATH=${GIT_ROOT}/scratch/bin:$PATH
 
 " >> ~/.bashrc
 
