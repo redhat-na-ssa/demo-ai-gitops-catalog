@@ -10,7 +10,6 @@ grep -q 'OpenShift Web Terminal' ~/.bashrc || return 1
 
 # shellcheck disable=SC2028
 echo "
-echo
 GIT_AI_REPO=${GIT_AI_REPO}
 printf 'This terminal has been \e[0;32m~Enhanced~\e[0m\n'
 printf 'See \033[34;1;1m'${GIT_AI_REPO}'\e[0m\n\n'
@@ -22,7 +21,7 @@ __git_branch(){
 PS1='\e]\s\a\n\e[33m\w \e[36m\$(__git_branch)\e[m$ '
 
 if [ -e ~/ai_ops ]; then
-  cd ai_ops
+  cd ~/ai_ops
   . scripts/functions.sh
 fi
 
@@ -36,7 +35,8 @@ export PATH=${GIT_ROOT}/scratch/bin:$PATH
 
   git clone "${GIT_AI_REPO}" ai_ops
   git clone "${GIT_OPS_REPO}" ops
-  cd ai_ops || return
+
+  cd ~/ai_ops || return
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
