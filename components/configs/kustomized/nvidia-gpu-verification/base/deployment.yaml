@@ -14,10 +14,6 @@ spec:
       labels:
         app: nvidia-vector-add
     spec:
-#      tolerations:
-#        - key: nvidia-gpu-only
-#          operator: Exists
-#          effect: NoSchedule
       containers:
         - name: cuda-sample-vector-add
           image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda11.7.1-ubuntu20.04"
