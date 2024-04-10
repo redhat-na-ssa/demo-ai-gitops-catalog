@@ -46,6 +46,7 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
   # kludge
   bin_check busybox
 
+  bin_check yq
   bin_check oc-mirror
   bin_check krew
   bin_check kubectl-operator
