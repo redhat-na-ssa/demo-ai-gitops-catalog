@@ -56,7 +56,7 @@ bin_check(){
       ${name} --version
       ;;
   esac
-  sleep 2
+  # sleep 2
 }
 
 download_helm(){
