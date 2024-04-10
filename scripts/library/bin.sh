@@ -23,7 +23,7 @@ bin_check(){
   [ -e "${BIN_PATH}/${name}" ] || download_"${name}"
  
   case ${name} in
-    oc|odo|kubevirt)
+    oc|odo|virtctl)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version --client 2>&1
       ;;
@@ -111,11 +111,11 @@ download_subctl(){
   curl "${DOWNLOAD_URL}" -sL | tar Jx --strip-components=1 -C "${BIN_PATH}/"
 }
 
-download_kubevirt(){
+download_virtctl(){
   BIN_VERSION=1.2.0
   DOWNLOAD_URL=https://github.com/kubevirt/kubevirt/releases/download/v${BIN_VERSION}/virtctl-v${BIN_VERSION}-linux-amd64
-  curl "${DOWNLOAD_URL}" -sL -o "${BIN_PATH}/kubevirt" 
-  chmod +x "${BIN_PATH}/kubevirt"
+  curl "${DOWNLOAD_URL}" -sL -o "${BIN_PATH}/virtctl" 
+  chmod +x "${BIN_PATH}/virtctl"
 }
 
 download_kustomize(){
