@@ -25,12 +25,11 @@ if [ -e ~/ai_ops ]; then
 fi
 
 [ -e ~/.venv/bin/activate ] && . ~/.venv/bin/activate
-[ -e ~/ai_ops/scratch/bin/restic.bash ] && . ~/ai_ops/scratch/bin/restic.bash
 
 PATH=\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH
 PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
-. \${GIT_ROOT}/scratch/bin/*.sh
+. \${GIT_ROOT}/scratch/bash/*.sh
 
 " >> ~/.bashrc
 
