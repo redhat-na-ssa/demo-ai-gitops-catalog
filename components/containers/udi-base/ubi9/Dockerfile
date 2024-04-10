@@ -45,7 +45,7 @@ COPY --chown=0:0 entrypoint.sh /
 # setup: user
 RUN \
     # setup $PS1 prompt
-    sed -i '/^export PS1=.*/d' /etc/skel/.bashrc
+    sed -i '/^export PS1=.*/d' /etc/skel/.bashrc && \
     echo "export PS1='\W \`git branch --show-current 2>/dev/null | sed -r -e \"s@^(.+)@\(\1\) @\"\`$ '" >> /etc/skel/.bashrc && \
     # copy global git configuration to user config
     cp /etc/gitconfig /etc/skel/.gitconfig && \
