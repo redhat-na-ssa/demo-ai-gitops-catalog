@@ -3,7 +3,6 @@
 GIT_AI_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
 GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
 
-
 term_init(){
 # avoid making everyone mad
 grep -q 'OpenShift Web Terminal' ~/.bashrc || return 1
@@ -31,6 +30,8 @@ fi
 export PATH=${KREW_ROOT:-$HOME/.krew}/bin:$PATH
 export PATH=${GIT_ROOT}/scratch/bin:$PATH
 
+. ${GIT_ROOT}/scratch/bin/*.sh
+
 " >> ~/.bashrc
 
   git clone "${GIT_AI_REPO}" ai_ops
@@ -42,6 +43,7 @@ export PATH=${GIT_ROOT}/scratch/bin:$PATH
 
   [ -d ~/.venv ] || platform-python -m venv ~/.venv
 
+  # kludge
   bin_check busybox
 
   bin_check oc-mirror
