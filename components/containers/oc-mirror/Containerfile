@@ -44,6 +44,7 @@ LABEL description="image with base developers tools"
 LABEL io.k8s.display-name="devfile-developer-base"
 LABEL io.openshift.expose-services=""
 
-USER 1001
+# USER 1001
 ENV HOME=/home/user
 VOLUME /home/user
+WORKDIR /home/user
