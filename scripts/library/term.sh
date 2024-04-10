@@ -30,7 +30,7 @@ fi
 PATH=\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH
 PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
-. ${GIT_ROOT}/scratch/bin/*.sh
+. \${GIT_ROOT}/scratch/bin/*.sh
 
 " >> ~/.bashrc
 
