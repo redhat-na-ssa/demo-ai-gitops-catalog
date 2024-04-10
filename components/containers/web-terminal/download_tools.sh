@@ -14,14 +14,14 @@ PATH=${BIN_PATH}:${PATH}
     bin_check oc
     bin_check helm
     bin_check odo
-    bin_check opm
+    bin_check opm           # not default
     bin_check tkn
     bin_check kn
 
-    bin_check rhoas
+    bin_check rhoas         # not default
     bin_check subctl
-    bin_check kubevirt
-    bin_check kustomize
+    bin_check kubevirt      # not default
+    bin_check kustomize     # not default
 
     bin_check oc-mirror
     bin_check krew
