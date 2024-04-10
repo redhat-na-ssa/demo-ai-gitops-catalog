@@ -30,6 +30,7 @@ bin_check(){
     helm|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|s2i|subctl)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version 2>&1 || ${name} --version
+      [ -e .oc-mirror.log ] && rm .oc-mirror.log
       ;;
     rhoas)
       export RHOAS_TELEMETRY=false
@@ -45,6 +46,10 @@ bin_check(){
     restic)
       restic generate --bash-completion "${BASH_COMP}/${name}.sh"
       restic version
+      ;;
+    yq)
+      ${name} shell-completion bash > "${BASH_COMP}/${name}.sh"
+      ${name} --version
       ;;
     *)
       echo
@@ -158,8 +163,15 @@ download_sops(){
 download_age(){
   BIN_VERSION=1.1.1
   DOWNLOAD_URL=https://github.com/FiloSottile/age/releases/download/v${BIN_VERSION}/age-v${BIN_VERSION}-linux-amd64.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar vzx --strip-components 1 -C "${BIN_PATH}/"
+  curl "${DOWNLOAD_URL}" -sL | tar vzx --strip-components=1 -C "${BIN_PATH}/"
   chmod +x "${BIN_PATH}"/age*
+}
+
+download_yq(){
+  BIN_VERSION=4.43.1
+  DOWNLOAD_URL=https://github.com/mikefarah/yq/releases/download/v${BIN_VERSION}/yq_linux_amd64
+  curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/yq"
+  chmod +x "${BIN_PATH}/yq"
 }
 
 download_krew(){

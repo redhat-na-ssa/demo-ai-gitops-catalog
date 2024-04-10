@@ -9,27 +9,29 @@ BASH_COMP=scratch/etc/bash_completion.d
 PATH=${BIN_PATH}:${PATH}
 
 # shellcheck disable=SC1091
-. ../../../scripts/library/bin.sh
+. bin.sh
 
-    bin_check oc
-    bin_check helm
-    bin_check odo
-    bin_check opm           # not default
-    bin_check tkn
-    bin_check kn
+# cleanup
+rm -rf scratch .oc-mirror.log tools-x86_64.tgz
 
-    bin_check rhoas         # not default
-    bin_check subctl
-    bin_check kubevirt      # not default
-    bin_check kustomize     # not default
+bin_check oc
+bin_check helm
+bin_check odo
+bin_check tkn
+bin_check kn
 
-    bin_check oc-mirror
-    bin_check krew
-    bin_check kubectl-operator
-    bin_check rclone
-    bin_check restic
-    bin_check sops
-    bin_check age
+bin_check subctl
+bin_check virtctl
+bin_check kustomize
 
+bin_check yq
+bin_check oc-mirror
+bin_check krew
+bin_check kubectl-operator
+bin_check rclone
+bin_check restic
+bin_check sops
+bin_check age
+
+rm "${BIN_PATH}"/LICENSE
 tar -czf tools-x86_64.tgz -C scratch .
-rm scratch -rf
