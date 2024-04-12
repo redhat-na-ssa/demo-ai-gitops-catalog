@@ -41,14 +41,14 @@ jobs:
         id: cache-tooling-binaries
         with:
           path: components/containers/web-terminal/tools-x86_64.tgz
-          key: ${{ hashFiles('tooling_versions.env') }}
+          # key: ${{ hashFiles('tooling_versions.env') }}
 
       - name: Download tooling binaries
         if: steps.cache-tooling-binaries.outputs.cache-hit != 'true'
         run: |
           cd components/containers/web-terminal
           ./download_tools.sh
-    
+
       - name: Log into GitHub Container Registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
