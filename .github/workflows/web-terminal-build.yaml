@@ -41,7 +41,7 @@ jobs:
         id: cache-tooling-binaries
         with:
           path: components/containers/web-terminal/tools-x86_64.tgz
-          # key: ${{ hashFiles('tooling_versions.env') }}
+          key: ${{ hashFiles('components/containers/web-terminal/bin.sh') }}
 
       - name: Download tooling binaries
         if: steps.cache-tooling-binaries.outputs.cache-hit != 'true'
