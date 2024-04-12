@@ -9,7 +9,7 @@ USER 0
 RUN dnf repolist && \
     dnf update -y && \
     dnf install -y \
-      openssh-clients rsync \
+      openssh-clients rsync httpd-tools python3-pip \
       # compression tools
       bzip2 zip xz \
       # bash completion tools

@@ -1,0 +1,69 @@
+name: Web Terminal - Container Build
+
+on:  # yamllint disable-line rule:truthy
+  schedule:
+    - cron: '5 4 * * 6'
+  push:
+    branches: ["main"]
+    paths:
+    - components/containers/web-terminal/**
+    - .github/workflows/**
+  pull_request:
+    branches: ["main"]
+    paths:
+    - components/containers/web-terminal/**
+    - .github/workflows/**
+
+concurrency:
+  group: web-terminal-tooling
+
+jobs:
+
+  build-container:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      git-sha: ${{ steps.git-sha.outputs.sha }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.2
+
+      - name: Set output for Git short SHA
+        id: git-sha
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+
+      - name: Cache tooling binaries
+        uses: actions/cache@v2
+        id: cache-tooling-binaries
+        with:
+          path: components/containers/web-terminal/tools-x86_64.tgz
+          key: ${{ hashFiles('tooling_versions.env') }}
+
+      - name: Download tooling binaries
+        if: steps.cache-tooling-binaries.outputs.cache-hit != 'true'
+        run: |
+          cd components/containers/web-terminal
+          ./download_tools.sh
+    
+      - name: Log into GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.GHCR_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push images to ghcr.io
+        uses: docker/build-push-action@v2
+        with:
+          context: components/containers/web-terminal
+          file: ./Containerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/web-terminal-tooling:latest
+            ghcr.io/${{ github.repository_owner }}/web-terminal-tooling:sha-${{ steps.git-sha.outputs.sha }}
+          labels: org.opencontainers.image.version=${{ steps.git-sha.outputs.sha }}
