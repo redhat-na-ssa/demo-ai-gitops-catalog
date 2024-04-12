@@ -28,7 +28,8 @@ spec:
 
         cpuLimit: 400m
         cpuRequest: 100m
-        image: registry.redhat.io/web-terminal/web-terminal-tooling-rhel8@sha256:657874adad93a9e6c2b746b836015de410d2e280f85c079c81e24ae81343fa6c
+        image: docker pull ghcr.io/codekow/web-terminal-tooling:latest
+        # image: docker pull ghcr.io/codekow/web-terminal-tooling@sha256:a29868596b1ab7b56d28e142891a29d6ff9db72ee3d0249dac7c26d6602eadf8
         memoryLimit: 512Mi
         memoryRequest: 128Mi
         mountSources: false

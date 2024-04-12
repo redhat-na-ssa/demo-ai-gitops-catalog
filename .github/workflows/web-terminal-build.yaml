@@ -64,6 +64,6 @@ jobs:
           file: components/containers/web-terminal/Containerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
+            ghcr.io/${{ github.repository_owner }}/web-terminal-tooling:git-${{ steps.git-sha.outputs.sha }}
             ghcr.io/${{ github.repository_owner }}/web-terminal-tooling:latest
-            ghcr.io/${{ github.repository_owner }}/web-terminal-tooling:sha-${{ steps.git-sha.outputs.sha }}
           labels: org.opencontainers.image.version=${{ steps.git-sha.outputs.sha }}
