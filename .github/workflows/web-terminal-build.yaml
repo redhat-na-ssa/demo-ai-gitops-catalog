@@ -1,4 +1,4 @@
-name: Web Terminal - Container Build
+name: Build - Web Terminal Container
 
 on:  # yamllint disable-line rule:truthy
   schedule:
