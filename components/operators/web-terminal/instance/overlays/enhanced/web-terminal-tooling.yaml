@@ -28,8 +28,8 @@ spec:
 
         cpuLimit: 400m
         cpuRequest: 100m
-        image: docker pull ghcr.io/codekow/web-terminal-tooling:latest
-        # image: docker pull ghcr.io/codekow/web-terminal-tooling@sha256:a29868596b1ab7b56d28e142891a29d6ff9db72ee3d0249dac7c26d6602eadf8
+        image: ghcr.io/codekow/web-terminal-tooling:latest
+        # image: ghcr.io/codekow/web-terminal-tooling@sha256:a29868596b1ab7b56d28e142891a29d6ff9db72ee3d0249dac7c26d6602eadf8
         memoryLimit: 512Mi
         memoryRequest: 128Mi
         mountSources: false
