@@ -54,6 +54,7 @@ RUN \
     chgrp -R 0 /home && \
     chmod -R g=u /etc/passwd /etc/group /home && \
     chmod +x /entrypoint.sh && \
+    chmod g+w /wto/bin && \
     get-tooling-versions.sh > /tmp/installed_tools.txt
 
 ARG YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
