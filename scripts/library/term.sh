@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2120
 
 GIT_AI_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
 GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
