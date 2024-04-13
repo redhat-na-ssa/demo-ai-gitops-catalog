@@ -3,7 +3,8 @@
 GIT_AI_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
 GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
 
-term_init(){
+term_bashrc(){
+BASHRC=${1:-/home/user/.bashrc}
 # avoid making everyone mad
 grep -q 'OpenShift Web Terminal' ~/.bashrc || return 1
 
@@ -33,7 +34,9 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 
 " >> ~/.bashrc
+}
 
+term_live_setup(){
   git clone "${GIT_AI_REPO}" ai_ops
   git clone "${GIT_OPS_REPO}" ops
 
@@ -41,7 +44,7 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
-  [ -d ~/.venv ] || platform-python -m venv ~/.venv
+  [ -d ~/.venv ] || python3 -m venv ~/.venv
 
   # kludge
   bin_check busybox
@@ -56,4 +59,9 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
   bin_check sops
   bin_check age
+}
+
+term_init(){
+  term_bashrc
+  term_live_setup
 }

@@ -23,8 +23,14 @@ RUN dnf repolist && \
     dnf clean all && \
     rm -rf /var/cache/yum/*
 
-# install: cli tools
-ADD tools-x86_64.tgz /
+ENV WRAPPER_BINARIES=/wto/bin
+ENV BIN_PATH=/usr/local/bin
+ENV PATH="${WRAPPER_BINARIES}:${PATH}"
+
+COPY src/etc/initial_config /etc/skel
+COPY src/etc/wtoctl src/etc/wtoctl_help.sh src/etc/wtoctl_jq.sh "${BIN_PATH}"
+COPY src/etc/cli-wrappers/* "${WRAPPER_BINARIES}/"
+COPY src/etc/get-tooling-versions.sh "${WRAPPER_BINARIES}/"
 
 # install: entrypoint
 COPY --chown=0:0 entrypoint.sh /
@@ -44,11 +50,14 @@ RUN \
     # Set permissions on /etc/passwd and /home to allow users to write
     chgrp -R 0 /home && \
     chmod -R g=u /etc/passwd /etc/group /home && \
-    chmod +x /entrypoint.sh
+    chmod +x /entrypoint.sh && \
+    get-tooling-versions.sh > /tmp/installed_tools.txt
 
 USER 1001
 ENV HOME=/home/user
-VOLUME /home/user
+
+ARG YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
+RUN bash -c 'cd /home/user; ls -lsa; . <(curl -sL '"${YOLO_URL}"') && term_init'
 
 WORKDIR ${HOME}
 ENTRYPOINT [ "/entrypoint.sh" ]
