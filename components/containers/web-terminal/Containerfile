@@ -35,6 +35,9 @@ COPY src/etc/get-tooling-versions.sh "${WRAPPER_BINARIES}/"
 # install: entrypoint
 COPY --chown=0:0 entrypoint.sh /
 
+# install: cli tools
+ADD tools-x86_64.tgz /
+
 # setup: user
 RUN \
     # setup $PS1 prompt
@@ -57,7 +60,7 @@ USER 1001
 ENV HOME=/home/user
 
 ARG YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
-RUN bash -c 'cd /home/user; ls -lsa; . <(curl -sL '"${YOLO_URL}"') && term_init'
+RUN bash -c 'cd /home/user; . <(curl -sL '"${YOLO_URL}"') && term_init'
 
 WORKDIR ${HOME}
 ENTRYPOINT [ "/entrypoint.sh" ]
