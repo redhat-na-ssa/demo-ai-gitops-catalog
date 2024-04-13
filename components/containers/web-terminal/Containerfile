@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.3-labs
 # https://github.com/redhat-developer/web-terminal-tooling
-ARG IMAGE_NAME=registry.access.redhat.com/ubi9/ubi:latest
+ARG IMAGE_NAME=registry.access.redhat.com/ubi9/ubi
 FROM ${IMAGE_NAME}
 
 USER 0
@@ -9,7 +9,7 @@ USER 0
 RUN dnf repolist && \
     dnf update -y && \
     dnf install -y \
-      openssh-clients rsync httpd-tools python3-pip \
+      openssh-clients rsync \
       # compression tools
       bzip2 zip xz \
       # bash completion tools
@@ -24,18 +24,16 @@ RUN dnf repolist && \
     rm -rf /var/cache/yum/*
 
 ENV WRAPPER_BINARIES=/wto/bin
+ENV BIN_PATH=/usr/local/bin
 ENV PATH="${WRAPPER_BINARIES}:${PATH}"
 
 COPY src/etc/initial_config /etc/skel
-COPY src/etc/wtoctl src/etc/wtoctl_help.sh src/etc/wtoctl_jq.sh /usr/local/bin/
+COPY src/etc/wtoctl src/etc/wtoctl_help.sh src/etc/wtoctl_jq.sh "${BIN_PATH}"
 COPY src/etc/cli-wrappers/* "${WRAPPER_BINARIES}/"
 COPY src/etc/get-tooling-versions.sh "${WRAPPER_BINARIES}/"
 
 # install: entrypoint
 COPY --chown=0:0 entrypoint.sh /
-
-# install: cli tools
-ADD tools-x86_64.tgz /
 
 # setup: user
 RUN \
@@ -52,11 +50,14 @@ RUN \
     # Set permissions on /etc/passwd and /home to allow users to write
     chgrp -R 0 /home && \
     chmod -R g=u /etc/passwd /etc/group /home && \
-    chmod +x /entrypoint.sh
+    chmod +x /entrypoint.sh && \
+    get-tooling-versions.sh > /tmp/installed_tools.txt
 
 USER 1001
-VOLUME /home/user
 ENV HOME=/home/user
+
+ARG YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
+RUN bash -c 'cd /home/user; ls -lsa; . <(curl -sL '"${YOLO_URL}"') && term_init'
 
 WORKDIR ${HOME}
 ENTRYPOINT [ "/entrypoint.sh" ]
