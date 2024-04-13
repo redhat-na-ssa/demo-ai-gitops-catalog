@@ -35,7 +35,6 @@ fi
 PATH=\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH
 PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
-
 . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 
 " >> "${BASHRC}"
@@ -49,10 +48,10 @@ term_bin_setup(){
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
-  [ -d ~/.venv ] || python3 -m venv ~/.venv
+  # [ -d ~/.venv ] || python3 -m venv ~/.venv
 
   # kludge
-  bin_check busybox
+  which unzip || bin_check busybox
 
   bin_check yq
   bin_check oc-mirror
