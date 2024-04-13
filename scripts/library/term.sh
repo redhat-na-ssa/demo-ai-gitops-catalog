@@ -6,8 +6,12 @@ GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
 # shellcheck disable=SC2120
 term_bashrc(){
 BASHRC=${1:-/home/user/.bashrc}
+
 # avoid making everyone mad
 grep -q 'OpenShift Web Terminal' "${BASHRC}" || return 1
+
+# avoid running more than once
+grep -q 'Enhanced' "${BASHRC}" && return
 
 # shellcheck disable=SC2028
 echo "
@@ -37,7 +41,7 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 " >> "${BASHRC}"
 }
 
-term_live_setup(){
+term_bin_setup(){
   git clone "${GIT_AI_REPO}" ai_ops
   git clone "${GIT_OPS_REPO}" ops
 
@@ -64,5 +68,5 @@ term_live_setup(){
 
 term_init(){
   term_bashrc
-  term_live_setup
+  term_bin_setup
 }
