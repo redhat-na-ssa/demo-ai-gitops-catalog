@@ -3,6 +3,7 @@
 GIT_AI_REPO=https://github.com/codekow/demo-ai-gitops-catalog.git
 GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
 
+# shellcheck disable=SC2120
 term_bashrc(){
 BASHRC=${1:-/home/user/.bashrc}
 # avoid making everyone mad
