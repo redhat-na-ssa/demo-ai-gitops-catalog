@@ -6,7 +6,7 @@ GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
 term_bashrc(){
 BASHRC=${1:-/home/user/.bashrc}
 # avoid making everyone mad
-grep -q 'OpenShift Web Terminal' ~/.bashrc || return 1
+grep -q 'OpenShift Web Terminal' "${BASHRC}" || return 1
 
 # shellcheck disable=SC2028
 echo "
@@ -33,7 +33,7 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
 . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 
-" >> ~/.bashrc
+" >> "${BASHRC}"
 }
 
 term_live_setup(){
