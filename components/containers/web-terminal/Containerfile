@@ -23,9 +23,6 @@ RUN dnf repolist && \
     dnf clean all && \
     rm -rf /var/cache/yum/*
 
-# install: cli tools
-ADD tools-x86_64.tgz /
-
 ENV WRAPPER_BINARIES=/wto/bin
 ENV PATH="${WRAPPER_BINARIES}:${PATH}"
 
@@ -36,6 +33,9 @@ COPY ["src/etc/get-tooling-versions.sh", "${WRAPPER_BINARIES}/"]
 
 # install: entrypoint
 COPY --chown=0:0 entrypoint.sh /
+
+# install: cli tools
+ADD tools-x86_64.tgz /
 
 # Change permissions to let root group access necessary files
 RUN for f in "${HOME}" "/etc/passwd" "/etc/group"; do \
