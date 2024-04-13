@@ -26,8 +26,23 @@ RUN dnf repolist && \
 # install: cli tools
 ADD tools-x86_64.tgz /
 
+ENV WRAPPER_BINARIES=/wto/bin
+ENV PATH="${WRAPPER_BINARIES}:${PATH}"
+
+COPY src/etc/initial_config /etc/skel
+COPY ["src/etc/wtoctl", "src/etc/wtoctl_help.sh", "src/etc/wtoctl_jq.sh", "/usr/local/bin/"]
+COPY ["src/etc/cli-wrappers/*", "${WRAPPER_BINARIES}/"]
+COPY src/etc/get-tooling-versions.sh "${WRAPPER_BINARIES}/"
+
 # install: entrypoint
 COPY --chown=0:0 entrypoint.sh /
+
+# Change permissions to let root group access necessary files
+RUN for f in "${HOME}" "/etc/passwd" "/etc/group"; do \
+    echo "Changing permissions on ${f}" && chgrp -R 0 ${f} && \
+    chmod -R g+rwX ${f}; \
+    done && \
+    get-tooling-versions.sh > /tmp/installed_tools.txt
 
 # setup: user
 RUN \
