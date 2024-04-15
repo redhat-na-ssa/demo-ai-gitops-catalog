@@ -4,7 +4,7 @@
 alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
 
 genpass(){
-  < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c"${1:-32}"
+  < /dev/urandom LC_ALL=C tr -dc _A-Z-a-z-0-9 | head -c "${1:-32}"
 }
 
 create_kubeadmin(){
