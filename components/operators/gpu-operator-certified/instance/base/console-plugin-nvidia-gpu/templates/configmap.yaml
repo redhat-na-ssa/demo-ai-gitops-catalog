@@ -18,6 +18,9 @@ data:
     DCGM_FI_DEV_MEM_COPY_UTIL, gauge, mem utilization.
     DCGM_FI_DEV_ENC_UTIL, gauge, enc utilization.
     DCGM_FI_DEV_DEC_UTIL, gauge, dec utilization.
+    DCGM_FI_DEV_FB_FREE, gauge, mem free.
+    DCGM_FI_DEV_FB_USED, gauge, mem used.
+    DCGM_FI_DEV_GPU_UTIL, gauge, gpu utilization.
     DCGM_FI_DEV_POWER_USAGE, gauge, power usage.
     DCGM_FI_DEV_POWER_MGMT_LIMIT_MAX, gauge, power mgmt limit.
     DCGM_FI_DEV_GPU_TEMP, gauge, gpu temp.
