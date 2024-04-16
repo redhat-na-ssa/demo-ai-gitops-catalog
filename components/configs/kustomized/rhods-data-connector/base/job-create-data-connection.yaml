@@ -76,7 +76,7 @@ spec:
               opendatahub.io/managed: "true"
             annotations:
               opendatahub.io/connection-type: s3
-              openshift.io/display-name: Internal Minio Service
+              openshift.io/display-name: S3 (Minio) - Internal
           type: Opaque
           stringData:
             AWS_ACCESS_KEY_ID: ${id}
