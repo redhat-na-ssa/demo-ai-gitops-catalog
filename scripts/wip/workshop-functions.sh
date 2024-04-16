@@ -31,7 +31,7 @@ workshop_init(){
   [ ! -z "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
   [ ! -d "${OBJ_DIR}" ] && mkdir -p "${OBJ_DIR}"
 
-  oc apply -k components/workshop/base
+  oc apply -k workshop/overlays/default
 }
 
 htpasswd_add_user(){
@@ -73,7 +73,7 @@ workshop_create_user_ns(){
 
   for i in ${LIST[@]}
   do
-    cp -a components/workshop/instance "${OBJ_DIR}/${DEFAULT_USER}${i}"
+    cp -a workshop/instance "${OBJ_DIR}/${DEFAULT_USER}${i}"
     sed -i 's/user0/'"${DEFAULT_USER}${i}"'/g' "${OBJ_DIR}/${DEFAULT_USER}${i}/"*.yaml
     # oc apply -f "${OBJ_DIR}/${DEFAULT_USER}${i}/user-ns.yaml"
     oc apply -k "${OBJ_DIR}/${DEFAULT_USER}${i}"
