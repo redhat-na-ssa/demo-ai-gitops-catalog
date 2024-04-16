@@ -6,12 +6,13 @@ genpass(){
 }
 
 TMP_DIR=scratch
+OBJ_DIR=${TMP_DIR}/workshop
 
 DEFAULT_USER=user
 DEFAULT_PASS=openshift
 DEFAULT_GROUP=workshop-users
 
-HTPASSWD_FILE=${TMP_DIR}/htpasswd-workshop
+HTPASSWD_FILE=${OBJ_DIR}/htpasswd-workshop
 
 workshop_init(){
   TOTAL=${1:-25}
@@ -27,7 +28,10 @@ workshop_init(){
   fi
 
   # create generated folder
-  [ ! -d ${TMP_DIR} ] && mkdir -p ${TMP_DIR}
+  [ ! -z "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
+  [ ! -d "${OBJ_DIR}" ] && mkdir -p "${OBJ_DIR}"
+
+  oc apply -k components/workshop/base
 }
 
 htpasswd_add_user(){
@@ -41,6 +45,15 @@ htpasswd_add_user(){
 
   touch "${HTPASSWD_FILE}"
   htpasswd -bB -C 10 "${HTPASSWD_FILE}" "${USERNAME}" "${PASSWORD}"
+}
+
+
+workshop_add_user_to_group(){
+  USER=${1:-admin}
+  OCP_ADMIN_GROUP=${2:-workshop-users}
+  
+  oc adm groups add-users \
+  "${OCP_ADMIN_GROUP}" "${USER}"
 }
 
 workshop_create_user_htpasswd(){
@@ -64,6 +77,7 @@ workshop_create_user_ns(){
     oc -o yaml --dry-run=client \
       create ns "${DEFAULT_USER}${i}" > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns.yaml"
     oc apply -f "${OBJ_DIR}/${DEFAULT_USER}${i}-ns.yaml"
+    workshop_add_user_to_group "${DEFAULT_USER}${i}" "${DEFAULT_GROUP}"
 
     # create role binding - admin for user
     oc -o yaml --dry-run=client \
@@ -73,17 +87,17 @@ workshop_create_user_ns(){
       --clusterrole admin > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns-rb-admin.yaml"
 
     # create role binding - view for workshop group
-    oc -o yaml --dry-run=client \
-      -n "${DEFAULT_USER}${i}" \
-      create rolebinding "${DEFAULT_USER}${i}-view" \
-      --group "${DEFAULT_GROUP}" \
-      --clusterrole view > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns-rb-view.yaml"
+    # oc -o yaml --dry-run=client \
+    #   -n "${DEFAULT_USER}${i}" \
+    #   create rolebinding "${DEFAULT_USER}${i}-view" \
+    #   --group "${DEFAULT_GROUP}" \
+    #   --clusterrole view > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns-rb-view.yaml"
   done
 
   # apply objects created in scratch dir
     oc apply \
       -f "${OBJ_DIR}"
- }
+}
 
 workshop_clean_user_ns(){
   for i in ${LIST[@]}
@@ -107,9 +121,10 @@ workshop_setup(){
 }
 
 workshop_clean(){
-  echo "Workshop: Clean User Namespaces"
+  echo "Workshop: Clean"
   workshop_clean_user_ns
   workshop_clean_user_notebooks
+  oc delete group "${DEFAULT_GROUP}"
 }
 
 workshop_reset(){
