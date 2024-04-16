@@ -73,18 +73,25 @@ workshop_create_user_ns(){
 
   for i in ${LIST[@]}
   do
-    # create ns
-    oc -o yaml --dry-run=client \
-      create ns "${DEFAULT_USER}${i}" > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns.yaml"
-    oc apply -f "${OBJ_DIR}/${DEFAULT_USER}${i}-ns.yaml"
+    cp -a components/workshop/instance "${OBJ_DIR}/${DEFAULT_USER}${i}"
+    sed -i 's/user0/'"${DEFAULT_USER}${i}"'/g' "${OBJ_DIR}/${DEFAULT_USER}${i}/"*.yaml
+    # oc apply -f "${OBJ_DIR}/${DEFAULT_USER}${i}/user-ns.yaml"
+    oc apply -k "${OBJ_DIR}/${DEFAULT_USER}${i}"
     workshop_add_user_to_group "${DEFAULT_USER}${i}" "${DEFAULT_GROUP}"
 
+
+    # create ns
+    # oc -o yaml --dry-run=client \
+    #   create ns "${DEFAULT_USER}${i}" > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns.yaml"
+    # oc apply -f "${OBJ_DIR}/${DEFAULT_USER}${i}-ns.yaml"
+    # workshop_add_user_to_group "${DEFAULT_USER}${i}" "${DEFAULT_GROUP}"
+
     # create role binding - admin for user
-    oc -o yaml --dry-run=client \
-      -n "${DEFAULT_USER}${i}" \
-      create rolebinding "${DEFAULT_USER}${i}-admin" \
-      --user "${DEFAULT_USER}${i}" \
-      --clusterrole admin > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns-rb-admin.yaml"
+    # oc -o yaml --dry-run=client \
+    #   -n "${DEFAULT_USER}${i}" \
+    #   create rolebinding "${DEFAULT_USER}${i}-admin" \
+    #   --user "${DEFAULT_USER}${i}" \
+    #   --clusterrole admin > "${OBJ_DIR}/${DEFAULT_USER}${i}-ns-rb-admin.yaml"
 
     # create role binding - view for workshop group
     # oc -o yaml --dry-run=client \
@@ -95,8 +102,8 @@ workshop_create_user_ns(){
   done
 
   # apply objects created in scratch dir
-    oc apply \
-      -f "${OBJ_DIR}"
+    # oc apply \
+    #   -f "${OBJ_DIR}"
 }
 
 workshop_clean_user_ns(){
