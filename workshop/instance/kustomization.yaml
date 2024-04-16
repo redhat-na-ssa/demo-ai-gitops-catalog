@@ -7,7 +7,7 @@ commonLabels:
 namespace: user0
 
 resources:
-- ../../../components/configs/kustomized/rhods-data-connector/base
+- data-connection-secret.yaml
 - user-ns-rb-admin.yaml
 # - user-ns-rb-view.yaml
 - user-ns.yaml
