@@ -135,4 +135,4 @@ workshop_reset(){
 
 echo "Workshop: Functions Loaded"
 echo ""
-echo "usage: workshop_[setup,reset,clean]"
+echo "usage: workshop_[setup,reset,clean] [number of users]"
