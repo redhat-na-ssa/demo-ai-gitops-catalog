@@ -18,28 +18,31 @@ HTPASSWD_FILE=${OBJ_DIR}/htpasswd-workshop
 htpasswd_add_user(){
   USERNAME=${1:-admin}
   PASSWORD=${2:-$(genpass 16)}
+  HTPASSWD=${3:-scratch/htpasswd-local}
 
   echo "
     USERNAME: ${USERNAME}
     PASSWORD: ${PASSWORD}
   "
 
-  touch "${HTPASSWD_FILE}"
-  echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD_FILE}"
-  htpasswd -bB -C 10 "${HTPASSWD_FILE}" "${USERNAME}" "${PASSWORD}"
+  touch "${HTPASSWD}"
+  echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD}"
+  htpasswd -bB -C 10 "${HTPASSWD}" "${USERNAME}" "${PASSWORD}"
 }
 
 htpasswd_get_file(){
+  HTPASSWD=${1:-scratch/htpasswd-local}
   oc -n openshift-config \
-    extract secret/"${HTPASSWD_FILE##*/}" \
+    extract secret/"${HTPASSWD##*/}" \
     --keys=htpasswd \
     --to=scratch
 }
 
 htpasswd_set_file(){
+  HTPASSWD=${3:-scratch/htpasswd-local}
   oc -n openshift-config \
-    set data secret/"${HTPASSWD_FILE##*/}" \
-    --from-file=htpasswd="${HTPASSWD_FILE}"
+    set data secret/"${HTPASSWD##*/}" \
+    --from-file=htpasswd="${HTPASSWD}"
 }
 
 workshop_init(){
@@ -77,7 +80,7 @@ workshop_create_user_htpasswd(){
 
   for i in ${LIST[@]}
   do
-    htpasswd_add_user "${DEFAULT_USER}${i}" "${DEFAULT_PASS}${i}"
+    htpasswd_add_user "${DEFAULT_USER}${i}" "${DEFAULT_PASS}${i}" "${HTPASSWD_FILE}"
   done
 
   htpasswd_set_file
