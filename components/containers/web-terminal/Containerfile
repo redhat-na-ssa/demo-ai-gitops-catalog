@@ -18,6 +18,8 @@ RUN dnf repolist && \
       zsh \
       # terminal-based editors
       less vi vim nano \
+      # misc tools
+      httpd-tools \
       # developer tools
       diffutils curl-minimal wget tar git git-lfs procps jq && \
     dnf clean all && \
