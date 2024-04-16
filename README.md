@@ -138,6 +138,8 @@ If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a 
 
 ### Workshops
 
+This is currently under development
+
 ```
 # load functions
 . scripts/wip/workshop_functions.sh
