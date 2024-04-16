@@ -21,8 +21,16 @@ resources:
 - ../../components/operators/servicemeshoperator/operator/overlays/stable
 - ../../components/configs/cluster/rbac/overlays/workshop
 - ../../components/configs/cluster/login/overlays/htpasswd
+- htpasswd-secret.yaml
 
 patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-demo
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'WORKSHOP: Red Hat OpenShift AI w/ GPUs'
   - path: patch-idp.yaml
     target:
       group: config.openshift.io

@@ -5,11 +5,11 @@
         fileData:
           name: htpasswd-local
       mappingMethod: claim
-      name: Admin Login
+      name: Admins
       type: HTPasswd
     - htpasswd:
         fileData:
           name: htpasswd-workshop
       mappingMethod: claim
-      name: Workshop Login
+      name: Workshop Users
       type: HTPasswd

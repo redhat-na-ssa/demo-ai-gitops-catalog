@@ -37,9 +37,6 @@ htpasswd_get_file(){
 
 htpasswd_set_file(){
   oc -n openshift-config \
-    create secret generic "${HTPASSWD_FILE##*/}"
-
-  oc -n openshift-config \
     set data secret/"${HTPASSWD_FILE##*/}" \
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
@@ -151,6 +148,7 @@ workshop_clean(){
   workshop_clean_user_ns
   workshop_clean_user_notebooks
   oc delete group "${DEFAULT_GROUP}"
+  oc delete identities,users --all
 }
 
 workshop_reset(){
