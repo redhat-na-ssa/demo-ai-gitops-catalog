@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2068
 
 # shellcheck disable=SC2120
 genpass(){
@@ -55,7 +56,7 @@ workshop_init(){
   fi
 
   # create generated folder
-  [ ! -z "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
+  [ -n  "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
   [ ! -d "${OBJ_DIR}" ] && mkdir -p "${OBJ_DIR}"
 
   oc apply -k workshop/overlays/default
