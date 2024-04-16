@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleNotification
+metadata:
+  name: banner-demo
+spec:
+  text: 'WORKSHOP: Fraud Detection w/ Red Hat OpenShift AI'
+  # valid locations: BannerTop, BannerBottom, BannerTopBottom
+  location: BannerTop
+  # https://htmlcolorcodes.com/color-picker
+  color: '#FFF'
+  backgroundColor: '#9F0000'
