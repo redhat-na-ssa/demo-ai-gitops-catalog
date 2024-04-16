@@ -1,19 +1,26 @@
 #!/bin/bash
 
+HTPASSWD_FILE=scratch/htpasswd
+
 # shellcheck disable=SC2120
 genpass(){
   < /dev/urandom LC_ALL=C tr -dc _A-Z-a-z-0-9 | head -c "${1:-32}"
 }
 
-HTPASSWD_FILE=scratch/htpasswd
-
 htpasswd_add_user(){
   USER=${1:-admin}
   PASS=${2:-$(genpass)}
 
+  if ! which htpasswd >/dev/null; then
+    echo "Error: install htpasswd"
+    return 1
+  fi
+
   echo "
     USERNAME: ${USER}
     PASSWORD: ${PASS}
+
+    FILENAME: ${HTPASSWD_FILE}
   "
 
   touch "${HTPASSWD_FILE}"
@@ -33,13 +40,6 @@ htpasswd_set_file(){
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
-htpasswd_set_ocp_admin(){
-  OCP_ADMIN_GROUP=demo-admins
-  
-  oc adm groups add-users \
-  "${OCP_ADMIN_GROUP}" "${USER}"
-}
-
 htpasswd_encrypt_file(){
   age --encrypt --armor \
     -R authorized_keys \
@@ -55,14 +55,33 @@ htpasswd_decrypt_file(){
     htpasswd.age
 }
 
+ocp_setup_htpasswd(){
+  # check for existing secret
+  oc -n openshift-config \
+    get secret/oauth-htpasswd >/dev/null && return
+
+  # apply htpasswd login
+  oc apply -k components/configs/cluster/login/overlays/htpasswd
+}
+
+ocp_add_admin(){
+  USER=${1:-admin}
+  OCP_ADMIN_GROUP=${2:-demo-admins}
+  
+  oc adm groups add-users \
+  "${OCP_ADMIN_GROUP}" "${USER}"
+}
+
 ocp_setup_user(){
   USER=${1:-admin}
   PASS=${2:-$(genpass)}
-  
+
+  ocp_setup_htpasswd
+  ocp_add_admin "${USER}"
   htpasswd_add_user "${USER}" "${PASS}"
-  htpasswd_set_ocp_admin
 
   echo "
-    run: htpasswd_set_file
+    When complete run:
+      htpasswd_set_file
   "
 }
