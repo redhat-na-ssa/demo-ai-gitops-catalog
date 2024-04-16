@@ -3,7 +3,7 @@
   value:
     - htpasswd:
         fileData:
-          name: oauth-htpasswd
+          name: htpasswd-local
       mappingMethod: claim
       name: htpasswd
       type: HTPasswd

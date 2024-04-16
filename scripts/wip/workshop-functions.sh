@@ -14,6 +14,36 @@ DEFAULT_GROUP=workshop-users
 
 HTPASSWD_FILE=${OBJ_DIR}/htpasswd-workshop
 
+htpasswd_add_user(){
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-$(genpass 16)}
+
+  echo "
+    USERNAME: ${USERNAME}
+    PASSWORD: ${PASSWORD}
+  "
+
+  touch "${HTPASSWD_FILE}"
+  echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD_FILE}"
+  htpasswd -bB -C 10 "${HTPASSWD_FILE}" "${USERNAME}" "${PASSWORD}"
+}
+
+htpasswd_get_file(){
+  oc -n openshift-config \
+    extract secret/"${HTPASSWD_FILE##*/}" \
+    --keys=htpasswd \
+    --to=scratch
+}
+
+htpasswd_set_file(){
+  oc -n openshift-config \
+    create secret generic "${HTPASSWD_FILE##*/}"
+
+  oc -n openshift-config \
+    set data secret/"${HTPASSWD_FILE##*/}" \
+    --from-file=htpasswd="${HTPASSWD_FILE}"
+}
+
 workshop_init(){
   TOTAL=${1:-25}
   LIST=$(eval echo "{0..${TOTAL}}" )
@@ -34,21 +64,6 @@ workshop_init(){
   oc apply -k workshop/overlays/default
 }
 
-htpasswd_add_user(){
-  USERNAME=${1:-admin}
-  PASSWORD=${2:-$(genpass 16)}
-
-  echo "
-    USERNAME: ${USERNAME}
-    PASSWORD: ${PASSWORD}
-  "
-
-  touch "${HTPASSWD_FILE}"
-  echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD_FILE}"
-  htpasswd -bB -C 10 "${HTPASSWD_FILE}" "${USERNAME}" "${PASSWORD}"
-}
-
-
 workshop_add_user_to_group(){
   USER=${1:-admin}
   OCP_ADMIN_GROUP=${2:-workshop-users}
@@ -66,6 +81,9 @@ workshop_create_user_htpasswd(){
   do
     htpasswd_add_user "${DEFAULT_USER}${i}" "${DEFAULT_PASS}${i}"
   done
+
+  htpasswd_set_file
+
 }
 
 workshop_create_user_ns(){

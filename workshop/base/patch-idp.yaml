@@ -1,0 +1,15 @@
+- op: add
+  path: /spec/identityProviders
+  value:
+    - htpasswd:
+        fileData:
+          name: htpasswd-local
+      mappingMethod: claim
+      name: Admin Login
+      type: HTPasswd
+    - htpasswd:
+        fileData:
+          name: htpasswd-workshop
+      mappingMethod: claim
+      name: Workshop Login
+      type: HTPasswd

@@ -29,14 +29,14 @@ htpasswd_add_user(){
 
 htpasswd_get_file(){
   oc -n openshift-config \
-    extract secret/oauth-htpasswd \
+    extract secret/htpasswd-local \
     --keys=htpasswd \
     --to=scratch
 }
 
 htpasswd_set_file(){
   oc -n openshift-config \
-    set data secret/oauth-htpasswd \
+    set data secret/htpasswd-local \
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
@@ -58,7 +58,7 @@ htpasswd_decrypt_file(){
 ocp_setup_htpasswd(){
   # check for existing secret
   oc -n openshift-config \
-    get secret/oauth-htpasswd >/dev/null && return
+    get secret/htpasswd-local >/dev/null && return
 
   # apply htpasswd login
   oc apply -k components/configs/cluster/login/overlays/htpasswd

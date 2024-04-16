@@ -20,3 +20,12 @@ resources:
 - ../../components/operators/serverless-operator/operator/overlays/stable
 - ../../components/operators/servicemeshoperator/operator/overlays/stable
 - ../../components/configs/cluster/rbac/overlays/workshop
+- ../../components/configs/cluster/login/overlays/htpasswd
+
+patches:
+  - path: patch-idp.yaml
+    target:
+      group: config.openshift.io
+      kind: OAuth
+      name: cluster
+      version: v1
