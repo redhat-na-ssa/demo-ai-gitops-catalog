@@ -4,52 +4,54 @@ kind: RoleBinding
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  name: data-connection-setup
+  name: setup-buckets
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: edit
 subjects:
 - kind: ServiceAccount
-  name: data-connection-setup
+  name: setup-buckets
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  name: data-connection-setup
+  name: setup-buckets
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-  name: data-connection-setup
+  name: setup-buckets
 spec:
   backoffLimit: 4
   template:
     spec:
-      serviceAccount: data-connection-setup
-      serviceAccountName: data-connection-setup
+      serviceAccount: setup-buckets
+      serviceAccountName: setup-buckets
       containers:
       - name: create-data-connection
         image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
         imagePullPolicy: IfNotPresent
         env:
-          - name: MINIO_SECRET_NAME
-            value: minio-root-user
-          - name: MINIO_NAMESPACE
+          - name: DEFAULT_PREFIX
+            value: user
+          - name: DEFAULT_USER
             value: minio
-          - name: DATA_CONNECTION_NAME
-            # note: default prefix is aws-connection-
-            value: data-connection-minio
+          - name: DEFAULT_PASS
+            value: password
+          - name: AWS_S3_BUCKET
+            value: models
           - name: AWS_DEFAULT_REGION
             value: us
           - name: AWS_S3_ENDPOINT
             value: http://minio.minio.svc.cluster.local:9000
-          - name: AWS_S3_BUCKET
-            value: models
+          - name: DATA_CONNECTION_NAME
+            # note: default prefix is aws-connection-
+            value: data-connection-minio
         command: ["/bin/bash"]
         args:
         - -ec
@@ -71,6 +73,7 @@ spec:
           kind: Secret
           metadata:
             name: ${DATA_CONNECTION_NAME}
+            namespace: ${TARGET_NAMESPACE}
             labels:
               opendatahub.io/dashboard: "true"
               opendatahub.io/managed: "true"

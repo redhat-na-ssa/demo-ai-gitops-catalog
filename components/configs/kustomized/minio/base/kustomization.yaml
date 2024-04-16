@@ -11,9 +11,10 @@ commonLabels:
 resources:
 - data-connector-rb.yaml
 - deployment.yaml
+# - job-setup-buckets.yaml
+- job-setup-root-user.yaml
 # - link-minio.yaml
 - pvc.yaml
 - route.yaml
 # - secret.yaml
 - service.yaml
-- setup-root-user-job.yaml
