@@ -5,4 +5,16 @@ commonLabels:
   owner: workshop
 
 resources:
+# - ../../components/configs/kustomized/minio/overlays/with-namespace-known-password
+- demos/rhods-nvidia-gpu-autoscale
 - group-workshop-users.yaml
+
+patches:
+  - path: exclude-job.yaml
+  # - patch: |-
+  #     - op: replace
+  #       path: /spec/template/spec/containers/0/env/5/value
+  #       value: user0
+  #   target:
+  #     kind: Job
+  #     name: data-connection-setup
