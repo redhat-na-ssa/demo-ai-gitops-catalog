@@ -6,7 +6,8 @@ metadata:
   annotations:
     openshift.io/description: |
       A personal project to explore the wonders of science!
-    openshift.io/display-name: Start Here - user0
+    # openshift.io/display-name: Start Here - user0
+    openshift.io/display-name: Fraud Detection
     openshift.io/requester: workshop
   labels:
     owner: workshop
