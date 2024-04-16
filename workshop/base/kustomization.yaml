@@ -5,7 +5,7 @@ commonLabels:
   owner: workshop
 
 resources:
-- ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
+# - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
 - ../../components/configs/kustomized/minio/overlays/with-namespace-known-password
 - ../../components/configs/kustomized/rhods-config
 - ../../components/configs/kustomized/rhods-config-patches
@@ -19,8 +19,12 @@ resources:
 - ../../components/operators/rhods-operator/instance/overlays/2.6
 - ../../components/operators/serverless-operator/operator/overlays/stable
 - ../../components/operators/servicemeshoperator/operator/overlays/stable
+
 - ../../components/configs/cluster/rbac/overlays/workshop
 - ../../components/configs/cluster/login/overlays/htpasswd
+
+- ../../demos/base/nvidia-gpu-autoscale
+
 - banner-demo.yaml
 - htpasswd-secret.yaml
 - link-github.yaml
