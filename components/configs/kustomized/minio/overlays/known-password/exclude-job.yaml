@@ -2,4 +2,4 @@ $patch: delete
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-minio-root-user
+  name: setup-minio-root-user
