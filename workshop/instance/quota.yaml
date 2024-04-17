@@ -8,8 +8,8 @@ spec:
   hard:
     # requests.cpu: '1'
     # requests.memory: 1Gi
-    limits.cpu: '18'
-    limits.memory: 24Gi
+    # limits.cpu: '18'
+    # limits.memory: 24Gi
     requests.nvidia.com/gpu: '1'
 ---
 apiVersion: v1
@@ -29,5 +29,5 @@ metadata:
   namespace: user0
 spec:
   hard:
-    count/cronjobs.batch: '4'
+    # count/cronjobs.batch: '4'
     count/daemonsets.apps: '0'

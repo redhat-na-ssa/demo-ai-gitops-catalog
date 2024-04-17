@@ -11,7 +11,7 @@ resources:
 - job-setup-user.yaml
 - notebook.yaml
 - pvc.yaml
-# - quota.yaml
+- quota.yaml
 - user-ns-rb-admin.yaml
 # - user-ns-rb-view.yaml
 - user-ns.yaml
