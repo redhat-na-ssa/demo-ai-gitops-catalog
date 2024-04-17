@@ -157,7 +157,6 @@ workshop_create_users(){
     sed -i 's/user0/'"${DEFAULT_USER}${i}"'/g' "${OBJ_DIR}/${DEFAULT_USER}${i}/"*.yaml
     # oc apply -f "${OBJ_DIR}/${DEFAULT_USER}${i}/user-ns.yaml"
     oc apply -k "${OBJ_DIR}/${DEFAULT_USER}${i}"
-
   done
 
   # update htpasswd in cluster
@@ -165,9 +164,12 @@ workshop_create_users(){
 
 }
 
-workshop_clean_active_notebooks(){
-  oc -n rhods-notebooks \
-    delete po -l app=jupyterhub
+workshop_stop_active_notebooks(){
+  # stop notebooks
+  oc annotate notebooks kubeflow-resource-stopped='now' --all -A
+
+  # oc -n rhods-notebooks \
+  #   delete po -l app=jupyterhub
 }
 
 workshop_clean_users(){
@@ -184,12 +186,12 @@ workshop_setup(){
   apply_firmly workshop/overlays/default
 
   htpasswd_set_file
-  workshop_create_users
+  workshop_create_users "${TOTAL}"
 }
 
 workshop_clean(){
   echo "Workshop: Clean"
-  workshop_clean_active_notebooks
+  workshop_stop_active_notebooks
   workshop_clean_users
 }
 
