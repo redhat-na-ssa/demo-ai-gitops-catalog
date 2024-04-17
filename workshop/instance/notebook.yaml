@@ -6,7 +6,7 @@ metadata:
     notebooks.opendatahub.io/inject-oauth: "true"
     notebooks.opendatahub.io/last-image-selection: 'tensorflow:2023.2'
     notebooks.opendatahub.io/last-size-selection: "Demo / Workshop"
-    opendatahub.io/username: user
+    opendatahub.io/username: user0
     openshift.io/description: "My Fraud Detection workbench"
     openshift.io/display-name: Fraud Detection
   labels:
@@ -38,11 +38,11 @@ spec:
             --ServerApp.base_url=/notebook/user0/fraud-detection
             --ServerApp.quit_button=False
         - name: JUPYTER_IMAGE
-          value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
+          value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.2
         envFrom:
         - secretRef:
             name: aws-connection-minio
-        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
+        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.2
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
