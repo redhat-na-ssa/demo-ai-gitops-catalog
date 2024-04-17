@@ -115,7 +115,7 @@ workshop_init(){
   # create htpasswd files
   set -x
   [ -e "scratch/htpasswd-local" ] || htpasswd_get_file "scratch/htpasswd-local"
-  [ -e "scratch/htpasswd-workshop" ] || htpasswd_get_file "scratch/htpasswd-workshop"
+  [ -e "scratch/workshop/htpasswd-workshop" ] || htpasswd_get_file "scratch/workshop/htpasswd-workshop"
   set +x
 
   echo "Workshop: Functions Loaded"
