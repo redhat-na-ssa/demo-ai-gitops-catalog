@@ -28,7 +28,7 @@ ENV BIN_PATH=/usr/local/bin
 ENV PATH="${WRAPPER_BINARIES}:${PATH}"
 
 COPY src/etc/initial_config /etc/skel
-COPY src/etc/wtoctl src/etc/wtoctl_help.sh src/etc/wtoctl_jq.sh "${BIN_PATH}"
+COPY src/etc/wtoctl src/etc/wtoctl_help.sh src/etc/wtoctl_jq.sh "${BIN_PATH}/"
 COPY src/etc/cli-wrappers/* "${WRAPPER_BINARIES}/"
 COPY src/etc/get-tooling-versions.sh "${WRAPPER_BINARIES}/"
 
