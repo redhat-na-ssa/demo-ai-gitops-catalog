@@ -48,14 +48,13 @@ spec:
         - |-
           #!/bin/bash
 
-          # automation was here          
-          rmdir lost+found || true
-
           clone_repo(){
+            rmdir lost+found || true
+
             cd /data
             git clone "${GIT_URL}" || true
-          }
 
+          }
 
           make_jupyter_great(){
           CONFIG=/data/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
