@@ -1,0 +1,63 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: setup-user
+  namespace: user0
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: setup-user
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: setup-user
+  namespace: user0
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: setup-user
+  namespace: user0
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: setup-user
+      serviceAccountName: setup-user
+      containers:
+      - name: setup-user
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: GIT_URL
+            value: https://github.com/rh-aiservices-bu/fraud-detection.git
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          #!/bin/bash
+
+          cd /data
+
+          rmdir lost+found
+          git clone "${GIT_URL}" || true
+
+        volumeMounts:
+          - name: fraud-detection
+            mountPath: /data
+      restartPolicy: Never
+      volumes:
+      - name: fraud-detection
+        persistentVolumeClaim:
+          claimName: fraud-detection
