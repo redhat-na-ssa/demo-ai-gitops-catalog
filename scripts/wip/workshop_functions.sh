@@ -80,16 +80,16 @@ htpasswd_add_user(){
 }
 
 htpasswd_get_file(){
-  HTPASSWD=${1:-scratch/htpasswd-local}
+  HTPASSWD=${1:-"scratch/htpasswd-local"}
 
   oc -n openshift-config \
     extract secret/"${HTPASSWD##*/}" \
     --keys=htpasswd \
-    --to=scratch
+    --to=- > "${HTPASSWD}"
 }
 
 htpasswd_set_file(){
-  HTPASSWD=${1:-scratch/htpasswd-local}
+  HTPASSWD=${1:-"scratch/htpasswd-local"}
 
   oc -n openshift-config \
     set data secret/"${HTPASSWD##*/}" \
