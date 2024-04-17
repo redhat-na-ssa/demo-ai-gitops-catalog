@@ -113,8 +113,10 @@ workshop_init(){
   [ ! -d "${OBJ_DIR}" ] && mkdir -p "${OBJ_DIR}"
 
   # create htpasswd files
-  [ -e "scratch/htpasswd-local" ] || htpasswd_get_file scratch/htpasswd-local
-  [ -e "scratch/htpasswd-workshop" ] || htpasswd_get_file scratch/htpasswd-workshop
+  set -x
+  [ -e "scratch/htpasswd-local" ] || htpasswd_get_file "scratch/htpasswd-local"
+  [ -e "scratch/htpasswd-workshop" ] || htpasswd_get_file "scratch/htpasswd-workshop"
+  set +x
 
   echo "Workshop: Functions Loaded"
   workshop_usage
