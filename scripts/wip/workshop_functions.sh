@@ -183,11 +183,9 @@ workshop_clean_users(){
 
 workshop_setup(){
   TOTAL=${1:-25}
-
-  [ -n  "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
-
   echo "Workshop: Setup"
 
+  workshop_init
   apply_firmly workshop/overlays/default
 
   htpasswd_set_file

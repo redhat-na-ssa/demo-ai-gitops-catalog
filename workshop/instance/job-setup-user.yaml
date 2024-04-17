@@ -76,7 +76,7 @@ spec:
           }
 
           clone_repo
-          make_jupyter_great
+          # make_jupyter_great
 
         volumeMounts:
           - name: fraud-detection
