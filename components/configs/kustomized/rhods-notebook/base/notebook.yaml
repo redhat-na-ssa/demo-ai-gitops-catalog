@@ -99,7 +99,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46
+        # image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:2246f6a2f5d48fb94e9bcf30a4945e4324ddc76ea49140f5483539450ab0b621
+        image: registry.redhat.io/openshift4/ose-oauth-proxy:v4.14
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
