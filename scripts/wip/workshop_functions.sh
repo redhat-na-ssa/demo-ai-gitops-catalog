@@ -74,6 +74,8 @@ htpasswd_add_user(){
     PASSWORD: ${PASSWORD}
   "
 
+  [ -e "${HTPASSWD}" ] || htpasswd_get_file "${HTPASSWD}"
+
   touch "${HTPASSWD}"
   echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD}"
   htpasswd -bB -C 10 "${HTPASSWD}" "${USERNAME}" "${PASSWORD}"
