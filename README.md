@@ -83,7 +83,7 @@ Basic cluster config
 apply_firmly bootstrap/web-terminal
 
 # setup a default cluster w/o argocd managing it
-apply_firmly clusters/default
+apply_firmly cluster/default
 ```
 
 Setup a demo
