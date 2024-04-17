@@ -110,7 +110,6 @@ workshop_init(){
   which htpasswd || return 1
 
   # create generated folder
-  [ -n  "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
   [ ! -d "${OBJ_DIR}" ] && mkdir -p "${OBJ_DIR}"
 
   echo "Workshop: Functions Loaded"
@@ -172,6 +171,10 @@ workshop_stop_active_notebooks(){
   #   delete po -l app=jupyterhub
 }
 
+workshop_clean_jobs(){
+  oc delete jobs -l owner=workshop -A
+}
+
 workshop_clean_users(){
   oc delete project -l owner=workshop
   oc delete group "${DEFAULT_GROUP}"
@@ -180,6 +183,8 @@ workshop_clean_users(){
 
 workshop_setup(){
   TOTAL=${1:-25}
+
+  [ -n  "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
 
   echo "Workshop: Setup"
 
@@ -191,6 +196,8 @@ workshop_setup(){
 
 workshop_clean(){
   echo "Workshop: Clean"
+  [ -n  "${OBJ_DIR}" ] && rm -rf "${OBJ_DIR}"
+
   workshop_stop_active_notebooks
   workshop_clean_users
 }

@@ -48,10 +48,35 @@ spec:
         - |-
           #!/bin/bash
 
-          cd /data
+          # automation was here          
+          rmdir lost+found || true
 
-          rmdir lost+found
-          git clone "${GIT_URL}" || true
+          clone_repo(){
+            cd /data
+            git clone "${GIT_URL}" || true
+          }
+
+
+          make_jupyter_great(){
+          CONFIG=/data/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
+
+          [ -d "$(dirname ${CONFIG})" ] || mkdir -p "$(dirname ${CONFIG})"
+
+          echo "{
+              // Theme
+              // @jupyterlab/apputils-extension:themes
+              // Theme manager settings.
+              // *************************************
+
+              // Selected Theme
+              // Application-level visual styling theme
+              "theme": "JupyterLab Dark"
+          }" > .jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
+
+          }
+
+          clone_repo
+          make_jupyter_great
 
         volumeMounts:
           - name: fraud-detection
