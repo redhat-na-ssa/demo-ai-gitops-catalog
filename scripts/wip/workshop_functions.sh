@@ -6,6 +6,55 @@ genpass(){
   < /dev/urandom LC_ALL=C tr -dc _A-Z-a-z-0-9 | head -c "${1:-32}"
 }
 
+create_kubeadmin(){
+  PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
+
+  which htpasswd >/dev/null || return
+
+  HTPASSWD=$(htpasswd -nbB -C10 null "${PASS}")
+  HASH=${HTPASSWD##*:}
+
+  echo "
+  PASSWORD: ${PASS}
+  HASH:     ${HASH}
+
+  oc apply -f scratch/kubeadmin.yaml
+  "
+
+cat << YAML > scratch/kubeadmin.yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: kubeadmin
+  namespace: kube-system
+stringData:
+  kubeadmin: ${HASH}
+  password: ${PASS}
+type: Opaque
+YAML
+}
+
+apply_firmly(){
+  if [ ! -f "${1}/kustomization.yaml" ]; then
+    echo "Please provide a dir with \"kustomization.yaml\""
+    return 1
+  fi
+
+  until_true oc apply -k "${1}" 2>/dev/null
+}
+
+until_true(){
+  echo "Running:" "${@}"
+  until "${@}" 1>&2
+  do
+    echo "again..."
+    sleep 20
+  done
+
+  echo "[OK]"
+}
+
+
 TMP_DIR=scratch
 OBJ_DIR=${TMP_DIR}/workshop
 
@@ -132,7 +181,7 @@ workshop_setup(){
 
   echo "Workshop: Setup"
 
-  oc apply -k workshop/overlays/default
+  apply_firmly workshop/overlays/default
 
   htpasswd_set_file
   workshop_create_users
