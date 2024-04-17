@@ -8,6 +8,7 @@ namespace: user0
 
 resources:
 - data-connection-secret.yaml
+- quota.yaml
 - user-ns-rb-admin.yaml
 # - user-ns-rb-view.yaml
 - user-ns.yaml

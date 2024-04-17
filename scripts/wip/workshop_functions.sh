@@ -39,7 +39,7 @@ htpasswd_get_file(){
 }
 
 htpasswd_set_file(){
-  HTPASSWD=${3:-scratch/htpasswd-local}
+  HTPASSWD=${1:-scratch/htpasswd-local}
   oc -n openshift-config \
     set data secret/"${HTPASSWD##*/}" \
     --from-file=htpasswd="${HTPASSWD}"
@@ -63,6 +63,7 @@ workshop_init(){
   [ ! -d "${OBJ_DIR}" ] && mkdir -p "${OBJ_DIR}"
 
   oc apply -k workshop/overlays/default
+  htpasswd_set_file
 }
 
 workshop_add_user_to_group(){
@@ -83,8 +84,7 @@ workshop_create_user_htpasswd(){
     htpasswd_add_user "${DEFAULT_USER}${i}" "${DEFAULT_PASS}${i}" "${HTPASSWD_FILE}"
   done
 
-  htpasswd_set_file
-
+  htpasswd_set_file "${HTPASSWD_FILE}"
 }
 
 workshop_create_user_ns(){

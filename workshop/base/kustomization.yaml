@@ -28,6 +28,7 @@ resources:
 - minio-rb-view.yaml
 
 patches:
+  - path: dashboard-config-cr.yaml
   - target:
       kind: ConsoleNotification
       name: banner-demo
