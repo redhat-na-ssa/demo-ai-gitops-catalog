@@ -74,8 +74,6 @@ htpasswd_add_user(){
     PASSWORD: ${PASSWORD}
   "
 
-  [ -e "${HTPASSWD}" ] || htpasswd_get_file "${HTPASSWD}"
-
   touch "${HTPASSWD}"
   echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD}"
   htpasswd -bB -C 10 "${HTPASSWD}" "${USERNAME}" "${PASSWORD}"
@@ -113,6 +111,10 @@ workshop_init(){
 
   # create generated folder
   [ ! -d "${OBJ_DIR}" ] && mkdir -p "${OBJ_DIR}"
+
+  # create htpasswd files
+  [ -e "scratch/htpasswd-local" ] || htpasswd_get_file scratch/htpasswd-local
+  [ -e "scratch/htpasswd-workshop" ] || htpasswd_get_file scratch/htpasswd-workshop
 
   echo "Workshop: Functions Loaded"
   workshop_usage
