@@ -2,10 +2,10 @@ apiVersion: kubeflow.org/v1
 kind: Notebook
 metadata:
   annotations:
-    kubeflow-resource-stopped: '2022-04-01T00:00:00Z'
+    kubeflow-resource-stopped: '2023-11-01T00:00:00Z'
     notebooks.opendatahub.io/inject-oauth: "true"
     notebooks.opendatahub.io/last-image-selection: 'tensorflow:2023.2'
-    notebooks.opendatahub.io/last-size-selection: Demo / Workshop
+    notebooks.opendatahub.io/last-size-selection: "Demo / Workshop"
     opendatahub.io/username: user
     openshift.io/description: "My Fraud Detection workbench"
     openshift.io/display-name: Fraud Detection
@@ -41,7 +41,7 @@ spec:
           value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
         envFrom:
         - secretRef:
-            name: data-connection-minio
+            name: aws-connection-minio
         image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
         imagePullPolicy: Always
         livenessProbe:
@@ -54,7 +54,7 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 1
-        name: science
+        name: fraud-detection
         ports:
         - containerPort: 8888
           name: notebook-port
@@ -71,20 +71,20 @@ spec:
           timeoutSeconds: 1
         resources:
           limits:
-            cpu: '2'
-            memory: 8Gi
+            cpu: '4'
+            memory: 6Gi
           requests:
             cpu: '1'
-            memory: 8Gi
+            memory: 1Gi
         volumeMounts:
         - mountPath: /opt/app-root/src
-          name: science
+          name: fraud-detection
         workingDir: /opt/app-root/src
       - args:
         - --provider=openshift
         - --https-address=:8443
         - --http-address=
-        - --openshift-service-account=science
+        - --openshift-service-account=fraud-detection
         - --cookie-secret-file=/etc/oauth/config/cookie_secret
         - --cookie-expire=24h0m0s
         - --tls-cert=/etc/tls/private/tls.crt
@@ -93,8 +93,8 @@ spec:
         - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         - --email-domain=*
         - --skip-provider-button
-        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"science","namespace":"$(NAMESPACE)"}
-        # - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/ds-group-project?notebookLogout=science
+        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"fraud-detection","namespace":"$(NAMESPACE)"}
+        # - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/ds-group-project?notebookLogout=fraud-detection
         env:
         - name: NAMESPACE
           valueFrom:
@@ -140,16 +140,16 @@ spec:
         - mountPath: /etc/tls/private
           name: tls-certificates
       enableServiceLinks: false
-      serviceAccountName: science
+      serviceAccountName: fraud-detection
       volumes:
-      - name: science
+      - name: fraud-detection
         persistentVolumeClaim:
-          claimName: science
+          claimName: fraud-detection
       - name: oauth-config
         secret:
           defaultMode: 420
-          secretName: science-oauth-config
+          secretName: fraud-detection-oauth-config
       - name: tls-certificates
         secret:
           defaultMode: 420
-          secretName: science-tls
+          secretName: fraud-detection-tls

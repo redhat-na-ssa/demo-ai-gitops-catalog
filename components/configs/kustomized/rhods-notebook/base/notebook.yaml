@@ -2,7 +2,7 @@ apiVersion: kubeflow.org/v1
 kind: Notebook
 metadata:
   annotations:
-    kubeflow-resource-stopped: '2022-04-01T00:00:00Z'
+    kubeflow-resource-stopped: '2023-11-01T00:00:00Z'
     notebooks.opendatahub.io/inject-oauth: "true"
     notebooks.opendatahub.io/last-image-selection: 'tensorflow:2023.1'
     notebooks.opendatahub.io/last-size-selection: Small
