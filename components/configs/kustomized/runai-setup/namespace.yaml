@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: runai
+  annotations:
+    openshift.io/description: |
+      Run.ai - Cluster
+    openshift.io/display-name: Run.ai - Cluster
+    openshift.io/requester: automation
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: runai-reservation
+  annotations:
+    openshift.io/description: |
+      Run.ai
+    openshift.io/display-name: Run.ai - Reservation
+    openshift.io/requester: automation
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: runai-scale-adjust
+#   annotations:
+#     openshift.io/description: |
+#       Run.ai - Cluster Auto Scaling
+#     openshift.io/display-name: Run.ai - Scaling
+#     openshift.io/requester: automation
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: runai-backend
+  annotations:
+    openshift.io/description: |
+      Run.ai Backend Services
+    openshift.io/display-name: Run.ai - Backend
+    openshift.io/requester: automation

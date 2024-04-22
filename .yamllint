@@ -22,3 +22,4 @@ rules:
 
 ignore:
   - "scratch/*"
+  - "components/containers/web-terminal/src/*"
