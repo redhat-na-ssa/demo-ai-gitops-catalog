@@ -157,5 +157,6 @@ scripts/lint.sh
 ## External Links
 
 - [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog)
+- [AI Pilot Gitops](https://github.com/redhat-na-stp-ai-practice/openshift-ai-pilot-gitops)
 - [ArgoCD - Example](https://github.com/gnunn-gitops/cluster-config)
 - [ArgoCD - Patterns](https://github.com/gnunn-gitops/standards)
