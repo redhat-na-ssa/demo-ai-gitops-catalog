@@ -3,6 +3,7 @@ data/
 scratch/
 files.txt
 bootstrap/sealed-secrets-secret.yaml
+**/charts/
 
 dictionary.dic
 
