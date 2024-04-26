@@ -10,4 +10,7 @@ configMapGenerator:
   - name: scripts
     files:
       - job.sh
-      - ocp.sh
+      # kludge: refer to source
+      # todo: move functions into this folder
+      - https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/ocp.sh
+      # - ocp.sh
