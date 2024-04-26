@@ -431,11 +431,11 @@ ocp_aro_get_key(){
   echo "AZ_DEFAULT_REGION: ${AZ_DEFAULT_REGION}"
 
   which az || return 0
+
   az login --service-principal \
     -u "${AZ_CLIENT_ID}" \
     -p "${AZ_CLIENT_SECRET}" \
     --tenant "${AZ_TENANT_ID}"
-  
 }
 
 ocp_aro_clone_machineset(){
