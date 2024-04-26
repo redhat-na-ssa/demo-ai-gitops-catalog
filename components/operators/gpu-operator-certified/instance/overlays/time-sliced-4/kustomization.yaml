@@ -5,4 +5,4 @@ resources:
   - ../time-sliced-2
 
 components:
-  - ../../components/time-sliced-2
+  - ../../components/time-sliced-4
