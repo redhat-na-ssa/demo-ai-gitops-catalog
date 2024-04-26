@@ -6,3 +6,8 @@ namespace: nvidia-gpu-operator
 resources:
   - setup-machineset-job.yaml
   - setup-machineset-rbac.yaml
+
+configMapGenerator:
+  - name: create-gpu-machineset
+    files:
+      - create-gpu-machineset.sh
