@@ -17,7 +17,8 @@ ocp_check_info(){
 }
 
 ocp_aws_cluster(){
-  oc -n kube-system get secret/aws-creds -o name > /dev/null 2>&1 || return 1
+    echo "Checking if secret/aws-creds exists in kube-system namespace"
+    oc -n kube-system get secret/aws-creds -o name > /dev/null 2>&1 || return 1
 }
 
 ocp_aws_get_key(){

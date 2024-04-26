@@ -4,10 +4,13 @@ kind: Component
 namespace: nvidia-gpu-operator
 
 resources:
-  - setup-machineset-job.yaml
-  - setup-machineset-rbac.yaml
+  - job.yaml
 
 configMapGenerator:
-  - name: create-gpu-machineset
+  - name: scripts
     files:
-      - create-gpu-machineset.sh
+      - job.sh
+      # kludge: refer to source
+      # todo: move functions into this folder
+      - https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/ocp.sh
+      # - ocp.sh

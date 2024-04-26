@@ -15,6 +15,7 @@ Where:
 }
 
 which kustomize && KUSTOMIZE_CMD="kustomize build"
+which helm && GOT_HELM="--enable-helm"
 
 KUSTOMIZE_CMD="${KUSTOMIZE_CMD:-oc kustomize}"
 IGNORE_MISSING_SCHEMAS="--ignore-missing-schemas"
@@ -63,7 +64,7 @@ kustomization_auto_fix(){
 
 kustomization_build(){
     BUILD=${1}
-    KUSTOMIZE_BUILD_OUTPUT=$(${KUSTOMIZE_CMD} "${BUILD}" --enable-helm)
+    KUSTOMIZE_BUILD_OUTPUT=$(${KUSTOMIZE_CMD} "${BUILD}" "${GOT_HELM}")
     # echo "$KUSTOMIZE_BUILD_OUTPUT" | kubeval ${IGNORE_MISSING_SCHEMAS} --schema-location="file://${SCHEMA_LOCATION}" --force-color
 
     build_response=$?
