@@ -9,5 +9,5 @@ resources:
 configMapGenerator:
   - name: scripts
     files:
-      - ../../../../../../scripts/library/ocp.sh
       - job.sh
+      - ocp.sh

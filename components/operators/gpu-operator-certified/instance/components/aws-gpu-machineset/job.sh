@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2120,SC2119
+# shellcheck disable=SC1091
 
 . /scripts/ocp.sh
 

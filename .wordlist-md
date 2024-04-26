@@ -18,9 +18,12 @@ CRs
 CSS
 CUDA
 CheCluster
+ClusterPolicy
 ClusterRoleBindings
 ClusterTask
 CodeReady
+ConfigMap
+DCGM
 DNS
 Dev
 DevWorkspace
@@ -75,6 +78,7 @@ PV
 PolicyReport
 PriorityClasses
 Prometheus
+QuickStart
 RBAC
 README
 RHACM
@@ -217,6 +221,7 @@ jenkins
 jharmison
 jq
 json
+jsonpath
 jupyter
 kafka
 kataconfig
