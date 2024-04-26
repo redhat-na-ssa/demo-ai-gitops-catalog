@@ -142,6 +142,7 @@ cicd
 cli
 clientSecret
 clusterissuer
+clusterpolicies
 clusterrolebinding
 cmd
 codekow
@@ -157,6 +158,7 @@ creds
 cuda
 cudnn
 datasource
+dcgmExporter
 defaultRoute
 deployable
 descheduler

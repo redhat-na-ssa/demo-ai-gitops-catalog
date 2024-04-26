@@ -10,5 +10,9 @@ helmCharts:
     repo: https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu
 
 resources:
-  - enable-console-plugin-job.yaml
-  - enable-console-plugin-rbac.yaml
+  - job.yaml
+
+configMapGenerator:
+  - name: create-gpu-machineset
+    files:
+      - job.sh
