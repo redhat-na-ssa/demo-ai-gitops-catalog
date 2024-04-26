@@ -146,7 +146,7 @@ ocp_aws_create_gpu_machineset(){
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
   
-    oc -n openshift-machine-api \
+  oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
   
@@ -302,6 +302,10 @@ ocp_upgrade_cluster(){
   fi
 }
 
+ocp_ack_upgrade_4.13(){
+  oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.12-kube-1.26-api-removals-in-4.13":"true"}}' --type=merge
+}
+
 ocp_gpu_taint_nodes(){
   oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule --overwrite
   oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
@@ -399,4 +403,60 @@ ocp_mirror_operator_catalog_list_all(){
   do
     ocp_mirror_operator_list "${index}"
   done
+}
+
+ocp_aro_cluster(){
+  oc -n kube-system get secret/azure-credentials -o name > /dev/null 2>&1 || return 1
+}
+
+ocp_aro_get_key(){
+  # get az creds
+  ocp_aro_cluster || return 1
+  
+  AZ_CLIENT_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_id --to=-)
+  AZ_CLIENT_SECRET=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_secret --to=-)
+  AZ_DEFAULT_REGION=$(oc -n kube-system extract secret/azure-credentials --keys=azure_region --to=-)
+  AZ_DEFAULT_RG=$(oc -n kube-system extract secret/azure-credentials --keys=azure_resourcegroup --to=-)
+  AZ_SUB_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_subscription_id --to=-)
+  AZ_TENANT_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_tenant_id --to=-)
+
+  export AZ_CLIENT_ID
+  export AZ_CLIENT_SECRET
+  export AZ_DEFAULT_REGION
+  export AZ_DEFAULT_RG
+  export AZ_SUB_ID
+  export AZ_TENANT_ID
+
+  echo "AZ_DEFAULT_REGION: ${AZ_DEFAULT_REGION}"
+
+  which az || return 0
+  az login --identity \
+    --username "${AZ_CLIENT_ID}" \
+    -p "${AZ_CLIENT_SECRET}"
+  
+}
+
+ocp_aro_clone_machineset(){
+  [ -z "${1}" ] && \
+  echo "
+    usage: ocp_aro_clone_machineset < instance type, default Standard_NC64as_T4_v3 >
+  "
+
+  INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
+  INSTANCE_NAME=$(echo "${INSTANCE_TYPE,,}" | tr '_' '-')
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
+
+  # check for an existing instance machine set
+  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep -q "${INSTANCE_NAME}"; then
+    echo "Exists: machineset - ${INSTANCE_TYPE}"
+  else
+    echo "Creating: machineset - ${INSTANCE_NAME}"
+    oc -n openshift-machine-api \
+      get "${MACHINE_SET}" -o yaml | \
+        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
+          /name/ s/-worker/-'"${INSTANCE_NAME}"'/g
+          s/vmSize.*/vmSize: '"${INSTANCE_TYPE}"'/
+          s/replicas.*/replicas: 0/' | \
+      oc apply -f -
+  fi
 }
