@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2120,SC2119
+
 
 ocp_aws_cluster(){
     echo "Checking if secret/aws-creds exists in kube-system namespace"
