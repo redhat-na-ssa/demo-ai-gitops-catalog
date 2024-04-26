@@ -412,6 +412,7 @@ ocp_aro_cluster(){
 ocp_aro_get_key(){
   # get az creds
   ocp_aro_cluster || return 1
+  AZ_TENANT_ID=redhat0.onmicrosoft.com
   
   AZ_CLIENT_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_id --to=-)
   AZ_CLIENT_SECRET=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_secret --to=-)
@@ -430,9 +431,10 @@ ocp_aro_get_key(){
   echo "AZ_DEFAULT_REGION: ${AZ_DEFAULT_REGION}"
 
   which az || return 0
-  az login --identity \
-    --username "${AZ_CLIENT_ID}" \
-    -p "${AZ_CLIENT_SECRET}"
+  az login --service-principal \
+    -u "${AZ_CLIENT_ID}" \
+    -p "${AZ_CLIENT_SECRET}" \
+    --tenant "${AZ_TENANT_ID}"
   
 }
 
