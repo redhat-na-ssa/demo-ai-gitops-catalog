@@ -42,7 +42,11 @@ apply_firmly(){
   fi
 
   # kludge
-  until_true oc kustomize "${1}" --enable-helm | oc apply -f- 2>/dev/null
+  until oc kustomize "${1}" --enable-helm | oc apply -f- 2>/dev/null
+  do
+    echo "again..."
+    sleep 20
+  done
   # until_true oc apply -k "${1}" 2>/dev/null
 }
 
