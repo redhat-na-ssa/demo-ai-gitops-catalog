@@ -2,40 +2,48 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: job-gpu-console-plugin
+  name: job-init-htpasswd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: job-gpu-console-plugin
+  name: job-init-htpasswd
 rules:
   - apiGroups:
-      - operator.openshift.io
+      - ""
     resources:
-      - consoles
+      - secrets
     verbs:
       - get
       - list
+      - update
       - patch
-      - label
+  - apiGroups:
+      - bitnami.com
+    resources:
+      - sealedsecrets
+    verbs:
+      - get
+      - list
+      - delete
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: job-gpu-console-plugin
+  name: job-init-htpasswd
 subjects:
   - kind: ServiceAccount
-    name: job-gpu-console-plugin
+    name: job-init-htpasswd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: job-gpu-console-plugin
+  name: job-init-htpasswd
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job-gpu-console-plugin
-  generateName: job-gpu-console-plugin-
+  name: job-init-htpasswd
+  generateName: job-init-htpasswd-
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
@@ -45,8 +53,10 @@ spec:
         - name: minion
           image: registry.redhat.io/openshift4/ose-cli
           env:
-            - name: PLUGIN_NAME
-              value: 'console-plugin-nvidia-gpu'
+            - name: OBJECT
+              value: htpasswd-secret
+            - name: NS
+              value: openshift-config
           command:
             - /bin/bash
             - -c
@@ -57,9 +67,9 @@ spec:
       volumes:
         - name: scripts
           configMap:
-            name: job-gpu-console-plugin
+            name: job-init-htpasswd
             defaultMode: 0755
       restartPolicy: Never
-      serviceAccount: job-gpu-console-plugin
-      serviceAccountName: job-gpu-console-plugin
+      serviceAccount: job-init-htpasswd
+      serviceAccountName: job-init-htpasswd
   backoffLimit: 4

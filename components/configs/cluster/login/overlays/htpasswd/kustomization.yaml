@@ -9,7 +9,17 @@ commonAnnotations:
 
 resources:
   - ../../base
-  - htpasswd-secret.yaml
+  # - htpasswd-secret.yaml
+  - job.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: job-init-htpasswd
+    files:
+      - htpasswd-secret.yaml
+      - job.sh
 
 # Patch cluster specific
 patches:
