@@ -41,7 +41,9 @@ apply_firmly(){
     return 1
   fi
 
-  until_true oc apply -k "${1}" 2>/dev/null
+  # kludge
+  until_true oc kustomize "${1}" --enable-helm | oc apply -f- 2>/dev/null
+  # until_true oc apply -k "${1}" 2>/dev/null
 }
 
 until_true(){
