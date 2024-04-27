@@ -34,35 +34,35 @@ spec:
               imagePullPolicy: IfNotPresent
               env:
                 - name: CLUSTER_BACKUP_PATH
-                  value: /home/core/backups
+                  value: /host/home/core/backups
               command:
                 - /bin/bash
                 - -c
                 - /scripts/job.sh
               volumeMounts:
                 - name: scripts
-                mountPath: /scripts
-                - name: etcd-backup-local
-                  mountPath: /backups
+                  mountPath: /scripts
                 - name: host
                   mountPath: /host
+                - name: etcd-backup
+                  mountPath: /backups
               terminationMessagePolicy: FallbackToLogsOnError
               # image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a37e5fcb058911022fbc3e6589c1b7414d746decffb3ba2788249e011190cca1
               image: image-registry.openshift-image-registry.svc:5000/openshift/tools
           serviceAccount: default
           volumes:
-            - name: host
-              hostPath:
-                path: /
-                type: ''
-            - name: etcd-backup-local
-              hostPath:
-                path: /home/core/backups
-                type: ''
             - name: scripts
               configMap:
                 name: job-aws-gpu-machineset
                 defaultMode: 0755
+            - name: host
+              hostPath:
+                path: /
+                type: ''
+            - name: etcd-backup
+              hostPath:
+                path: /home/core/backups
+                type: ''
           tolerations:
             - operator: Exists
           priorityClassName: system-node-critical
