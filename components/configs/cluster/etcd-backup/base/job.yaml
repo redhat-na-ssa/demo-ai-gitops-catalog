@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: etcd-backup
+  name: job-etcd-backup
 spec:
   # schedule: "* * * * *"
   schedule: "13 */1 * * *"
@@ -53,7 +53,7 @@ spec:
           volumes:
             - name: scripts
               configMap:
-                name: job-aws-gpu-machineset
+                name: job-etcd-backup
                 defaultMode: 0755
             - name: host
               hostPath:

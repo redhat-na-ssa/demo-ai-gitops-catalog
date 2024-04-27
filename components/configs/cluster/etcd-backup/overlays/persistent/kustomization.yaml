@@ -11,7 +11,7 @@ resources:
 patches:
   - target:
       kind: CronJob
-      name: etcd-backup
+      name: job-etcd-backup
     patch: |
       - op: replace
         path: /spec/jobTemplate/spec/template/spec/volumes/2
