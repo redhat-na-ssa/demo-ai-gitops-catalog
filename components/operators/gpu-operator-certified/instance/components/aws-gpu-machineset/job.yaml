@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: aws-gpu-machineset-setup
+  name: job-aws-gpu-machineset
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: aws-gpu-machineset-setup
+  name: job-aws-gpu-machineset
 rules:
 - apiGroups:
   - machine.openshift.io
@@ -38,21 +38,21 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: aws-gpu-machineset-setup
+  name: job-aws-gpu-machineset
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: aws-gpu-machineset-setup
+  name: job-aws-gpu-machineset
 subjects:
   - kind: ServiceAccount
-    name: aws-gpu-machineset-setup
+    name: job-aws-gpu-machineset
     namespace: nvidia-gpu-operator
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: aws-gpu-machineset-setup-
-  name: aws-gpu-machineset-setup
+  generateName: job-aws-gpu-machineset-
+  name: job-aws-gpu-machineset
   annotations:
     argocd.argoproj.io/hook: Sync
     # argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -60,7 +60,7 @@ spec:
   template:
     spec:
       containers:
-        - name: aws-gpu-machineset-setup
+        - name: job-aws-gpu-machineset
           image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
           env:
             - name: NAMESPACE
@@ -77,9 +77,9 @@ spec:
       volumes:
         - name: scripts
           configMap:
-            name: scripts
+            name: job-aws-gpu-machineset
             defaultMode: 0755
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
-      serviceAccount: aws-gpu-machineset-setup
-      serviceAccountName: aws-gpu-machineset-setup
+      serviceAccount: job-aws-gpu-machineset
+      serviceAccountName: job-aws-gpu-machineset

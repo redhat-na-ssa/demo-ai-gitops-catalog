@@ -17,8 +17,11 @@ ocp_check_info(){
 }
 
 ocp_aws_cluster(){
-    echo "Checking if secret/aws-creds exists in kube-system namespace"
-    oc -n kube-system get secret/aws-creds -o name > /dev/null 2>&1 || return 1
+  TARGET_NS=kube-system
+  OBJ=secret/aws-creds
+  echo "Checking if ${OBJ} exists in ${TARGET_NS} namespace"
+  oc -n "${TARGET_NS}" get "${OBJ}" -o name > /dev/null 2>&1 || return 1
+  echo "AWS cluster detected"
 }
 
 ocp_aws_get_key(){
@@ -407,7 +410,11 @@ ocp_mirror_operator_catalog_list_all(){
 }
 
 ocp_aro_cluster(){
-  oc -n kube-system get secret/azure-credentials -o name > /dev/null 2>&1 || return 1
+  TARGET_NS=kube-system
+  OBJ=secret/azure-credentials
+  echo "Checking if ${OBJ} exists in ${TARGET_NS} namespace"
+  oc -n "${TARGET_NS}" get "${OBJ}" -o name > /dev/null 2>&1 || return 1
+  echo "ARO cluster detected"
 }
 
 ocp_aro_get_key(){

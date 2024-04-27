@@ -19,3 +19,6 @@ else
     echo "Enabling plugin: ${PLUGIN_NAME}"
     oc patch consoles.operator.openshift.io cluster --type=json --patch '[{"op": "add", "path": "/spec/plugins/-", "value": "'"${PLUGIN_NAME}"'"}]'
 fi
+
+sleep 6
+oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}'

@@ -4,14 +4,17 @@ kind: Component
 namespace: nvidia-gpu-operator
 
 resources:
+  - ../../../../../../scripts/library
   - job.yaml
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 configMapGenerator:
-  - name: scripts
+  - name: job-aws-gpu-machineset
     files:
       - job.sh
+      # - ocp.sh
       # kludge: refer to source
-      # todo: move functions into this folder
       - https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/ocp.sh
       # - ../../../../../../scripts/library/ocp.sh
-      # - ocp.sh
