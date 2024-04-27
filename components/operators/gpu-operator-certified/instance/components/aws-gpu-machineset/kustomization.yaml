@@ -4,7 +4,7 @@ kind: Component
 namespace: nvidia-gpu-operator
 
 resources:
-  - ../../../../../../scripts/library
+  # - ../../../../../../scripts/library
   - job.yaml
 
 generatorOptions:
