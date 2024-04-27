@@ -37,7 +37,7 @@ subjects:
     name: job-init-htpasswd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: job-init-htpasswd
 ---
 apiVersion: batch/v1
