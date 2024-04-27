@@ -22,14 +22,14 @@ htpasswd_add_user(){
 
 htpasswd_get_file(){
   oc -n openshift-config \
-    extract secret/oauth-htpasswd \
+    extract secret/htpasswd-local \
     --keys=htpasswd \
     --to=scratch
 }
 
 htpasswd_set_file(){
   oc -n openshift-config \
-    set data secret/oauth-htpasswd \
+    set data secret/htpasswd-local \
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
