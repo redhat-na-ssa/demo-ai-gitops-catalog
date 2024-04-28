@@ -7,3 +7,14 @@ commonLabels:
 resources:
   - autoscaling.yaml
   - job.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: job-setup-machineset
+    files:
+      - job.sh
+      # - ../../../../../../scripts/library/ocp.sh
+      # kludge: refer to source
+      - https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/ocp.sh
