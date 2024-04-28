@@ -26,18 +26,20 @@ htpasswd_add_user(){
 
 htpasswd_ocp_get_file(){
   HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+  HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
 
   oc -n openshift-config \
-    extract secret/"$(basename ${HTPASSWD_FILE})" \
+    extract secret/"${HTPASSWD_NAME}" \
     --keys=htpasswd \
     --to=- > "${HTPASSWD_FILE}"
 }
 
 htpasswd_ocp_set_file(){
   HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+  HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
 
   oc -n openshift-config \
-    set data secret/"$(basename ${HTPASSWD_FILE})" \
+    set data secret/"${HTPASSWD_NAME}" \
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
@@ -46,7 +48,7 @@ htpasswd_encrypt_file(){
 
   age --encrypt --armor \
     -R authorized_keys \
-    -o "$(basename ${HTPASSWD_FILE})".age \
+    -o "$(basename "${HTPASSWD_FILE}")".age \
     "${HTPASSWD_FILE}"
 }
 
@@ -57,7 +59,7 @@ htpasswd_decrypt_file(){
     -i ~/.ssh/id_ed25519 \
     -i ~/.ssh/id_rsa \
     -o "${HTPASSWD_FILE}" \
-    "$(basename ${HTPASSWD_FILE})".age
+    "$(basename "${HTPASSWD_FILE}")".age
 }
 
 ocp_auth_create_group(){
