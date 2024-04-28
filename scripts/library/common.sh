@@ -10,7 +10,7 @@ genpass(){
 create_kubeadmin(){
   PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
-  which htpasswd >/dev/null || return
+  which htpasswd >/dev/null || return 1
 
   HTPASSWD=$(htpasswd -nbB -C10 null "${PASS}")
   HASH=${HTPASSWD##*:}
