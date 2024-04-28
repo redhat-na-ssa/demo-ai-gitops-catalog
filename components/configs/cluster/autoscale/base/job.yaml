@@ -41,20 +41,17 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: job-setup-machineset
-    namespace: openshift-config
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: job-setup-machineset
-  namespace: openshift-config
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   generateName: job-setup-machineset-
   name: job-setup-machineset
-  namespace: openshift-config
   annotations:
     argocd.argoproj.io/hook: Sync
     # argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -62,7 +59,7 @@ spec:
   template:
     spec:
       containers:
-        - name: job-setup-machineset
+        - name: minion
           # image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
           image: registry.redhat.io/openshift4/ose-cli
           env:

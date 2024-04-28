@@ -40,4 +40,4 @@ echo "Start, Backup:"
 chroot /host sudo -E /usr/local/bin/cluster-backup.sh "${BACKUP_INSTANCE}"
 gzip -9 /host/"${BACKUP_INSTANCE}"/*.db
 
-mv -v "${CLUSTER_BACKUP_PATH}"/etcd-backup-* /backups || true
+mv -v /host/"${CLUSTER_BACKUP_PATH}"/etcd-backup-* /backups || true

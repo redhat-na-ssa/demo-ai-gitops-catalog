@@ -4,6 +4,8 @@ kind: Kustomization
 commonLabels:
   autoscale: config
 
+namespace: openshift-machine-api
+
 resources:
   - autoscaling.yaml
   - job.yaml
