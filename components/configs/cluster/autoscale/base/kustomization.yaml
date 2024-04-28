@@ -6,4 +6,4 @@ commonLabels:
 
 resources:
   - autoscaling.yaml
-  - job-setup-machineset.yaml
+  - job.yaml

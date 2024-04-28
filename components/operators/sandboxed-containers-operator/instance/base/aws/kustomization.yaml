@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: openshift-sandboxed-containers-operator
 
 resources:
-  - job-setup-machineset.yaml
+  - job.yaml
