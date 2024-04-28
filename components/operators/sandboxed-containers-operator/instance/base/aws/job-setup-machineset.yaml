@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: aws-metal-machineset-setup
+  name: job-setup-aws-metal-machineset
 rules:
 - apiGroups:
   - machine.openshift.io
@@ -33,26 +33,26 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: aws-metal-machineset-setup
+  name: job-setup-aws-metal-machineset
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: aws-metal-machineset-setup
+  name: job-setup-aws-metal-machineset
 subjects:
   - kind: ServiceAccount
-    name: aws-metal-machineset-setup
+    name: job-setup-aws-metal-machineset
     namespace: openshift-sandboxed-containers-operator
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: aws-metal-machineset-setup
+  name: job-setup-aws-metal-machineset
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: aws-metal-machineset-setup-
-  name: aws-metal-machineset-setup
+  generateName: job-setup-aws-metal-machineset-
+  name: job-setup-aws-metal-machineset
   annotations:
     argocd.argoproj.io/hook: Sync
     # argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -60,8 +60,9 @@ spec:
   template:
     spec:
       containers:
-        - name: aws-metal-machineset-setup
-          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        - name: job-setup-aws-metal-machineset
+          # image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+          image: registry.redhat.io/openshift4/ose-cli
           env:
             - name: NAMESPACE
               valueFrom:
@@ -140,5 +141,5 @@ spec:
 
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
-      serviceAccount: aws-metal-machineset-setup
-      serviceAccountName: aws-metal-machineset-setup
+      serviceAccount: job-setup-aws-metal-machineset
+      serviceAccountName: job-setup-aws-metal-machineset

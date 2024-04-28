@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: machineset-setup
+  name: job-setup-machineset
 rules:
 - apiGroups:
   - machine.openshift.io
@@ -33,27 +33,27 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: machineset-setup
+  name: job-setup-machineset
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: machineset-setup
+  name: job-setup-machineset
 subjects:
   - kind: ServiceAccount
-    name: machineset-setup
+    name: job-setup-machineset
     namespace: openshift-config
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: machineset-setup
+  name: job-setup-machineset
   namespace: openshift-config
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: machineset-setup-
-  name: machineset-setup
+  generateName: job-setup-machineset-
+  name: job-setup-machineset
   namespace: openshift-config
   annotations:
     argocd.argoproj.io/hook: Sync
@@ -62,8 +62,9 @@ spec:
   template:
     spec:
       containers:
-        - name: machineset-setup
-          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        - name: job-setup-machineset
+          # image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+          image: registry.redhat.io/openshift4/ose-cli
           env:
             - name: NAMESPACE
               valueFrom:
@@ -107,5 +108,5 @@ spec:
 
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
-      serviceAccount: machineset-setup
-      serviceAccountName: machineset-setup
+      serviceAccount: job-setup-machineset
+      serviceAccountName: job-setup-machineset
