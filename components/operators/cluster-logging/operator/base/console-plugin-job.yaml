@@ -35,7 +35,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: enable-logging-console-plugin
-  generateName: enable-logging-console-plugin-
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
