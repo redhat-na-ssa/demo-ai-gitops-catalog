@@ -17,7 +17,6 @@ nvidia_install_console_plugin_dump_helm(){
 
   which helm || return 1
   helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
-  helm repo pull > /dev/null 2>&1
   helm repo update > /dev/null 2>&1
 
   # rm -rf "${OUTPUT_PATH}/console-plugin-nvidia-gpu"
