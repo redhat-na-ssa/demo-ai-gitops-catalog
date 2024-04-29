@@ -10,7 +10,7 @@ nvidia_setup_dashboard_monitor(){
 }
 
 nvidia_install_console_plugin_dump_helm(){
-  # kludge: find a better way
+  # alternative: if no helm
   OUTPUT_PATH=components/operators/gpu-operator-certified/instance/components/console-plugin-non-helm
 
   [ -d "${OUTPUT_PATH}" ] || mkdir -p "${OUTPUT_PATH}"
@@ -31,7 +31,7 @@ nvidia_install_console_plugin_dump_helm(){
     s/instance: release-name$/instance: console-plugin-nvidia-gpu/g
     s/name: release-name-/name: /g' "${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/templates/"*
   
-  mv "${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/templates/" "${OUTPUT_PATH}"
+  mv "${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/templates/"* "${OUTPUT_PATH}"
 }
 
 nvidia_install_console_plugin(){
