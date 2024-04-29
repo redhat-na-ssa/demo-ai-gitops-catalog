@@ -54,10 +54,10 @@ spec:
         - name: minion
           image: registry.redhat.io/openshift4/ose-cli
           env:
-            - name: OBJECT
-              value: secret/htpasswd-local
             - name: NS
               value: openshift-config
+            - name: OBJECT
+              value: secret/htpasswd-local
           command:
             - /bin/bash
             - -c

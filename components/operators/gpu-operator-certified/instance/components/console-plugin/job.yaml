@@ -46,7 +46,7 @@ spec:
           image: registry.redhat.io/openshift4/ose-cli
           env:
             - name: PLUGIN_NAME
-              value: 'console-plugin-nvidia-gpu'
+              value: console-plugin-nvidia-gpu
           command:
             - /bin/bash
             - -c

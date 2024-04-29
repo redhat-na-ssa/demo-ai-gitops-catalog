@@ -2,6 +2,7 @@
 # set -x
 
 init-htpasswd(){
+  NS=${NS:-openshift-config}
   OBJECT=${OBJECT:-secret/htpasswd-local}
 
   # check for secret
