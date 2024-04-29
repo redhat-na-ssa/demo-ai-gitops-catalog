@@ -7,3 +7,11 @@ resources:
   - console-plugin-job.yaml
   - console-plugin.yaml
   - subscription.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: job-gpu-console-plugin
+    files:
+      - console-plugin-job.sh
