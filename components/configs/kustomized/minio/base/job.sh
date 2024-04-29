@@ -5,7 +5,7 @@ OBJECT=${OBJECT:-secret/minio-root-user}
 SECRET_NAME=${OBJECT##*/}
 # FORCE=true
 
-if [ -n "$(oc -n ${NS} get ${OBJECT} 2>/dev/null)" ]; then
+if [ -n "$(oc -n "${NS}" get "${OBJECT}" 2>/dev/null)" ]; then
   echo "exists: ${OBJECT}"
   [ -z ${FORCE+x} ] && exit 0
   echo "create: ${OBJECT}"
