@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-namespace: nvidia-gpu-operator
-
 resources:
   - configmap.yaml
   - console-plugin-job.yaml
@@ -15,5 +13,6 @@ generatorOptions:
 
 configMapGenerator:
   - name: job-gpu-console-plugin
+    namespace: nvidia-gpu-operator
     files:
       - console-plugin-job.sh
