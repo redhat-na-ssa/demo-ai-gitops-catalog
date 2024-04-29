@@ -11,7 +11,7 @@ nvidia_setup_dashboard_monitor(){
 
 nvidia_install_console_plugin_dump_helm(){
   # alternative: if no helm
-  OUTPUT_PATH=components/operators/gpu-operator-certified/instance/components/console-plugin-non-helm
+  OUTPUT_PATH=components/operators/gpu-operator-certified/instance/components/console-plugin
 
   [ -d "${OUTPUT_PATH}" ] || mkdir -p "${OUTPUT_PATH}"
 
