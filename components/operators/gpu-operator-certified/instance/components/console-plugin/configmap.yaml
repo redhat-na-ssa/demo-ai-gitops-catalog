@@ -15,6 +15,7 @@ metadata:
     app.kubernetes.io/part-of: console-plugin-nvidia-gpu
 data:
   dcgm-metrics.csv: |
+    # see https://github.com/NVIDIA/dcgm-exporter/blob/main/etc/dcp-metrics-included.csv
     DCGM_FI_PROF_GR_ENGINE_ACTIVE, gauge, gpu utilization.
     DCGM_FI_DEV_MEM_COPY_UTIL, gauge, mem utilization.
     DCGM_FI_DEV_ENC_UTIL, gauge, enc utilization.
