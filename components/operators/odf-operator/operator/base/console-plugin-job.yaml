@@ -42,11 +42,11 @@ spec:
   template:
     spec:
       containers:
-        - name: labeler
+        - name: minion
           image: image-registry.openshift-image-registry.svc:5000/openshift/cli
           env:
             - name: PLUGIN_NAME
-              value: 'odf-console'
+              value: odf-console
           command:
             - /bin/bash
             - -c

@@ -56,7 +56,7 @@ spec:
             - name: NS
               value: openshift-config
             - name: OBJECT
-              value: htpasswd-secret
+              value: secret/htpasswd-secret
           command:
             - /bin/bash
             - -c

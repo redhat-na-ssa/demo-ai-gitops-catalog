@@ -1,24 +1,31 @@
 #!/usr/bin/env bash
 
-echo "Attempting to enable ${PLUGIN_NAME} plugin"
-echo ""
+enable_console_plugin(){
+  CONSOLE_PLUGIN=${1}
+  [ -z "${CONSOLE_PLUGIN}" ] && return 1
 
-# Create the plugins section on the object if it doesn't exist
-if [ -z "$(oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}')" ]; then
-  echo "Creating plugins object"
-  oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": [] } }' --type=merge
-fi
+  echo "Attempting to enable ${PLUGIN_NAME} plugin"
+  echo ""
 
-INSTALLED_PLUGINS=$(oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}')
-echo "Current plugins:"
-echo "${INSTALLED_PLUGINS}"
+  # Create the plugins section on the object if it doesn't exist
+  if [ -z "$(oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}')" ]; then
+    echo "Creating plugins object"
+    oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": [] } }' --type=merge
+  fi
 
-if [[ "${INSTALLED_PLUGINS}" == *"${PLUGIN_NAME}"* ]]; then
-    echo "${PLUGIN_NAME} is already enabled"
-else
-    echo "Enabling plugin: ${PLUGIN_NAME}"
-    oc patch consoles.operator.openshift.io cluster --type=json --patch '[{"op": "add", "path": "/spec/plugins/-", "value": "'"${PLUGIN_NAME}"'"}]'
-fi
+  INSTALLED_PLUGINS=$(oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}')
+  echo "Current plugins:"
+  echo "${INSTALLED_PLUGINS}"
 
-sleep 6
-oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}'
+  if [[ "${INSTALLED_PLUGINS}" == *"${PLUGIN_NAME}"* ]]; then
+      echo "${PLUGIN_NAME} is already enabled"
+  else
+      echo "Enabling plugin: ${PLUGIN_NAME}"
+      oc patch consoles.operator.openshift.io cluster --type=json --patch '[{"op": "add", "path": "/spec/plugins/-", "value": "'"${PLUGIN_NAME}"'"}]'
+  fi
+
+  sleep 6
+  oc get consoles.operator.openshift.io cluster -o=jsonpath='{.spec.plugins}'
+}
+
+enable_console_plugin
