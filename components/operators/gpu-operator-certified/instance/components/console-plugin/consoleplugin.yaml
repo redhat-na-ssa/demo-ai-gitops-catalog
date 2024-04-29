@@ -4,6 +4,7 @@ apiVersion: console.openshift.io/v1alpha1
 kind: ConsolePlugin
 metadata:
   name: console-plugin-nvidia-gpu
+  namespace: nvidia-gpu-operator
   labels:
     helm.sh/chart: console-plugin-nvidia-gpu-0.2.4
     app.kubernetes.io/name: console-plugin-nvidia-gpu
