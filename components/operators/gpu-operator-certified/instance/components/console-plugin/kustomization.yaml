@@ -18,4 +18,4 @@ generatorOptions:
 configMapGenerator:
   - name: job-gpu-console-plugin
     files:
-      - job.sh
+      - console-plugin-job.sh

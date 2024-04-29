@@ -50,7 +50,7 @@ spec:
           command:
             - /bin/bash
             - -c
-            - /scripts/job.sh
+            - /scripts/console-plugin-job.sh
           volumeMounts:
             - name: scripts
               mountPath: /scripts
