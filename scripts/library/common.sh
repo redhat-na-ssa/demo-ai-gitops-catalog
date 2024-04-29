@@ -7,33 +7,7 @@ genpass(){
   < /dev/urandom LC_ALL=C tr -dc _A-Z-a-z-0-9 | head -c "${1:-32}"
 }
 
-create_kubeadmin(){
-  PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
-  which htpasswd >/dev/null || return 1
-
-  HTPASSWD=$(htpasswd -nbB -C10 null "${PASS}")
-  HASH=${HTPASSWD##*:}
-
-  echo "
-  PASSWORD: ${PASS}
-  HASH:     ${HASH}
-
-  oc apply -f scratch/kubeadmin.yaml
-  "
-
-cat << YAML > scratch/kubeadmin.yaml
-kind: Secret
-apiVersion: v1
-metadata:
-  name: kubeadmin
-  namespace: kube-system
-stringData:
-  kubeadmin: ${HASH}
-  password: ${PASS}
-type: Opaque
-YAML
-}
 
 apply_firmly(){
   if [ ! -f "${1}/kustomization.yaml" ]; then
