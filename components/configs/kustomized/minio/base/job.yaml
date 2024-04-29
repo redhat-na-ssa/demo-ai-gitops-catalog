@@ -49,8 +49,10 @@ spec:
         - name: minion
           image: registry.redhat.io/openshift4/ose-cli
           env:
-          - name: SECRET_NAME
-            value: minio-root-user
+            - name: NS
+              value: minio
+            - name: OBJECT
+              value: secret/minio-root-user
           command:
             - /bin/bash
             - -c

@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+NS=${NS:-minio}
+OBJECT=${OBJECT:-secret/minio-root-user}
+SECRET_NAME=${OBJECT##*/}
 # FORCE=true
 
-if [ -n "$(oc get secret minio-root-user -o name 2>/dev/null)" ]; then
-  echo "Secret already exists."
+if [ -n "$(oc -n ${NS} get ${OBJECT} 2>/dev/null)" ]; then
+  echo "exists: ${OBJECT}"
   [ -z ${FORCE+x} ] && exit 0
-  echo "Forcing creation."
+  echo "create: ${OBJECT}"
 fi
 
 genpass(){

@@ -2,4 +2,4 @@ $patch: delete
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: minio-manage
+  name: job-create-minio-root
