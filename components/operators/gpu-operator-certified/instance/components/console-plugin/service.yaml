@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/version: "latest"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: console-plugin-nvidia-gpu
+    app.kubernetes.io/instance: console-plugin-nvidia-gpu
     app.kubernetes.io/part-of: console-plugin-nvidia-gpu
   annotations:
     service.alpha.openshift.io/serving-cert-secret-name: plugin-serving-cert
