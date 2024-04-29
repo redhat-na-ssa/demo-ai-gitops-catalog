@@ -2,7 +2,7 @@
 
 # shellcheck disable=SC2120
 genpass(){
-  < /dev/urandom LC_ALL=C tr -dc _A-Z-a-z-0-9 | head -c "${1:-32}"
+  < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
 }
 
 which htpasswd || return 1

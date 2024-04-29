@@ -16,7 +16,20 @@ ocp_check_info(){
   sleep "${SLEEP_SECONDS:-8}"
 }
 
-ocp_create_kubeadmin(){
+ocp_kubeadmin_remove(){
+  FORCE=${1:-No}
+
+  if [ "${FORCE}" = "YES" ]; then
+    [ ! -e scratch/kubeadmin.yaml ] && \
+      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
+    oc delete secret kubeadmin -n kube-system
+  else
+    echo "WARNING: you must run ocp_remove_kubeadmin YES"
+    return 1
+  fi
+}
+
+ocp_kubeadmin_create(){
   PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
   which htpasswd >/dev/null || return 1
@@ -276,19 +289,6 @@ ocp_expose_image_registry(){
   oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'"${SHORTER_HOST}"'"}}'
 
   echo "OCP image registry is available at: ${SHORTER_HOST}"
-}
-
-ocp_remove_kubeadmin(){
-  FORCE=${1:-No}
-
-  if [ "${FORCE}" = "YES" ]; then
-    [ ! -e scratch/kubeadmin.yaml ] && \
-      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
-    oc delete secret kubeadmin -n kube-system
-  else
-    echo "WARNING: you must run ocp_remove_kubeadmin YES"
-    return 1
-  fi
 }
 
 ocp_release_info(){
