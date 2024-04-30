@@ -14,6 +14,6 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: enable-logging-console-plugin
+  - name: job-odf-console-plugin
     files:
       - console-plugin-job.sh
