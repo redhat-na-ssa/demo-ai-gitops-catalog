@@ -32,7 +32,7 @@ Considerations
 Architecture
 
 - Assume minimum privilege for the user / demo
-  - Ex: may only have access to namespace vs `cluster-admin`
+  - Ex: user may only have access to namespace vs `cluster-admin`
   - Use appropriate role bindings (avoid admin)
 - Use the minimum number of cli tools and dependencies
 - Scripting - avoid complex functions (`bash`, `python`, `Makefile`)
