@@ -8,8 +8,5 @@ resources:
 patches:
   - path: patch-channel.yaml
     target:
-      group: operators.coreos.com
       kind: Subscription
       name: local-storage-operator
-      namespace: openshift-local-storage
-      version: v1alpha1

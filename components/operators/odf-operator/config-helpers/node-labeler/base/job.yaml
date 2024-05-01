@@ -1,0 +1,76 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: job-odf-node-label
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: job-odf-node-label
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - pods
+    verbs:
+      - get
+      - list
+      - patch
+      - label
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: job-odf-node-label
+  namespace: openshift-storage
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-5"
+subjects:
+  - kind: ServiceAccount
+    name: job-odf-node-label
+    namespace: openshift-storage
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: job-odf-node-label
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-odf-node-label
+spec:
+  template:
+    spec:
+      containers:
+        - name: minion
+          image: registry.redhat.io/openshift4/ose-cli
+          env:
+            - name: SELECTOR
+              value: 'node-role.kubernetes.io/worker'
+          command:
+            - /bin/bash
+            - -c
+            - |
+              node_count=$(oc get nodes --selector=${SELECTOR} --output name | wc -l)
+              if [ ${node_count} -lt 3 ]; then
+                echo "Not enough selected nodes present in cluster"
+                oc get nodes --selector=${SELECTOR}
+                exit 1
+              else
+                echo "Selecting nodes via label: ${SELECTOR}"
+                oc get nodes --selector=${SELECTOR}
+                
+                oc label nodes \
+                  --selector=${SELECTOR} cluster.ocs.openshift.io/openshift-storage="" \
+                  --overwrite=true              
+              fi
+      restartPolicy: Never
+      serviceAccount: job-odf-node-label
+      serviceAccountName: job-odf-node-label
+  backoffLimit: 4
