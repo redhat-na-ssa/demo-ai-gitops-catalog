@@ -39,8 +39,7 @@ spec:
         - name: plugin-serving-cert
           readOnly: true
           mountPath: /var/serving-cert
-        resources:
-            {}
+        resources: {}
       volumes:
       - name: plugin-serving-cert
         secret:
