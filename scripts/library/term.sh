@@ -57,6 +57,7 @@ term_bin_setup(){
   bin_check oc-mirror
   bin_check krew
   bin_check kubectl-operator
+  bin_check crane
 
   bin_check rclone
   bin_check restic
