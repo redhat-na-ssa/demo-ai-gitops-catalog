@@ -65,10 +65,10 @@ spec:
               else
                 echo "Selecting nodes via label: ${SELECTOR}"
                 oc get nodes --selector=${SELECTOR}
-                
+
                 oc label nodes \
                   --selector=${SELECTOR} cluster.ocs.openshift.io/openshift-storage="" \
-                  --overwrite=true              
+                  --overwrite=true
               fi
       restartPolicy: Never
       serviceAccount: job-odf-node-label
