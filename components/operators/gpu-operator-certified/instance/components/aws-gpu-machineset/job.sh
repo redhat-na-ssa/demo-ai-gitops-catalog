@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC1091
+# shellcheck disable=SC1091,SC2120
+
+# . /scripts/ocp.sh
 
 ocp_aws_cluster(){
   TARGET_NS=kube-system

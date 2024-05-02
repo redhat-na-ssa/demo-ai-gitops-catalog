@@ -12,3 +12,4 @@ configMapGenerator:
     namespace: nvidia-gpu-operator
     files:
       - job.sh
+      # - https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/ocp.sh
