@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-v2
+  labels:
+    app: registry-v2
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry-v2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: registry-v2
+    spec:
+      containers:
+      - name: registry-v2
+        image: docker.io/library/registry:2
+        # args:
+        # - registry-v2 server /data --console-address :9090
+        # command:
+        # - /bin/bash
+        # - -c
+        # envFrom:
+        # - secretRef:
+        #     name: registry-v2-root-user
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: 5000-tcp
+        resources:
+          requests:
+            cpu: 200m
+            memory: 128Mi
+          limits:
+            cpu: '2'
+            memory: 2Gi
+        volumeMounts:
+        - mountPath: /var/lib/registry
+          name: registry-v2
+      volumes:
+      - persistentVolumeClaim:
+          claimName: registry-v2
+        name: registry-v2
+      - name: empty
+        emptyDir: {}
