@@ -11,7 +11,7 @@ nvidia_setup_dashboard_monitor(){
 
 nvidia_install_console_plugin_dump_helm(){
   # alternative: if no helm
-  OUTPUT_PATH=components/operators/gpu-operator-certified/instance/components/console-plugin
+  OUTPUT_PATH=components/operators/gpu-operator-certified/operator/components/console-plugin
   DUMP_PATH="${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/console-plugin-nvidia-gpu/templates"
 
   [ -d "${OUTPUT_PATH}" ] || mkdir -p "${OUTPUT_PATH}"
