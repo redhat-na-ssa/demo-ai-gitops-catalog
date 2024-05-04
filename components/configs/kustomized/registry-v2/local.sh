@@ -69,6 +69,7 @@ systemctl restart mirror-registry.service
 firewall-cmd --permanent --add-port=5000/tcp
 firewall-cmd --reload
 
+sleep 6
 curl -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" https://${REGISTRY_HOSTNAME}:5000/v2/_catalog
 
 cat << FILE > registry-secret.json
