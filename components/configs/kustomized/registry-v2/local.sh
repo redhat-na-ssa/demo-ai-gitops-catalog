@@ -40,7 +40,7 @@ podman run -d \
   --name mirror-registry \
   -p 5000:5000 \
   -v ./registry/data:/var/lib/registry:z \
-  -v ./registry/config:/auth:z \
+  -v ./registry/config:/config:z \
   -e REGISTRY_AUTH=htpasswd \
   -e REGISTRY_AUTH_HTPASSWD_PATH=/config/htpasswd \
   -e REGISTRY_AUTH_HTPASSWD_REALM=Registry \
