@@ -11,7 +11,7 @@ genpass(){
 
 REGISTRY_HOSTNAME=localhost
 REGISTRY_USERNAME=registry
-REGISTRY_PASSWORD=$(genpass 16)
+REGISTRY_PASSWORD=${REGISTRY_PASSWORD:-(genpass 16)}
 
 mkdir -p registry/{config,data}
 
@@ -76,6 +76,12 @@ cat << FILE > registry-secret.json
    "auth": "$(echo -n "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" | base64 -w0)"
 }
 FILE
+
+echo "
+  REGISTRY_HOSTNAME: ${REGISTRY_HOSTNAME}
+  REGISTRY_USERNAME: ${REGISTRY_USERNAME}
+  REGISTRY_PASSWORD: ${REGISTRY_PASSWORD}
+"
 
 cat registry/config/${REGISTRY_HOSTNAME}.crt
 }
