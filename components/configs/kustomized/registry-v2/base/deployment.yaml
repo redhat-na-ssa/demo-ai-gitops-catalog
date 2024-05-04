@@ -22,14 +22,9 @@ spec:
       containers:
       - name: registry-v2
         image: docker.io/library/registry:2
-        # args:
-        # - registry-v2 server /data --console-address :9090
-        # command:
-        # - /bin/bash
-        # - -c
-        # envFrom:
-        # - secretRef:
-        #     name: registry-v2-root-user
+        envFrom:
+        - configMapRef:
+            name: registry-v2
         ports:
         - containerPort: 5000
           protocol: TCP
@@ -42,11 +37,17 @@ spec:
             cpu: '2'
             memory: 2Gi
         volumeMounts:
-        - mountPath: /var/lib/registry
-          name: registry-v2
+        - name: registry-v2-config
+          mountPath: /config
+        - name: registry-v2
+          mountPath: /var/lib/registry
       volumes:
-      - persistentVolumeClaim:
+      - name: registry-v2-config
+        secret:
+          secretName: registry-v2
+          # defaultMode: 0755
+      - name: registry-v2
+        persistentVolumeClaim:
           claimName: registry-v2
-        name: registry-v2
       - name: empty
         emptyDir: {}
