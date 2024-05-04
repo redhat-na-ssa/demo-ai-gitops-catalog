@@ -3,5 +3,5 @@ kind: OperatorGroup
 metadata:
   name: cluster-logging
 spec:
-  targetNamespaces:
-    - openshift-logging
+  # targetNamespaces:
+  #   - openshift-logging
