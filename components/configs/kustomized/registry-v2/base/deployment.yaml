@@ -8,7 +8,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: registry-v2
@@ -32,10 +32,10 @@ spec:
         resources:
           requests:
             cpu: 200m
-            memory: 128Mi
+            memory: 32Mi
           limits:
-            cpu: '2'
-            memory: 2Gi
+            cpu: '1'
+            memory: 1Gi
         volumeMounts:
         - name: registry-v2-config
           mountPath: /config
