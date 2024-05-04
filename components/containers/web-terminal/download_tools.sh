@@ -32,6 +32,7 @@ bin_check rclone
 bin_check restic
 bin_check sops
 bin_check age
+bin_check crane
 
 rm "${BIN_PATH}"/LICENSE
 tar -czf tools-x86_64.tgz -C scratch . --owner=0 --group=0

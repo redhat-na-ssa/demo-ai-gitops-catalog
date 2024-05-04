@@ -1,8 +1,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: openshift-logging
+
 resources:
   - console-plugin-job.yaml
   - namespace.yaml
   - operator-group.yaml
   - subscription.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: job-logging-console-plugin
+    files:
+      - console-plugin-job.sh

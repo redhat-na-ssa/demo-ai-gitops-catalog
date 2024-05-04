@@ -8,12 +8,19 @@ commonLabels:
   # app.kubernetes.io/name: minio
   # app.kubernetes.io/part-of: minio
 
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: job-create-minio-root
+    files:
+      - job.sh
+
 resources:
 - data-connector-rb.yaml
 - deployment.yaml
+- job.yaml
 # - link-minio.yaml
 - pvc.yaml
 - route.yaml
-# - secret.yaml
 - service.yaml
-- setup-root-user-job.yaml

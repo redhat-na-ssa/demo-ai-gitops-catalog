@@ -1,11 +1,10 @@
 # NVIDIA GPU Operator Components
 
-The included components are intended to be common patching patterns used on top of the default OpenShift Gitops instance to configure additional features of ArgoCD.  Components are composable patches that can be added at the overlays layer on top of a base.
+The included components are intended to be common patching patterns used on top of the default NVIDIA GPU operator instance to configure additional features.  Components are composable patches that can be added at the overlays layer on top of a base.
 
 This repo currently contains the following components:
 
 * [aws-gpu-machineset](aws-gpu-machineset)
-* [console-plugin](console-plugin)
 * [mig-mixed](mig-mixed)
 * [mig-single](mig-single)
 * [monitoring-dashboard](monitoring-dashboard)

@@ -7,5 +7,5 @@ spec:
   deviceInclusionSpec:
     deviceTypes:
       - disk
-  storageClassName: localblock-sc
+  storageClassName: localblock
   volumeMode: Block

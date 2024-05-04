@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2035
 
 OPENSHIFT_CLIENTS_URL=https://mirror.openshift.com/pub/openshift-v4/x86_64/clients
 
@@ -27,7 +28,7 @@ bin_check(){
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version --client 2>&1
       ;;
-    helm|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|s2i|subctl)
+    helm|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|s2i|subctl|crane)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version 2>&1 || ${name} --version
       [ -e .oc-mirror.log ] && rm .oc-mirror.log
@@ -189,6 +190,12 @@ download_kubectl-operator(){
   DOWNLOAD_URL=https://github.com/operator-framework/kubectl-operator/releases/download/v${BIN_VERSION}/kubectl-operator_v${BIN_VERSION}_linux_amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
   chmod +x "${BIN_PATH}/kubectl-operator"
+}
+
+download_crane(){
+  BIN_VERSION=0.19.1
+  DOWNLOAD_URL=https://github.com/google/go-containerregistry/releases/download/v${BIN_VERSION}/go-containerregistry_Linux_x86_64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" *crane
 }
 
 download_busybox(){
