@@ -77,11 +77,15 @@ cat << FILE > registry-secret.json
 }
 FILE
 
-echo "
-  REGISTRY_HOSTNAME: ${REGISTRY_HOSTNAME}
-  REGISTRY_USERNAME: ${REGISTRY_USERNAME}
-  REGISTRY_PASSWORD: ${REGISTRY_PASSWORD}
-"
+if [ ! -e registry_info.txt ]; then
+  echo "
+    REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME}
+    REGISTRY_USERNAME=${REGISTRY_USERNAME}
+    REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
+  " > registry_info.txt
+else
+  cat registry_info.txt
+fi
 
 cat registry/config/${REGISTRY_HOSTNAME}.crt
 }
