@@ -72,23 +72,24 @@ firewall-cmd --reload
 sleep 6
 curl -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" https://${REGISTRY_HOSTNAME}:5000/v2/_catalog
 
-cat << FILE > registry-secret.json
+cat << FILE > registry/registry-secret.json
 "${REGISTRY_HOSTNAME}:5000": {
    "auth": "$(echo -n "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" | base64 -w0)"
 }
 FILE
 
-if [ ! -e registry_info.txt ]; then
+if [ ! -e registry-info.txt ]; then
   echo "
     REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME}
     REGISTRY_USERNAME=${REGISTRY_USERNAME}
     REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
-  " > registry_info.txt
+  " > registry/registry-info.txt
 else
   return
 fi
 cat registry/config/${REGISTRY_HOSTNAME}.crt
-cat registry_info.txt
+cat registry/registry-info.txt
+cat registry/registry-secret.json
 }
 
 mirror_registry_local
