@@ -11,7 +11,7 @@ genpass(){
 
 REGISTRY_HOSTNAME=localhost
 REGISTRY_USERNAME=registry
-REGISTRY_PASSWORD=${REGISTRY_PASSWORD:-(genpass 16)}
+REGISTRY_PASSWORD=${REGISTRY_PASSWORD:-$(genpass 16)}
 
 mkdir -p registry/{config,data}
 
