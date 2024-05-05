@@ -17,7 +17,7 @@ mkdir -p registry/{config,data}
 
 if [ ! -e registry/config/${REGISTRY_HOSTNAME}.key ]; then
   openssl req \
-    -x509 -days 90 \
+    -x509 -days 3650 \
     -newkey rsa:4096 \
     -nodes -sha256 \
     -keyout registry/config/${REGISTRY_HOSTNAME}.key \
