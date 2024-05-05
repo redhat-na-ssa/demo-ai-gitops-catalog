@@ -3,3 +3,6 @@ kind: OperatorGroup
 metadata:
   name: multicluster-engine
   namespace: multicluster-engine
+spec:
+  targetNamespaces:
+    - multicluster-engine
