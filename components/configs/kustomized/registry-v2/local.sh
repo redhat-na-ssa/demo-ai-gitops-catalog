@@ -85,10 +85,10 @@ if [ ! -e registry_info.txt ]; then
     REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
   " > registry_info.txt
 else
-  cat registry_info.txt
+  return
 fi
-
 cat registry/config/${REGISTRY_HOSTNAME}.crt
+cat registry_info.txt
 }
 
 mirror_registry_local
