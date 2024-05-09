@@ -60,6 +60,7 @@ MachineConfig
 MachineSet
 MultiClusterHub
 NFD
+NFS
 NMState
 Noobaa
 NuGet
@@ -78,6 +79,7 @@ PV
 PolicyReport
 PriorityClasses
 Prometheus
+Provisioner
 QuickStart
 RBAC
 README
@@ -259,6 +261,7 @@ namespaced
 namespaces
 newman
 nfd
+nfs
 nodeFeatureDiscovery
 noobaa
 nvidia
@@ -287,6 +290,7 @@ pre
 prem
 priorityclass
 prometheus
+provisioner
 pushd
 pvc
 pwd
@@ -321,6 +325,7 @@ serverless
 serviceaccount
 servicemesh
 sfdc
+sigs
 ss
 ssa
 sshd
@@ -329,6 +334,7 @@ storageclass
 storagecluster
 strimzi
 stringData
+subdir
 sublicense
 tekton
 templating
