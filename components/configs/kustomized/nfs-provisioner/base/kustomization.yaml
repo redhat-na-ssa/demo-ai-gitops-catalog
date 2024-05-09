@@ -33,3 +33,10 @@ patches:
             path: /k8s-data
   target:
     kind: Deployment
+- patch: |-
+    - op: replace
+      path: /provisioner
+      value: k8s-sigs.io/nfs-subdir-external-provisioner
+  target:
+    kind: StorageClass
+    name: nfs-client
