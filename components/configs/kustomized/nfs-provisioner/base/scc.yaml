@@ -1,45 +1,13 @@
 ---
-apiVersion: security.openshift.io/v1
-kind: SecurityContextConstraints
-allowHostDirVolumePlugin: true
-allowHostIPC: false
-allowHostNetwork: false
-allowHostPID: false
-allowHostPorts: false
-allowPrivilegeEscalation: true
-allowPrivilegedContainer: false
-allowedCapabilities: null
-defaultAddCapabilities: null
-fsGroup:
-  type: RunAsAny
-groups: []
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  annotations:
-    kubernetes.io/description: |-
-      hostmount-anyuid provides all the features of the
-      restricted SCC but allows host mounts and any UID by a pod.  This is primarily
-      used by the persistent volume recycler. WARNING: this SCC allows host file
-      system access as any UID, including UID 0.  Grant with caution.
-  name: generic-device-plugin
-readOnlyRootFilesystem: true
-requiredDropCapabilities:
-# - KILL
-- MKNOD
-# - SETUID
-# - SETGID
-runAsUser:
-  type: RunAsAny
-seLinuxContext:
-  type: MustRunAs
-supplementalGroups:
-  type: RunAsAny
-# users:
-# - system:serviceaccount:openshift-infra:pv-recycler-controller
-volumes:
-- configMap
-- downwardAPI
-- emptyDir
-- ephemeral
-- hostPath
-- projected
-- secret
+  name: nfs-client-provisioner-hostmount-anyuid
+subjects:
+  - kind: ServiceAccount
+    name: nfs-client-provisioner
+    namespace: nfs-provisioner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: 'system:openshift:scc:hostmount-anyuid'
