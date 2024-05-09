@@ -18,6 +18,7 @@ nfs_static_create_pv(){
   sed '
     s@nfs-static-00@'"${PV_NAME}"'@
     s@k8s-data@'"${NFS_PATH}"'@
+    s@pi.hou@'"${NFS_SERVER}"'@
   ' base/pv.yaml > "${TARGET_DIR}/${PV_NAME}.yaml"
 }
 
