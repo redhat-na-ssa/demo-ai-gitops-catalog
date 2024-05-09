@@ -2,7 +2,7 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: test-nfs-pod
+  name: test-nfs-static-pod
 spec:
   containers:
   - name: test
@@ -19,4 +19,4 @@ spec:
   volumes:
     - name: nfs-pvc
       persistentVolumeClaim:
-        claimName: test-nfs
+        claimName: test-nfs-static
