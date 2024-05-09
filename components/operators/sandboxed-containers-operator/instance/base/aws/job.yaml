@@ -72,7 +72,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              #!/usr/bin/env bash
+              #!/bin/bash
 
               ocp_aws_cluster(){
                 oc -n kube-system get secret/aws-creds -o name > /dev/null 2>&1 || return 1

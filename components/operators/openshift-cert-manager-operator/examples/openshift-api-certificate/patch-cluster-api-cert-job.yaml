@@ -56,7 +56,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              #!/usr/bin/env bash
+              #!/bin/bash
               # lets try to dynamically get this value ??
               # API_HOST_NAME=$(oc get secret openshift-api-certificate -n openshift-config -o jsonpath='{.metadata.annotations.cert-manager\.io/common-name}')
               if oc get secret openshift-api-certificate -n openshift-config; then

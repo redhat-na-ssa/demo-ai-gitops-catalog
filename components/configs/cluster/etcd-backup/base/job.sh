@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 # OC_VERSION=$(oc version | sed -n 's/Server Version: //p')

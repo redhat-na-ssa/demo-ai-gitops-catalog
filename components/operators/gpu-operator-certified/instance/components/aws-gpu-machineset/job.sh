@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # shellcheck disable=SC1091
 . /scripts/ocp.sh

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 NS=${NS:-minio}
 OBJECT=${OBJECT:-secret/minio-root-user}
