@@ -1,0 +1,56 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ldap-sync-group
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  # schedule: "* * * * *"
+  schedule: "15,45 6-20 * * *"  # Every 30 mins between 6 AM - 8 PM
+  successfulJobsHistoryLimit: 3  # Remove after successful completion
+  failedJobsHistoryLimit: 3  # Retain failed so that we see it
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: minion
+              image: registry.redhat.io/openshift4/ose-cli
+              env:
+                - name: BIND_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: ldap-bind-password
+                      key: BIND_PASSWORD
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  #!/bin/bash
+
+                  # https://examples.openshift.pub/cluster-configuration/authentication/activedirectory-ldap
+                  # yum install openldap-clients.x86_64
+                  # ldapsearch -x -H ldap://domaincontroler \
+                  #   -D service-account \
+                  #   -b "DC=demo,DC=openshift.,DC=pub" \
+                  #   -W '(sAMAccountName=rbohne)'
+
+                  oc adm groups sync \
+                    --whitelist=/config/whitelist.txt
+                    --sync-config=/config/ldap-sync.yaml
+                    --confirm
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                  readOnly: true
+          volumes:
+            - name: config
+              secret:
+                name: ldap-sync-group
+                defaultMode: 420
+          restartPolicy: Never
+          serviceAccount: ldap-group-sync
+          serviceAccountName: ldap-group-sync
+      backoffLimit: 3
