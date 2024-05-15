@@ -1,6 +1,7 @@
 # TODO Items
 
 - [ ] add: openldap w/ idp and ldapsync example
+  - https://www.linkedin.com/pulse/deploying-openldap-openshift-users-bootstrapped-ritesh-raj
 - [ ] add: image streams for custom jupyter notebooks
   - https://github.com/opendatahub-io-contrib/workbench-images
   - Without image streams this is cumbersome
