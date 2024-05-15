@@ -1,5 +1,6 @@
 # TODO Items
 
+- [ ] add: create example jupyter containers with ubi base
 - [ ] add: openldap w/ idp and ldapsync example
   - https://www.linkedin.com/pulse/deploying-openldap-openshift-users-bootstrapped-ritesh-raj
 - [ ] add: image streams for custom jupyter notebooks
