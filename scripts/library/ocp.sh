@@ -352,7 +352,13 @@ ocp_gpu_label_nodes_from_nfd(){
   oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
 }
 
-ocp_mirror_get_pull_secret(){
+ocp_get_pull_secret(){
+  oc -n openshift-config \
+    get secret/pull-secret \
+    --template='{{index .data ".dockerconfigjson" | base64decode}}'
+}
+
+ocp_mirror_set_pull_secret(){
   export DOCKER_CONFIG="${GIT_ROOT}/scratch"
 
   [ -e "${DOCKER_CONFIG}/config.json" ] && return
@@ -385,7 +391,7 @@ ocp_mirror_dry_run(){
 
   [ -d "${REMOVABLE_MEDIA_PATH}" ] || mkdir -p "${REMOVABLE_MEDIA_PATH}"
 
-  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_get_pull_secret
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_set_pull_secret
 
   echo oc adm release mirror \
     -a "${LOCAL_SECRET_JSON}"  \
@@ -409,7 +415,7 @@ ocp_mirror_operator_catalog_list(){
 
   which oc-mirror >/dev/null 1>&2 || return
 
-  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_get_pull_secret
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_set_pull_secret
 
   echo "Please be patient. This process is slow..." 1>&2
   echo "oc mirror list operators --catalog ${INDEX}" 1>&2
