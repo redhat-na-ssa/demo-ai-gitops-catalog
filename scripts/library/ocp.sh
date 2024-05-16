@@ -57,6 +57,10 @@ type: Opaque
 YAML
 }
 
+ocp_get_apps_domain(){
+  oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
+}
+
 ocp_aws_cluster(){
   TARGET_NS=kube-system
   OBJ=secret/aws-creds
