@@ -12,7 +12,7 @@ State your goal
 - [ ] Step 1
   - [ ] Step 1.a
 
-## Imperative Commands
+## Details
 
 ```sh
 # run shell commands
