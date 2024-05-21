@@ -5,4 +5,7 @@ kind: Kustomization
 namespace: adhoc-ops
 
 resources:
-  - namespace.yaml
+  - adhoc-pod.yaml
+  - admin-rolebinding.yaml
+  - terminal-role.yaml
+  - terminal-rolebinding.yaml
