@@ -5,4 +5,4 @@ resources:
   - ../../components/argocd/projects/overlays/default
   - ../../components/operators/openshift-gitops-operator/instance/overlays/default
   - ../../components/operators/openshift-gitops-operator/operator/overlays/latest
-  - ../../cluster/argo-managed/overlays/default
+  - ../../clusters/argo-managed/overlays/default

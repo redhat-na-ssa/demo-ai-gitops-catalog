@@ -13,7 +13,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/source/path
-        value: cluster/argo-managed/overlays/default
+        value: clusters/argo-managed/overlays/default
   - target:
       kind: Secret
       name: repo-https
