@@ -2,9 +2,10 @@
 
 State your goal
 
-## Document Links
+## Links
 
-- [Link]()
+- [Docs - Link]()
+- [Blog - Link]()
 
 ## Imperative Commands
 
