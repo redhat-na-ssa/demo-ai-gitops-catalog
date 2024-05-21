@@ -62,7 +62,6 @@ spec:
                 configMapKeyRef:
                   name: mlflow-server
                   key: BUCKET_NAME
-            
             - name: BUCKET_HOST
               valueFrom:
                 configMapKeyRef:
@@ -75,12 +74,8 @@ spec:
                   key: BUCKET_PORT
             - name: MLFLOW_S3_ENDPOINT_URL
               value: 'https://$(BUCKET_HOST):$(BUCKET_PORT)'
-            
-            
             - name: AWS_CA_BUNDLE
               value: .Values.objectStorage.caBundle
-            
-            
             - name: PGBOUNCE_HOST
               valueFrom:
                 secretKeyRef:
@@ -110,11 +105,10 @@ spec:
                   key: user
             - name: MLFLOW_PORT
               value: '8080'
-          resources:
-            {}
+          resources: {}
         - name: oauth-proxy
           image: "registry.redhat.io/openshift4/ose-oauth-proxy:v4.12"
-          imagePullPolicy: 
+          imagePullPolicy:
           ports:
             - containerPort: 8443
               name: oauth-proxy
