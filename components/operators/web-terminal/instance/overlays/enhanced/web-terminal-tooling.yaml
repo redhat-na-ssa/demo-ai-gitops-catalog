@@ -13,7 +13,7 @@ spec:
     - container:
         env:
           - name: YOLO_URL
-            value: https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
+            value: https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
         args:
           - "/bin/bash"
           - "-c"
@@ -28,8 +28,8 @@ spec:
 
         cpuLimit: 400m
         cpuRequest: 100m
-        image: ghcr.io/codekow/web-terminal-tooling:latest
-        # image: ghcr.io/codekow/web-terminal-tooling@sha256:a29868596b1ab7b56d28e142891a29d6ff9db72ee3d0249dac7c26d6602eadf8
+        image: ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+        # image: ghcr.io/redhat-na-ssa/web-terminal-tooling@sha256:a29868596b1ab7b56d28e142891a29d6ff9db72ee3d0249dac7c26d6602eadf8
         memoryLimit: 512Mi
         memoryRequest: 128Mi
         mountSources: false

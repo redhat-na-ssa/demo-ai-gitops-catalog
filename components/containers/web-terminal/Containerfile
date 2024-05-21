@@ -59,7 +59,7 @@ RUN \
     chmod g+w /wto/bin && \
     get-tooling-versions.sh > /tmp/installed_tools.txt
 
-ARG YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
+ARG YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
 RUN bash -c 'cd /home/user; . <(curl -sL '"${YOLO_URL}"') && term_bashrc /etc/skel/.bashrc'
 
 USER 1001
