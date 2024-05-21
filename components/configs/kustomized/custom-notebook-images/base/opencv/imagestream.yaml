@@ -10,7 +10,7 @@ metadata:
     opendatahub.io/notebook-image-name: 'OpenCV'
     opendatahub.io/notebook-image-order: '10'
     opendatahub.io/notebook-image-url: >-
-      https://github.com/codekow/demo-ai-gitops-catalog
+      https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
   name: opencv-notebook
   labels:
     # note: the following label allows the notebook to show up in the dashboard

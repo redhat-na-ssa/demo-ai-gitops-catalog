@@ -1,7 +1,7 @@
 # OpenShift AI / ML GitOps Catalog
 
-[![Spelling](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml)
-[![Linting](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/linting.yaml/badge.svg)](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/linting.yaml)
+[![Spelling](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml)
+[![Linting](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/linting.yaml/badge.svg)](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/linting.yaml)
 
 This project is a catalog of configurations used to provision infrastructure, on
 OpenShift, that supports machine learning (ML) and artificial intelligence (AI) workloads.

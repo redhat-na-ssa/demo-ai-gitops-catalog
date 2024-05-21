@@ -13,7 +13,7 @@ spec:
   project: cluster-config
   source:
     path: components/operators/openshift-gitops-operator/instance/overlays/default
-    repoURL: https://github.com/codekow/demo-ai-gitops-catalog.git
+    repoURL: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git
     targetRevision: main
   syncPolicy:
     automated:

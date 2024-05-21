@@ -3,7 +3,7 @@ stringData:
   name: repo-https
   project: cluster-config
   type: git
-  url: https://github.com/codekow/demo-ai-gitops-catalog.git
+  url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git
 kind: Secret
 metadata:
   annotations:

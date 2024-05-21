@@ -3,7 +3,7 @@ kind: ConsoleLink
 metadata:
   name: github-catalog
 spec:
-  href: 'https://github.com/codekow/demo-ai-gitops-catalog'
+  href: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog'
   location: ApplicationMenu
   text: GitHub - GitOps Catalog
   applicationMenu:

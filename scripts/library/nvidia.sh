@@ -39,7 +39,7 @@ nvidia_install_console_plugin_dump_helm(){
 }
 
 nvidia_install_console_plugin(){
-  GIT_URL=https://github.com/codekow/demo-ai-gitops-catalog.git
+  GIT_URL=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
 
   if which helm; then
     helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
