@@ -4,7 +4,7 @@ State your goal
 
 ## Imperative Commands
 
-### Issue
+### Issues
 
 [Reference](ISSUES.md) - [Jira](linktojira)
 
