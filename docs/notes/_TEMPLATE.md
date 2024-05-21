@@ -1,4 +1,4 @@
-# Walkthrough - Template
+# Notes - Template
 
 State your goal
 
