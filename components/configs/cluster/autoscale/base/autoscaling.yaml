@@ -9,10 +9,13 @@ spec:
     maxNodesTotal: 7
     cores:
       min: 0
-      max: 64
+      # 16 cores * 7 nodes = 112
+      max: 112
     memory:
       min: 0
-      max: 256
+      # 32 GB * 3 = 96
+      # 64 GB * 4 = 256
+      max: 352
     gpus:
       - type: nvidia.com/gpu
         min: 0

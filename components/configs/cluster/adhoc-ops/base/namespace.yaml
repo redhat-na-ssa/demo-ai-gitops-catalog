@@ -4,6 +4,6 @@ metadata:
   name: adhoc-ops
   annotations:
     openshift.io/description: |
-      Make it difficult to avoid bad behavior,
-      but make it possible
+      Something is better than nothing!
+      Make gitOps, not ClickOps
     openshift.io/display-name: Adhoc Automation

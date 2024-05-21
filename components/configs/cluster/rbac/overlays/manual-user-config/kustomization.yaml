@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - ../../base
 
-patches:
-  - path: exclude-cluster-admin-group.yaml
-  - path: exclude-cluster-reader-group.yaml
+# patches:
+#   - path: exclude-cluster-admin-group.yaml
+#   - path: exclude-cluster-reader-group.yaml
