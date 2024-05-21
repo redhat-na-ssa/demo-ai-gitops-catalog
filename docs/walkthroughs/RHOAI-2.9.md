@@ -2,6 +2,10 @@
 
 State your goal
 
+## Document Links
+
+- [Link]()
+
 ## Imperative Commands
 
 ### Issues
