@@ -50,7 +50,6 @@ metadata:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: job-setup-machineset-
   name: job-setup-machineset
   annotations:
     argocd.argoproj.io/hook: Sync
