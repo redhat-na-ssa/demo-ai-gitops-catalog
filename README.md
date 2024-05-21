@@ -152,7 +152,8 @@ scripts/lint.sh
 
 ## Additional Info
 
-- [Misc Docs](docs) - not everything fits in your head
+- [Local Docs](docs)
+- [Notes Dump](docs/notes/)
 
 ## External Links
 
