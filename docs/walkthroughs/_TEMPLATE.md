@@ -12,7 +12,7 @@ State your goal
 - [ ] Step 1
   - [ ] Step 1.a
 
-## Details
+## Details / Notes
 
 ```sh
 # run shell commands
