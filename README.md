@@ -83,7 +83,7 @@ Basic cluster config
 apply_firmly bootstrap/web-terminal
 
 # setup a default cluster w/o argocd managing it
-apply_firmly cluster/default
+apply_firmly clusters/default
 ```
 
 Setup a demo
@@ -140,7 +140,7 @@ If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a 
 
 This is currently under development
 
-```
+```sh
 # load functions
 . scripts/wip/workshop_functions.sh
 
