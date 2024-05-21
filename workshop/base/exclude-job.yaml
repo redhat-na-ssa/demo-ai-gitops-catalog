@@ -1,0 +1,5 @@
+$patch: delete
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: data-connection-setup

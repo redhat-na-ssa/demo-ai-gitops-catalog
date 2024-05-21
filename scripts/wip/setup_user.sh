@@ -1,5 +1,7 @@
 #!/bin/bash
 
+HTPASSWD_FILE=scratch/htpasswd
+
 # shellcheck disable=SC2120
 genpass(){
   < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
@@ -15,9 +17,16 @@ htpasswd_add_user(){
   PASS=${2:-$(genpass)}
   HTPASSWD_FILE=${3:-${DEFAULT_HTPASSWD}}
 
+  if ! which htpasswd >/dev/null; then
+    echo "Error: install htpasswd"
+    return 1
+  fi
+
   echo "
     USERNAME: ${USER}
     PASSWORD: ${PASS}
+
+    FILENAME: ${HTPASSWD_FILE}
   "
 
   [ -e "${HTPASSWD_FILE}" ] || touch "${HTPASSWD_FILE}"

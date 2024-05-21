@@ -1,0 +1,87 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: setup-user
+  namespace: user0
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: setup-user
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: setup-user
+  namespace: user0
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: setup-user
+  namespace: user0
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: setup-user
+      serviceAccountName: setup-user
+      containers:
+      - name: setup-user
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: GIT_URL
+            value: https://github.com/rh-aiservices-bu/fraud-detection.git
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          #!/bin/bash
+
+          clone_repo(){
+            rmdir lost+found || true
+
+            cd /data
+            git clone "${GIT_URL}" || true
+
+          }
+
+          make_jupyter_great(){
+          CONFIG=/data/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
+
+          [ -d "$(dirname ${CONFIG})" ] || mkdir -p "$(dirname ${CONFIG})"
+
+          echo "{
+              // Theme
+              // @jupyterlab/apputils-extension:themes
+              // Theme manager settings.
+              // *************************************
+
+              // Selected Theme
+              // Application-level visual styling theme
+              "theme": "JupyterLab Dark"
+          }" > .jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings
+
+          }
+
+          clone_repo
+          # make_jupyter_great
+
+        volumeMounts:
+          - name: fraud-detection
+            mountPath: /data
+      restartPolicy: Never
+      volumes:
+      - name: fraud-detection
+        persistentVolumeClaim:
+          claimName: fraud-detection

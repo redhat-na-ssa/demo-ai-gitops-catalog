@@ -136,6 +136,18 @@ bootstrap/sealed-secrets-secret.yaml
 
 If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a new sealed-secrets controller and obtain a new secret if it does not exist. -->
 
+### Workshops
+
+This is currently under development
+
+```sh
+# load functions
+. scripts/wip/workshop_functions.sh
+
+# setup workshop with 25 users
+workshop_setup 25
+```
+
 ## Additional Configurations
 
 ### Sandbox Namespace
