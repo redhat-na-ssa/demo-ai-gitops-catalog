@@ -1,4 +1,4 @@
-# RHOAI 2.9 Walkthrough
+# Walkthrough - Template
 
 State your goal
 
