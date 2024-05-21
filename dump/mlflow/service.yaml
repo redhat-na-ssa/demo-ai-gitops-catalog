@@ -5,7 +5,7 @@ kind: Service
 metadata:
   name: mlflow-server
   annotations:
-     service.alpha.openshift.io/serving-cert-secret-name: mlflow-server-tls
+    service.alpha.openshift.io/serving-cert-secret-name: mlflow-server-tls
   labels:
     helm.sh/chart: mlflow-server-0.6.4
     app.kubernetes.io/name: mlflow-server
