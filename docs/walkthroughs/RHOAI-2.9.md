@@ -7,6 +7,11 @@ State your goal
 - [Docs - Link]()
 - [Blog - Link]()
 
+## Checklist
+
+- [ ] Step 1
+  - [ ] Step 1.a
+
 ## Imperative Commands
 
 ```sh
