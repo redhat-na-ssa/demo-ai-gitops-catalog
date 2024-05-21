@@ -1,0 +1,43 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: nfs-provisioner
+
+resources:
+- https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/deploy
+- namespace.yaml
+- scc.yaml
+
+patches:
+- patch: |-
+    - op: replace
+      path: /subjects/0/namespace
+      value: nfs-provisioner
+  target:
+    kind: ClusterRoleBinding
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env
+      value:
+        - name: PROVISIONER_NAME
+          value: k8s-sigs.io/nfs-subdir-external-provisioner
+        - name: NFS_SERVER
+          value: pi.hou
+        - name: NFS_PATH
+          value: /k8s-data
+    - op: replace
+      path: /spec/template/spec/volumes
+      value:
+        - name: nfs-client-root
+          nfs:
+            server: pi.hou
+            path: /k8s-data
+  target:
+    kind: Deployment
+- patch: |-
+    - op: replace
+      path: /provisioner
+      value: k8s-sigs.io/nfs-subdir-external-provisioner
+  target:
+    kind: StorageClass
+    name: nfs-client

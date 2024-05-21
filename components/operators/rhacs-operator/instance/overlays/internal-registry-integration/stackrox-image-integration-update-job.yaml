@@ -19,7 +19,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              #!/usr/bin/env bash
+              #!/bin/bash
 
               # Create a temporary python script to handle the JSON transformations.
               cat << EOF > /tmp/jsontransform.py

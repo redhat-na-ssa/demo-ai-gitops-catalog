@@ -4,6 +4,4 @@ kind: Kustomization
 namespace: openshift-storage
 
 resources:
-  - node-label-job.yaml
-  - rbac.yaml
-  - service-account.yaml
+  - job.yaml

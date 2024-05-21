@@ -4,12 +4,18 @@ HTPASSWD_FILE=scratch/htpasswd
 
 # shellcheck disable=SC2120
 genpass(){
-  < /dev/urandom LC_ALL=C tr -dc _A-Z-a-z-0-9 | head -c "${1:-32}"
+  < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
 }
+
+which htpasswd || return 1
+
+DEFAULT_HTPASSWD=scratch/htpasswd-local
+DEFAULT_OCP_GROUP=users
 
 htpasswd_add_user(){
   USER=${1:-admin}
   PASS=${2:-$(genpass)}
+  HTPASSWD_FILE=${3:-${DEFAULT_HTPASSWD}}
 
   if ! which htpasswd >/dev/null; then
     echo "Error: install htpasswd"
@@ -23,65 +29,81 @@ htpasswd_add_user(){
     FILENAME: ${HTPASSWD_FILE}
   "
 
-  touch "${HTPASSWD_FILE}"
+  [ -e "${HTPASSWD_FILE}" ] || touch "${HTPASSWD_FILE}"
   htpasswd -bB -C 10 "${HTPASSWD_FILE}" "${USER}" "${PASS}"
 }
 
-htpasswd_get_file(){
+htpasswd_ocp_get_file(){
+  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+  HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
+
   oc -n openshift-config \
-    extract secret/htpasswd-local \
+    extract secret/"${HTPASSWD_NAME}" \
     --keys=htpasswd \
-    --to=scratch
+    --to=- > "${HTPASSWD_FILE}"
 }
 
-htpasswd_set_file(){
+htpasswd_ocp_set_file(){
+  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+  HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
+
   oc -n openshift-config \
-    set data secret/htpasswd-local \
+    set data secret/"${HTPASSWD_NAME}" \
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
 htpasswd_encrypt_file(){
+  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+
   age --encrypt --armor \
     -R authorized_keys \
-    -o htpasswd.age \
+    -o "$(basename "${HTPASSWD_FILE}")".age \
     "${HTPASSWD_FILE}"
 }
 
 htpasswd_decrypt_file(){
+  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+
   age --decrypt \
     -i ~/.ssh/id_ed25519 \
     -i ~/.ssh/id_rsa \
     -o "${HTPASSWD_FILE}" \
-    htpasswd.age
+    "$(basename "${HTPASSWD_FILE}")".age
 }
 
-ocp_setup_htpasswd(){
-  # check for existing secret
-  oc -n openshift-config \
-    get secret/htpasswd-local >/dev/null && return
+ocp_auth_create_group(){
+  OCP_GROUP=${1:-${DEFAULT_OCP_GROUP}}
 
-  # apply htpasswd login
-  oc apply -k components/configs/cluster/login/overlays/htpasswd
+  oc get group "${OCP_GROUP}" > /dev/null 2>&1 && return
+
+echo "
+apiVersion: user.openshift.io/v1
+kind: Group
+metadata:
+  name: ${OCP_GROUP}
+" | oc apply -f-
+
 }
 
-ocp_add_admin(){
+ocp_auth_add_to_group(){
   USER=${1:-admin}
-  OCP_ADMIN_GROUP=${2:-demo-admins}
+  OCP_GROUP=${2:-${DEFAULT_OCP_GROUP}}
   
+  ocp_auth_create_group "${OCP_GROUP}"
+
   oc adm groups add-users \
-  "${OCP_ADMIN_GROUP}" "${USER}"
+  "${OCP_GROUP}" "${USER}"
 }
 
-ocp_setup_user(){
+ocp_auth_setup_user(){
   USER=${1:-admin}
   PASS=${2:-$(genpass)}
+  OCP_GROUP=${3:-${DEFAULT_OCP_GROUP}}
 
-  ocp_setup_htpasswd
-  ocp_add_admin "${USER}"
   htpasswd_add_user "${USER}" "${PASS}"
+  ocp_auth_add_to_group "${USER}" "${OCP_GROUP}"
 
   echo "
-    When complete run:
-      htpasswd_set_file
+    run: htpasswd_ocp_set_file
   "
 }

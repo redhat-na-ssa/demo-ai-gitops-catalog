@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- https://github.com/kubeflow/training-operator/manifests/overlays/standalone?ref=v1.7.0
+
+patches:
+  - path: exclude-mpijob.yaml
+  - target:
+      kind: Namespace
+      name: kubeflow
+    patch: |-
+      - op: add
+        path: /metadata/annotations/openshift.io~1display-name
+        value: Kubeflow - Base

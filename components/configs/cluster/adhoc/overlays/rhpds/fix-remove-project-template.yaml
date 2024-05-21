@@ -17,7 +17,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              #!/usr/bin/env bash
+              #!/bin/bash
               # set -x
 
               delete_object(){

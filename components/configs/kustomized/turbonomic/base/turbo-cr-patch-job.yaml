@@ -58,7 +58,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              #!/usr/bin/env bash
+              #!/bin/bash
               # lets try to dynamically get this value ??
               FS_GROUP=$(oc get ns ${NAMESPACE} -o jsonpath='{.metadata.annotations.openshift\.io/sa\.scc\.uid-range}' | sed 's@/.*@@')
               oc whoami

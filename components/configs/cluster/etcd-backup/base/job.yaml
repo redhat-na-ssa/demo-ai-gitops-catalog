@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: job-etcd-backup
+spec:
+  # schedule: "* * * * *"
+  schedule: "13 */1 * * *"
+  successfulJobsHistoryLimit: 3  # Remove after successful completion
+  failedJobsHistoryLimit: 3  # Retain failed so that we see it
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            node-role.kubernetes.io/master: ''
+          activeDeadlineSeconds: 3000
+          restartPolicy: Never
+          serviceAccountName: default
+          priority: 2000001000
+          schedulerName: default-scheduler
+          hostNetwork: true
+          enableServiceLinks: true
+          terminationGracePeriodSeconds: 30
+          preemptionPolicy: PreemptLowerPriority
+          containers:
+            - resources:
+                requests:
+                  cpu: 50m
+                  memory: 80Mi
+              name: cluster-backup
+              securityContext:
+                privileged: true
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: CLUSTER_BACKUP_PATH
+                  value: /home/core/backups
+              command:
+                - /bin/bash
+                - -c
+                - /scripts/job.sh
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                - name: host
+                  mountPath: /host
+                - name: etcd-backup
+                  mountPath: /backups
+              terminationMessagePolicy: FallbackToLogsOnError
+              # image: image-registry.openshift-image-registry.svc:5000/openshift/tools
+              image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:2e6215a7102418b65de9fd842bbf42f905fa9683bdfeaa64297ba43908629b7f
+          serviceAccount: default
+          volumes:
+            - name: scripts
+              configMap:
+                name: job-etcd-backup
+                defaultMode: 0755
+            - name: host
+              hostPath:
+                path: /
+                type: ''
+            - name: etcd-backup
+              hostPath:
+                path: /home/core/backups
+                type: ''
+          tolerations:
+            - operator: Exists
+          priorityClassName: system-node-critical

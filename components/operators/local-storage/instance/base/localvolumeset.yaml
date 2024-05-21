@@ -1,3 +1,4 @@
+---
 apiVersion: local.storage.openshift.io/v1alpha1
 kind: LocalVolumeSet
 metadata:
@@ -7,5 +8,19 @@ spec:
   deviceInclusionSpec:
     deviceTypes:
       - disk
-  storageClassName: localblock-sc
+  storageClassName: localblock
   volumeMode: Block
+# ---
+# apiVersion: local.storage.openshift.io/v1alpha1
+# kind: LocalVolumeSet
+# metadata:
+#   name: local-parts
+#   namespace: openshift-local-storage
+# spec:
+#   deviceInclusionSpec:
+#     deviceTypes:
+#       - part
+#     minSize: 1Gi
+#   fsType: xfs
+#   storageClassName: local-fs
+#   volumeMode: Filesystem

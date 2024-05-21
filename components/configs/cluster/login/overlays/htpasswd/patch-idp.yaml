@@ -5,5 +5,5 @@
         fileData:
           name: htpasswd-local
       mappingMethod: claim
-      name: htpasswd
+      name: Local
       type: HTPasswd

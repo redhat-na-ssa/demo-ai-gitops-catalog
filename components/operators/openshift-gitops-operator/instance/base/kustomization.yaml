@@ -10,3 +10,11 @@ resources:
 - gitops-admin-group.yaml
 - namespace.yaml
 - openshift-gitops-cr.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: job-gitops-console-plugin
+    files:
+      - console-plugin-job.sh

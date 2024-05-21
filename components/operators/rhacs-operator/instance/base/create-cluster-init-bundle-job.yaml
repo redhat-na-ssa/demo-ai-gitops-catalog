@@ -19,7 +19,7 @@ spec:
             - /bin/bash
             - -c
             - |
-              #!/usr/bin/env bash
+              #!/bin/bash
               if kubectl get secret/sensor-tls &> /dev/null; then
                 echo "cluster-init bundle has already been configured, doing nothing"
                 exit 0
