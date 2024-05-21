@@ -2,10 +2,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: namespace-cleanup
+  name: job-ns-cleanup
 subjects:
 - kind: ServiceAccount
-  name: namespace-cleanup
+  name: job-ns-cleanup
   namespace: openshift-config
 roleRef:
   kind: ClusterRole
@@ -17,13 +17,13 @@ kind: ServiceAccount
 metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
-  name: namespace-cleanup
+  name: job-ns-cleanup
   namespace: openshift-config
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: namespace-cleanup
+  name: job-ns-cleanup
   namespace: openshift-config
 spec:
   schedule: "0 12 * * 6"
@@ -35,7 +35,7 @@ spec:
       template:
         spec:
           containers:
-          - name: namespace-cleanup
+          - name: job-ns-cleanup
             image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
             env:
               - name: OBJECTS
@@ -52,9 +52,9 @@ spec:
         volumes:
           - name: scripts
             configMap:
-              name: namespace-cleanup
+              name: job-ns-cleanup
               defaultMode: 0755
         restartPolicy: OnFailure
         terminationGracePeriodSeconds: 30
-        serviceAccount: namespace-cleanup
-        serviceAccountName: namespace-cleanup
+        serviceAccount: job-ns-cleanup
+        serviceAccountName: job-ns-cleanup
