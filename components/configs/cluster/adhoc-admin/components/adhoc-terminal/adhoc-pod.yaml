@@ -1,0 +1,96 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: adhoc-admin-terminal
+  namespace: adhoc-admin
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - 'pods'
+  - 'pods/log'
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - ''
+  resources:
+  - 'pods/exec'
+  verbs:
+  - create
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: adhoc-admin-terminal
+  namespace: adhoc-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: adhoc-admin-terminal
+subjects:
+  - kind: Group
+    name: adhoc-admin
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: adhoc-admin
+  name: adhoc-admin-terminal
+  namespace: adhoc-admin
+spec:
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: adhoc-admin
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: adhoc-admin
+  template:
+    metadata:
+      annotations:
+        hint: 'oc login --token "$(oc -n adhoc-admin exec adhoc-admin-terminal-0 -- oc whoami -t)"'
+      labels:
+        app.kubernetes.io/name: adhoc-admin
+    spec:
+      serviceAccount: cluster-admin-adhoc-helper
+      serviceAccountName: cluster-admin-adhoc-helper
+      containers:
+        - env:
+          - name: TIMEOUT
+            value: '600'
+          command:
+          - /bin/bash
+          - -c
+          - |
+            #!/bin/bash
+            echo "
+            You have found the hidden chamber! Now what?
+
+            TIMEOUT: ${TIMEOUT}s
+            "
+
+            sleep "${TIMEOUT}"
+            oc -n adhoc-admin \
+              delete pod $(hostname) \
+              --wait=false
+          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+          name: tools
+          resources:
+            limits:
+              cpu: 400m
+              memory: 64Mi
+      #     volumeMounts:
+      #       - mountPath: /run/kubernetes.io/serviceaccount
+      #         name: sa-token
+      # volumes:
+      #   - name: sa-token
+      #     projected:
+      #       sources:
+      #         - serviceAccountToken:
+      #             path: token
+      #             expirationSeconds: 1200
+      # automountServiceAccountToken: false
