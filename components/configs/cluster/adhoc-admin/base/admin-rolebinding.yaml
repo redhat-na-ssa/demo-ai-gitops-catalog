@@ -10,8 +10,10 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: cluster-admin-adhoc-helper
+    namespace: adhoc-admin
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: cluster-admin-adhoc-helper
+  namespace: adhoc-admin
