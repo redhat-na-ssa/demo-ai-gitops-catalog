@@ -34,20 +34,35 @@ usage_app(){
 
 usage_host(){
   echo "
-    Install script and env into ${APP_PATH}
 
-    mkdir -p ${APP_PATH}
+    Add reverse-tunnel user:
+
+    sudo useradd reverse-tunnel -g -m -d ${APP_PATH} -k /dev/null
+    sudo chmod 770 ${APP_PATH}
+    sudo usermod \$USER -a -G reverse-tunnel
+
+    Install script and env into ${APP_PATH}:
 
     cp reverse_tunnel.sh ${APP_PATH}/
     cp reverse_tunnel.env.sample ${APP_PATH}/env
     cp reverse-tunnel.service /etc/systemd/system/
 
+    Enable service:
+    
     systemctl enable reverse-tunnel --now
     systemctl status reverse-tunnel
 
     journalctl -u reverse-tunnel
   "
   exit 0
+}
+
+kludge_uninstall(){
+  sudo su root /bin/bash -c "
+    rm /etc/systemd/system/reverse-tunnel.service
+    sudo userdel reverse-tunnel -r
+    sudo groupdel reverse-tunnel
+  "
 }
 
 check_install(){
@@ -68,10 +83,12 @@ check_install(){
 }
 
 gen_key(){
+  KEY_PATH=$(dirname "${SSH_KEY}")
+
   echo "
-    Attempting to generate a ssh key...
+    Attempting to generate a ssh key in ${KEY_PATH}
   "
-  [ -d $(dirname "${SSH_KEY}") ] || mkdir -p $(dirname "${SSH_KEY}")
+  [ -d "${KEY_PATH}" ] || mkdir -p "${KEY_PATH}"
   ssh-keygen -q -P '' -t ed25519 -f "${SSH_KEY}" -C "generated@reverse-tunnel"
   cat "${SSH_KEY}"*
 
@@ -85,9 +102,7 @@ setup_sshd(){
 }
 
 var_unset(){
-  echo "
-    ${1} env var is NOT set
-  "
+  echo "${1} env var is NOT set"
 
   [ "$(get_script_path)" == "/app" ] || return
   
