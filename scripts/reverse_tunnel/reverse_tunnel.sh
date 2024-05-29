@@ -50,7 +50,6 @@ usage_host(){
 run_app(){
   echo "
     running in a container
-    
     oc create configmap reverse-tunnel --from-env-file scripts/reverse_tunnel/reverse_tunnel.env.sample
   "
   kludge_tunnel
