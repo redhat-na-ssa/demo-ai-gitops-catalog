@@ -113,7 +113,8 @@ get_script_path(){
 
 kludge_info(){
 
-  [ -z "${OCP_DNS_NAME}" ] && 
+  [ -z "${OCP_DNS_NAME}" ] && exit 0
+  
   echo "Private DNS should resolve:
 
   *.apps.${OCP_DNS_NAME}  ${OCP_APP_IP}
