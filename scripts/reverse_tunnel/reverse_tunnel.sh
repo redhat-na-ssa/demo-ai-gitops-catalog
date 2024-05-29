@@ -90,6 +90,9 @@ kludge_tunnel(){
   api.${OCP_DNS_NAME}     ${PUBLIC_IP}
   "
 
+  host "ping.apps.${OCP_DNS_NAME}"
+  host "api.${OCP_DNS_NAME}"
+
   ssh -NT -p 443 \
     root@"${PUBLIC_IP}" \
     -i "${SSH_KEY}" \
