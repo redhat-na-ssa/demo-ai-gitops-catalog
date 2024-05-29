@@ -24,6 +24,12 @@ gen_key(){
   return 0
 }
 
+setup_sshd(){
+  echo 'no-agent-forwarding,no-X11-forwarding,command="echo Only for SSH Tunnel; sleep infinity" ssh-rsa AAAA...'
+  echo 'GatewayPorts yes' > /etc/ssh/sshd_config.d/99-reverse-tunnel.conf
+  echo 'PermitRootLogin prohibit-password'
+}
+
 var_unset(){
   echo "
     ${1} env var is NOT set
@@ -33,8 +39,10 @@ var_unset(){
   [ "$(get_script_path)" == "/app" ] && return
 
   echo "
-  oc create configmap reverse-tunnel --from-env-file scripts/reverse_tunnel/env.sample
-  oc set env --from=configmap/reverse-tunnel deploy/reverse-tunnel
+  oc create configmap reverse-tunnel \
+    --from-env-file scripts/reverse_tunnel/env.sample
+  oc set env deploy/reverse-tunnel \
+    --from=configmap/reverse-tunnel 
   oc create secret generic reverse-tunnel \
     --from-file=id_ed25519=id_ed25519 \
     --from-file=id_ed25519.pub=id_ed25519.pub \
@@ -44,17 +52,16 @@ var_unset(){
     --read-only \
     --name config \
     --mount-path /config
-
   "
   exit 0
 }
 
 usage_host(){
   echo "
-    Install script and env into /usr/local/bin
+    Install script and env into /etc/reverse_tunnel
 
-    cp reverse_tunnel.sh /usr/local/bin/
-    cp reverse_tunnel.env.sample /usr/local/bin/reverse_tunnel.env
+    cp reverse_tunnel.sh /etc/reverse_tunnel/
+    cp reverse_tunnel.env.sample /etc/reverse_tunnel/env
     cp reverse-tunnel.service /etc/systemd/system/
 
     systemctl enable reverse-tunnel --now
