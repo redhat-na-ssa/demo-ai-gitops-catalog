@@ -52,6 +52,7 @@ run_app(){
   echo "
     running in a container
   "
+  tunnel_info
   kludge_tunnel
   sleep infinity
 }
@@ -78,7 +79,7 @@ check_install(){
   [ "$(get_script_path)" == "/usr/local/bin" ] || usage_host
 }
 
-kludge_tunnel(){
+tunnel_info(){
   echo "Private DNS should resolve:
 
   *.apps.${OCP_DNS_NAME}  ${OCP_APP_IP}
@@ -89,10 +90,12 @@ kludge_tunnel(){
   *.apps.${OCP_DNS_NAME}  ${PUBLIC_IP}
   api.${OCP_DNS_NAME}     ${PUBLIC_IP}
   "
-
+    
   host "ping.apps.${OCP_DNS_NAME}"
   host "api.${OCP_DNS_NAME}"
+}
 
+kludge_tunnel(){
   ssh -NT -p 443 \
     root@"${PUBLIC_IP}" \
     -i "${SSH_KEY}" \
@@ -121,4 +124,5 @@ kludge_iptables(){
 is_sourced && return
 
 check_install
+tunnel_info
 kludge_tunnel
