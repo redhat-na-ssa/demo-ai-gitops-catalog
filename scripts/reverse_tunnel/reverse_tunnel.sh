@@ -20,7 +20,7 @@ usage(){
 
 usage_ocp(){
   echo "
-    Create the following for OCP:
+    Add the following for OCP:
 
     oc create configmap reverse-tunnel \
       --from-env-file scripts/reverse_tunnel/env.sample
