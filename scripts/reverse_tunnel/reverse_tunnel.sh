@@ -1,7 +1,8 @@
 #!/bin/bash
 
-ENV_FILE=${ENV_FILE:-/etc/reverse_tunnel/reverse_tunnel.env}
-SSH_KEY=${SSH_KEY:-/etc/reverse_tunnel/id_ed25519}
+APP_PATH=/etc/reverse_tunnel
+ENV_FILE=${ENV_FILE:-${APP_PATH}/env}
+SSH_KEY=${SSH_KEY:-${APP_PATH}/id_ed25519}
 
 is_sourced(){
   if [ -n "$ZSH_VERSION" ]; then
@@ -12,13 +13,30 @@ is_sourced(){
   return 1  # NOT sourced.
 }
 
+check_install(){
+  # shellcheck disable=SC1090
+  [ -e "${ENV_FILE}" ] && . "${ENV_FILE}"
+
+  [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
+  [ -e "${SSH_KEY}" ] || gen_key
+
+  [ -z "${OCP_API_IP}" ] && var_unset "OCP_API_IP"
+  [ -z "${OCP_APP_IP}" ] && var_unset "OCP_APP_IP"
+  [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
+  [ -z "${PUBLIC_IP}" ] && var_unset "PUBLIC_IP"
+
+  [ "$(get_script_path)" == "/app" ] && return
+  [ "$(get_script_path)" == "${APP_PATH}" ] && return
+  
+  usage_host
+}
+
 gen_key(){
   echo "
     Attempting to generate a ssh key...
-    WARNING: This key pair will be lost if the container is restarted!!!
   "
   [ -d $(dirname "${SSH_KEY}") ] || mkdir -p $(dirname "${SSH_KEY}")
-  ssh-keygen -q -P '' -t ed25519 -f "${SSH_KEY}" -C "generated@container"
+  ssh-keygen -q -P '' -t ed25519 -f "${SSH_KEY}" -C "generated@reverse-tunnel"
   cat "${SSH_KEY}"*
 
   return 0
@@ -58,10 +76,12 @@ var_unset(){
 
 usage_host(){
   echo "
-    Install script and env into /etc/reverse_tunnel
+    Install script and env into ${APP_PATH}
 
-    cp reverse_tunnel.sh /etc/reverse_tunnel/
-    cp reverse_tunnel.env.sample /etc/reverse_tunnel/env
+    mkdir -p ${APP_PATH}
+
+    cp reverse_tunnel.sh ${APP_PATH}/
+    cp reverse_tunnel.env.sample ${APP_PATH}/env
     cp reverse-tunnel.service /etc/systemd/system/
 
     systemctl enable reverse-tunnel --now
@@ -75,24 +95,6 @@ usage_host(){
 get_script_path(){
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   echo "${SCRIPT_DIR}"
-}
-
-check_install(){
-  # shellcheck disable=SC1090
-  [ -e "${ENV_FILE}" ] && . "${ENV_FILE}"
-
-  [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
-  [ -e "${SSH_KEY}" ] || gen_key
-
-  [ -z "${OCP_API_IP}" ] && var_unset "OCP_API_IP"
-  [ -z "${OCP_APP_IP}" ] && var_unset "OCP_APP_IP"
-  [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
-  [ -z "${PUBLIC_IP}" ] && var_unset "PUBLIC_IP"
-
-  [ "$(get_script_path)" == "/app" ] && return
-  [ "$(get_script_path)" == "/etc/reverse_tunnel" ] && return
-  
-  usage_host
 }
 
 tunnel_info(){
