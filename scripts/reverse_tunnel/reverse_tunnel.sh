@@ -74,7 +74,7 @@ check_install(){
   [ -z "${OCP_APP_IP}" ] && var_unset "OCP_APP_IP"
   [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
 
-  [ "$(get_script_path)" == "/app" ] && usage_app
+  [ "$(get_script_path)" == "/app" ] && run_app
   [ "$(get_script_path)" == "/usr/local/bin" ] || usage_host
 }
 
