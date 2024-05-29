@@ -26,6 +26,7 @@ usage_ocp(){
       --from-env-file scripts/reverse_tunnel/env.sample
     oc set env deploy/reverse-tunnel \
       --from=configmap/reverse-tunnel
+
     oc create secret generic reverse-tunnel \
       --from-file=id_ed25519=id_ed25519 \
       --from-file=id_ed25519.pub=id_ed25519.pub
@@ -144,6 +145,10 @@ kludge_tunnel(){
 
   kludge_info
 
+  echo "
+    Attempting ssh tunnel...
+  "
+  
   ssh -NT root@"${PUBLIC_IP}" \
     -p "${SSH_PORT}" \
     -i "${SSH_KEY}" \
