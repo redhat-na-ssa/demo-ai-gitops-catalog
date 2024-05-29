@@ -12,7 +12,8 @@ COPY reverse_tunnel.sh /app/
 WORKDIR /app
 VOLUME /config
 
-ENV ENV_FILE=/config/reverse_tunnel.env \
+ENV APP_PATH=/app \
+    ENV_FILE=/config/reverse_tunnel.env \
     SSH_KEY=/config/id_ed25519 \
     HOME=/tmp
 
