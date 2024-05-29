@@ -27,6 +27,7 @@ gen_key(){
 var_unset(){
   echo "
     ${1} env var is NOT set
+
     oc create configmap reverse-tunnel --from-env-file scripts/reverse_tunnel/reverse_tunnel.env.sample
   "
   exit 0
@@ -90,12 +91,16 @@ tunnel_info(){
   *.apps.${OCP_DNS_NAME}  ${PUBLIC_IP}
   api.${OCP_DNS_NAME}     ${PUBLIC_IP}
   "
-    
+  
+  which host || return
   host "ping.apps.${OCP_DNS_NAME}"
   host "api.${OCP_DNS_NAME}"
 }
 
 kludge_tunnel(){
+  
+  tunnel_info
+
   ssh -NT -p 443 \
     root@"${PUBLIC_IP}" \
     -i "${SSH_KEY}" \
@@ -124,5 +129,4 @@ kludge_iptables(){
 is_sourced && return
 
 check_install
-tunnel_info
 kludge_tunnel
