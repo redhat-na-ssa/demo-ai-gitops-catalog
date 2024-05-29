@@ -13,6 +13,11 @@ is_sourced(){
   return 1  # NOT sourced.
 }
 
+usage(){
+  [ -e /var/run/secrets/kubernetes.io/ ] && usage_ocp
+  usage_host
+}
+
 usage_ocp(){
   echo "
     oc create configmap reverse-tunnel \
@@ -78,9 +83,8 @@ check_install(){
   [ -e "${SSH_KEY}" ] || gen_key
 
   [ "$(get_script_path)" == "${APP_PATH}" ] && return
-  [ -e /var/run/secrets/kubernetes.io/ ] && usage_ocp
   
-  usage_host
+  usage
 }
 
 gen_key(){
@@ -113,8 +117,8 @@ get_script_path(){
 
 kludge_info(){
 
-  [ -z "${OCP_DNS_NAME}" ] && exit 0
-  
+  [ -z "${OCP_DNS_NAME}" ] && usage
+
   echo "Private DNS should resolve:
 
   *.apps.${OCP_DNS_NAME}  ${OCP_APP_IP}
