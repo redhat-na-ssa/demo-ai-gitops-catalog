@@ -93,7 +93,8 @@ tunnel_info(){
   "
   
   which host || return
-  host "ping.apps.${OCP_DNS_NAME}"
+  echo "Checking DNS..."
+  host "jaberwalkee.apps.${OCP_DNS_NAME}"
   host "api.${OCP_DNS_NAME}"
 }
 
