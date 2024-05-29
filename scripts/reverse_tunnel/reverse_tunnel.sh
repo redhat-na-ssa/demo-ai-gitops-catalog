@@ -73,9 +73,7 @@ usage_host(){
 }
 
 run_app(){
-  echo "
-    running in a container
-  "
+  echo "running in a container..."
   kludge_tunnel
   exit 0
 }
@@ -145,6 +143,20 @@ kludge_test(){
 }
 
 kludge_iptables(){
+  EGRESS_IP=${1:-${EGRESS_IP}}
+
+  if [ -z "${EGRESS_IP}" ]; then
+    echo "
+      usage: 
+        kluge_iptables 143.166.117.0/24
+
+      usage:
+        EGRESS_IP=143.166.117.0/24
+        kluge_iptables
+    "
+    return
+  fi
+
   iptables -t nat \
     -I PREROUTING -s "${EGRESS_IP}" -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 22
   iptables -t nat \
