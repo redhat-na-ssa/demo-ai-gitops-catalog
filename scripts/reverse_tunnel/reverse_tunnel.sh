@@ -13,7 +13,7 @@ is_sourced(){
   return 1  # NOT sourced.
 }
 
-usage_app(){
+usage_ocp(){
   echo "
     oc create configmap reverse-tunnel \
       --from-env-file scripts/reverse_tunnel/env.sample
@@ -69,15 +69,16 @@ check_install(){
   # shellcheck disable=SC1090
   [ -e "${ENV_FILE}" ] && . "${ENV_FILE}"
 
-  [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
-  [ -e "${SSH_KEY}" ] || gen_key
-
   [ -z "${OCP_API_IP}" ] && var_unset "OCP_API_IP"
   [ -z "${OCP_APP_IP}" ] && var_unset "OCP_APP_IP"
   [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
   [ -z "${PUBLIC_IP}" ] && var_unset "PUBLIC_IP"
 
+  [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
+  [ -e "${SSH_KEY}" ] || gen_key
+
   [ "$(get_script_path)" == "${APP_PATH}" ] && return
+  [ -e /var/run/secrets/kubernetes.io/ ] && usage_ocp
   
   usage_host
 }
@@ -96,17 +97,13 @@ gen_key(){
 }
 
 setup_sshd(){
-  echo 'no-agent-forwarding,no-X11-forwarding,command="echo Only for SSH Tunnel; sleep infinity" ssh-rsa AAAA...'
   echo 'GatewayPorts yes' > /etc/ssh/sshd_config.d/99-reverse-tunnel.conf
+  echo 'no-agent-forwarding,no-X11-forwarding,command="echo Only for SSH Tunnel; sleep infinity" ssh-rsa AAAA...'
   echo 'PermitRootLogin prohibit-password'
 }
 
 var_unset(){
   echo "${1} env var is NOT set"
-
-  [ "$(get_script_path)" == "/app" ] || return
-  
-  usage_app
 }
 
 get_script_path(){
@@ -114,7 +111,7 @@ get_script_path(){
   echo "${SCRIPT_DIR}"
 }
 
-tunnel_info(){
+kludge_info(){
   echo "Private DNS should resolve:
 
   *.apps.${OCP_DNS_NAME}  ${OCP_APP_IP}
@@ -135,11 +132,12 @@ tunnel_info(){
 }
 
 kludge_tunnel(){
-  
-  tunnel_info
+  SSH_PORT=${1:-443}
 
-  ssh -NT -p 443 \
-    root@"${PUBLIC_IP}" \
+  kludge_info
+
+  ssh -NT root@"${PUBLIC_IP}" \
+    -p "${SSH_PORT}" \
     -i "${SSH_KEY}" \
     -o "ExitOnForwardFailure yes" \
     -o "ServerAliveInterval 60" \
