@@ -10,10 +10,10 @@ After=network.target
 LimitNOFILE=1048576
 Restart=always
 RestartSec=20
-WorkingDirectory=/usr/local/bin
-EnvironmentFile=/usr/local/bin/reverse_tunnel.env
+WorkingDirectory=/etc/reverse_tunnel/
+EnvironmentFile=/etc/reverse_tunnel/env
 User=reverse-tunnel
-ExecStart=/usr/local/bin/reverse_tunnel.sh
+ExecStart=/etc/reverse_tunnel/reverse_tunnel.sh
 
 [Install]
 WantedBy=multi-user.target

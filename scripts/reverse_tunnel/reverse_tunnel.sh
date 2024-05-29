@@ -28,7 +28,21 @@ var_unset(){
   echo "
     ${1} env var is NOT set
 
-    oc create configmap reverse-tunnel --from-env-file scripts/reverse_tunnel/reverse_tunnel.env.sample
+  "
+
+  [ "$(get_script_path)" == "/app" ] && return
+  
+  echo "
+  oc create configmap reverse-tunnel --from-env-file scripts/reverse_tunnel/env.sample
+  oc set env --from=configmap/reverse-tunnel deploy/reverse-tunnel
+  oc create secret generic reverse-tunnel \
+    --from-file=id_ed25519=id_ed25519
+    --from-file=id_ed25519.pub=id_ed25519.pub
+  oc set volumes deploy/reverse-tunnel \
+    --add -t secret \
+    --secret-name reverse-tunnel \
+    --name config
+    --mount-path /config \
   "
   exit 0
 }
