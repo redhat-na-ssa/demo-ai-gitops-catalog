@@ -54,6 +54,7 @@ run_app(){
     running in a container
   "
   kludge_tunnel
+  exit 0
 }
 
 get_script_path(){
