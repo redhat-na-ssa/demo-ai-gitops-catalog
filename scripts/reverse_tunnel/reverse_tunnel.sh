@@ -90,7 +90,7 @@ tunnel_info(){
   api.${OCP_DNS_NAME}     ${PUBLIC_IP}
   "
   
-  which host || return
+  which host >/dev/null 1>&2 || return
   echo "Checking DNS on host..."
   host "jaberwalkee.apps.${OCP_DNS_NAME}"
   host "api.${OCP_DNS_NAME}"
