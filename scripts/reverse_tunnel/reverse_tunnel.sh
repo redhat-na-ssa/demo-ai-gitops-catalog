@@ -72,12 +72,6 @@ usage_host(){
   exit 0
 }
 
-run_app(){
-  echo "running in a container..."
-  kludge_tunnel
-  exit 0
-}
-
 get_script_path(){
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   echo "${SCRIPT_DIR}"
@@ -95,8 +89,10 @@ check_install(){
   [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
   [ -z "${PUBLIC_IP}" ] && var_unset "PUBLIC_IP"
 
-  [ "$(get_script_path)" == "/app" ] && run_app
-  [ "$(get_script_path)" == "/etc/reverse_tunnel" ] || usage_host
+  [ "$(get_script_path)" == "/app" ] && return
+  [ "$(get_script_path)" == "/etc/reverse_tunnel" ] && return
+  
+  usage_host
 }
 
 tunnel_info(){
