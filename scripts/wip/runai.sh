@@ -1,6 +1,10 @@
 #!/bin/bash
 # shellcheck disable=SC2034,SC2125,SC2086
 
+RUNAI_DEFAULT_USER='test@run.ai'
+RUNAI_DEFAULT_PASS='Abcd!234'
+OCP_CLUSTER_DOMAIN=${1:-$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')}
+
 runai_help(){
   echo "
   See: https://docs.run.ai/v2.15/admin/runai-setup/self-hosted/ocp/prerequisites
@@ -8,13 +12,36 @@ runai_help(){
   sleep 6
 }
 
+runai_get_token(){
+  URL="https://runai.apps.${OCP_CLUSTER_DOMAIN}"
+  URL_AUTH="${URL}/auth/realms/runai/protocol/openid-connect/token"
+
+  TOKEN=$(curl --insecure --location --request POST "${URL_AUTH}" \
+    --header 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode 'grant_type=password' \
+    --data-urlencode 'client_id=runai' \
+    --data-urlencode "username=${RUNAI_DEFAULT_USER}" \
+    --data-urlencode "password=${RUNAI_DEFAULT_PASS}" \
+    --data-urlencode 'scope=openid' \
+    --data-urlencode 'response_type=id_token' | jq -r .access_token
+  )
+}
+
+runai_login_with_sso(){
+  curl --requst PUT "https://${URL}/v1/k8s/setting" \
+  -H 'Accept: */*' \
+  -H "Authorization: Bearer ${TOKEN}" \
+  -H 'Content-Type: application/json' \
+  --data-raw '{"key":"tenant.login_with_sso","value":true}'
+}
+
 runai_setup_control_plane(){
-  OCP_CLUSTER_DOMAIN=${1:-$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')}
 
   runai_help
 
   oc apply -k "${GIT_ROOT}"/components/configs/kustomized/runai-setup
 
+  which helm || return 1
   helm repo add runai-backend https://backend-charts.storage.googleapis.com
   helm repo update
   
@@ -43,28 +70,20 @@ runai_setup_control_plane(){
 
   echo "
   Login @ https://runai.apps.${OCP_CLUSTER_DOMAIN}
-    User: test@run.ai
-    Password: Abcd!234
+    User: ${RUNAI_DEFAULT_USER}
+    Password: ${RUNAI_DEFAULT_PASS}
   "
 }
 
-# runai_create_cluster(){
-#   USER=test@run.ai
-#   PASS='Abcd!234'
-#   DATA={\"name\":\"default\",\"description\":\"Default\"}
-  
-#   curl -vk -X POST https://runai.apps."${OCP_CLUSTER_DOMAIN}"/auth/realms/runai/protocol/openid-connect/token \
-#   -u "${USER}:${PASS}" \
-#   --header 'Content-Type: application/x-www-form-urlencoded' \
-#   --data-urlencode 'grant_type=client_credentials' \
-#   --data-urlencode 'scope=openid' \
-#   --data-urlencode 'response_type=id_token' \
-#   --data-urlencode 'client_id=test@run.ai' \
-#   --data-urlencode 'client_secret=Abcd!234'
+runai_create_cluster(){
+  DATA='{"name":"default","description":"Default"}'
 
-#   # curl -vk -o /tmp/auth -u "${USER}:${PASS}" https://runai.apps."${OCP_CLUSTER_DOMAIN}"/v1/k8s/auth/me
-#   # curl -vk -o /tmp/bundle.json -u "${USER}:${PASS}" -H "Content-Type: application/json" --data ${DATA} https://runai.apps."${OCP_CLUSTER_DOMAIN}"/v1/k8s/clusters
-# }
+  echo curl --requst PUT "${URL}/v1/k8s/clusters" \
+  -H 'Accept: */*' \
+  -H "Authorization: Bearer ${TOKEN}" \
+  -H 'Content-Type: application/json' \
+  --data-raw "${DATA}"
+}
 
 # runai_setup_cluster(){
 #   OCP_CLUSTER_DOMAIN=${1:-$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')}
