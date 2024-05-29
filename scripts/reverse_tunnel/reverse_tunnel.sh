@@ -53,9 +53,7 @@ run_app(){
   echo "
     running in a container
   "
-  tunnel_info
   kludge_tunnel
-  sleep infinity
 }
 
 get_script_path(){

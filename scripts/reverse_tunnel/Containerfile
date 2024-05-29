@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi9/ubi:latest
 
 RUN dnf upgrade -y && \
-    dnf install -y openssh-clients bind-utils && \    
+    dnf install -y bind-utils openssh-clients which && \    
     dnf clean all && \
     ssh -V
 
