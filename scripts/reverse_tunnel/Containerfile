@@ -9,8 +9,8 @@ RUN dnf upgrade -y && \
 
 USER 1001
 
-COPY reverse_tunnel.sh /usr/local/bin
-WORKDIR /usr/local/bin
+COPY reverse_tunnel.sh reverse_tunnel.env.sample /app
+WORKDIR /app
 
 VOLUME /config
 

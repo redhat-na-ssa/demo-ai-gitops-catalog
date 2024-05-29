@@ -4,6 +4,15 @@
 ENV_FILE=${ENV_FILE:-/usr/local/bin/reverse_tunnel.env}
 SSH_KEY=${SSH_KEY:-/etc/reverse_tunnel/id_ed25519}
 
+is_sourced(){
+  if [ -n "$ZSH_VERSION" ]; then
+      case $ZSH_EVAL_CONTEXT in *:file:*) return 0;; esac
+  else  # Add additional POSIX-compatible shell names here, if needed.
+      case ${0##*/} in dash|-dash|bash|-bash|ksh|-ksh|sh|-sh) return 0;; esac
+  fi
+  return 1  # NOT sourced.
+}
+
 gen_key(){
   echo "
     Attempting to generate a ssh key...
@@ -62,12 +71,12 @@ check_install(){
 }
 
 kludge_tunnel(){
-  echo "Setup your private dns to resolve:
+  echo "Private DNS should resolve:
 
   *.apps.${OCP_DNS_NAME}  ${OCP_APP_IP}
   api.${OCP_DNS_NAME}     ${OCP_API_IP}
   "
-  echo "Setup your public dns to resolve:
+  echo "Public DNS should resolve:
 
   *.apps.${OCP_DNS_NAME}  ${PUBLIC_IP}
   api.${OCP_DNS_NAME}     ${PUBLIC_IP}
@@ -97,6 +106,8 @@ kludge_iptables(){
   iptables -t nat \
     -I PREROUTING -s "${EGRESS_IP}" -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 22
 }
+
+is_sourced && return
 
 check_install
 kludge_tunnel
