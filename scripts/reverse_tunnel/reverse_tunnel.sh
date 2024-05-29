@@ -31,18 +31,20 @@ var_unset(){
   "
 
   [ "$(get_script_path)" == "/app" ] && return
-  
+
   echo "
   oc create configmap reverse-tunnel --from-env-file scripts/reverse_tunnel/env.sample
   oc set env --from=configmap/reverse-tunnel deploy/reverse-tunnel
   oc create secret generic reverse-tunnel \
-    --from-file=id_ed25519=id_ed25519
-    --from-file=id_ed25519.pub=id_ed25519.pub
+    --from-file=id_ed25519=id_ed25519 \
+    --from-file=id_ed25519.pub=id_ed25519.pub \
   oc set volumes deploy/reverse-tunnel \
     --add -t secret \
     --secret-name reverse-tunnel \
-    --name config
-    --mount-path /config \
+    --read-only \
+    --name config \
+    --mount-path /config
+
   "
   exit 0
 }
@@ -90,7 +92,7 @@ check_install(){
   [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
 
   [ "$(get_script_path)" == "/app" ] && run_app
-  [ "$(get_script_path)" == "/usr/local/bin" ] || usage_host
+  [ "$(get_script_path)" == "/etc/reverse_tunnel" ] || usage_host
 }
 
 tunnel_info(){
