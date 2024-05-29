@@ -13,6 +13,7 @@ WORKDIR /app
 VOLUME /config
 
 ENV APP_PATH=/app \
+    SSH_KEY=/config/id_ed25519
     HOME=/tmp
 
 ENTRYPOINT /app/reverse_tunnel.sh
