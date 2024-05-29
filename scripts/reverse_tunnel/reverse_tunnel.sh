@@ -179,6 +179,5 @@ kludge_iptables(){
 
 is_sourced && return
 
-set -x
 check_install
 kludge_tunnel
