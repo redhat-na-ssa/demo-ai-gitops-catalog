@@ -4,6 +4,7 @@
 RUNAI_DEFAULT_USER='test@run.ai'
 RUNAI_DEFAULT_PASS='Abcd!234'
 OCP_CLUSTER_DOMAIN=${1:-$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')}
+RUNAI_URL="https://runai.apps.${OCP_CLUSTER_DOMAIN}"
 
 runai_help(){
   echo "
@@ -13,10 +14,11 @@ runai_help(){
 }
 
 runai_get_token(){
-  URL="https://runai.apps.${OCP_CLUSTER_DOMAIN}"
-  URL_AUTH="${URL}/auth/realms/runai/protocol/openid-connect/token"
+  RUNAI_URL_AUTH="${RUNAI_URL}/auth/realms/runai/protocol/openid-connect/token"
 
-  TOKEN=$(curl --insecure --location --request POST "${URL_AUTH}" \
+  RUNAI_TOKEN=$(curl "${RUNAI_URL_AUTH}" \
+    --insecure --location \
+    --request POST \
     --header 'Content-Type: application/x-www-form-urlencoded' \
     --data-urlencode 'grant_type=password' \
     --data-urlencode 'client_id=runai' \
@@ -25,12 +27,14 @@ runai_get_token(){
     --data-urlencode 'scope=openid' \
     --data-urlencode 'response_type=id_token' | jq -r .access_token
   )
+
+  echo "${RUNAI_TOKEN}"
 }
 
 runai_login_with_sso(){
-  curl --requst PUT "https://${URL}/v1/k8s/setting" \
+  curl --request PUT "${RUNAI_URL}/v1/k8s/setting" \
   -H 'Accept: */*' \
-  -H "Authorization: Bearer ${TOKEN}" \
+  -H "Authorization: Bearer ${RUNAI_TOKEN}" \
   -H 'Content-Type: application/json' \
   --data-raw '{"key":"tenant.login_with_sso","value":true}'
 }
@@ -69,43 +73,77 @@ runai_setup_control_plane(){
     ${HELM_OPTS}
 
   echo "
-  Login @ https://runai.apps.${OCP_CLUSTER_DOMAIN}
+  Login @ ${RUNAI_URL}
     User: ${RUNAI_DEFAULT_USER}
     Password: ${RUNAI_DEFAULT_PASS}
   "
 }
 
 runai_create_cluster(){
-  DATA='{"name":"default","description":"Default"}'
+  CLUSTER_NAME=${1:-local-cluster}
+  DATA='{"name":"'"${CLUSTER_NAME}"'","description":"Default"}'
 
-  echo curl --requst PUT "${URL}/v1/k8s/clusters" \
-  -H 'Accept: */*' \
-  -H "Authorization: Bearer ${TOKEN}" \
-  -H 'Content-Type: application/json' \
-  --data-raw "${DATA}"
+  RUNAI_TOKEN=$(runai_get_token)
+
+  OUTPUT=$(
+    curl --request POST "${RUNAI_URL}/v1/k8s/clusters" \
+      -H 'Accept: */*' \
+      -H "Authorization: Bearer ${RUNAI_TOKEN}" \
+      -H 'Content-Type: application/json' \
+      --data-raw "${DATA}"
+   ) 
+  
+  RUNAI_CLUSTER_UUID=$(echo "${OUTPUT}" | jq -r .uuid)
+  
+  echo "${RUNAI_CLUSTER_UUID}"
 }
 
-# runai_setup_cluster(){
-#   OCP_CLUSTER_DOMAIN=${1:-$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')}
+runai_get_cluster_install(){
+  RUNAI_CLUSTER_UUID=${1}
+  RUNAI_CLUSTER_VER=${2:2.15}
 
-#   helm repo add runai https://run-ai-charts.storage.googleapis.com
-#   helm repo update
+  DATA='{"version":"'"${RUNAI_CLUSTER_VER}"'}'
 
-#   CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
+  [ -z "${RUNAI_CLUSTER_UUID}" ] && return
 
-#   if [ "${CERT_NAME}" == "<no value>" ]; then  
-#     HELM_OPTS="--set global.customCA.enabled=true"
-#   fi
+  RUNAI_TOKEN=$(runai_get_token)
 
-#   helm upgrade -i runai-cluster runai/runai-cluster -n runai \
-#     --set controlPlane.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
-#     --set cluster.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
-#     --set controlPlane.clientSecret=E1LqoomxPjyrdy0OgXANc2fMzGxXjrRI \
-#     --set cluster.uid=911f6190-4efc-430c-888b-959f1e3ab7e7 \
-#     ${HELM_OPTS} \
-#     --version=2.15.9 \
-#     --create-namespace
-# }
+  OUTPUT=$(
+    curl "${RUNAI_URL}/v1/k8s/clusters/${RUNAI_CLUSTER_UUID}/cluster-install-info" \
+      -H 'Accept: */*' \
+      -H "Authorization: Bearer ${RUNAI_TOKEN}" \
+      -H 'Content-Type: application/json' \
+      --data-raw "${DATA}"
+  )
+
+  echo "${OUTPUT}"
+}
+
+runai_setup_cluster(){
+
+  CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
+
+  if [ "${CERT_NAME}" == "<no value>" ]; then  
+    HELM_OPTS="--set global.customCA.enabled=true"
+  fi
+
+  RUNAI_CLUSTER_UUID=$(runai_create_cluster)
+  echo ${RUNAI_CLUSTER_UUID}
+  RUNAI_CLUSTER_INSTALL=$(runai_get_cluster_install "${RUNAI_CLUSTER_UUID}")
+
+  echo ${RUNAI_CLUSTER_INSTALL}
+
+  return
+
+  helm upgrade -i runai-cluster runai/runai-cluster -n runai \
+    --set controlPlane.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
+    --set cluster.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
+    --set controlPlane.clientSecret=E1LqoomxPjyrdy0OgXANc2fMzGxXjrRI \
+    --set cluster.uid=911f6190-4efc-430c-888b-959f1e3ab7e7 \
+    ${HELM_OPTS} \
+    --version=2.15.9 \
+    --create-namespace
+}
 
 runai_uninstall(){
   helm uninstall runai-cluster -n runai
