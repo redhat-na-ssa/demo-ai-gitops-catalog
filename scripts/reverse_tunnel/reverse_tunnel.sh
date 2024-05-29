@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_PATH=/etc/reverse_tunnel
+APP_PATH=${APP_PATH:-/etc/reverse_tunnel}
 ENV_FILE=${ENV_FILE:-${APP_PATH}/env}
 SSH_KEY=${SSH_KEY:-${APP_PATH}/id_ed25519}
 
