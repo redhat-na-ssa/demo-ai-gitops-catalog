@@ -36,7 +36,7 @@ var_unset(){
 
   "
 
-  [ "$(get_script_path)" == "/app" ] && return
+  [ "$(get_script_path)" == "/app" ] || return
 
   echo "
   oc create configmap reverse-tunnel \
@@ -90,11 +90,10 @@ check_install(){
   [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
   [ -e "${SSH_KEY}" ] || gen_key
 
-  [ -z "${PUBLIC_IP}" ] && var_unset "PUBLIC_IP"
-  [ -z "${EGRESS_IP}" ] && var_unset "EGRESS_IP"
   [ -z "${OCP_API_IP}" ] && var_unset "OCP_API_IP"
   [ -z "${OCP_APP_IP}" ] && var_unset "OCP_APP_IP"
   [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
+  [ -z "${PUBLIC_IP}" ] && var_unset "PUBLIC_IP"
 
   [ "$(get_script_path)" == "/app" ] && run_app
   [ "$(get_script_path)" == "/etc/reverse_tunnel" ] || usage_host
