@@ -48,7 +48,7 @@ usage_host(){
     cp reverse-tunnel.service /etc/systemd/system/
 
     Enable service:
-    
+
     systemctl enable reverse-tunnel --now
     systemctl status reverse-tunnel
 
@@ -179,5 +179,6 @@ kludge_iptables(){
 
 is_sourced && return
 
+set -x
 check_install
 kludge_tunnel
