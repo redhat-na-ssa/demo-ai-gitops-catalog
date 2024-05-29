@@ -20,13 +20,15 @@ usage(){
 
 usage_ocp(){
   echo "
+    Create the following for OCP:
+
     oc create configmap reverse-tunnel \
       --from-env-file scripts/reverse_tunnel/env.sample
     oc set env deploy/reverse-tunnel \
-      --from=configmap/reverse-tunnel 
+      --from=configmap/reverse-tunnel
     oc create secret generic reverse-tunnel \
       --from-file=id_ed25519=id_ed25519 \
-      --from-file=id_ed25519.pub=id_ed25519.pub \
+      --from-file=id_ed25519.pub=id_ed25519.pub
     oc set volumes deploy/reverse-tunnel \
       --add -t secret \
       --secret-name reverse-tunnel \
@@ -39,7 +41,6 @@ usage_ocp(){
 
 usage_host(){
   echo "
-
     Add reverse-tunnel user:
 
     sudo useradd reverse-tunnel -g -m -d ${APP_PATH} -k /dev/null
