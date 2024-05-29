@@ -17,4 +17,4 @@ VOLUME /config
 ENV ENV_FILE=/config/reverse_tunnel.env \
     SSH_KEY=/config/id_ed25519
 
-ENTRYPOINT reverse_tunnel.sh
+ENTRYPOINT /app/reverse_tunnel.sh
