@@ -3,15 +3,13 @@ FROM registry.access.redhat.com/ubi9/ubi:latest
 RUN dnf upgrade -y && \
     dnf install -y openssh-clients && \    
     dnf clean all && \
-    ssh -V && \
-    mkdir /etc/reverse_tunnel && \
-    chmod 770 /etc/reverse_tunnel
+    ssh -V
 
 USER 1001
 
 COPY reverse_tunnel.sh reverse_tunnel.env.sample /app
-WORKDIR /app
 
+WORKDIR /app
 VOLUME /config
 
 ENV ENV_FILE=/config/reverse_tunnel.env \

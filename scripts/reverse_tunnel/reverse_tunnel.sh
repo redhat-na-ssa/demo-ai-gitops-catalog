@@ -1,7 +1,6 @@
 #!/bin/bash
-# NOTE: install to /usr/local/bin
 
-ENV_FILE=${ENV_FILE:-/usr/local/bin/reverse_tunnel.env}
+ENV_FILE=${ENV_FILE:-/etc/reverse_tunnel/reverse_tunnel.env}
 SSH_KEY=${SSH_KEY:-/etc/reverse_tunnel/id_ed25519}
 
 is_sourced(){
@@ -48,14 +47,20 @@ usage_host(){
   exit 0
 }
 
+run_app(){
+  echo "
+    running in a container
+  "
+  kludge_tunnel
+  sleep infinity
+}
+
 get_script_path(){
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   echo "${SCRIPT_DIR}"
 }
 
 check_install(){
-  [ "$(get_script_path)" == "/usr/local/bin" ] || usage
-
   # shellcheck disable=SC1090
   [ -e "${ENV_FILE}" ] && . "${ENV_FILE}"
 
@@ -68,6 +73,8 @@ check_install(){
   [ -z "${OCP_APP_IP}" ] && var_unset "OCP_APP_IP"
   [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
 
+  [ "$(get_script_path)" == "/app" ] && usage_app
+  [ "$(get_script_path)" == "/usr/local/bin" ] || usage_host
 }
 
 kludge_tunnel(){
