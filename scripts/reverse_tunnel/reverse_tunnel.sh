@@ -13,6 +13,43 @@ is_sourced(){
   return 1  # NOT sourced.
 }
 
+usage_app(){
+  echo "
+    oc create configmap reverse-tunnel \
+      --from-env-file scripts/reverse_tunnel/env.sample
+    oc set env deploy/reverse-tunnel \
+      --from=configmap/reverse-tunnel 
+    oc create secret generic reverse-tunnel \
+      --from-file=id_ed25519=id_ed25519 \
+      --from-file=id_ed25519.pub=id_ed25519.pub \
+    oc set volumes deploy/reverse-tunnel \
+      --add -t secret \
+      --secret-name reverse-tunnel \
+      --read-only \
+      --name config \
+      --mount-path /config
+  "
+  exit 0
+}
+
+usage_host(){
+  echo "
+    Install script and env into ${APP_PATH}
+
+    mkdir -p ${APP_PATH}
+
+    cp reverse_tunnel.sh ${APP_PATH}/
+    cp reverse_tunnel.env.sample ${APP_PATH}/env
+    cp reverse-tunnel.service /etc/systemd/system/
+
+    systemctl enable reverse-tunnel --now
+    systemctl status reverse-tunnel
+
+    journalctl -u reverse-tunnel
+  "
+  exit 0
+}
+
 check_install(){
   # shellcheck disable=SC1090
   [ -e "${ENV_FILE}" ] && . "${ENV_FILE}"
@@ -25,7 +62,6 @@ check_install(){
   [ -z "${OCP_DNS_NAME}" ] && var_unset "OCP_DNS_NAME"
   [ -z "${PUBLIC_IP}" ] && var_unset "PUBLIC_IP"
 
-  [ "$(get_script_path)" == "/app" ] && return
   [ "$(get_script_path)" == "${APP_PATH}" ] && return
   
   usage_host
@@ -51,45 +87,11 @@ setup_sshd(){
 var_unset(){
   echo "
     ${1} env var is NOT set
-
   "
 
   [ "$(get_script_path)" == "/app" ] || return
-
-  echo "
-  oc create configmap reverse-tunnel \
-    --from-env-file scripts/reverse_tunnel/env.sample
-  oc set env deploy/reverse-tunnel \
-    --from=configmap/reverse-tunnel 
-  oc create secret generic reverse-tunnel \
-    --from-file=id_ed25519=id_ed25519 \
-    --from-file=id_ed25519.pub=id_ed25519.pub \
-  oc set volumes deploy/reverse-tunnel \
-    --add -t secret \
-    --secret-name reverse-tunnel \
-    --read-only \
-    --name config \
-    --mount-path /config
-  "
-  exit 0
-}
-
-usage_host(){
-  echo "
-    Install script and env into ${APP_PATH}
-
-    mkdir -p ${APP_PATH}
-
-    cp reverse_tunnel.sh ${APP_PATH}/
-    cp reverse_tunnel.env.sample ${APP_PATH}/env
-    cp reverse-tunnel.service /etc/systemd/system/
-
-    systemctl enable reverse-tunnel --now
-    systemctl status reverse-tunnel
-
-    journalctl -u reverse-tunnel
-  "
-  exit 0
+  
+  usage_app
 }
 
 get_script_path(){
