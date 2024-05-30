@@ -111,7 +111,11 @@ gen_key(){
   echo "
     Attempting to generate a ssh key in ${KEY_PATH}
   "
-  [ -d "${KEY_PATH}" ] || mkdir -p "${KEY_PATH}"
+  
+  if [ ! -d "${KEY_PATH}" ]; then
+    mkdir -p "${KEY_PATH}" || return
+  fi
+
   ssh-keygen -q -P '' -t ed25519 -f "${SSH_KEY}" -C "generated@reverse-tunnel"
   cat "${SSH_KEY}"*
 
