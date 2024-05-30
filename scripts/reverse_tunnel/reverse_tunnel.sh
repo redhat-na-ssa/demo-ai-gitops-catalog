@@ -145,9 +145,7 @@ kludge_tunnel(){
 
   kludge_info
 
-  echo "
-    Attempting ssh tunnel...
-  "
+  echo "Attempting ssh tunnel..."
   
   ssh -NT root@"${PUBLIC_IP}" \
     -p "${SSH_PORT}" \
