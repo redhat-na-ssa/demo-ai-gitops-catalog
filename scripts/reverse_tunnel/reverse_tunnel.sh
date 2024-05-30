@@ -103,12 +103,6 @@ gen_key(){
   return 0
 }
 
-setup_sshd(){
-  echo 'GatewayPorts yes' > /etc/ssh/sshd_config.d/99-reverse-tunnel.conf
-  echo 'no-agent-forwarding,no-X11-forwarding,command="echo Only for SSH Tunnel; sleep infinity" ssh-rsa AAAA...'
-  echo 'PermitRootLogin prohibit-password'
-}
-
 var_unset(){
   echo "${1} env var is NOT set"
 }
@@ -162,13 +156,19 @@ kludge_tunnel(){
     -R 0.0.0.0:2222:localhost:22
 }
 
-kludge_test(){
+endpoint_test(){
   curl -k \
     --connect-to "${PUBLIC_IP}":443:example.apps."${OCP_DNS_NAME}":443 \
     https://example.apps."${OCP_DNS_NAME}"
 }
 
-kludge_iptables(){
+endpoint_setup_sshd(){
+  echo 'GatewayPorts yes' > /etc/ssh/sshd_config.d/99-reverse-tunnel.conf
+  echo 'no-agent-forwarding,no-X11-forwarding,command="echo Only for SSH Tunnel; sleep infinity" ssh-rsa AAAA...'
+  echo 'PermitRootLogin prohibit-password'
+}
+
+endpoint_iptables(){
   EGRESS_IP=${1:-${EGRESS_IP}}
 
   if [ -z "${EGRESS_IP}" ]; then
@@ -192,4 +192,4 @@ kludge_iptables(){
 is_sourced && return
 
 check_install
-$(yes kludge_tunnel)
+kludge_tunnel
