@@ -157,9 +157,11 @@ kludge_tunnel(){
 }
 
 endpoint_test(){
+  URL_TEST=downloads-openshift-console.apps."${OCP_DNS_NAME}"
+
   curl -k \
-    --connect-to "${PUBLIC_IP}":443:example.apps."${OCP_DNS_NAME}":443 \
-    https://example.apps."${OCP_DNS_NAME}"
+    --connect-to "${URL_TEST}":443:"${PUBLIC_IP}":443 \
+    "https://${URL_TEST}"
 }
 
 endpoint_setup_sshd(){
@@ -192,4 +194,4 @@ endpoint_iptables(){
 is_sourced && return
 
 check_install
-kludge_tunnel
+kludge_tunnel 443
