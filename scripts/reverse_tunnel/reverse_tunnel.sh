@@ -23,14 +23,28 @@ usage_ocp(){
   echo "
     Add the following for OCP:
 
+    oc new-project reverse-tunnel
+
+    oc new-build \
+      --name reverse-tunnel \
+      --binary=true
+
+    oc start-build reverse-tunnel \
+      --from-dir=scripts/reverse_tunnel
+
     oc create configmap reverse-tunnel \
       --from-env-file scripts/reverse_tunnel/env.sample
-    oc set env deploy/reverse-tunnel \
-      --from=configmap/reverse-tunnel
 
     oc create secret generic reverse-tunnel \
       --from-file=id_ed25519=id_ed25519 \
       --from-file=id_ed25519.pub=id_ed25519.pub
+
+    oc create deployment reverse-tunnel \
+      --image image-registry.openshift-image-registry.svc:5000/reverse-tunnel/reverse-tunnel
+
+    oc set env deploy/reverse-tunnel \
+      --from=configmap/reverse-tunnel
+
     oc set volumes deploy/reverse-tunnel \
       --add -t secret \
       --secret-name reverse-tunnel \
@@ -91,6 +105,7 @@ check_install(){
 }
 
 gen_key(){
+  SSH_KEY=${1:-${SSH_KEY}}
   KEY_PATH=$(dirname "${SSH_KEY}")
 
   echo "
