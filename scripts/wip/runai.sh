@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2034,SC2125,SC2086
+# shellcheck disable=SC2034,SC2125,SC2086,SC2119,SC2120
 
 RUNAI_DEFAULT_USER='test@run.ai'
 RUNAI_DEFAULT_PASS='Abcd!234'
@@ -129,20 +129,19 @@ runai_setup_cluster(){
 
   RUNAI_CLUSTER_UUID=$(runai_create_cluster)
   echo ${RUNAI_CLUSTER_UUID}
+
   RUNAI_CLUSTER_INSTALL=$(runai_get_cluster_install "${RUNAI_CLUSTER_UUID}")
 
   echo ${RUNAI_CLUSTER_INSTALL}
 
-  return
-
-  helm upgrade -i runai-cluster runai/runai-cluster -n runai \
-    --set controlPlane.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
-    --set cluster.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
-    --set controlPlane.clientSecret=E1LqoomxPjyrdy0OgXANc2fMzGxXjrRI \
-    --set cluster.uid=911f6190-4efc-430c-888b-959f1e3ab7e7 \
-    ${HELM_OPTS} \
-    --version=2.15.9 \
-    --create-namespace
+  # helm upgrade -i runai-cluster runai/runai-cluster -n runai \
+  #   --set controlPlane.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
+  #   --set cluster.url=runai.apps."${OCP_CLUSTER_DOMAIN}" \
+  #   --set controlPlane.clientSecret=E1LqoomxPjyrdy0OgXANc2fMzGxXjrRI \
+  #   --set cluster.uid=911f6190-4efc-430c-888b-959f1e3ab7e7 \
+  #   ${HELM_OPTS} \
+  #   --version=2.15.9 \
+  #   --create-namespace
 }
 
 runai_uninstall(){
