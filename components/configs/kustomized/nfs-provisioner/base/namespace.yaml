@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nfs-provisioner
+  annotations:
+    openshift.io/display-name: "NFS External Provisioner"
+    argocd.argoproj.io/sync-wave: "0"

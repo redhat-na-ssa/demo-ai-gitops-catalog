@@ -1,7 +1,7 @@
 # OpenShift AI / ML GitOps Catalog
 
-[![Spelling](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml)
-[![Linting](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/linting.yaml/badge.svg)](https://github.com/codekow/demo-ai-gitops-catalog/actions/workflows/linting.yaml)
+[![Spelling](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml)
+[![Linting](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/linting.yaml/badge.svg)](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/linting.yaml)
 
 This project is a catalog of configurations used to provision infrastructure, on
 OpenShift, that supports machine learning (ML) and artificial intelligence (AI) workloads.
@@ -60,7 +60,7 @@ git clone < repo url >
 Use an [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html)
 
 ```
-YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
+YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
 . <(curl -s "${YOLO_URL}")
 term_init
 
@@ -136,6 +136,18 @@ bootstrap/sealed-secrets-secret.yaml
 
 If this is the first time bootstrapping a cluster, `bootstrap.sh` will deploy a new sealed-secrets controller and obtain a new secret if it does not exist. -->
 
+### Workshops
+
+This is currently under development
+
+```sh
+# load functions
+. scripts/wip/workshop_functions.sh
+
+# setup workshop with 25 users
+workshop_setup 25
+```
+
 ## Additional Configurations
 
 ### Sandbox Namespace
@@ -152,10 +164,12 @@ scripts/lint.sh
 
 ## Additional Info
 
-- [Misc Docs](docs) - not everything fits in your head
+- [Local Docs](docs)
+- [Notes Dump](docs/notes/)
 
 ## External Links
 
 - [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog)
+- [AI Pilot Gitops](https://github.com/redhat-na-stp-ai-practice/openshift-ai-pilot-gitops)
 - [ArgoCD - Example](https://github.com/gnunn-gitops/cluster-config)
 - [ArgoCD - Patterns](https://github.com/gnunn-gitops/standards)

@@ -8,6 +8,14 @@ resources:
 - pvc.yaml
 
 
-            # - name: etcd-backup
-            #   persistentVolumeClaim:
-            #     claimName: etcd-backup
+patches:
+  - target:
+      kind: CronJob
+      name: job-etcd-backup
+    patch: |
+      - op: replace
+        path: /spec/jobTemplate/spec/template/spec/volumes/2
+        value:
+          name: etcd-backup
+          persistentVolumeClaim:
+            claimName: etcd-backup

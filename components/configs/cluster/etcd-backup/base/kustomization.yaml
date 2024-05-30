@@ -4,4 +4,12 @@ kind: Kustomization
 namespace: openshift-etcd
 
 resources:
-- etcd-backup-cj.yaml
+- job.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: job-etcd-backup
+  files:
+    - job.sh

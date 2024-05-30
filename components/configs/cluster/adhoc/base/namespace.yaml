@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: adhoc-ops
-  annotations:
-    openshift.io/description: |
-      Make it difficult to avoid bad behavior,
-      but make it possible
-    openshift.io/display-name: Adhoc Automation

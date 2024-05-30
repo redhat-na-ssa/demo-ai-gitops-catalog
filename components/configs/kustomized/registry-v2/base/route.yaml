@@ -1,0 +1,20 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: registry-v2
+  labels:
+    app: registry-v2
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  port:
+    targetPort: 5000
+  tls:
+    insecureEdgeTerminationPolicy: Allow
+    termination: edge
+  to:
+    kind: Service
+    name: registry-v2
+    weight: 100
+  wildcardPolicy: None

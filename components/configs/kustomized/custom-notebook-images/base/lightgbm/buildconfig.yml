@@ -16,7 +16,7 @@ spec:
           name: s2i-generic-data-science-notebook:2023.1
   source:
     git:
-      uri: https://github.com/codekow/demo-ai-gitops-catalog.git
+      uri: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git
     contextDir: components/configs/kustomized/custom-notebook-images/base/lightgbm
   strategy:
     dockerStrategy:

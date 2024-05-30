@@ -1,0 +1,22 @@
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-nfs-pod
+spec:
+  containers:
+  - name: test
+    image: registry.redhat.io/openshift4/ose-cli
+    command:
+      - "/bin/sh"
+    args:
+      - "-c"
+      - "touch /data/SUCCESS && exit 0 || exit 1"
+    volumeMounts:
+      - name: nfs-pvc
+        mountPath: "/data"
+  restartPolicy: "Never"
+  volumes:
+    - name: nfs-pvc
+      persistentVolumeClaim:
+        claimName: test-nfs

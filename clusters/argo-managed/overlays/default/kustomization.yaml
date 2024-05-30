@@ -20,14 +20,14 @@ patches:
     patch: |-
       - op: replace
         path: /stringData/url
-        value: 'https://github.com/codekow/demo-ai-gitops-catalog.git'
+        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
   - target:
       group: argoproj.io
       kind: ApplicationSet
     patch: |-
       - op: replace
         path: /spec/template/spec/source/repoURL
-        value: 'https://github.com/codekow/demo-ai-gitops-catalog.git'
+        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
       - op: replace
         path: /spec/template/spec/source/targetRevision
         value: main
@@ -37,7 +37,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/source/repoURL
-        value: 'https://github.com/codekow/demo-ai-gitops-catalog.git'
+        value: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git'
       - op: replace
         path: /spec/source/targetRevision
         value: main

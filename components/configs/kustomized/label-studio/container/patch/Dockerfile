@@ -3,7 +3,7 @@ FROM docker.io/heartexlabs/label-studio:ubi_latest
 ENV DEBUG=true
 
 # update: label-studio version
-RUN pip install --no-cache -U \
+RUN pip install --no-cache-dir -U \
       label-studio pip
 
 # fix: permission issues

@@ -18,6 +18,8 @@ RUN dnf repolist && \
       zsh \
       # terminal-based editors
       less vi vim nano \
+      # misc tools
+      httpd-tools \
       # developer tools
       diffutils curl-minimal wget tar git git-lfs procps jq && \
     dnf clean all && \
@@ -28,7 +30,7 @@ ENV BIN_PATH=/usr/local/bin
 ENV PATH="${WRAPPER_BINARIES}:${PATH}"
 
 COPY src/etc/initial_config /etc/skel
-COPY src/etc/wtoctl src/etc/wtoctl_help.sh src/etc/wtoctl_jq.sh "${BIN_PATH}"
+COPY src/etc/wtoctl src/etc/wtoctl_help.sh src/etc/wtoctl_jq.sh "${BIN_PATH}/"
 COPY src/etc/cli-wrappers/* "${WRAPPER_BINARIES}/"
 COPY src/etc/get-tooling-versions.sh "${WRAPPER_BINARIES}/"
 
@@ -54,7 +56,11 @@ RUN \
     chgrp -R 0 /home && \
     chmod -R g=u /etc/passwd /etc/group /home && \
     chmod +x /entrypoint.sh && \
+    chmod g+w /wto/bin && \
     get-tooling-versions.sh > /tmp/installed_tools.txt
+
+ARG YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
+RUN bash -c 'cd /home/user; . <(curl -sL '"${YOLO_URL}"') && term_bashrc /etc/skel/.bashrc'
 
 USER 1001
 ENV HOME=/home/user

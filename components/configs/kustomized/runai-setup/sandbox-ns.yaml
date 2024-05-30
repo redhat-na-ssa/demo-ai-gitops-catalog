@@ -1,0 +1,8 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: runai-sandbox
+  labels:
+    kubernetes.io/metadata.name: runai-sandbox
+    runai/namespace-version: v2
+    runai/queue: sandbox

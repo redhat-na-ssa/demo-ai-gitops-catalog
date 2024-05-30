@@ -10,10 +10,12 @@ nvidia_setup_dashboard_monitor(){
 }
 
 nvidia_install_console_plugin_dump_helm(){
-  # kludge: find a better way
-  OUTPUT_PATH=components/operators/gpu-operator-certified/instance/base
+  # alternative: if no helm
+  OUTPUT_PATH=components/operators/gpu-operator-certified/operator/components/console-plugin
+  DUMP_PATH="${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/console-plugin-nvidia-gpu/templates"
 
-  [ -d "${OUTPUT_PATH}" ] || return 1
+  [ -d "${OUTPUT_PATH}" ] || mkdir -p "${OUTPUT_PATH}"
+  rm -rf "${GIT_ROOT}/scratch/console-plugin-nvidia-gpu"
 
   which helm || return 1
   helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
@@ -21,19 +23,23 @@ nvidia_install_console_plugin_dump_helm(){
 
   # rm -rf "${OUTPUT_PATH}/console-plugin-nvidia-gpu"
   helm template \
+    console-plugin-nvidia-gpu \
     --repo https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu \
     -n nvidia-gpu-operator \
-    --output-dir "${OUTPUT_PATH}" \
-    console-plugin-nvidia-gpu
-  rm -rf "${OUTPUT_PATH}/console-plugin-nvidia-gpu/templates/tests"
+    --output-dir "${GIT_ROOT}/scratch" \
+    --release-name console-plugin-nvidia-gpu
+
+  mv "${DUMP_PATH}/"* "${OUTPUT_PATH}"
+  rm -rf "${OUTPUT_PATH}/tests"
+
   sed -i '
-    0,/instance: release-name/{//d;}
-    s/instance: release-name$/instance: console-plugin-nvidia-gpu/g
-    s/name: release-name-/name: /g' "${OUTPUT_PATH}/console-plugin-nvidia-gpu/templates/"*
+    /^  name: console-plugin-nvidia-gpu/a \  namespace: nvidia-gpu-operator
+    ' "${OUTPUT_PATH}/"*
+  
 }
 
 nvidia_install_console_plugin(){
-  GIT_URL=https://github.com/codekow/demo-ai-gitops-catalog.git
+  GIT_URL=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
 
   if which helm; then
     helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true

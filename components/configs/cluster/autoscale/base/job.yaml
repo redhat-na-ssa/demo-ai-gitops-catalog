@@ -1,0 +1,88 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: job-setup-machineset
+rules:
+- apiGroups:
+  - machine.openshift.io
+  resources:
+  - machinesets
+  verbs:
+  - '*'
+- apiGroups:
+  - autoscaling.openshift.io
+  resources:
+  - machineautoscalers
+  verbs:
+  - '*'
+- apiGroups:
+  - ''
+  resources:
+  - secrets
+  resourceNames:
+  - aws-creds
+  verbs:
+  - get
+  - list
+# - nonResourceURLs:
+#   - '*'
+#   verbs:
+#   - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: job-setup-machineset
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: job-setup-machineset
+subjects:
+  - kind: ServiceAccount
+    name: job-setup-machineset
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: job-setup-machineset
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-setup-machineset
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+        - name: minion
+          # image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+          image: registry.redhat.io/openshift4/ose-cli
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MACHINE_MIN
+              value: '0'
+            - name: MACHINE_MAX
+              value: '4'
+          command:
+            - /bin/bash
+            - -c
+            - /scripts/job.sh
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: job-setup-machineset
+            defaultMode: 0755
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
+      serviceAccount: job-setup-machineset
+      serviceAccountName: job-setup-machineset

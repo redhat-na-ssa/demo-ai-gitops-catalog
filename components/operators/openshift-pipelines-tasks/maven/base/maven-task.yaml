@@ -56,7 +56,7 @@ spec:
       name: mvn-settings
       resources: {}
       script: >
-        #!/usr/bin/env bash
+        #!/bin/bash
 
 
         [[ -f $(workspaces.maven-settings.path)/settings.xml ]] && \

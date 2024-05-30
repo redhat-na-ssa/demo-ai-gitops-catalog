@@ -1,0 +1,12 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: test-nfs-static
+spec:
+  storageClassName: nfs-static
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi

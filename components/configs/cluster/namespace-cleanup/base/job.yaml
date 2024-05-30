@@ -1,0 +1,60 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: job-ns-cleanup
+subjects:
+- kind: ServiceAccount
+  name: job-ns-cleanup
+  namespace: openshift-config
+roleRef:
+  kind: ClusterRole
+  name: edit
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+  name: job-ns-cleanup
+  namespace: openshift-config
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: job-ns-cleanup
+  namespace: openshift-config
+spec:
+  schedule: "0 12 * * 6"
+  successfulJobsHistoryLimit: 3  # Remove after successful completion
+  failedJobsHistoryLimit: 1  # Retain failed so that we see it
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: job-ns-cleanup
+            image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+            env:
+              - name: OBJECTS
+                value: all,cm,secret,pvc,dw,pipeline,el
+              - name: TARGET_NS
+                value: sandbox
+            command:
+              - /bin/bash
+              - -c
+              - /scripts/job.sh
+            volumeMounts:
+              - name: scripts
+                mountPath: /scripts
+        volumes:
+          - name: scripts
+            configMap:
+              name: job-ns-cleanup
+              defaultMode: 0755
+        restartPolicy: OnFailure
+        terminationGracePeriodSeconds: 30
+        serviceAccount: job-ns-cleanup
+        serviceAccountName: job-ns-cleanup

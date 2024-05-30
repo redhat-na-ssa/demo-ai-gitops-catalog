@@ -9,3 +9,11 @@ resources:
   - namespace.yaml
   - operator-group.yaml
   - subscription.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: job-odf-console-plugin
+    files:
+      - console-plugin-job.sh

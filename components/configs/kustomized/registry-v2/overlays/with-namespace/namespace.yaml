@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: registry
+  labels:
+    app: registry
+  annotations:
+    openshift.io/display-name: "Registry - Docker v2"
+    argocd.argoproj.io/sync-wave: "0"

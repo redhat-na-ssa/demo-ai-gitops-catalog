@@ -1,9 +1,10 @@
+# https://github.com/gitleaks/gitleaks?tab=readme-ov-file#configuration
+
 [allowlist]
   description = "Global Allowlist"
 
   # Ignore based on any subset of the file path
   paths = [
-
     # Ignore example secrets
     '''openshift\/base\/secret-.*.ya?ml$''',
   ]

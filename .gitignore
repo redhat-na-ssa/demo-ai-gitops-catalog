@@ -3,6 +3,7 @@ data/
 scratch/
 files.txt
 bootstrap/sealed-secrets-secret.yaml
+**/charts/
 
 dictionary.dic
 
@@ -80,7 +81,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+# instance/
 .webassets-cache
 
 # Scrapy stuff:

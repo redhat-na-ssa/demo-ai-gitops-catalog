@@ -16,8 +16,57 @@ ocp_check_info(){
   sleep "${SLEEP_SECONDS:-8}"
 }
 
+ocp_kubeadmin_remove(){
+  FORCE=${1:-No}
+
+  if [ "${FORCE}" = "YES" ]; then
+    [ ! -e scratch/kubeadmin.yaml ] && \
+      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
+    oc delete secret kubeadmin -n kube-system
+  else
+    echo "WARNING: you must run ocp_remove_kubeadmin YES"
+    return 1
+  fi
+}
+
+ocp_kubeadmin_create(){
+  PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
+
+  which htpasswd >/dev/null || return 1
+
+  HTPASSWD=$(htpasswd -nbB -C10 null "${PASS}")
+  HASH=${HTPASSWD##*:}
+
+  echo "
+  PASSWORD: ${PASS}
+  HASH:     ${HASH}
+
+  oc apply -f scratch/kubeadmin.yaml
+  "
+
+cat << YAML > scratch/kubeadmin.yaml
+kind: Secret
+apiVersion: v1
+metadata:
+  name: kubeadmin
+  namespace: kube-system
+stringData:
+  kubeadmin: ${HASH}
+  password: ${PASS}
+type: Opaque
+YAML
+}
+
+ocp_get_apps_domain(){
+  oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
+}
+
 ocp_aws_cluster(){
-  oc -n kube-system get secret/aws-creds -o name > /dev/null 2>&1 || return 1
+  TARGET_NS=kube-system
+  OBJ=secret/aws-creds
+  echo "Checking if ${OBJ} exists in ${TARGET_NS} namespace"
+  oc -n "${TARGET_NS}" get "${OBJ}" -o name > /dev/null 2>&1 || return 1
+  echo "AWS cluster detected"
 }
 
 ocp_aws_get_key(){
@@ -146,7 +195,7 @@ ocp_aws_create_gpu_machineset(){
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
   
-    oc -n openshift-machine-api \
+  oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
   
@@ -246,19 +295,6 @@ ocp_expose_image_registry(){
   echo "OCP image registry is available at: ${SHORTER_HOST}"
 }
 
-ocp_remove_kubeadmin(){
-  FORCE=${1:-No}
-
-  if [ "${FORCE}" = "YES" ]; then
-    [ ! -e scratch/kubeadmin.yaml ] && \
-      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
-    oc delete secret kubeadmin -n kube-system
-  else
-    echo "WARNING: you must run ocp_remove_kubeadmin YES"
-    return 1
-  fi
-}
-
 ocp_release_info(){
   VERSION=${1:-stable-4.12}
   echo "VERSION: ${VERSION}"
@@ -302,6 +338,10 @@ ocp_upgrade_cluster(){
   fi
 }
 
+ocp_ack_upgrade_4.13(){
+  oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.12-kube-1.26-api-removals-in-4.13":"true"}}' --type=merge
+}
+
 ocp_gpu_taint_nodes(){
   oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule --overwrite
   oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
@@ -316,7 +356,13 @@ ocp_gpu_label_nodes_from_nfd(){
   oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
 }
 
-ocp_mirror_get_pull_secret(){
+ocp_get_pull_secret(){
+  oc -n openshift-config \
+    get secret/pull-secret \
+    --template='{{index .data ".dockerconfigjson" | base64decode}}'
+}
+
+ocp_mirror_set_pull_secret(){
   export DOCKER_CONFIG="${GIT_ROOT}/scratch"
 
   [ -e "${DOCKER_CONFIG}/config.json" ] && return
@@ -349,7 +395,7 @@ ocp_mirror_dry_run(){
 
   [ -d "${REMOVABLE_MEDIA_PATH}" ] || mkdir -p "${REMOVABLE_MEDIA_PATH}"
 
-  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_get_pull_secret
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_set_pull_secret
 
   echo oc adm release mirror \
     -a "${LOCAL_SECRET_JSON}"  \
@@ -373,7 +419,7 @@ ocp_mirror_operator_catalog_list(){
 
   which oc-mirror >/dev/null 1>&2 || return
 
-  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_get_pull_secret
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_set_pull_secret
 
   echo "Please be patient. This process is slow..." 1>&2
   echo "oc mirror list operators --catalog ${INDEX}" 1>&2
@@ -399,4 +445,66 @@ ocp_mirror_operator_catalog_list_all(){
   do
     ocp_mirror_operator_list "${index}"
   done
+}
+
+ocp_aro_cluster(){
+  TARGET_NS=kube-system
+  OBJ=secret/azure-credentials
+  echo "Checking if ${OBJ} exists in ${TARGET_NS} namespace"
+  oc -n "${TARGET_NS}" get "${OBJ}" -o name > /dev/null 2>&1 || return 1
+  echo "ARO cluster detected"
+}
+
+ocp_aro_get_key(){
+  # get az creds
+  ocp_aro_cluster || return 1
+  AZ_TENANT_ID=redhat0.onmicrosoft.com
+  
+  AZ_CLIENT_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_id --to=-)
+  AZ_CLIENT_SECRET=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_secret --to=-)
+  AZ_DEFAULT_REGION=$(oc -n kube-system extract secret/azure-credentials --keys=azure_region --to=-)
+  AZ_DEFAULT_RG=$(oc -n kube-system extract secret/azure-credentials --keys=azure_resourcegroup --to=-)
+  AZ_SUB_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_subscription_id --to=-)
+  AZ_TENANT_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_tenant_id --to=-)
+
+  export AZ_CLIENT_ID
+  export AZ_CLIENT_SECRET
+  export AZ_DEFAULT_REGION
+  export AZ_DEFAULT_RG
+  export AZ_SUB_ID
+  export AZ_TENANT_ID
+
+  echo "AZ_DEFAULT_REGION: ${AZ_DEFAULT_REGION}"
+
+  which az || return 0
+
+  az login --service-principal \
+    -u "${AZ_CLIENT_ID}" \
+    -p "${AZ_CLIENT_SECRET}" \
+    --tenant "${AZ_TENANT_ID}"
+}
+
+ocp_aro_clone_machineset(){
+  [ -z "${1}" ] && \
+  echo "
+    usage: ocp_aro_clone_machineset < instance type, default Standard_NC64as_T4_v3 >
+  "
+
+  INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
+  INSTANCE_NAME=$(echo "${INSTANCE_TYPE,,}" | tr '_' '-')
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
+
+  # check for an existing instance machine set
+  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep -q "${INSTANCE_NAME}"; then
+    echo "Exists: machineset - ${INSTANCE_TYPE}"
+  else
+    echo "Creating: machineset - ${INSTANCE_NAME}"
+    oc -n openshift-machine-api \
+      get "${MACHINE_SET}" -o yaml | \
+        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
+          /name/ s/-worker/-'"${INSTANCE_NAME}"'/g
+          s/vmSize.*/vmSize: '"${INSTANCE_TYPE}"'/
+          s/replicas.*/replicas: 0/' | \
+      oc apply -f -
+  fi
 }

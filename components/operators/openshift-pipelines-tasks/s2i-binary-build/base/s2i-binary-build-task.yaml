@@ -18,5 +18,5 @@ spec:
       image: quay.io/openshift/origin-cli:latest
       workingDir: $(workspaces.build-workspace.path)
       script: |
-        #!/usr/bin/env bash
+        #!/bin/bash
         oc start-build $(params.BUILD_NAME) --from-file=$(workspaces.build-workspace.path)$(params.BINARY_PATH) --follow
