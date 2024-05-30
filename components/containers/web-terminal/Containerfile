@@ -65,9 +65,6 @@ RUN bash -c 'cd /home/user; . <(curl -sL '"${YOLO_URL}"') && term_bashrc /etc/sk
 USER 1001
 ENV HOME=/home/user
 
-ARG YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
-RUN bash -c 'cd /home/user; . <(curl -sL '"${YOLO_URL}"') && term_bashrc /etc/skel/.bashrc; term_bin_setup'
-
 WORKDIR ${HOME}
 ENTRYPOINT [ "/entrypoint.sh" ]
 CMD ["sleep", "infinity"]
