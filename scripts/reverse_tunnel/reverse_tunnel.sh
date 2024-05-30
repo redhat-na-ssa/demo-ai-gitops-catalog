@@ -147,7 +147,7 @@ kludge_info(){
   *.apps.${OCP_DNS_NAME}  ${PUBLIC_IP}
   api.${OCP_DNS_NAME}     ${PUBLIC_IP}
   "
-  
+
   which host || return
   echo "Checking DNS records...
   "
@@ -163,7 +163,7 @@ kludge_tunnel(){
 
   echo "Attempting ssh tunnel...
   "
-  
+
   ssh -NT root@"${PUBLIC_IP}" \
     -p "${SSH_PORT}" \
     -i "${SSH_KEY}" \
@@ -195,7 +195,7 @@ endpoint_iptables(){
 
   if [ -z "${EGRESS_IP}" ]; then
     echo "
-      usage: 
+      usage:
         kluge_iptables 143.166.117.0/24
 
       usage:

@@ -91,10 +91,10 @@ runai_create_cluster(){
       -H "Authorization: Bearer ${RUNAI_TOKEN}" \
       -H 'Content-Type: application/json' \
       --data-raw "${DATA}"
-   ) 
+   )
   
   RUNAI_CLUSTER_UUID=$(echo "${OUTPUT}" | jq -r .uuid)
-  
+
   echo "${RUNAI_CLUSTER_UUID}"
 }
 
@@ -123,7 +123,7 @@ runai_setup_cluster(){
 
   CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
 
-  if [ "${CERT_NAME}" == "<no value>" ]; then  
+  if [ "${CERT_NAME}" == "<no value>" ]; then
     HELM_OPTS="--set global.customCA.enabled=true"
   fi
 
