@@ -14,7 +14,8 @@ is_sourced(){
 }
 
 usage(){
-  [ -e /var/run/secrets/kubernetes.io/ ] && usage_ocp
+  [ -d /var/run/secrets/kubernetes.io/ ] && \
+    usage_ocp
   usage_host
 }
 
@@ -191,4 +192,4 @@ kludge_iptables(){
 is_sourced && return
 
 check_install
-kludge_tunnel
+kludge_tunnel || usage
