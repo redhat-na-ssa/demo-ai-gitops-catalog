@@ -8,8 +8,9 @@ resources:
   - ../../components/configs/kustomized/minio/overlays/with-namespace
   - ../../components/configs/kustomized/rhoai-config
   - ../../components/configs/kustomized/rhoai-data-connector/overlays/group-project
-  # - ../../components/configs/kustomized/rhoai-data-connector/overlays/kserve-project
-  # - ../../components/configs/kustomized/rhoai-modelmesh-instances
+  - ../../components/configs/kustomized/rhoai-data-connector/overlays/kserve-project
+  - ../../components/configs/kustomized/rhoai-data-connector/overlays/modelmesh-project
+  - ../../components/configs/kustomized/rhoai-modelmesh-instances/overlays/modelmesh-project
   # - ../../components/configs/kustomized/rhoai-modelmesh-runtimes
   # - ../../components/configs/kustomized/rhoai-kserve-instances
   - ../../components/configs/kustomized/rhoai-notebook/overlays/group-project

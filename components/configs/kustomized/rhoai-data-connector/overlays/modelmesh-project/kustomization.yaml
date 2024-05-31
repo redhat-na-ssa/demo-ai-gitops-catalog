@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: ds-kserve
+namespace: ds-modelmesh
 
 resources:
   - ../../base
@@ -14,4 +14,4 @@ patches:
     patch: |-
       - op: add
         path: /subjects/0/namespace
-        value: ds-kserve
+        value: ds-modelmesh

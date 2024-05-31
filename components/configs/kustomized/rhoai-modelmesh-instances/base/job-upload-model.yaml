@@ -23,7 +23,7 @@ subjects:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: add-model-job
+  name: job-upload-model
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
