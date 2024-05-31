@@ -5,4 +5,4 @@ resources:
   - self-provisioner-crb.yaml
   - self-provisioner-group.yaml
   - update-users-crb.yaml
-  - users-group.yaml
+  - user-manager-group.yaml

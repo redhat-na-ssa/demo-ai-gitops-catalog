@@ -1,7 +1,7 @@
 apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
 kind: DataSciencePipelinesApplication
 metadata:
-  name: pipelines-definition
+  name: dspa
 spec:
   apiServer:
     stripEOF: true
@@ -17,18 +17,22 @@ spec:
     collectMetrics: true
     injectDefaultScript: true
   database:
+    disableHealthCheck: false
     mariaDB:
       deploy: true
       pipelineDBName: mlpipeline
       pvcSize: 10Gi
       username: mlpipeline
-  mlmd:
-    deploy: false
+  dspVersion: v2
   objectStorage:
+    disableHealthCheck: false
+    enableExternalRoute: false
     externalStorage:
+      basePath: ''
       bucket: models
-      host: 'minio.minio.svc'
+      host: minio.minio.svc
       port: '9000'
+      region: us-east-1
       s3CredentialsSecret:
         accessKey: AWS_ACCESS_KEY_ID
         secretKey: AWS_SECRET_ACCESS_KEY
