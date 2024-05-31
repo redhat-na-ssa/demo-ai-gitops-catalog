@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../rhoai
-  - ../compoents/rhoai-intel
+  - ../components/rhoai-intel
 
 patches:
   - target:
