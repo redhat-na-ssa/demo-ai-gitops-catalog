@@ -21,4 +21,4 @@
 
 ## Potential enhancements
 
-- [ ] Move config for idle notebooks to CR vs [configmap](../../components/configs/kustomized/rhods-config/nb-culler-config.yaml)
+- [ ] Move config for idle notebooks to CR vs [configmap](../../components/configs/kustomized/rhoai-config/nb-culler-config.yaml)

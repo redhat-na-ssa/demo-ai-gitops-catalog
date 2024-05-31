@@ -2,14 +2,14 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: rhods-update-users
+  name: rhoai-update-users
 rules:
   - apiGroups:
     - user.openshift.io
     resources:
     - groups
     resourceNames:
-    - rhods-users
+    - rhoai-users
     verbs:
     - update
     - patch
@@ -18,12 +18,12 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: rhods-update-users
+  name: rhoai-update-users
 subjects:
   - kind: Group
     apiGroup: rbac.authorization.k8s.io
-    name: rhods-admins
+    name: rhoai-admins
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: rhods-update-users
+  name: rhoai-update-users

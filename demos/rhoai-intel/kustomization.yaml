@@ -3,8 +3,8 @@ kind: Kustomization
 
 resources:
   - ../base
-  - ../base/rhods
-  - ../base/rhods-intel
+  - ../base/rhoai
+  - ../base/rhoai-intel
 
 patches:
   - target:

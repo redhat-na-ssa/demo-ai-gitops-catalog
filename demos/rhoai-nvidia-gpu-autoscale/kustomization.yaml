@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ../base
   - ../base/nvidia-gpu-autoscale
-  - ../base/rhods
+  - ../base/rhoai
 
 patches:
   - target:

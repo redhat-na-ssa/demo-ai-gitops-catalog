@@ -15,4 +15,4 @@ subjects:
   name: darkrainbow
 - apiGroup: rbac.authorization.k8s.io
   kind: Group
-  name: rhods-admins
+  name: rhoai-admins

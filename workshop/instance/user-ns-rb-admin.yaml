@@ -1,4 +1,4 @@
-# klude: rhods / rhoai can not visualize multiple subjects
+# klude: rhoai / rhoai can not visualize multiple subjects
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -19,12 +19,12 @@ subjects:
   name: user0
 - apiGroup: rbac.authorization.k8s.io
   kind: Group
-  name: rhods-admins
+  name: rhoai-admins
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: rhods-admins
+  name: rhoai-admins
   namespace: user0
   labels:
     owner: workshop
@@ -37,7 +37,7 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: Group
-  name: rhods-admins
+  name: rhoai-admins
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding

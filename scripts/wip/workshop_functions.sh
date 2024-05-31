@@ -171,7 +171,7 @@ workshop_stop_active_notebooks(){
   # stop notebooks
   oc annotate notebooks kubeflow-resource-stopped='now' --all -A
 
-  # oc -n rhods-notebooks \
+  # oc -n rhoai-notebooks \
   #   delete po -l app=jupyterhub
 }
 

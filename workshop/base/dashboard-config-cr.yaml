@@ -15,8 +15,8 @@ spec:
     disableBYONImageStream: false
     disableTracking: false
   groupsConfig:
-    adminGroups: 'rhods-admins,workshop-admins'
-    allowedGroups: 'system:authenticated,rhods-users'
+    adminGroups: 'rhoai-admins,workshop-admins'
+    allowedGroups: 'system:authenticated,rhoai-users'
   modelServerSizes:
     # - name: Small
     #   resources:
@@ -44,7 +44,7 @@ spec:
     #       memory: 16Gi
   notebookController:
     enabled: true
-    notebookNamespace: rhods-notebooks
+    notebookNamespace: rhoai-notebooks
     pvcSize: 10Gi
     # gpuSetting: '4'
   notebookSizes:
