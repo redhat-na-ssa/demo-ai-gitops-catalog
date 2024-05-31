@@ -5,20 +5,6 @@ resources:
   - ../base
   - ../base/rhoai
 
-  # - ../../../components/configs/kustomized/custom-notebook-images/overlays/rhoai
-  # - ../../../components/configs/kustomized/minio/overlays/with-namespace
-  # - ../../../components/configs/kustomized/rhoai-config
-  # - ../../../components/configs/kustomized/rhoai-config-patches
-  # - ../../../components/configs/kustomized/rhoai-data-connector/overlays/group-project
-  # - ../../../components/configs/kustomized/rhoai-data-connector/overlays/kserve-project
-  # - ../../../components/configs/kustomized/rhoai-modelmesh-instances
-  # - ../../../components/configs/kustomized/rhoai-modelmesh-runtimes
-  # - ../../../components/configs/kustomized/rhoai-kserve-instances
-  # - ../../../components/configs/kustomized/rhoai-notebook
-  # - ../../../components/configs/kustomized/rhoai-pipelines
-  # - ../../../components/configs/kustomized/rhoai-projects
-  # - ../../../components/configs/kustomized/rhoai-trustyai
-
 patches:
   - target:
       kind: ConsoleNotification
@@ -27,8 +13,3 @@ patches:
       - op: replace
         path: /spec/text
         value: 'DEMO: Red Hat OpenShift AI (RHOAI)'
-  # - target:
-  #     group: user.openshift.io
-  #     kind: Group
-  #     name: workshop-users
-  #   path: patch-workshop-users.yaml
