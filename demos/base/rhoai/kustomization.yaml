@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
   - ../../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../../components/operators/rhods-operator/operator/overlays/fast
-  # - ../../../components/operators/rhods-operator/instance/overlays/2.6
+  - ../../../components/operators/rhods-operator/instance/overlays/2.9.1
   - ../../../components/operators/serverless-operator/operator/overlays/stable
   - ../../../components/operators/servicemeshoperator/operator/overlays/stable
