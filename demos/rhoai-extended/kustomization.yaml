@@ -5,8 +5,8 @@ resources:
   - ../rhoai
 
   # - ../../components/configs/kustomized/custom-notebook-images/overlays/rhoai
-  # - ../../components/configs/kustomized/minio/overlays/with-namespace
-  # - ../../components/configs/kustomized/rhoai-config
+  - ../../components/configs/kustomized/minio/overlays/with-namespace
+  - ../../components/configs/kustomized/rhoai-config
   # - ../../components/configs/kustomized/rhoai-config-patches
   # - ../../components/configs/kustomized/rhoai-data-connector/overlays/group-project
   # - ../../components/configs/kustomized/rhoai-data-connector/overlays/kserve-project
@@ -25,7 +25,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Operationalized'
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Extended'
   # - target:
   #     group: user.openshift.io
   #     kind: Group
