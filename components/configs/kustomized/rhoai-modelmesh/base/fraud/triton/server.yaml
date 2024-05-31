@@ -37,7 +37,7 @@ spec:
         --strict-readiness=false \
         --allow-http=true \
         --allow-sagemaker=false
-    image: nvcr.io/nvidia/tritonserver:23.05-py3
+    image: nvcr.io/nvidia/tritonserver:24.05-py3
     livenessProbe:
       exec:
         command:

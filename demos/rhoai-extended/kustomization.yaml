@@ -11,10 +11,10 @@ resources:
   - ../../components/configs/kustomized/rhoai-data-connector/overlays/kserve-project
   - ../../components/configs/kustomized/rhoai-data-connector/overlays/modelmesh-project
   - ../../components/configs/kustomized/rhoai-modelmesh/overlays/modelmesh-project
-  - ../../components/configs/kustomized/rhoai-modelmesh-runtimes
+  - ../../components/configs/kustomized/rhoai-model-runtimes
   # - ../../components/configs/kustomized/rhoai-kserve-instances
   - ../../components/configs/kustomized/rhoai-notebook/overlays/group-project
-  # - ../../components/configs/kustomized/rhoai-pipelines/overlays/group-project
+  - ../../components/configs/kustomized/rhoai-pipelines/overlays/group-project
   - ../../components/configs/kustomized/rhoai-projects
   - ../../components/configs/kustomized/rhoai-rbac
   - ../../components/configs/kustomized/rhoai-rbac-notebooks
