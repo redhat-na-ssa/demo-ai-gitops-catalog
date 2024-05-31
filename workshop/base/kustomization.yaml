@@ -12,7 +12,7 @@ resources:
 # - ../../components/configs/kustomized/rhoai-pipelines
 # - ../../components/configs/kustomized/rhoai-projects
 - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
-- ../../components/operators/rhods-operator/operator/overlays/stable
+- ../../components/operators/rhods-operator/operator/overlays/fast
 - ../../components/operators/rhods-operator/instance/overlays/2.6
 - ../../components/operators/serverless-operator/operator/overlays/stable
 - ../../components/operators/servicemeshoperator/operator/overlays/stable
