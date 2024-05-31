@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ds-individual-project
+  name: ds-individual
   annotations:
     openshift.io/description: |
       A personal project to explore alone
@@ -10,6 +10,5 @@ metadata:
     openshift.io/display-name: A Single User Project
     openshift.io/requester: claymore
   labels:
-    kubernetes.io/metadata.name: individual-project
-    modelmesh-enabled: 'true'
+    kubernetes.io/metadata.name: individual
     opendatahub.io/dashboard: 'true'

@@ -6,8 +6,7 @@ commonLabels:
 
 resources:
   - group
-  # - hybrid
-  # - individual
-  # - kserve
-  # - modelmesh
-  # - open
+  - individual
+  - kserve
+  - modelmesh
+  - open

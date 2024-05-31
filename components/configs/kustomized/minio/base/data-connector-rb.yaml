@@ -12,7 +12,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: data-connection-setup
-  namespace: ds-group-project
+  namespace: ds-group
 - kind: ServiceAccount
   name: data-connection-setup
   namespace: ds-kserve-project

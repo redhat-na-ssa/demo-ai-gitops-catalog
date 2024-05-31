@@ -34,7 +34,7 @@ spec:
             --ServerApp.port=8888
             --ServerApp.token=''
             --ServerApp.password=''
-            --ServerApp.base_url=/notebook/ds-group-project/science
+            --ServerApp.base_url=/notebook/ds-group/science
             --ServerApp.quit_button=False
         - name: JUPYTER_IMAGE
           value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2023.1
@@ -46,7 +46,7 @@ spec:
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/ds-group-project/science/api
+            path: /notebook/ds-group/science/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -61,7 +61,7 @@ spec:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/ds-group-project/science/api
+            path: /notebook/ds-group/science/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -93,7 +93,7 @@ spec:
         - --email-domain=*
         - --skip-provider-button
         - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"science","namespace":"$(NAMESPACE)"}
-        # - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/ds-group-project?notebookLogout=science
+        # - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/ds-group?notebookLogout=science
         env:
         - name: NAMESPACE
           valueFrom:
