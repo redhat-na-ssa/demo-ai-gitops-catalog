@@ -12,4 +12,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'DEMO: Red Hat Open Data Science (RHODS)'
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI)'
