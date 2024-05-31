@@ -43,7 +43,7 @@ spec:
         args:
         - -ec
         - |-
-          echo -n 'Waiting for RHODS to deploy ImageStreams'
+          echo -n 'Waiting for RHOAI to deploy ImageStreams'
           while ! oc get -n redhat-ods-applications is ${IMAGE_STREAM} -o name 2>/dev/null; do
             echo -n .
             sleep 5
