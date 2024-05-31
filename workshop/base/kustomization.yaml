@@ -4,13 +4,13 @@ kind: Kustomization
 resources:
 # - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
 - ../../components/configs/kustomized/minio/overlays/with-namespace-known-password
-- ../../components/configs/kustomized/rhods-config
-- ../../components/configs/kustomized/rhods-config-patches
-# - ../../components/configs/kustomized/rhods-data-connector/overlays/group-project
-# - ../../components/configs/kustomized/rhods-data-connector/overlays/kserve-project
-# - ../../components/configs/kustomized/rhods-notebook
-# - ../../components/configs/kustomized/rhods-pipelines
-# - ../../components/configs/kustomized/rhods-projects
+- ../../components/configs/kustomized/rhoai-config
+- ../../components/configs/kustomized/rhoai-config-patches
+# - ../../components/configs/kustomized/rhoai-data-connector/overlays/group-project
+# - ../../components/configs/kustomized/rhoai-data-connector/overlays/kserve-project
+# - ../../components/configs/kustomized/rhoai-notebook
+# - ../../components/configs/kustomized/rhoai-pipelines
+# - ../../components/configs/kustomized/rhoai-projects
 - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
 - ../../components/operators/rhods-operator/operator/overlays/stable
 - ../../components/operators/rhods-operator/instance/overlays/2.6

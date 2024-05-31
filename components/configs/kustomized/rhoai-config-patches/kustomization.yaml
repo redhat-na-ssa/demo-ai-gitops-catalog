@@ -6,6 +6,6 @@ commonLabels:
 
 resources:
   - custom-notebooks-rb.yaml
-  - rhods-admins-crb.yaml
-  - rhods-self-provisioner-crb.yaml
-  - rhods-self-provisioner-group.yaml
+  - admins-crb.yaml
+  - self-provisioner-crb.yaml
+  - self-provisioner-group.yaml
