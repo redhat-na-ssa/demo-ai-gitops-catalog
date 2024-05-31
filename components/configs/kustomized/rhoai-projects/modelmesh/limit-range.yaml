@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: group-project-limit-range
+spec:
+  limits:
+    - type: Container
+      default:
+        memory: 256Mi
+        cpu: 400m
+      defaultRequest:
+        memory: 64Mi
+        cpu: 100m
+      max:
+        cpu: '6'
+        memory: 20Gi

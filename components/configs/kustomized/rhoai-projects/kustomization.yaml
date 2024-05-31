@@ -5,7 +5,9 @@ commonLabels:
   demo: ds-project
 
 resources:
-  - group-project
-  - individual-project
-  - kserve-project
-  - open-project
+  - group
+  # - hybrid
+  # - individual
+  # - kserve
+  # - modelmesh
+  # - open
