@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: authorino-operator
+  namespace: openshift-operators
+spec:
+  channel: managed-services
+  installPlanApproval: Automatic
+  name: authorino-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: authorino-operator.v1.0.1

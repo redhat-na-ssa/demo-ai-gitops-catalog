@@ -1,0 +1,15 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+    # This provider name is prefixed to provider user names to form an identity name.
+  - name: my_htpasswd_provider
+    # Controls how mappings are established between this provider’s identities and User objects.
+    mappingMethod: claim
+    type: HTPasswd
+    htpasswd:
+      fileData:
+        # An existing secret containing a file generated using htpasswd.
+        name: htpass-secret

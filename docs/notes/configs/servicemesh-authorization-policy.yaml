@@ -1,0 +1,19 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: kserve-predictor
+spec:
+  action: CUSTOM
+  provider:
+     name: redhat-ods-applications-auth-provider 
+  rules:
+     - to:
+          - operation:
+               notPaths:
+                  - /healthz
+                  - /debug/pprof/
+                  - /metrics
+                  - /wait-for-drain
+  selector:
+     matchLabels:
+        component: predictor
