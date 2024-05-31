@@ -3,7 +3,7 @@ kind: Template
 metadata:
   annotations:
     opendatahub.io/template-enabled: "true"
-    tags: triton-23.05,servingruntime
+    tags: triton-24.05,servingruntime
     argocd.argoproj.io/sync-wave: "2"
     description: Nvidia Triton Inference Server Runtime Definition
   labels:
@@ -56,7 +56,7 @@ objects:
             sizeLimit: 2Gi
       containers:
         - name: triton
-          image: nvcr.io/nvidia/tritonserver:23.05-py3
+          image: nvcr.io/nvidia/tritonserver:24.05-py3
           command:
             - /bin/sh
             - -c

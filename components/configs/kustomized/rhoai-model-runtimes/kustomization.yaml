@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: redhat-ods-applications
 
 resources:
-  - triton
+- triton-runtime.yaml

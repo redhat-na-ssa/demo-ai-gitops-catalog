@@ -23,7 +23,7 @@ subjects:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job-upload-model
+  name: job-upload-fraud-model
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
@@ -37,6 +37,10 @@ spec:
         image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
         imagePullPolicy: IfNotPresent
         env:
+          - name: MODEL_URL
+            value: https://ai-on-openshift.io/odh-rhoai/img-triton/card.fraud.detection.onnx
+          - name: MODEL_NAME
+            value: card.fraud.detection.onnx
           - name: IMAGE_STREAM
             value: s2i-generic-data-science-notebook
         command: ["/bin/bash"]
@@ -49,21 +53,21 @@ spec:
             sleep 5
           done; echo
       containers:
-      - name: add-model
+      - name: upload-model
         image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:1.2
         imagePullPolicy: IfNotPresent
         command: ["/bin/bash"]
         args:
         - -ec
         - |-
-          curl -sLO https://ai-on-openshift.io/odh-rhods/img-triton/card.fraud.detection.onnx
+          curl -sL ${MODEL_URL} -o ${MODEL_NAME}
           cat << 'EOF' | python3
-          filename = "card.fraud.detection.onnx"
+          filename = os.getenv.get('MODEL_NAME', 'example.onnx')
           import os, boto3
           s3 = boto3.client("s3",
-                            endpoint_url=os.getenv("AWS_S3_ENDPOINT"),
-                            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-                            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
+                            endpoint_url = os.getenv("AWS_S3_ENDPOINT"),
+                            aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID"),
+                            aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY"))
           bucket = os.getenv("AWS_S3_BUCKET")
           if bucket not in [bu["Name"] for bu in s3.list_buckets()["Buckets"]]:
             s3.create_bucket(Bucket=bucket)

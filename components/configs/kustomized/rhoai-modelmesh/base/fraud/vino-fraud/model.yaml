@@ -8,16 +8,16 @@ metadata:
     openshift.io/display-name: Credit Card Fraud - v1
     serving.kserve.io/deploymentMode: ModelMesh
   labels:
-    name: triton-fraud
+    name: vino-fraud
     opendatahub.io/dashboard: "true"
-  name: triton-fraud
+  name: vino-fraud
 spec:
   predictor:
     model:
       modelFormat:
         name: onnx
         version: "1"
-      runtime: triton
+      runtime: vino
       storage:
         key: data-connection-minio
         # download here: https://ai-on-openshift.io/odh-rhods/img-triton/card.fraud.detection.onnx
