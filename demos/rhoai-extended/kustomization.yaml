@@ -13,7 +13,7 @@ resources:
   # - ../../components/configs/kustomized/rhoai-modelmesh-runtimes
   # - ../../components/configs/kustomized/rhoai-kserve-instances
   # - ../../components/configs/kustomized/rhoai-notebook
-  - ../../components/configs/kustomized/rhoai-pipelines/overlays/group-project
+  # - ../../components/configs/kustomized/rhoai-pipelines/overlays/group-project
   - ../../components/configs/kustomized/rhoai-projects
   - ../../components/configs/kustomized/rhoai-rbac
   - ../../components/configs/kustomized/rhoai-rbac-notebooks
