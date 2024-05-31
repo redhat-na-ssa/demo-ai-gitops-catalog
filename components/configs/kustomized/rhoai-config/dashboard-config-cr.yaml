@@ -44,7 +44,7 @@ spec:
     #       memory: 16Gi
   notebookController:
     enabled: true
-    notebookNamespace: rhoai-notebooks
+    notebookNamespace: rhods-notebooks
     pvcSize: 10Gi
     # gpuSetting: '4'
   notebookSizes:
