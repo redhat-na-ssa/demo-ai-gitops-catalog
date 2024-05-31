@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ../rhoai
 
-  # - ../../components/configs/kustomized/custom-notebook-images/overlays/rhoai
+  - ../../components/configs/kustomized/custom-notebook-images/overlays/rhoai
   - ../../components/configs/kustomized/minio/overlays/with-namespace
   - ../../components/configs/kustomized/rhoai-config
   # - ../../components/configs/kustomized/rhoai-config-patches

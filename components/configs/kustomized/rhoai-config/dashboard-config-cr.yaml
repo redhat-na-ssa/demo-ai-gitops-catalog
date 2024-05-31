@@ -27,7 +27,7 @@ spec:
     disableTracking: false
   groupsConfig:
     adminGroups: rhoai-admins
-    allowedGroups: 'system:authenticated,rhoai-users'
+    allowedGroups: 'rhoai-users,system:authenticated'
   modelServerSizes:
     - name: Small
       resources:
