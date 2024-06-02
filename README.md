@@ -94,9 +94,6 @@ apply_firmly demos/devspaces-nvidia-gpu-autoscale
 
 # setup a rhoai demo /w gpu
 apply_firmly demos/rhoai-nvidia-gpu-autoscale
-
-# install all the things
-apply_firmly demos/all-the-things
 ```
 
 Setup an ArgoCD managed cluster
