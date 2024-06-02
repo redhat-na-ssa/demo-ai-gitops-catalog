@@ -70,7 +70,7 @@ apply_firmly bootstrap/web-terminal
 
 NOTE: open a new terminal to activate new configuration
 
-### Cluster Quick Start for OpenShift GitOps
+### Cluster Quick Start for OpenShift
 
 Basic cluster config
 
