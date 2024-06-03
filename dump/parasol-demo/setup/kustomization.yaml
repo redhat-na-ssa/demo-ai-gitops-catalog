@@ -12,12 +12,16 @@ resources:
   - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-user-projects?ref=dev
 
 patches:
+  # - target:
+  #     kind: PersistentVolumeClaim
+  #   patch: |-
+  #     - op: add
+  #       path: /spec/storageClassName
+  #       value: gp3-csi
   - target:
       kind: PersistentVolumeClaim
+      namespace: ic-shared-llm
     patch: |-
-      - op: add
-        path: /spec/storageClassName
-        value: gp3-csi
       - op: replace
         path: /spec/accessModes
         value: ReadWriteOnce
