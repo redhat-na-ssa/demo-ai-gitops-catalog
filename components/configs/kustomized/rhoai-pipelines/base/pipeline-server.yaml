@@ -23,6 +23,7 @@ spec:
       pipelineDBName: mlpipeline
       pvcSize: 10Gi
       username: mlpipeline
+  # bad design: why is this not versioned in apiVersion above?
   dspVersion: v2
   objectStorage:
     disableHealthCheck: false

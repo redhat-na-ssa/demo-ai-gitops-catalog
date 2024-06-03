@@ -373,3 +373,6 @@ wip
 workspaces
 www
 yaml
+llm
+vllm
+openai

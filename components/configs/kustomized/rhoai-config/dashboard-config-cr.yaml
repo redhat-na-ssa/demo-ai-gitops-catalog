@@ -61,6 +61,7 @@ spec:
       key: NotebooksOnly
     pvcSize: 10Gi
   notebookSizes:
+    # kludge: everyone picks the largest, why offer more than one?
     - name: Demo / Workshop
       resources:
         limits:
@@ -93,11 +94,11 @@ spec:
     #     requests:
     #       cpu: '7'
     #       memory: 56Gi
-    - name: X Large
-      resources:
-        limits:
-          cpu: '40'
-          memory: 186Gi
-        requests:
-          cpu: '30'
-          memory: 120Gi
+    # - name: X Large
+    #   resources:
+    #     limits:
+    #       cpu: '40'
+    #       memory: 186Gi
+    #     requests:
+    #       cpu: '30'
+    #       memory: 120Gi
