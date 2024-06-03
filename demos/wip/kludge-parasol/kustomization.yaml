@@ -36,6 +36,17 @@ patches:
         path: /spec/accessModes
         value:
           - ReadWriteOnce
+  - target:
+      kind: Deployment
+      name: llm
+      namespace: ic-shared-llm
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/tolerations
+        value:
+          - key: nvidia-gpu-only
+            operator: Exists
+            effect: NoSchedule
   - path: exclude-sc-ceph-rbd.yaml
   - path: exclude-sc-gp3.yaml
   - path: exclude-cm.yaml
