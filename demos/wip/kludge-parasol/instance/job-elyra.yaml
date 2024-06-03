@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-pipeline-secret
+  name: job-pipeline-secret
   namespace: user0
 spec:
   selector: {}

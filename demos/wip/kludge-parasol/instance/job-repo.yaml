@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: clone-repo
+  name: job-clone-repo
   namespace: user0
 spec:
   backoffLimit: 4
