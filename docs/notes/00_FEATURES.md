@@ -60,6 +60,15 @@ RHOAI creates 4x OCP Projects
     - you must also install Operators for Red Hat OpenShift Serverless and Red Hat OpenShift Service Mesh and perform additional configuration. 
     - If you want to add an authorization provider for the single-model serving platform, you must install the Red Hat - Authorino Operator
 
+Cluster Size (for installation):
+|vCPU|Memory|Network Bandwidth|Storeage Bandwidth|Qty|Notes|
+|----|------|-----------------|------------------|---|-----|
+|4   | 16   | up to 12.5 Gbps | up to 10.5 Gbps  |3  |not enough resources|
+|4   | 16   | up to 12.5 Gbps | up to 10.5 Gbps  |4  |minimum required to install|
+
+
+- x4 - m6i.xlarge
+
 ## Links
 
 - [Docs - Link]()

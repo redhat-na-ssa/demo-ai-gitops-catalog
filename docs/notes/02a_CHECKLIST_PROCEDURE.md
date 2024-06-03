@@ -7,8 +7,8 @@ Login to cluster via terminal
 
 `source <(oc completion zsh)`
 
-## 2.2 Adding administrative users for OpenShift Container Platform
-[source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#adding-administrative-users-for-openshift-container-platform_install)
+## Adding administrative users for OpenShift Container Platform
+[Section 2.2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#adding-administrative-users-for-openshift-container-platform_install)
 
 Create an htpasswd file to store the user and password information
 
@@ -44,16 +44,16 @@ Apply the resource to the default OAuth configuration to add the identity provid
 
 > You will have to a few minutes for the account to resolve.
 
-Log in to the cluster as a user from your identity provider, entering the password when prompted
-
-`oc login --insecure-skip-tls-verify=true -u <username> -p <password>`
-
 As kubeadmin, assign the cluster-admin role to perform administrator level tasks.
 
 `oc adm policy add-cluster-role-to-user cluster-admin <user>`
 
-## 2.3 Installing the Red Hat OpenShift AI Operator by using the CLI
-[source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-the-openshift-data-science-operator_operator-install)
+Log in to the cluster as a user from your identity provider, entering the password when prompted
+
+`oc login --insecure-skip-tls-verify=true -u <username> -p <password>`
+
+## Installing the Red Hat OpenShift AI Operator by using the CLI
+[Section 2.3 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-the-openshift-data-science-operator_operator-install)
 
 Create a namespace YAML file, for example, rhoai-operator-ns.yaml
 
@@ -92,7 +92,7 @@ metadata:
   namespace: redhat-ods-operator 
 spec:
   name: rhods-operator
-  channel: stable 
+  channel:  
   source: redhat-operators
   sourceNamespace: openshift-marketplace
 ```
@@ -109,8 +109,8 @@ Check the installed operators for `rhods-operator.redhat-ods-operator`
 Check the created projects `redhat-ods-applications|redhat-ods-monitoring|redhat-ods-operator`
 `oc get projects | grep -i redhat-ods`
 
-## 2.4 Installing and managing Red Hat OpenShift AI components
-[source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-ai-components-using-cli_component-install)
+## Installing and managing Red Hat OpenShift AI components
+[Section 2.4 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-ai-components-using-cli_component-install)
 
 Create a DataScienceCluster object custom resource (CR) file, for example, rhoai-operator-dsc.yaml
 
@@ -146,12 +146,12 @@ spec:
         name: knative-serving       
 ```
 
-Create the DSC object
+Apply the DSC object
 
 `oc create -f docs/notes/configs/rhoai-operator-dcs.yaml`
 
-### 3.3.1. Installing KServe dependencies
-[source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#manually-installing-kserve_serving-large-models)
+### Installing KServe dependencies
+[Section 3.3.1 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#manually-installing-kserve_serving-large-models)
 
 Create the required namespace for Red Hat OpenShift Service Mesh.
 
@@ -173,7 +173,7 @@ spec:
   sourceNamespace: openshift-marketplace
   ```
 
-Create the Service Mesh subscription to install the operator
+Apply the Service Mesh subscription to install the operator
 
 `oc create -f docs/notes/configs/servicemesh-subscription.yaml`
 
@@ -224,7 +224,7 @@ spec:
 
 [Service Mesh configuration definition](https://docs.openshift.com/container-platform/4.15/service_mesh/v2x/ossm-reference-smcp.html)
 
-Create the servicemesh control plane object
+Apply the servicemesh control plane object
 
 `oc create -f docs/notes/configs/servicemesh-scmp.yaml`
 
@@ -240,8 +240,8 @@ istio-ingressgateway-c69849d49-fjswg   1/1     Running   0          59s
 istiod-minimal-5c68bf675d-whrns        1/1     Running   0          68s
 ```
 
-#### 3.3.1.2. Creating a Knative Serving instance
-[source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#creating-a-knative-serving-instance_serving-large-models)
+#### Creating a Knative Serving instance
+[Section 3.3.1.2 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#creating-a-knative-serving-instance_serving-large-models)
 
 Install the Serverless Operator
 
@@ -261,7 +261,7 @@ spec:
     name: minimal
 ```
 
-Create the ServiceMeshMember object in the istio-system namespace
+Apply the ServiceMeshMember object in the istio-system namespace
 
 `oc project -n istio-system && oc apply -f docs/notes/configs/serverless-smm.yaml`
 
@@ -319,7 +319,10 @@ Review the default ServiceMeshMemberRoll object in the istio-system namespace an
 Verify creation of the Knative Serving instance
 `oc get pods -n knative-serving`
 
-#### 3.3.1.3. Creating secure gateways for Knative Serving
+#### Creating secure gateways for Knative Serving
+[Section 3.3.1.3 source]()
+TODO Update
+
 Why? To secure traffic between your Knative Serving instance and the service mesh, you must create secure gateways for your Knative Serving instance.
 
 Set environment variables to define base directories for generation of a wildcard certificate and key for the gateways.
@@ -379,10 +382,6 @@ export TARGET_CUSTOM_KEY=${BASE_CERT_DIR}/wildcard.key
 
 Create a TLS secret in the istio-system namespace using the environment variables that you set for the wildcard certificate and key
 `oc create secret tls wildcard-certs --cert=${TARGET_CUSTOM_CERT} --key=${TARGET_CUSTOM_KEY} -n istio-system`
-
-IF THIS DOES NOT WORK 
-
-`oc create secret tls wildcard-certs --cert=/tmp/kserve/wildcard.crt --key=/tmp/kserve/wildcard.key -n istio-system`
 
 Create a serverless-gateways.yaml YAML file with the following contents
 >Defines a service in the istio-system namespace for the Knative local gateway.
@@ -451,8 +450,8 @@ Apply the serverless-gateways.yaml file to create the defined resources
 Review the gateways that you created
 `oc get gateway --all-namespaces`
 
-### 3.3.3. Manually adding an authorization provider
-[source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#manually-adding-an-authorization-provider_serving-large-models)
+### Manually adding an authorization provider
+[Section 3.3.3 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#manually-adding-an-authorization-provider_serving-large-models)
 
 Why? Adding an authorization provider allows you to enable token authorization for models that you deploy on the platform, which ensures that only authorized parties can make inference requests to the models.
 
@@ -472,14 +471,13 @@ spec:
   startingCSV: authorino-operator.v1.0.1
 ```
 
-Install the Authorino operator
+Apply the Authorino operator
 `oc create -f docs/notes/configs/authorino-subscription.yaml`
-
 
 Create a namespace to install the Authorino instance
 `oc create ns redhat-ods-applications-auth-provider`
 
-To enroll the new namespace for the Authorino instance in your existing OpenShift Service Mesh instance, create a new YAML file authorino-smm.yaml with the following contents
+Enroll the new namespace for the Authorino instance in your existing OpenShift Service Mesh instance, create a new YAML file authorino-smm.yaml with the following contents
 ```yaml
   apiVersion: maistra.io/v1
   kind: ServiceMeshMember
@@ -495,7 +493,7 @@ To enroll the new namespace for the Authorino instance in your existing OpenShif
 Create the ServiceMeshMember resource on your cluster
 `oc create -f docs/notes/configs/authorino-smm.yaml`
 
-To configure an Authorino instance, create a new YAML file as shown
+Configure an Authorino instance, create a new YAML file as shown
 ```yaml
   apiVersion: operator.authorino.kuadrant.io/v1beta1
   kind: Authorino
@@ -522,8 +520,8 @@ Patch the Authorino deployment to inject an Istio sidecar, which makes the Autho
 Check the pods (and containers) that are running in the namespace that you created for the Authorino instance, as shown in the following example
 `oc get pods -n redhat-ods-applications-auth-provider -o="custom-columns=NAME:.metadata.name,STATUS:.status.phase,CONTAINERS:.spec.containers[*].name"`
 
-#### 3.3.3.3. Configuring an OpenShift Service Mesh instance to use Authorino
-[source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#configuring-service-mesh-instance-to-use-authorino_serving-large-models)
+#### Configuring an OpenShift Service Mesh instance to use Authorino
+[Section 3.3.3.3 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#configuring-service-mesh-instance-to-use-authorino_serving-large-models)
 
 Why? you must configure your OpenShift Service Mesh instance to use Authorino as an authorization provider
 
@@ -548,9 +546,9 @@ Inspect the ConfigMap object for your OpenShift Service Mesh instance
 
 Confirm that you see output similar to the following example, which shows that the Authorino instance has been successfully added as an extension provider
 
-#### 3.3.3.4. Configuring authorization for KServe
+#### Configuring authorization for KServe
 
-[source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#configuring-authorization-for-kserve_serving-large-models)
+[Section 3.3.3.4 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#configuring-authorization-for-kserve_serving-large-models)
 
 why? you must create a global AuthorizationPolicy resource that is applied to the KServe predictor pods that are created when you deploy a model. In addition, to account for the multiple network hops that occur when you make an inference request to a model, you must create an EnvoyFilter resource that continually resets the HTTP host header to the one initially included in the inference request.
 
@@ -631,16 +629,20 @@ Check that the AuthorizationPolicy resource was successfully created.
 Check that the EnvoyFilter resource was successfully created.
 `oc get envoyfilter -n istio-system`
 
-## 3.2. Adding a CA bundle
-[source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/working-with-certificates_certs#adding-a-ca-bundle_certs)
+## Adding a CA bundle
+[Section 3.2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/working-with-certificates_certs#adding-a-ca-bundle_certs)
 
 TODO
 
-## Chapter 5. Enabling GPU support in OpenShift AI
-[source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
+## Enabling GPU support in OpenShift AI
+[Section 5 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
 
 TODO
 
+## Configuring distributed workloads
+[Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
+
+TODO
 
 source:
 - https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-data-science-operator-using-cli_operator-install 
