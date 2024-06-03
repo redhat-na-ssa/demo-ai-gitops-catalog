@@ -1,0 +1,53 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # - ../../rhoai-nvidia-gpu-autoscale
+  # - ../../../components/configs/kustomized/rhoai-config
+
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-rhoai-configuration?ref=dev
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-shared-app?ref=dev
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-shared-database?ref=dev
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-shared-img-det?ref=dev
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-shared-llm?ref=dev
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-shared-milvus?ref=dev
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-shared-minio?ref=dev
+  - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-user-projects?ref=dev
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-demo
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Parasol Insurance Workshop'
+  - target:
+      kind: PersistentVolumeClaim
+    patch: |-
+      - op: add
+        path: /spec/storageClassName
+        value: gp3-csi
+  - target:
+      kind: PersistentVolumeClaim
+      namespace: ic-shared-llm
+    patch: |-
+      - op: replace
+        path: /spec/accessModes
+        value:
+          - ReadWriteOnce
+  - target:
+      kind: Deployment
+      name: llm
+      namespace: ic-shared-llm
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/tolerations
+        value:
+          - key: nvidia-gpu-only
+            operator: Exists
+            effect: NoSchedule
+  - path: exclude-sc-ceph-rbd.yaml
+  - path: exclude-sc-gp3.yaml
+  - path: exclude-cm.yaml
+  - path: exclude-acc-profile.yaml
