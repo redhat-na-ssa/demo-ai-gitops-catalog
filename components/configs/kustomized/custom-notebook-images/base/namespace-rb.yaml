@@ -15,11 +15,11 @@ subjects:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: rhoai-notebooks-image-pullers
+  name: rhods-notebooks-image-pullers
 subjects:
   - kind: Group
     apiGroup: rbac.authorization.k8s.io
-    name: 'system:rhoai-notebooks:serviceaccounts'
+    name: 'system:rhods-notebooks:serviceaccounts'
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
