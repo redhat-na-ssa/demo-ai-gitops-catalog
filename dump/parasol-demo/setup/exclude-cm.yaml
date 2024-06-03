@@ -1,0 +1,5 @@
+$patch: delete
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: rook-ceph-operator-config
