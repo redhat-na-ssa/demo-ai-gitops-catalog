@@ -18,7 +18,7 @@ spec:
             sleep 5
           done; echo
 
-          PIPELINE_ROUTE=https://\$(oc get route ds-pipeline-dspa -o jsonpath='{.spec.host}')
+          PIPELINE_ROUTE=https://$(oc get route ds-pipeline-dspa -o jsonpath='{.spec.host}')
           MINIO_ROOT_USER=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_USER|base64decode}}')
           MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
           MINIO_HOST=https://$(oc get route minio-s3 -n ic-shared-minio -o template --template '{{.spec.host}}')
