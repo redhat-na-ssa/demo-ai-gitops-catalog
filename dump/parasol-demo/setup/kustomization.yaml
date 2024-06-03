@@ -24,6 +24,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/accessModes
-        value: ReadWriteOnce
+        value: | 
+          - ReadWriteOnce
   # - path: exclude-sc-ceph.yaml
   - path: exclude-sc-gp3.yaml
