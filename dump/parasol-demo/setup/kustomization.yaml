@@ -12,7 +12,9 @@ resources:
   - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-user-projects?ref=dev
 
 patches:
-  - patch: |-
+  - target:
+      kind: PersistentVolumeClaim
+    patch: |-
       - op: delete
         path: /spec/storageClassName
   - path: exclude-sc.yaml
