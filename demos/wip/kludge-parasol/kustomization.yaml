@@ -50,4 +50,4 @@ patches:
   - path: exclude-sc-ceph-rbd.yaml
   - path: exclude-sc-gp3.yaml
   - path: exclude-cm.yaml
-  # - path: exclude-acc-profile.yaml
+  - path: exclude-acc-profile.yaml
