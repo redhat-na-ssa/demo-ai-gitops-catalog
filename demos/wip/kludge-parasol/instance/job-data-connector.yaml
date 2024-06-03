@@ -1,0 +1,53 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-data-connector
+  namespace: user0
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - -ec
+        - |-
+          echo -n "Waiting for minio-root-user to exist"
+          while [ -z "$(oc get secret -n ic-shared-minio minio-root-user -o name 2>/dev/null)" ]
+          do
+            echo -n '.'
+            sleep 1
+          done; echo
+
+          MINIO_ROOT_USER=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_USER|base64decode}}')
+          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+
+          echo "Minio user: $MINIO_ROOT_USER"
+          echo "Minio pass: $MINIO_ROOT_PASSWORD"
+          echo "Internal service url: http://minio.ic-shared-minio.svc.cluster.local:9000/"
+          cat << EOF | oc apply -f-
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: aws-connection-minio
+            labels:
+              opendatahub.io/dashboard: "true"
+              opendatahub.io/managed: "true"
+            annotations:
+              opendatahub.io/connection-type: s3
+              openshift.io/display-name: Shared Minio - pipelines
+          type: Opaque
+          stringData:
+            AWS_ACCESS_KEY_ID: $MINIO_ROOT_USER
+            AWS_SECRET_ACCESS_KEY: $MINIO_ROOT_PASSWORD
+            AWS_DEFAULT_REGION: us
+            AWS_S3_ENDPOINT: http://minio.ic-shared-minio.svc:9000
+            AWS_S3_BUCKET: $USER_NAME
+          EOF
+        command:
+        - /bin/bash
+        image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:95b359257a7716b5f8d3a672081a84600218d8f58ca720f46229f7bb893af2ab
+        imagePullPolicy: IfNotPresent
+        name: create-ds-connections
+      restartPolicy: Never
+      serviceAccount: demo-setup
+      serviceAccountName: demo-setup

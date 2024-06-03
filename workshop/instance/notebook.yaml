@@ -94,7 +94,7 @@ spec:
         - --email-domain=*
         - --skip-provider-button
         - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"fraud-detection","namespace":"$(NAMESPACE)"}
-        # - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/ds-group-project?notebookLogout=fraud-detection
+        # - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-xx7jv.xx7jv.sandbox1365.opentlc.com/projects/ds-group?notebookLogout=fraud-detection
         env:
         - name: NAMESPACE
           valueFrom:

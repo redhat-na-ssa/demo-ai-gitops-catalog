@@ -5,8 +5,8 @@ resources:
   - ../base
   - ../base/devspaces
   - ../base/nvidia-gpu-autoscale
-  - ../base/rhods
-  - ../base/rhods-intel
+  - ../base/rhoai
+  - ../components/rhoai-intel
 
 patches:
   - target:
@@ -15,4 +15,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'DEMO: Red Hat Open Data Science (RHODS) and Dev Spaces w/ GPUs'
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI) and Dev Spaces w/ GPUs'

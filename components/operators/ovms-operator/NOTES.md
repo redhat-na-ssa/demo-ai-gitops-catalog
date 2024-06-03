@@ -11,7 +11,7 @@ Does this really make it easier for someone to have a notebook that is "supporte
 
 ## Notebook instances
 
-You can create notebook CRs that create image streams compatible with RHODS.
+You can create notebook CRs that create image streams compatible with RHOAI.
 
 2023-11-03
 

@@ -9,6 +9,7 @@ AmazonSageMakerFullAccess
 Analytics
 Ansible
 ArgoCD
+Authorino
 Bitnami
 CICD
 CIDR
@@ -120,6 +121,7 @@ addr
 adhoc
 adm
 ai
+aiservices
 alongsecret
 amq
 api
@@ -155,7 +157,6 @@ clusterissuer
 clusterpolicies
 clusterrolebinding
 cmd
-redhat-na-ssa
 composable
 conf
 config
@@ -310,6 +311,7 @@ rc
 rcd
 rclone
 redhat
+redhat-na-ssa
 redistributions
 repo
 reusability
@@ -317,6 +319,7 @@ rh
 rhacs
 rhdp
 rhel
+rhoai
 rhoas
 rhods
 rhpds
@@ -370,3 +373,6 @@ wip
 workspaces
 www
 yaml
+llm
+vllm
+openai

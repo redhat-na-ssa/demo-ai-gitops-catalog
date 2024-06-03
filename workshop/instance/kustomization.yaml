@@ -12,9 +12,9 @@ resources:
 - notebook.yaml
 - pvc.yaml
 - quota.yaml
-- user-ns-rb-admin.yaml
-# - user-ns-rb-view.yaml
-- user-ns.yaml
+- ns-rb-admin.yaml
+# - ns-rb-view.yaml
+- ns.yaml
 
 patches:
   - patch: |-
