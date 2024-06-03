@@ -12,14 +12,14 @@ metadata:
     openshift.io/display-name: My Workbench
     notebooks.opendatahub.io/last-image-selection: 'ic-workbench:2.1.2'
     notebooks.opendatahub.io/last-size-selection: Standard
-    opendatahub.io/username: $USER_NAME
+    opendatahub.io/username: user0
   name: my-workbench
   namespace: user0
   labels:
     app: my-workbench
     opendatahub.io/dashboard: 'true'
     opendatahub.io/odh-managed: 'true'
-    opendatahub.io/user: $USER_NAME
+    opendatahub.io/user: user0
 spec:
   template:
     spec:
@@ -61,7 +61,7 @@ spec:
                                   --ServerApp.password=''
                                   --ServerApp.base_url=/notebook/user0/my-workbench
                                   --ServerApp.quit_button=False
-                                  --ServerApp.tornado_settings={"user":"$USER_NAME","hub_host":"$DASHBOARD_ROUTE","hub_prefix":"/projects/user0"}
+                                  --ServerApp.tornado_settings={"user":"user0","hub_host":"$DASHBOARD_ROUTE","hub_prefix":"/projects/user0"}
             - name: JUPYTER_IMAGE
               value: >-
                 image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench:2.1.2
