@@ -24,18 +24,14 @@ patches:
         value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Parasol Insurance Workshop'
   - target:
       kind: PersistentVolumeClaim
-    patch: |-
-      - op: add
-        path: /spec/storageClassName
-        value: gp3-csi
-  - target:
-      kind: PersistentVolumeClaim
       namespace: ic-shared-llm
     patch: |-
       - op: replace
         path: /spec/accessModes
         value:
           - ReadWriteOnce
+      - op: remove
+        path: /spec/storageClassName
   - target:
       kind: Deployment
       name: llm
