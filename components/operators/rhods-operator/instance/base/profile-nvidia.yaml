@@ -7,11 +7,13 @@ metadata:
   namespace: redhat-ods-applications
 spec:
   description: Default Nvidia GPU Profile
-  displayName: Nvidia
+  displayName: Nvidia GPU
   enabled: true
   identifier: nvidia.com/gpu
   tolerations:
     - effect: NoSchedule
-      operator: Equal
+      operator: Exists
       key: nvidia-gpu-only
-      value: ""
+    - effect: NoSchedule
+      key: nvidia.com/gpu
+      operator: Exists
