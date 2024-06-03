@@ -16,6 +16,12 @@ patches:
         path: /metadata/name
         value: image-puller-workbench
       - op: replace
+        path: /spec/template/spec/tolerations
+        value:
+          - effect: NoSchedule
+            key: nvidia.com/gpu
+            operator: Exists
+      - op: replace
         path: /spec/template/spec/containers
         value:
           - name: ic-workbench
