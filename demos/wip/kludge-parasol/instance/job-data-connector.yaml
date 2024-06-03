@@ -12,7 +12,7 @@ spec:
         - -ec
         - |-
           echo -n "Waiting for minio-root-user to exist"
-          while [ -z "\$(oc get secret -n ic-shared-minio minio-root-user -oname 2>/dev/null)" ]; do
+          while [ -z "$(oc get secret -n ic-shared-minio minio-root-user -oname 2>/dev/null)" ]; do
             echo -n '.'
             sleep 1
           done; echo
