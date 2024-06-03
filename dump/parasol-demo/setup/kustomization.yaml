@@ -18,5 +18,5 @@ patches:
       - op: add
         path: /spec/storageClassName
         value: null
-  - path: exclude-sc-ceph.yaml
+  # - path: exclude-sc-ceph.yaml
   - path: exclude-sc-gp3.yaml
