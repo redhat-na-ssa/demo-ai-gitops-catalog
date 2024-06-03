@@ -1,0 +1,47 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-pipeline-secret
+  namespace: user0
+spec:
+  selector: {}
+  template:
+    spec:
+      containers:
+      - args:
+        - -ec
+        - |-
+          echo -n 'Waiting for ds-pipeline-pipelines-definition route'
+          while ! oc get route ds-pipeline-pipelines-definition 2>/dev/null; do
+            echo -n .
+            sleep 5
+          done; echo
+
+          PIPELINE_ROUTE=https://\$(oc get route ds-pipeline-pipelines-definition -o jsonpath='{.spec.host}')
+
+          cat << EOF | oc apply -f-
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: ds-pipeline-config
+            namespace: user0
+          stringData:
+            odh_dsp.json: '{"display_name": "Data Science Pipeline", "metadata": {"tags": [],
+              "display_name": "Data Science Pipeline", "engine": "Tekton", "auth_type": "KUBERNETES_SERVICE_ACCOUNT_TOKEN",
+              "api_endpoint": "\$PIPELINE_ROUTE",
+              "public_api_endpoint": "$DASHBOARD_ROUTE/pipelineRuns/user0/pipelineRun/view/",
+              "cos_auth_type": "KUBERNETES_SECRET", "cos_secret": "aws-connection-shared-minio---pipelines",
+              "cos_endpoint": "$MINIO_HOST", "cos_bucket": "$USER_NAME",
+              "cos_username": "$MINIO_ROOT_USER", "cos_password": "$MINIO_ROOT_PASSWORD",
+              "runtime_type": "KUBEFLOW_PIPELINES"}, "schema_name": "kfp"}'
+          type: Opaque
+          EOF
+        command:
+        - /bin/bash
+        image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:95b359257a7716b5f8d3a672081a84600218d8f58ca720f46229f7bb893af2ab
+        imagePullPolicy: IfNotPresent
+        name: create-ds-connections
+      restartPolicy: Never
+      serviceAccount: demo-setup
+      serviceAccountName: demo-setup

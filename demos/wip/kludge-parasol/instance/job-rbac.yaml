@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: demo-setup
+  namespace: user0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: demo-setup-edit
+  namespace: user0
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: demo-setup
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: demo-setup-route-reader-binding-user0
+subjects:
+- kind: ServiceAccount
+  name: demo-setup
+  namespace: user0
+roleRef:
+  kind: ClusterRole
+  name: route-reader
+  apiGroup: rbac.authorization.k8s.io

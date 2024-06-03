@@ -1,0 +1,60 @@
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: elyra-pipelines-my-workbench
+  namespace: user0
+  labels:
+    opendatahub.io/dashboard: 'true'
+subjects:
+  - kind: ServiceAccount
+    name: my-workbench
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ds-pipeline-user-access-pipelines-definition
+---
+apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
+kind: DataSciencePipelinesApplication
+metadata:
+  finalizers:
+  - datasciencepipelinesapplications.opendatahub.io/finalizer
+  name: pipelines-definition
+  namespace: user0
+spec:
+  apiServer:
+    applyTektonCustomResource: true
+    archiveLogs: false
+    autoUpdatePipelineDefaultVersion: true
+    collectMetrics: true
+    dbConfigConMaxLifetimeSec: 120
+    deploy: true
+    enableOauth: true
+    enableSamplePipeline: false
+    injectDefaultScript: true
+    stripEOF: true
+    terminateStatus: Cancelled
+    trackArtifacts: true
+  database:
+    mariaDB:
+      deploy: true
+      pipelineDBName: mlpipeline
+      pvcSize: 10Gi
+      username: mlpipeline
+  objectStorage:
+    externalStorage:
+      bucket: $USER_NAME
+      host: minio.ic-shared-minio.svc.cluster.local:9000
+      port: ''
+      s3CredentialsSecret:
+        accessKey: AWS_ACCESS_KEY_ID
+        secretKey: AWS_SECRET_ACCESS_KEY
+        secretName: aws-connection-shared-minio---pipelines
+      scheme: http
+      secure: false
+  persistenceAgent:
+    deploy: true
+    numWorkers: 2
+  scheduledWorkflow:
+    cronScheduleTimezone: UTC
+    deploy: true
