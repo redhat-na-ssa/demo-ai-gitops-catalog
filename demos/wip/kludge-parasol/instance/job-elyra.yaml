@@ -12,13 +12,13 @@ spec:
       - args:
         - -ec
         - |-
-          echo -n 'Waiting for ds-pipeline-pipelines-definition route'
-          while ! oc get route ds-pipeline-pipelines-definition 2>/dev/null; do
+          echo -n 'Waiting for ds-pipeline-dspa route'
+          while ! oc get route ds-pipeline-dspa 2>/dev/null; do
             echo -n .
             sleep 5
           done; echo
 
-          PIPELINE_ROUTE=https://\$(oc get route ds-pipeline-pipelines-definition -o jsonpath='{.spec.host}')
+          PIPELINE_ROUTE=https://\$(oc get route ds-pipeline-dspa -o jsonpath='{.spec.host}')
 
           cat << EOF | oc apply -f-
           apiVersion: v1
