@@ -7,8 +7,9 @@ The scripting is also difficult to follow and repair - lots of glue code
 ## Quick Start
 
 ```sh
-# oc apply -k dump/parasol-demo
-apply_firmly .
+apply_firmly demos/rhoai
+apply_firmly components/configs/kustomized/rhoai-config
+apply_firmly demos/wip/kludge-parasol
 ```
 
 ## Links
