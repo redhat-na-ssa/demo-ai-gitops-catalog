@@ -15,6 +15,13 @@ resources:
 
 patches:
   - target:
+      kind: ConsoleNotification
+      name: banner-demo
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Parasol Insurance Workshop'
+  - target:
       kind: PersistentVolumeClaim
     patch: |-
       - op: add
