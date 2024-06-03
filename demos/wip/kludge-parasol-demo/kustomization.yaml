@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../rhoai
+  - ../../../components/configs/kustomized/rhoai-config
 
   - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-rhoai-configuration?ref=dev
   - https://github.com/rh-aiservices-bu/parasol-insurance/bootstrap/ic-shared-app?ref=dev
