@@ -1,6 +1,8 @@
 #!/bin/bash
 # set -x
 
+# shellcheck disable=SC2034
+
 RED='\033[1;31m'
 BLUE='\033[1;36m'
 PURPLE='\033[1;35m'

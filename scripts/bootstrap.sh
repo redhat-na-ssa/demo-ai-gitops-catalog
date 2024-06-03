@@ -1,6 +1,8 @@
 #!/bin/bash
 # set -e
 
+# shellcheck disable=SC2034
+
 # 8 seconds is usually enough time for the average user to realize they foobar
 export SLEEP_SECONDS=8
 

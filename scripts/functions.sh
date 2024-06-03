@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC1091
+# shellcheck disable=SC1091,SC2034
 
 RED='\033[1;31m'
 BLUE='\033[1;36m'
