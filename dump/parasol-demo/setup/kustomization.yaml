@@ -15,6 +15,7 @@ patches:
   - target:
       kind: PersistentVolumeClaim
     patch: |-
-      - op: remove
+      - op: add
         path: /spec/storageClassName
+        value: null
   - path: exclude-sc.yaml
