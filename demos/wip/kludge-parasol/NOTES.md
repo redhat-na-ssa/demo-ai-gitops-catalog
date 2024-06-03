@@ -7,7 +7,8 @@ The scripting is also difficult to follow and repair - lots of glue code
 ## Quick Start
 
 ```sh
-apply_firmly demos/rhoai
+apply_firmly clusters/default
+apply_firmly demos/rhoai-nvidia-gpu-autoscale
 apply_firmly components/configs/kustomized/rhoai-config
 apply_firmly demos/wip/kludge-parasol
 ```
