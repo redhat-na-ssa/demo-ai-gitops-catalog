@@ -19,6 +19,10 @@ spec:
           done; echo
 
           PIPELINE_ROUTE=https://\$(oc get route ds-pipeline-dspa -o jsonpath='{.spec.host}')
+          MINIO_ROOT_USER=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_USER|base64decode}}')
+          MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
+          MINIO_HOST=https://$(oc get route minio-s3 -n ic-shared-minio -o template --template '{{.spec.host}}')
+          DASHBOARD_ROUTE=https://$(oc get route rhods-dashboard -n redhat-ods-applications -o jsonpath='{.spec.host}')
 
           cat << EOF | oc apply -f-
           apiVersion: v1
@@ -29,7 +33,7 @@ spec:
           stringData:
             odh_dsp.json: '{"display_name": "Data Science Pipeline", "metadata": {"tags": [],
               "display_name": "Data Science Pipeline", "engine": "Tekton", "auth_type": "KUBERNETES_SERVICE_ACCOUNT_TOKEN",
-              "api_endpoint": "\$PIPELINE_ROUTE",
+              "api_endpoint": "$PIPELINE_ROUTE",
               "public_api_endpoint": "$DASHBOARD_ROUTE/pipelineRuns/user0/pipelineRun/view/",
               "cos_auth_type": "KUBERNETES_SECRET", "cos_secret": "aws-connection-minio",
               "cos_endpoint": "$MINIO_HOST", "cos_bucket": "$USER_NAME",
