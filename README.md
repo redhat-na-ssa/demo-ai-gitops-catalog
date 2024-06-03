@@ -59,6 +59,8 @@ git clone < repo url >
 
 Use an [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html)
 
+NOTE: Due to a bug you may need to install the web terminal operator at version 1.7 and upgrade in order for it to work correctly.
+
 ```
 YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
 . <(curl -s "${YOLO_URL}")
