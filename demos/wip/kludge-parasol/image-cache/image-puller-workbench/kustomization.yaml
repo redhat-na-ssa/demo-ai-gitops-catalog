@@ -20,7 +20,6 @@ patches:
         value:
           - name: ic-workbench
             image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench:2.1.2
-            restartPolicy: Never
             command:
               - echo
               - ok
@@ -32,7 +31,6 @@ patches:
                 memory: 10Mi
           - name: vscode
             image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench-vscode:2023c
-            restartPolicy: Never
             command:
               - echo
               - ok

@@ -13,6 +13,7 @@ spec:
       labels:
         name: image-puller
     spec:
+      restartPolicy: Never
       containers:
       - name: tools
         image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
