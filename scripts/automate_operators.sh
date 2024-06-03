@@ -1,9 +1,16 @@
 #!/bin/bash
 # set -x
 
+RED='\033[1;31m'
+BLUE='\033[1;36m'
+PURPLE='\033[1;35m'
+ORANGE='\033[0;33m'
+NC='\033[0m' # No Color
+
 check_shell(){
-  [[ "${0}" =~ "bash" ]] && return
-  echo "Please verify you are running in bash shell"
+  [ -n "$BASH_VERSION" ] && return
+  echo -e "${ORANGE}WARNING: These scripts are ONLY tested in a bash shell${NC}"
+  sleep "${SLEEP_SECONDS:-8}"
 }
 
 check_shell
