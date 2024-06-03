@@ -17,9 +17,7 @@ roleRef:
 apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
 kind: DataSciencePipelinesApplication
 metadata:
-  finalizers:
-  - datasciencepipelinesapplications.opendatahub.io/finalizer
-  name: pipelines-definition
+  name: dspa
   namespace: user0
 spec:
   apiServer:
@@ -43,13 +41,13 @@ spec:
       username: mlpipeline
   objectStorage:
     externalStorage:
-      bucket: $USER_NAME
-      host: minio.ic-shared-minio.svc.cluster.local:9000
-      port: ''
+      bucket: user0
+      host: minio.ic-shared-minio.svc.cluster.local
+      port: '9000'
       s3CredentialsSecret:
         accessKey: AWS_ACCESS_KEY_ID
         secretKey: AWS_SECRET_ACCESS_KEY
-        secretName: aws-connection-shared-minio---pipelines
+        secretName: aws-connection-minio
       scheme: http
       secure: false
   persistenceAgent:

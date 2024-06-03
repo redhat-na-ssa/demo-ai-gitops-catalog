@@ -31,7 +31,7 @@ spec:
               "display_name": "Data Science Pipeline", "engine": "Tekton", "auth_type": "KUBERNETES_SERVICE_ACCOUNT_TOKEN",
               "api_endpoint": "\$PIPELINE_ROUTE",
               "public_api_endpoint": "$DASHBOARD_ROUTE/pipelineRuns/user0/pipelineRun/view/",
-              "cos_auth_type": "KUBERNETES_SECRET", "cos_secret": "aws-connection-shared-minio---pipelines",
+              "cos_auth_type": "KUBERNETES_SECRET", "cos_secret": "aws-connection-minio",
               "cos_endpoint": "$MINIO_HOST", "cos_bucket": "$USER_NAME",
               "cos_username": "$MINIO_ROOT_USER", "cos_password": "$MINIO_ROOT_PASSWORD",
               "runtime_type": "KUBEFLOW_PIPELINES"}, "schema_name": "kfp"}'
