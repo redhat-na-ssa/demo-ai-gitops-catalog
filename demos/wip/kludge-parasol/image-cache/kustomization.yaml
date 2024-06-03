@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: image-puller
 
 resources:
+- image-puller-app
 - image-puller-workbench
 - namespace.yaml

@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: image-puller
+
+resources:
+- ../../../../../components/configs/kustomized/image-puller/base
+
+patches:
+  - target:
+      group: apps
+      kind: DaemonSet
+      name: image-puller
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: image-puller-app
+      - op: replace
+        path: /spec/template/spec/tolerations
+        value:
+          - effect: NoSchedule
+            key: nvidia.com/gpu
+            operator: Exists
+      - op: replace
+        path: /spec/template/spec/containers
+        value:
+          - name: ic-app
+            image: quay.io/rh-aiservices-bu/rhoai-lab-insurance-claim-app:2.1.2
+            command:
+              - sleep
+              - infinity
+            resources:
+              limits:
+                memory: 20Mi
+              requests:
+                cpu: 10m
+                memory: 10Mi
