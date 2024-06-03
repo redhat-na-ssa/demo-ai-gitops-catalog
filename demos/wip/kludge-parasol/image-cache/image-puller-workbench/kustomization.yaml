@@ -21,8 +21,8 @@ patches:
           - name: ic-workbench
             image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench:2.1.2
             command:
-              - echo
-              - ok
+              - sleep
+              - infinity
             resources:
               limits:
                 memory: 20Mi
@@ -32,8 +32,8 @@ patches:
           - name: vscode
             image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench-vscode:2023c
             command:
-              - echo
-              - ok
+              - sleep
+              - infinity
             resources:
               limits:
                 memory: 20Mi
