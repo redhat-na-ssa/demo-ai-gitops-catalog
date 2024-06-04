@@ -19,11 +19,9 @@ The scripting is also difficult to follow and repair - lots of glue code
 # setup base cluster
 apply_firmly clusters/default
 # setup base rhoai
-apply_firmly demos/rhoai-nvidia-gpu-autoscale
-
-# setup demo things
-apply_firmly components/configs/kustomized/rhoai-config
-apply_firmly demos/wip/kludge-parasol
+apply_firmly demos/wip/kludge-parasol/00-prereqs
+# setup demo
+apply_firmly demos/wip/kludge-parasol/01-setup
 ```
 
 ## Links
