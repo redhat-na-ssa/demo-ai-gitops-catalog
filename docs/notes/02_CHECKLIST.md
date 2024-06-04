@@ -76,11 +76,26 @@ This is checklist of the technical steps needed to complete the installation of 
       - [ ] Create the EnvoyFilter resource in the namespace for your OpenShift Service Mesh instance
       - [ ] Check that the AuthorizationPolicy resource was successfully created
       - [ ] Check that the EnvoyFilter resource was successfully created
-  - [ ] Adding a CA bundle
+  - [ ] TODO Adding a CA bundle
     - [ ] TODO
-  - [ ] Enabling GPU support in OpenShift AI
-      - [ ] TODO
-  - [ ] Configuring distributed workloads
+  - [ ] TODO Enabling GPU support in OpenShift AI
+      - [ ] Install NFD operator
+      - [ ] Configure NFD operator
+      - [ ] NVIDIA
+        - [ ] Install NVIDIA GPU Operator
+        - [ ] Configure operator
+          - [ ] Time-slicing
+          - [ ] MIG
+          - [ ] Hybrid
+      - [ ] Intel Gaudi
+        - [ ] Install Habana Operator
+        - [ ] Configure operator
+          - [ ] 
+      - [ ] AMD
+        - [ ] Install AMD GPU Operator
+        - [ ] Configure operator
+            - [ ] Partitioning
+  - [ ] TODO Configuring distributed workloads
     - [ ] TODO
   - [ ] Demonstrate Installation and Configuration Declarative Automation (Kustomize, Ansible, Bash, etc.)
 
