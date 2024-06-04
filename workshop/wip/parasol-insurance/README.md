@@ -24,6 +24,9 @@ apply_firmly clusters/default
 apply_firmly workshop/wip/parasol-insurance/00-prereqs
 # setup demo
 apply_firmly workshop/wip/parasol-insurance/01-setup
+
+# setup a single user for testing
+oc apply -k workshop/wip/parasol-insurance/instance
 ```
 
 ## Links
