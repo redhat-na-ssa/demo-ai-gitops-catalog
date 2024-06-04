@@ -252,6 +252,7 @@ libvirt
 lifecycle
 linkedin
 linux
+llm
 localhost
 machineset
 managementState
@@ -283,6 +284,7 @@ odo
 ok
 olm
 oneAPI
+openai
 opendatahub
 openldap
 openshift
@@ -297,6 +299,7 @@ popd
 postgres
 pre
 prem
+prereqs
 priorityclass
 prometheus
 provisioner
@@ -365,6 +368,7 @@ untar
 untardir
 useable
 vSphere
+vllm
 vscode
 vsphere
 weaviate
@@ -373,6 +377,3 @@ wip
 workspaces
 www
 yaml
-llm
-vllm
-openai
