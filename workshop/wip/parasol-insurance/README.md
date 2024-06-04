@@ -21,9 +21,9 @@ This demo is:
 # setup base cluster
 apply_firmly clusters/default
 # setup base rhoai
-apply_firmly demos/wip/kludge-parasol/00-prereqs
+apply_firmly workshop/wip/parasol-insurance/00-prereqs
 # setup demo
-apply_firmly demos/wip/kludge-parasol/01-setup
+apply_firmly workshop/wip/parasol-insurance/01-setup
 ```
 
 ## Links
