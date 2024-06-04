@@ -17,7 +17,7 @@ roleRef:
 apiVersion: datasciencepipelinesapplications.opendatahub.io/v1alpha1
 kind: DataSciencePipelinesApplication
 metadata:
-  name: dspa
+  name: pipelines-definition
   namespace: user0
 spec:
   apiServer:
@@ -47,7 +47,7 @@ spec:
       s3CredentialsSecret:
         accessKey: AWS_ACCESS_KEY_ID
         secretKey: AWS_SECRET_ACCESS_KEY
-        secretName: aws-connection-minio
+        secretName: aws-connection-shared-minio---pipelines
       scheme: http
       secure: false
   persistenceAgent:
