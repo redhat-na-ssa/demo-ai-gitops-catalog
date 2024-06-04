@@ -42,8 +42,8 @@ spec:
   objectStorage:
     externalStorage:
       bucket: user0
-      host: minio.ic-shared-minio.svc.cluster.local
-      port: '9000'
+      host: minio.ic-shared-minio.svc.cluster.local:9000
+      port: ''
       s3CredentialsSecret:
         accessKey: AWS_ACCESS_KEY_ID
         secretKey: AWS_SECRET_ACCESS_KEY
