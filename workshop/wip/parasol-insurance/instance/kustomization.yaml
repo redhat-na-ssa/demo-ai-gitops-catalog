@@ -9,7 +9,7 @@ namespace: user0
 resources:
 - dspa.yaml
 - job-data-connector.yaml
-- job-elyra.yaml
+- job-pipeline.yaml
 - job-rbac.yaml
 - job-repo.yaml
 - notebook.yaml
