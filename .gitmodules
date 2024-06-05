@@ -1,3 +1,0 @@
-[submodule "components/containers/web-terminal/src"]
-	path = components/containers/web-terminal/src
-	url = https://github.com/redhat-developer/web-terminal-tooling.git
