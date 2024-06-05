@@ -45,7 +45,7 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
 [ -e ~/ai_ops ] || term_git_setup
 
-[ -d \"\${GIT_ROOT}/scratch/bash\" ] || . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
+[ -d \"\${GIT_ROOT}/scratch/bash\" ] && . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 " >> "${BASHRC}"
 }
 
