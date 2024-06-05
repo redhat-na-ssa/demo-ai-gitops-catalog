@@ -12,13 +12,13 @@ spec:
       - args:
         - -ec
         - |-
-          echo -n 'Waiting for ds-pipeline-dspa route'
-          while ! oc get route ds-pipeline-dspa 2>/dev/null; do
+          echo -n 'Waiting for ds-pipeline-pipelines-definition route'
+          while ! oc get route ds-pipeline-pipelines-definition 2>/dev/null; do
             echo -n .
             sleep 5
           done; echo
 
-          PIPELINE_ROUTE=https://$(oc get route ds-pipeline-dspa -o jsonpath='{.spec.host}')
+          PIPELINE_ROUTE=https://$(oc get route ds-pipeline-pipelines-definition -o jsonpath='{.spec.host}')
           MINIO_ROOT_USER=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_USER|base64decode}}')
           MINIO_ROOT_PASSWORD=$(oc get secret minio-root-user -n ic-shared-minio -o template --template '{{.data.MINIO_ROOT_PASSWORD|base64decode}}')
           MINIO_HOST=https://$(oc get route minio-s3 -n ic-shared-minio -o template --template '{{.spec.host}}')
@@ -35,8 +35,8 @@ spec:
               "display_name": "Data Science Pipeline", "engine": "Tekton", "auth_type": "KUBERNETES_SERVICE_ACCOUNT_TOKEN",
               "api_endpoint": "$PIPELINE_ROUTE",
               "public_api_endpoint": "$DASHBOARD_ROUTE/pipelineRuns/user0/pipelineRun/view/",
-              "cos_auth_type": "KUBERNETES_SECRET", "cos_secret": "aws-connection-minio",
-              "cos_endpoint": "$MINIO_HOST", "cos_bucket": "$USER_NAME",
+              "cos_auth_type": "KUBERNETES_SECRET", "cos_secret": "aws-connection-shared-minio---pipelines",
+              "cos_endpoint": "$MINIO_HOST", "cos_bucket": "user0",
               "cos_username": "$MINIO_ROOT_USER", "cos_password": "$MINIO_ROOT_PASSWORD",
               "runtime_type": "KUBEFLOW_PIPELINES"}, "schema_name": "kfp"}'
           type: Opaque

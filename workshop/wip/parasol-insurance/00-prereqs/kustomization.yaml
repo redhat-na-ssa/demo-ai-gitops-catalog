@@ -23,25 +23,12 @@ patches:
       - op: replace
         path: /spec/channel
         value: stable
-      - op: replace
-        path: /spec/installPlanApproval
-        value: Manual
-      - op: add
-        path: /spec/startingCSV
-        value: rhods-operator.2.8.1
-  - target:
-      kind: Subscription
-      name: gpu-operator-certified
-    patch: |-
-      - op: replace
-        path: /spec/channel
-        value: v23.6
       # - op: replace
       #   path: /spec/installPlanApproval
       #   value: Manual
       - op: add
         path: /spec/startingCSV
-        value: gpu-operator-certified.v23.6.0
+        value: rhods-operator.2.8.1
   - target:
       kind: Job
       name: job-aws-gpu-machineset
@@ -51,6 +38,19 @@ patches:
         value:
           name: INSTANCE_TYPE
           value: g5.2xlarge
+  # - target:
+  #     kind: Subscription
+  #     name: gpu-operator-certified
+  #   patch: |-
+  #     - op: replace
+  #       path: /spec/channel
+  #       value: v23.6
+  #     # - op: replace
+  #     #   path: /spec/installPlanApproval
+  #     #   value: Manual
+  #     - op: add
+  #       path: /spec/startingCSV
+  #       value: gpu-operator-certified.v23.6.0
   # - target:
   #     kind: ConfigMap
   #     name: job-aws-gpu-machineset
