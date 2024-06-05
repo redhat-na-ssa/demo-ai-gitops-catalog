@@ -59,15 +59,10 @@ git clone < repo url >
 
 Use an [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html)
 
-NOTE: Due to a bug you may need to install the web terminal operator at version 1.7 and upgrade in order for it to work correctly.
-
-```
+```sh
 YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
 . <(curl -s "${YOLO_URL}")
 term_init
-
-# make custom web terminal persistent
-apply_firmly bootstrap/web-terminal
 ```
 
 NOTE: open a new terminal to activate new configuration
@@ -169,6 +164,7 @@ scripts/lint.sh
 ## External Links
 
 - [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog)
+- [Enhanced Web Terminal Container](https://github.com/redhat-na-ssa/ocp-web-terminal-enhanced)
 - [AI Pilot Gitops](https://github.com/redhat-na-stp-ai-practice/openshift-ai-pilot-gitops)
 - [ArgoCD - Example](https://github.com/gnunn-gitops/cluster-config)
 - [ArgoCD - Patterns](https://github.com/gnunn-gitops/standards)
