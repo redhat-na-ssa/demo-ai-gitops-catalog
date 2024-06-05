@@ -13,7 +13,7 @@ spec:
   project: cluster-config
   source:
     path: components/demos/instance/airflow
-    repoURL: https://github.com/codekow/demo-ai-gitops-catlog.git
+    repoURL: https://github.com/redhat-na-ssa/demo-ai-gitops-catlog.git
     targetRevision: main
   syncPolicy:
     automated:

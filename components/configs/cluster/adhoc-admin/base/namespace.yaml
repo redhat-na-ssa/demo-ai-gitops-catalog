@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: adhoc-admin
+  annotations:
+    openshift.io/description: |
+      Something is better than nothing!
+      Make gitOps, not ClickOps
+    openshift.io/display-name: Adhoc Admin

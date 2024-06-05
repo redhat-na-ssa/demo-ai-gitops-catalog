@@ -2,20 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-# - ../../components/configs/kustomized/custom-notebook-images/overlays/rhods
-- ../../components/configs/kustomized/minio/overlays/with-namespace-known-password
-- ../../components/configs/kustomized/rhods-config
-- ../../components/configs/kustomized/rhods-config-patches
-# - ../../components/configs/kustomized/rhods-data-connector/overlays/group-project
-# - ../../components/configs/kustomized/rhods-data-connector/overlays/kserve-project
-# - ../../components/configs/kustomized/rhods-notebook
-# - ../../components/configs/kustomized/rhods-pipelines
-# - ../../components/configs/kustomized/rhods-projects
-- ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
-- ../../components/operators/rhods-operator/operator/overlays/stable
-- ../../components/operators/rhods-operator/instance/overlays/2.6
-- ../../components/operators/serverless-operator/operator/overlays/stable
-- ../../components/operators/servicemeshoperator/operator/overlays/stable
+- ../../demos/base/rhoai
+- ../../components/configs/kustomized/rhoai-config
 
 - ../../components/configs/cluster/rbac/overlays/workshop
 - ../../components/configs/cluster/login/overlays/htpasswd

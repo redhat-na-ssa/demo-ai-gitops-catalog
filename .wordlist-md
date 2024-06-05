@@ -9,6 +9,7 @@ AmazonSageMakerFullAccess
 Analytics
 Ansible
 ArgoCD
+Authorino
 Bitnami
 CICD
 CIDR
@@ -120,6 +121,7 @@ addr
 adhoc
 adm
 ai
+aiservices
 alongsecret
 amq
 api
@@ -155,7 +157,6 @@ clusterissuer
 clusterpolicies
 clusterrolebinding
 cmd
-codekow
 composable
 conf
 config
@@ -251,6 +252,7 @@ libvirt
 lifecycle
 linkedin
 linux
+llm
 localhost
 machineset
 managementState
@@ -282,6 +284,7 @@ odo
 ok
 olm
 oneAPI
+openai
 opendatahub
 openldap
 openshift
@@ -296,6 +299,7 @@ popd
 postgres
 pre
 prem
+prereqs
 priorityclass
 prometheus
 provisioner
@@ -310,6 +314,7 @@ rc
 rcd
 rclone
 redhat
+redhat-na-ssa
 redistributions
 repo
 reusability
@@ -317,6 +322,7 @@ rh
 rhacs
 rhdp
 rhel
+rhoai
 rhoas
 rhods
 rhpds
@@ -362,6 +368,7 @@ untar
 untardir
 useable
 vSphere
+vllm
 vscode
 vsphere
 weaviate

@@ -195,7 +195,7 @@ download_kubectl-operator(){
 download_crane(){
   BIN_VERSION=0.19.1
   DOWNLOAD_URL=https://github.com/google/go-containerregistry/releases/download/v${BIN_VERSION}/go-containerregistry_Linux_x86_64.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" *crane
+  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" {crane,gcrane}
 }
 
 download_busybox(){

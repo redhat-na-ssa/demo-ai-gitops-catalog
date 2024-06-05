@@ -7,8 +7,8 @@ WORKDIR ${LS_DIR}
 
 # copy and install dependencies
 COPY --chown=1001:0 requirements.txt .
-RUN pip3 install --no-cache -U pip setuptools wheel && \
-    pip3 install --no-cache -r requirements.txt
+RUN pip3 install --no-cache-dir -U pip setuptools wheel && \
+    pip3 install --no-cache-dir -r requirements.txt
 
 COPY --chown=1001:0 entrypoint.sh /opt/app-root/bin
 

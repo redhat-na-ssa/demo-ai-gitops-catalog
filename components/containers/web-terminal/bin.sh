@@ -1,1 +1,0 @@
-../../../scripts/library/bin.sh

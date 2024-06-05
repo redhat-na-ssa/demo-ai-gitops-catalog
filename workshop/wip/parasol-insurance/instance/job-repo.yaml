@@ -1,0 +1,37 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-clone-repo
+  namespace: user0
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: demo-setup
+      serviceAccountName: demo-setup
+      initContainers:
+      - name: wait-for-workbench
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -ec
+        - |-
+          echo -n "Waiting for workbench pod in user0 namespace"
+          while [ -z "$(oc get pods -n user0 -l app=my-workbench -o custom-columns=STATUS:.status.phase --no-headers | grep Running 2>/dev/null)" ]; do
+              echo -n '.'
+              sleep 1
+          done
+          echo "Workbench pod is running in user0 namespace"
+      containers:
+      - name: git-clone
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -c
+        - |-
+          pod_name=$(oc get pods -l app=my-workbench -o jsonpath='{.items[0].metadata.name}')
+          oc exec $pod_name -- git clone https://github.com/rh-aiservices-bu/parasol-insurance || true
+      restartPolicy: Never

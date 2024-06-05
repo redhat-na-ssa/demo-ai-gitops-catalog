@@ -1,0 +1,24 @@
+---
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    openshift.io/display-name: Credit Card Fraud - v1
+    serving.kserve.io/deploymentMode: ModelMesh
+  labels:
+    name: vino-fraud
+    opendatahub.io/dashboard: "true"
+  name: vino-fraud
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: onnx
+        version: "1"
+      runtime: vino
+      storage:
+        key: data-connection-minio
+        # download here: https://ai-on-openshift.io/odh-rhods/img-triton/card.fraud.detection.onnx
+        path: fraud/

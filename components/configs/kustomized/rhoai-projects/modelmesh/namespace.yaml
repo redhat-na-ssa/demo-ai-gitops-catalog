@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ds-modelmesh
+  annotations:
+    openshift.io/description: |
+      A friendly, open project to allow collaboration around unrestricted data
+      Now with ModelMesh!
+    openshift.io/display-name: A Group Project for Everyone with ModelMesh
+    openshift.io/requester: admin
+  labels:
+    kubernetes.io/metadata.name: modelmesh
+    maistra.io/member-of: istio-system
+    modelmesh-enabled: 'true'
+    opendatahub.io/dashboard: 'true'

@@ -23,10 +23,10 @@ In this repo, look at various [kustomized configs](components/configs) and [argo
 [Red Hat Demo Platform](https://demo.redhat.com) Options (Tested)
 
 - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.sandbox-ocp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">AWS with OpenShift Open Environment</a>
-  - 1 x Control Plane - `m6.4xlarge`
-  - 0 x Workers - `m6.2xlarge`
+  - 1 x Control Plane - `m6a.2xlarge`
+  - 0 x Workers - `m6a.2xlarge`
 - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.ocp4-single-node.prod&utm_source=webapp&utm_medium=share-link" target="_blank">One Node OpenShift</a>
-  - 1 x Control Plane - `m6.4xlarge`
+  - 1 x Control Plane - `m6a.2xlarge`
 - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-mlops-wksp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">MLOps Demo: Data Science & Edge Practice</a>
 
 ### Tools
@@ -59,8 +59,10 @@ git clone < repo url >
 
 Use an [OpenShift Web Terminal](https://docs.openshift.com/container-platform/4.12/web_console/web_terminal/installing-web-terminal.html)
 
+NOTE: Due to a bug you may need to install the web terminal operator at version 1.7 and upgrade in order for it to work correctly.
+
 ```
-YOLO_URL=https://raw.githubusercontent.com/codekow/demo-ai-gitops-catalog/main/scripts/library/term.sh
+YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
 . <(curl -s "${YOLO_URL}")
 term_init
 
@@ -70,7 +72,7 @@ apply_firmly bootstrap/web-terminal
 
 NOTE: open a new terminal to activate new configuration
 
-### Cluster Quick Start for OpenShift GitOps
+### Cluster Quick Start for OpenShift
 
 Basic cluster config
 
@@ -92,11 +94,8 @@ Setup a demo
 # setup a dev spaces demo /w gpu
 apply_firmly demos/devspaces-nvidia-gpu-autoscale
 
-# setup a rhods demo /w gpu
-apply_firmly demos/rhods-nvidia-gpu-autoscale
-
-# install all the things
-apply_firmly demos/all-the-things
+# setup a rhoai demo /w gpu
+apply_firmly demos/rhoai-nvidia-gpu-autoscale
 ```
 
 Setup an ArgoCD managed cluster

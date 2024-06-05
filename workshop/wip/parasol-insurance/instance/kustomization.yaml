@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  owner: workshop
+
+namespace: user0
+
+resources:
+- dspa.yaml
+- job-data-connector.yaml
+- job-pipeline.yaml
+- job-rbac.yaml
+- job-repo.yaml
+- notebook.yaml
+- ns-rb-admin.yaml
+# - ns-rb-view.yaml
+- ns.yaml
+- pvc.yaml
+- quota.yaml
+
+# patches:
+#   - patch: |-
+#       - op: replace
+#         path: /spec/template/spec/containers/0/env/5/value
+#         value: user0
+#     target:
+#       kind: Job
+#       name: data-connection-setup

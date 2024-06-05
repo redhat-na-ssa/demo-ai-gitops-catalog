@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ds-group
+  annotations:
+    openshift.io/description: |
+      A group project to explore dark rainbows in space
+    # openshift.io/display-name: Stereo Keyhole
+    openshift.io/display-name: A Group Project Restricted to Specific Users
+    openshift.io/requester: darkrainbow
+  labels:
+    kubernetes.io/metadata.name: group
+    modelmesh-enabled: 'true'
+    opendatahub.io/dashboard: 'true'
