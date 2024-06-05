@@ -22,9 +22,9 @@ printf 'This terminal has been \e[0;32m~Enhanced~\e[0m\n'
 printf 'See \033[34;1;1m'${GIT_AI_REPO}'\e[0m\n\n'
 
 term_git_setup(){
-  [ -z "\${GIT_AI_REPO}" ] && return
-  git clone "\${GIT_AI_REPO}" ai_ops
-  git clone "\${GIT_OPS_REPO}" git_ops
+  [ -z \"\${GIT_AI_REPO}\" ] && return
+  git clone \"\${GIT_AI_REPO}\" ai_ops
+  git clone \"\${GIT_OPS_REPO}\" git_ops
 }
 
 __git_branch(){
@@ -45,7 +45,7 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
 [ -e ~/ai_ops ] || term_git_setup
 
-[ -d "\${GIT_ROOT}/scratch/bash" ] || . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
+[ -d \"\${GIT_ROOT}/scratch/bash\" ] || . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 " >> "${BASHRC}"
 }
 

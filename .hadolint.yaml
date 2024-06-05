@@ -1,0 +1,8 @@
+failure-threshold: warning
+override:
+  info:
+    - DL3006  # Always tag the version of an image explicitly
+    - DL3013  # Pin versions in pip
+    - DL3033  # Specify version with `dnf install
+    - DL3041  # Specify version with `yum install
+    - DL4006  # Set the SHELL option -o pipefail before RUN
