@@ -35,8 +35,7 @@ fi
 PATH=\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH
 PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
-. <(cat \${GIT_ROOT}/scratch/bash/*.sh)
-
+[ -z "\${GIT_ROOT}" ] || . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 " >> "${BASHRC}"
 }
 
