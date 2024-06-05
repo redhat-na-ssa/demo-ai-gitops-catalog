@@ -16,8 +16,15 @@ grep -q 'Enhanced' "${BASHRC}" && return
 # shellcheck disable=SC2028
 echo "
 GIT_AI_REPO=${GIT_AI_REPO}
+GIT_OPS_REPO=${GIT_OPS_REPO}
 printf 'This terminal has been \e[0;32m~Enhanced~\e[0m\n'
 printf 'See \033[34;1;1m'${GIT_AI_REPO}'\e[0m\n\n'
+
+term_git_setup(){
+  [ -z "${GIT_AI_REPO}" ] || return
+  git clone "${GIT_AI_REPO}" ai_ops
+  git clone "${GIT_OPS_REPO}" git_ops
+}
 
 __git_branch(){
   git name-rev --name-only @ 2>/dev/null
@@ -35,13 +42,21 @@ fi
 PATH=\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH
 PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
+[ -e ~/ai_ops ] || term_git_setup &
+
 [ -z "\${GIT_ROOT}" ] || . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 " >> "${BASHRC}"
 }
 
-term_bin_setup(){
+term_git_setup(){
+  [ -z "${GIT_AI_REPO}" ] || return
   git clone "${GIT_AI_REPO}" ai_ops
-  git clone "${GIT_OPS_REPO}" ops
+  git clone "${GIT_OPS_REPO}" git_ops
+}
+
+term_bin_setup(){
+
+  term_git_setup
 
   cd ~/ai_ops || return
   # shellcheck disable=SC1091
