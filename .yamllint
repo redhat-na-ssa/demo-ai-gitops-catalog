@@ -23,4 +23,4 @@ rules:
 ignore:
   - "scratch/*"
   - "components/containers/web-terminal/src/*"
-  - "components/operators/gpu-operator-certified/instance/components/console-plugin-helm/*"
+  - "components/operators/gpu-operator-certified/operator/components/console-plugin-helm/charts/*"
