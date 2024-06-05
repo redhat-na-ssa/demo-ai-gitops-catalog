@@ -50,7 +50,7 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 }
 
 term_git_setup(){
-  [ -z "${GIT_AI_REPO}" ] || return
+  [ -z "${GIT_AI_REPO}" ] && return
   git clone "${GIT_AI_REPO}" ai_ops
   git clone "${GIT_OPS_REPO}" git_ops
 }
