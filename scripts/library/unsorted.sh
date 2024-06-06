@@ -8,7 +8,7 @@ __run_all_functions(){
 
   for i in $(cat /tmp/test-fun)
   do
-    $i && sed "/$i/d" /tmp/test-fun
+    $i && sed -i "/$i/d" /tmp/test-fun
   done
 }
 
