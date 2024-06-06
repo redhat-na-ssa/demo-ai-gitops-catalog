@@ -14,7 +14,7 @@ k8s_wait_for_crd(){
 
 k8s_null_finalizers(){
   OBJ=${1}
-  [ -z "${OBJ}" ] && return 1
+  [ -z "${OBJ}" ] && return
 
   NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
@@ -31,7 +31,7 @@ k8s_null_finalizers(){
 
 k8s_null_finalizers_for_all_resource_instances(){
   RESOURCE=${1}
-  [ -z "${RESOURCE}" ] && return 1
+  [ -z "${RESOURCE}" ] && return
 
   NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
