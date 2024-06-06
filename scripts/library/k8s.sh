@@ -5,7 +5,7 @@ which oc >/dev/null && alias kubectl=oc
 
 k8s_wait_for_crd(){
   CRD=${1:-projects.config.openshift.io}
-  echo "Waiting for CRD ${CRD}"
+  printf "Waiting for CRD ${CRD}"
   until kubectl get crd "${CRD}" >/dev/null 2>&1
     do sleep 1
     printf .
