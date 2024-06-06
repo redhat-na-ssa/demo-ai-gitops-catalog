@@ -163,10 +163,12 @@ k8s_delete_extended_resource_on_all_nodes(){
   for node in $(kubectl get nodes -o name | sed 's/node.//')
   do
     echo "modifying: ${node}"
-    curl --header "Content-Type: application/json-patch+json" \
+    curl "http://localhost:8001/api/v1/nodes/${node}/status" \
+      --header "Content-Type: application/json-patch+json" \
       --request PATCH \
       --data '[{"op": "remove", "path": "/status/capacity/'"${RESOURCE_NAME}"'"}]' \
-      "http://localhost:8001/api/v1/nodes/${node}/status"
+      --no-fail
+      
   done
 
   echo "k8s api proxy: stopping..."
