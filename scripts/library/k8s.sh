@@ -85,6 +85,7 @@ k8s_ns_delete_most_resources(){
 
   if [ -z "${NAMESPACE}"]; then
     echo "usage: k8s_ns_delete_most_resources < namespace >"
+    return
   fi
 
   for i in $(k8s_get_most_api_resources)
@@ -100,7 +101,8 @@ k8s_ns_delete_most_resources_force(){
   NAMESPACE=${1}
 
   if [ -z "${NAMESPACE}"]; then
-    echo "usage: k8s_ns_delete_most_resources < namespace >"
+    echo "usage: k8s_ns_delete_most_resources_force < namespace >"
+    return
   fi
 
   for i in $(k8s_get_most_api_resources)
@@ -153,6 +155,8 @@ k8s_api_dump_resources(){
 
 k8s_delete_extended_resource_on_all_nodes(){
   RESOURCE_NAME=${1:-devices.custom.io~1tpm}
+
+  echo "Attempting to delete extended resource ${RESOURCE_NAME}..."
 
   k8s_api_start_proxy
 
