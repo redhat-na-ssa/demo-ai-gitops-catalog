@@ -29,7 +29,7 @@ k8s_null_finalizers(){
 
 k8s_null_finalizers_for_all_resource_instances(){
   RESOURCE=${1}
-  [ -z ${RESOURCE+x} ] && return 1
+  [ -z "${RESOURCE}" ] && return 1
 
   NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
