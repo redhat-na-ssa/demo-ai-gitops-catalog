@@ -38,6 +38,8 @@ rhdp_fix_api_certs(){
 
 
 rhdp_aws_stop_all_ec2(){
+  aws_check_cli || return 0
+
   RUNNING_IDS=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
   BASTION_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values=bastion --query 'Reservations[].Instances[].InstanceId' --output text)
 
@@ -49,6 +51,8 @@ rhdp_aws_stop_all_ec2(){
 }
 
 rhdp_aws_start_ocp4_cluster(){
+  aws_check_cli || return 0
+
   CLUSTER_IDS=$(aws ec2 describe-instances --filters Name=tag:env_type,Values=ocp4-cluster --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
 
   aws ec2 start-instances \
