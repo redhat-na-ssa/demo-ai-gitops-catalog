@@ -18,7 +18,7 @@ genpass(){
 apply_firmly(){
   if [ ! -f "${1}/kustomization.yaml" ]; then
     echo "Please provide a dir with \"kustomization.yaml\""
-    return 1
+    return 0
   fi
 
   # until oc kustomize "${1}" --enable-helm | oc apply -f- 2>/dev/null
