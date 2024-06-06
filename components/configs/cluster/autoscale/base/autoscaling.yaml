@@ -6,7 +6,7 @@ metadata:
 spec:
   podPriorityThreshold: -10
   resourceLimits:
-    maxNodesTotal: 7
+    maxNodesTotal: 10
     cores:
       min: 0
       # 16 cores * 7 nodes = 112
@@ -26,4 +26,4 @@ spec:
     delayAfterDelete: 1m
     delayAfterFailure: 30s
     unneededTime: 5m
-    utilizationThreshold: "0.4"
+    utilizationThreshold: "0.7"
