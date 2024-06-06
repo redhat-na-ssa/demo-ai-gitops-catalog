@@ -8,7 +8,7 @@ term_bashrc(){
 BASHRC=${1:-/home/user/.bashrc}
 
 # avoid making everyone mad
-grep -q 'OpenShift Web Terminal' "${BASHRC}" || return 1
+grep -q 'OpenShift Web Terminal' "${BASHRC}" || return
 
 # avoid running more than once
 grep -q 'Enhanced' "${BASHRC}" && return
