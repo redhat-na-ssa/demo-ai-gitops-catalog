@@ -44,9 +44,9 @@ nvidia_install_console_plugin(){
   if which helm; then
     helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
     helm repo update > /dev/null 2>&1
-    helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu > /dev/null 2>&1
+    helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu || true
   else
-    oc apply -k "${GIT_URL}/components/operators/gpu-operator-certified/instance/base/console-plugin-nvidia-gpu"
+    oc apply -k "${GIT_URL}/components/operators/gpu-operator-certified/operator/components/console-plugin"
   fi
 }
 
