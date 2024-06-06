@@ -8,7 +8,7 @@ term_bashrc(){
 BASHRC=${1:-/home/user/.bashrc}
 
 # avoid making everyone mad
-grep -q 'OpenShift Web Terminal' "${BASHRC}" || return
+grep -q 'OpenShift Web Terminal' "${BASHRC}" || return 0
 
 # avoid running more than once
 grep -q 'Enhanced' "${BASHRC}" && return
@@ -51,8 +51,8 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
 term_git_setup(){
   [ -z "${GIT_AI_REPO}" ] && return
-  git clone "${GIT_AI_REPO}" ai_ops
-  git clone "${GIT_OPS_REPO}" git_ops
+  git clone "${GIT_AI_REPO}" ai_ops || echo "[OK]"
+  git clone "${GIT_OPS_REPO}" git_ops || echo "[OK]"
 }
 
 term_bin_setup(){
