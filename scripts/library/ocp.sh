@@ -84,7 +84,7 @@ ocp_aws_get_key(){
   echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
 }
 
-aws_setup_ack_system(){
+ocp_aws_setup_ack_system(){
   NAMESPACE=ack-system
 
   ocp_aws_get_key
