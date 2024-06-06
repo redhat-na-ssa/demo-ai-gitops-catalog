@@ -6,7 +6,8 @@ alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./vele
 __run_all_functions(){
   [ -e "/tmp/test-fun" ] || get_functions | grep -E -v 'argo|^_' > /tmp/test-fun
 
-  for i in $(cat /tmp/test-fun)
+  # shellcheck disable=SC2013
+  for i in $(grep -v '^ *#' /tmp/test-fun)
   do
     $i && sed -i "/$i/d" /tmp/test-fun
   done

@@ -5,7 +5,7 @@ which oc >/dev/null && alias kubectl=oc
 
 k8s_wait_for_crd(){
   CRD=${1:-projects.config.openshift.io}
-  printf "Waiting for CRD ${CRD}."
+  printf "Waiting for CRD %s." "${CRD}"
   until kubectl get crd "${CRD}" >/dev/null 2>&1
     do sleep 1
     printf .
@@ -83,7 +83,7 @@ k8s_ns_get_resources(){
 k8s_ns_delete_most_resources(){
   NAMESPACE=${1}
 
-  if [ -z "${NAMESPACE}"]; then
+  if [ -z "${NAMESPACE}" ]; then
     echo "usage: k8s_ns_delete_most_resources < namespace >"
     return
   fi
@@ -100,7 +100,7 @@ k8s_ns_delete_most_resources(){
 k8s_ns_delete_most_resources_force(){
   NAMESPACE=${1}
 
-  if [ -z "${NAMESPACE}"]; then
+  if [ -z "${NAMESPACE}" ]; then
     echo "usage: k8s_ns_delete_most_resources_force < namespace >"
     return
   fi

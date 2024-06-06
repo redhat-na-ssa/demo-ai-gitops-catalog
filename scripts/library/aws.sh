@@ -29,7 +29,7 @@ aws_start_instance(){
   if [ "$#" -ne 1 ]; then
     echo "Usage:
     $0 InstanceId"
-    return 1
+    return
   fi
 
   iid=$1
@@ -49,7 +49,7 @@ aws_stop_instance(){
   if [ "$#" -ne 1 ]; then
     echo "Usage:
     $0 InstanceId"
-    return 1
+    return
   fi
 
   iid=$1
