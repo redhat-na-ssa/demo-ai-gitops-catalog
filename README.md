@@ -12,6 +12,20 @@ Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog
 
 In this repo, look at various [kustomized configs](components/configs) and [argo apps](components/argocd/apps) for ideas.
 
+## Known Issues
+
+`oc apply -k` commands may fail on the first try.
+
+This is inherent to how Kubernetes handles [custom resources (CR)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) - A CR must be created **after it has been defined** via a [custom resource definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions).
+
+The solution is to simply, re-run the command until it succeeds.
+
+The function `apply_firmly` is similar to:
+
+```sh
+until oc apply -k < path to kustomization.yaml >; do : ; done
+```
+
 ***This repo is currently subject to frequent, breaking changes!***
 
 ## Prerequisites
