@@ -59,7 +59,7 @@ term_bin_setup(){
 
   term_git_setup
 
-  cd ~/ai_ops || return
+  cd ~/ai_ops || return 0
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
