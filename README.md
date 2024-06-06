@@ -16,7 +16,7 @@ In this repo, look at various [kustomized configs](components/configs) and [argo
 
 ## Prerequisites
 
-- OpenShift 4.8+
+- OpenShift 4.14+
   - role: `cluster-admin` - for all [demo](demos) or [cluster](clusters) configs
   - role: `self-provisioner` - for namespaced components
 
