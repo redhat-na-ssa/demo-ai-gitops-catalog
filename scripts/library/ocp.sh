@@ -24,8 +24,8 @@ ocp_kubeadmin_remove(){
       oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
     oc delete secret kubeadmin -n kube-system
   else
-    echo "WARNING: you must run ocp_remove_kubeadmin YES"
-    return 1
+    echo "${RED}WARNING: you must run - ocp_remove_kubeadmin YES${NC}"
+    return
   fi
 }
 
@@ -84,7 +84,7 @@ ocp_aws_get_key(){
   echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
 }
 
-aws_setup_ack_system(){
+ocp_aws_setup_ack_system(){
   NAMESPACE=ack-system
 
   ocp_aws_get_key
@@ -457,7 +457,7 @@ ocp_aro_cluster(){
 
 ocp_aro_get_key(){
   # get az creds
-  ocp_aro_cluster || return 1
+  ocp_aro_cluster || return
   AZ_TENANT_ID=redhat0.onmicrosoft.com
   
   AZ_CLIENT_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_id --to=-)

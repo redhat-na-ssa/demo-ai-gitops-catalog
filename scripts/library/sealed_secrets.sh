@@ -50,7 +50,7 @@ sealed_secret_check(){
   if [ -f "${SEALED_SECRETS_SECRET}" ]; then
     echo "Exists: ${SEALED_SECRETS_SECRET}"
     oc apply -f "${SEALED_SECRETS_FOLDER}/namespace.yaml"
-    oc apply -f "${SEALED_SECRETS_SECRET}" || return 1
+    oc apply -f "${SEALED_SECRETS_SECRET}" || return 0
     oc apply -k "${SEALED_SECRETS_FOLDER}"
   else
     echo "Missing: ${SEALED_SECRETS_SECRET}"

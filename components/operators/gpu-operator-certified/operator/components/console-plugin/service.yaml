@@ -5,6 +5,10 @@ kind: Service
 metadata:
   name: console-plugin-nvidia-gpu
   namespace: nvidia-gpu-operator
+  annotations:
+    meta.helm.sh/release-name: console-plugin-nvidia-gpu
+    meta.helm.sh/release-namespace: nvidia-gpu-operator
+    service.alpha.openshift.io/serving-cert-secret-name: plugin-serving-cert
   labels:
     helm.sh/chart: console-plugin-nvidia-gpu-0.2.4
     app.kubernetes.io/name: console-plugin-nvidia-gpu
@@ -13,8 +17,6 @@ metadata:
     app.kubernetes.io/component: console-plugin-nvidia-gpu
     app.kubernetes.io/instance: console-plugin-nvidia-gpu
     app.kubernetes.io/part-of: console-plugin-nvidia-gpu
-  annotations:
-    service.alpha.openshift.io/serving-cert-secret-name: plugin-serving-cert
 spec:
   ports:
   - name: 9443-tcp

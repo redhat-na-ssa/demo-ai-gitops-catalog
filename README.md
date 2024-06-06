@@ -6,7 +6,7 @@
 This project is a catalog of configurations used to provision infrastructure, on
 OpenShift, that supports machine learning (ML) and artificial intelligence (AI) workloads.
 
-The intention of this repository is to help support practical use of OpenShift for AI / ML workloads.
+The intention of this repository is to help support practical use of OpenShift for AI / ML workloads and provide a catalog of configurations / demos / workshops.
 
 Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog) if you only need to automate an operator install.
 
@@ -16,11 +16,13 @@ In this repo, look at various [kustomized configs](components/configs) and [argo
 
 ## Prerequisites
 
-- OpenShift 4.8+
+- OpenShift 4.14+
   - role: `cluster-admin` - for all [demo](demos) or [cluster](clusters) configs
   - role: `self-provisioner` - for namespaced components
 
 [Red Hat Demo Platform](https://demo.redhat.com) Options (Tested)
+
+NOTE: node sizes below are the **recommended minimum** to select for provisioning
 
 - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.sandbox-ocp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">AWS with OpenShift Open Environment</a>
   - 1 x Control Plane - `m6a.2xlarge`

@@ -31,7 +31,7 @@ ocp_aws_get_key(){
 }
 
 # create secrets for ack controllers
-aws_setup_ack_system(){
+ocp_aws_setup_ack_system(){
   NAMESPACE=ack-system
 
   ocp_aws_get_key
@@ -56,4 +56,4 @@ aws_setup_ack_system(){
   done
 }
 
-aws_setup_ack_system
+ocp_aws_setup_ack_system

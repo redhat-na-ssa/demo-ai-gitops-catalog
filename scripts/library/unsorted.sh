@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# https://docs.openshift.com/container-platform/4.12/backup_and_restore/application_backup_and_restore/troubleshooting.html#velero-obtaining-by-accessing-binary_oadp-troubleshooting
+alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
+
+__run_all_functions(){
+  [ -e "/tmp/test-fun" ] || get_functions | grep -E -v 'argo|^_' > /tmp/test-fun
+
+  # shellcheck disable=SC2013
+  for i in $(grep -v '^ *#' /tmp/test-fun)
+  do
+    $i && sed -i "/$i/d" /tmp/test-fun
+  done
+}
+
 select_folder(){
   FOLDER="${1:-options}"
   PS3="Select by number: "
@@ -38,6 +51,7 @@ ocp_gcp_get_key(){
 }
 
 lint_wordlist_reset(){
+  which pyspelling >/dev/null 2>&1 || return 0
   pyspelling | sort -u | grep -Ev ' |---|/|^$' > .wordlist-md
 }
 
@@ -62,6 +76,8 @@ aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
 aws_access_key_id=${AWS_ACCESS_KEY_ID}
 aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}
 YAML
+
+  oc get ns openshift-adp || return 0
 
   oc create secret generic \
     -n openshift-adp \
