@@ -27,23 +27,41 @@ py_bin_checks(){
   which pip || exit 0
 }
 
+lint_scripts(){
+  which shellcheck || return
+  find . -name '*.sh' -not \( -path '*/venv/*' -o -path '*/scratch/*' \) -print0 | xargs -0 shellcheck
+}
+
+lint_spelling(){
+  which aspell || return
+  which pyspelling || return
+  [ -e .pyspelling.yml ] || return
+  [ -e .wordlist-md ] || return
+
+  pyspelling -c .pyspelling.yml
+}
+
+lint_dockerfiles(){
+  which hadolint || return
+  find . -not -path "./scratch/*" \( -name Dockerfile -o -name Containerfile \) -exec hadolint {} \;
+}
+
+lint_yaml(){
+  which yamllint || return
+  yamllint . || return
+  echo "YAML check passed :)"
+}
+
+lint_kustomize(){
+  [ -e scripts/validate_manifests.sh ] || return
+  scripts/validate_manifests.sh
+}
+
 py_check_venv
 py_bin_checks
 
-# chcek scripts
-which shellcheck && \
-  find . -name '*.sh' -not \( -path '*/venv/*' -o -path '*/scratch/*' -o -path '*/components/containers/web-terminal/src/*' \) -print0 | xargs -0 shellcheck
-# check spelling
-which aspell && \
-  [ -e .pyspelling.yml ] && \
-  pyspelling -c .pyspelling.yml
-
-# check Dockerfiles
-which hadolint && \
-  find . -not -path "./scratch/*" \( -name Dockerfile -o -name Containerfile \) -exec hadolint {} \;
-
-# check yaml
-yamllint . && echo "YAML check passed :)"
-
-# validate manifests
-[ -e scripts/validate_manifests.sh ] && scripts/validate_manifests.sh
+lint_spelling     || exit 1
+lint_scripts      || exit 1
+lint_dockerfiles  || exit 1
+lint_yaml         || exit 1
+lint_kustomize    || exit 1
