@@ -4,7 +4,7 @@
 alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
 
 __run_all_functions(){
-  get_functions | grep -E -v 'argo|_' > /tmp/test
+  get_functions | grep -E -v 'argo|^_' > /tmp/test
 
   for i in $(cat /tmp/test)
   do $i
