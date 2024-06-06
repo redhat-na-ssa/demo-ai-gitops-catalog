@@ -5,14 +5,14 @@ aws_check_cli(){
 }
 
 aws_get_all_ec2(){
-  aws_check_cli
+  aws_check_cli || return
 
   aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g'
   aws ec2 describe-instances --filters Name=tag:Name,Values=bastion --query 'Reservations[].Instances[].InstanceId' --output text
 }
 
 aws_get_instances(){
-  aws_check_cli
+  aws_check_cli || return
 
   if [ "$#" -ne 0 ]; then
       AWS_TAGS="*$1*"
@@ -24,7 +24,7 @@ aws_get_instances(){
 }
 
 aws_start_instance(){
-  aws_check_cli
+  aws_check_cli || return
 
   if [ "$#" -ne 1 ]; then
     echo "Usage:
@@ -44,7 +44,7 @@ aws_start_instance(){
 }
 
 aws_stop_instance(){
-  aws_check_cli
+  aws_check_cli || return
 
   if [ "$#" -ne 1 ]; then
     echo "Usage:
