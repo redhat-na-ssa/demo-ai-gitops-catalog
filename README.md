@@ -109,31 +109,45 @@ apply_firmly demos/devspaces-nvidia-gpu-autoscale
 apply_firmly demos/rhoai-nvidia-gpu-autoscale
 ```
 
-Install OpenShift GitOps
-
-```sh
-# setup a basic instance of argocd managing a default cluster
-apply_firmly bootstrap/install-argocd
-```
-
-## Cherry Picking configurations
-
-Various [kustomized configs](components/configs) can be applied individually.
-
-[Operator installs](components/operators/) can be done quickly via `oc` - similar to the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog). Below are a few examples.
-
-```sh
-# 
-```
-
 ### Alternative - running `bootstrap.sh`
-Running `scripts/bootstrap.sh` will allow you to select common options.
+
+Running `scripts/bootstrap.sh` will allow you to select common options. This is a work in progress.
 
 This script handles configurations that are not fully declarative, require imperative steps, or require user interaction.
 
----
+## Cherry Picking Configurations
 
-### Common functions
+Various [kustomized configs](components/configs) can be applied individually.
+
+[Operator installs](components/operators/) can be done quickly via `oc` - similar to the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog).
+
+`oc apply -k` and `apply_firmly` can be used interchangeably in the examples below:
+
+```sh
+# setup htpasswd based login
+oc apply -k components/configs/cluster/login/overlays/htpasswd
+
+# disable self provisioner in cluster
+oc apply -k components/configs/cluster/rbac/overlays/no-self-provisioner
+
+# install minio w/ namespace
+oc apply -k components/configs/kustomized/minio/overlays/with-namespace
+
+# install the nfs provisioner
+oc apply -k components/configs/kustomized/nfs-provisioner/overlays/default
+```
+
+Examples that require CRDs
+
+```sh
+# setup serverless w/ instance
+apply_firmly components/operators/serverless-operator/aggregate
+
+# setup acs with a minimal configuration
+apply_firmly components/operators/rhacs-operator/aggregate/minimal
+```
+
+## Common functions
 
 Common operational tasks are provided in the [scripts library](scripts/library/). You can run individual [functions](scripts/functions.sh) in a `bash` shell:
 
@@ -172,12 +186,6 @@ This is currently under development
 workshop_setup 25
 ```
 
-## Additional Configurations
-
-### Sandbox Namespace
-
-The `sandbox` [namespace](components/configs/cluster/namespaces/instance/sandbox/namespace.yaml) is useable by all [authenticated users](components/configs/cluster/namespaces/instance/sandbox/rolebinding-edit.yaml). All objects in the sandbox are [cleaned out weekly](components/configs/cluster/namespace-cleanup/overlays/sandbox/sandbox-cleanup-cj.yaml).
-
 ## Development
 
 ### Tools
@@ -205,6 +213,12 @@ scripts/lint.sh
 ```
 
 ## Additional Info
+
+<!-- ### Sandbox Namespace
+
+If you have deployed a default cluster the `sandbox` [namespace](components/configs/cluster/namespaces/instance/sandbox/namespace.yaml) is useable by all [authenticated users](components/configs/cluster/namespaces/instance/sandbox/rolebinding-edit.yaml). All objects in the sandbox are [cleaned out weekly](components/configs/cluster/namespace-cleanup/overlays/sandbox/sandbox-cleanup-cj.yaml). -->
+
+### Internal Docs
 
 - [Local Docs](docs)
 - [Notes Dump](docs/notes/)
