@@ -4,9 +4,6 @@ kind: Kustomization
 resources:
   - ../../../../demos/rhoai-nvidia-gpu-autoscale
   - ../../../../components/configs/kustomized/rhoai-config
-  # - ../../../../components/operators/kiali-ossm/operator/overlays/stable
-  # - ../../../../components/operators/jaeger-product/operator/overlays/stable
-  # - ../../../../components/operators/elasticsearch-operator/operator/overlays/stable
 
 patches:
   - target:

@@ -9,6 +9,18 @@
   - Build from known bases for security
 - [ ] Review: AWS user security. Limit access to the OCP provisioner account (reassign `Administrator' role to something limited)
 
+## Notes Dump
+
+- Most people try to use the local shell (mac users) - zsh
+- Users not clear what options are available for bootstrap
+- Add image of what web term icon looks like in top right
+- The quick start is not easy to read
+- The automation is too easy for users
+  - need to be able to explain to a customer
+  - need to be able to understand how it works on a basic level
+- Explain what it means to setup a default cluster
+- Tree defining the repo dir structure could help navigation
+
 ## Review Links
 
 - https://github.com/argoproj/argocd-example-apps/blob/master/plugins/kustomized-helm/README.md
