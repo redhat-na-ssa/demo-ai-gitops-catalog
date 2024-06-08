@@ -173,6 +173,7 @@ XDG
 YOLO
 ack
 acm
+acs
 activedirectory
 addr
 adhoc
@@ -344,6 +345,7 @@ mariadb
 mastersSchedulable
 memberof
 mig
+minio
 mkdir
 modelmeshserving
 mufg

@@ -22,7 +22,7 @@ argo_wait_for_operator(){
   ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
 
   echo "Waiting for OpenShift GitOps operator to start"
-  until oc get deployment gitops-operator-controller-manager -n openshift-operators >/dev/null 2>&1
+  until oc get deployment openshift-gitops-operator-controller-manager -n openshift-gitops-operator >/dev/null 2>&1
   do
     sleep 1
   done

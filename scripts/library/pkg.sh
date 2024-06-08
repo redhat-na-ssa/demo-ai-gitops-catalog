@@ -40,7 +40,7 @@ pkg_manifests_get_all_details(){
 }
 
 pkg_manifest_get_info(){
-  [ "${1}x" == "x" ] && return 1
+  [ "${1}x" == "x" ] && return
   NAME="${1}"
   
   oc get packagemanifest \
@@ -49,7 +49,7 @@ pkg_manifest_get_info(){
 }
 
 pkg_manifest_get_channels(){
-  [ "${1}x" == "x" ] && return 1
+  [ "${1}x" == "x" ] && return
   NAME="${1}"
   
   echo "NAME: ${NAME}"
@@ -59,7 +59,7 @@ pkg_manifest_get_channels(){
 }
 
 pkg_manifest_get_description(){
-  [ "${1}x" == "x" ] && return 1
+  [ "${1}x" == "x" ] && return
   NAME="${1}"
 
   echo -e "# ${NAME}\n"

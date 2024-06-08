@@ -44,9 +44,9 @@ nvidia_install_console_plugin(){
   if which helm; then
     helm repo add rh-ecosystem-edge https://rh-ecosystem-edge.github.io/console-plugin-nvidia-gpu || true
     helm repo update > /dev/null 2>&1
-    helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu > /dev/null 2>&1
+    helm upgrade --install -n nvidia-gpu-operator console-plugin-nvidia-gpu rh-ecosystem-edge/console-plugin-nvidia-gpu || true
   else
-    oc apply -k "${GIT_URL}/components/operators/gpu-operator-certified/instance/base/console-plugin-nvidia-gpu"
+    oc apply -k "${GIT_URL}/components/operators/gpu-operator-certified/operator/components/console-plugin"
   fi
 }
 
@@ -69,16 +69,17 @@ nvidia_setup_console_plugin(){
 
 nvidia_setup_mig_config(){
   MIG_MODE=${1:-single}
-  MIG_CONFIG=${1:-all-1g.5gb}
+  MIG_CONFIG=${2:-all-1g.5gb}
+  INSTANCE_TYPE=p4d.24xlarge
 
-  ocp_aws_create_gpu_machineset p4d.24xlarge
+  ocp_aws_create_gpu_machineset "${INSTANCE_TYPE}" 
 
   oc apply -k "${GIT_ROOT}"/components/operators/gpu-operator-certified/instance/overlays/mig-"${MIG_MODE}"
 
-  MACHINE_SET_GPU=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_GPU}" \
+    patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/mig.config":"'"${MIG_CONFIG}"'"}}}}}}'
 
 }

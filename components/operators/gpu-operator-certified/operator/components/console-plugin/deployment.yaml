@@ -5,6 +5,9 @@ kind: Deployment
 metadata:
   name: console-plugin-nvidia-gpu
   namespace: nvidia-gpu-operator
+  annotations:
+    meta.helm.sh/release-name: console-plugin-nvidia-gpu
+    meta.helm.sh/release-namespace: nvidia-gpu-operator
   labels:
     helm.sh/chart: console-plugin-nvidia-gpu-0.2.4
     app.kubernetes.io/name: console-plugin-nvidia-gpu

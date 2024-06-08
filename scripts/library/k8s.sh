@@ -5,14 +5,16 @@ which oc >/dev/null && alias kubectl=oc
 
 k8s_wait_for_crd(){
   CRD=${1:-projects.config.openshift.io}
+  printf "Waiting for CRD %s." "${CRD}"
   until kubectl get crd "${CRD}" >/dev/null 2>&1
     do sleep 1
+    printf .
   done
 }
 
 k8s_null_finalizers(){
   OBJ=${1}
-  [ -z ${OBJ+x} ] && return 1
+  [ -z "${OBJ}" ] && return
 
   NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
@@ -29,7 +31,7 @@ k8s_null_finalizers(){
 
 k8s_null_finalizers_for_all_resource_instances(){
   RESOURCE=${1}
-  [ -z ${RESOURCE+x} ] && return 1
+  [ -z "${RESOURCE}" ] && return
 
   NAMESPACE=${NAMESPACE:-$(oc project -q)}
 
@@ -79,7 +81,12 @@ k8s_ns_get_resources(){
 }
 
 k8s_ns_delete_most_resources(){
-  NAMESPACE=${1:-sandbox}
+  NAMESPACE=${1}
+
+  if [ -z "${NAMESPACE}" ]; then
+    echo "usage: k8s_ns_delete_most_resources < namespace >"
+    return
+  fi
 
   for i in $(k8s_get_most_api_resources)
   do
@@ -91,7 +98,12 @@ k8s_ns_delete_most_resources(){
 }
 
 k8s_ns_delete_most_resources_force(){
-  NAMESPACE=${1:-sandbox}
+  NAMESPACE=${1}
+
+  if [ -z "${NAMESPACE}" ]; then
+    echo "usage: k8s_ns_delete_most_resources_force < namespace >"
+    return
+  fi
 
   for i in $(k8s_get_most_api_resources)
   do
@@ -144,15 +156,19 @@ k8s_api_dump_resources(){
 k8s_delete_extended_resource_on_all_nodes(){
   RESOURCE_NAME=${1:-devices.custom.io~1tpm}
 
+  echo "Attempting to delete extended resource ${RESOURCE_NAME}..."
+
   k8s_api_start_proxy
 
   for node in $(kubectl get nodes -o name | sed 's/node.//')
   do
     echo "modifying: ${node}"
-    curl --header "Content-Type: application/json-patch+json" \
+    curl "http://localhost:8001/api/v1/nodes/${node}/status" \
+      --header "Content-Type: application/json-patch+json" \
       --request PATCH \
       --data '[{"op": "remove", "path": "/status/capacity/'"${RESOURCE_NAME}"'"}]' \
-      "http://localhost:8001/api/v1/nodes/${node}/status"
+      --no-fail
+      
   done
 
   echo "k8s api proxy: stopping..."

@@ -11,18 +11,13 @@ metadata:
 spec:
   components:
     - container:
-        env:
-          - name: YOLO_URL
-            value: https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
         args:
           - "/bin/bash"
           - "-c"
           - |
             #!/bin/bash
-            # set -x
 
-            . <(curl -s "${YOLO_URL}" | tee /tmp/yolo.sh)
-            term_init
+            . /home/user/.bashrc
 
             sleep infinity  # just in case
 
