@@ -189,7 +189,18 @@ The function `apply_firmly` is interchangeable with `oc apply -k` and is similar
 until oc apply -k < path to kustomization.yaml >; do : ; done
 ```
 
+### Referencing this Catalog
+
 ***This repo is currently subject to frequent, breaking changes!***
+
+Always reference with a commit hash or tag
+
+```
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/configs/kustomized/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.03
+```
 
 ## Development
 
