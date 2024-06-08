@@ -50,7 +50,7 @@ YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/
 term_init
 ```
 
-NOTE: open a new terminal to full activate then new configuration
+NOTE: open a new terminal to full activate the new configuration
 
 ---
 
@@ -126,11 +126,11 @@ oc apply -k components/configs/kustomized/minio/overlays/with-namespace
 oc apply -k components/configs/kustomized/nfs-provisioner/overlays/default
 ```
 
-Examples that require CRDs
+Examples with operators that require CRDs
 
 ```sh
 # setup serverless w/ instance
-apply_firmly components/operators/serverless-operator/aggregate
+apply_firmly components/operators/serverless-operator/aggregate/default
 
 # setup acs with a minimal configuration
 apply_firmly components/operators/rhacs-operator/aggregate/minimal
