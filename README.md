@@ -12,21 +12,7 @@ Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog
 
 In this repo, look at various [kustomized configs](components/configs) and [argo apps](components/argocd/apps) for ideas.
 
-## Known Issues
-
-`oc apply -k` commands may fail on the first try.
-
-This is inherent to how Kubernetes handles [custom resources (CR)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) - A CR must be created **after it has been defined** via a [custom resource definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions).
-
-The solution is to simply, re-run the command until it succeeds.
-
-The function `apply_firmly` is similar to:
-
-```sh
-until oc apply -k < path to kustomization.yaml >; do : ; done
-```
-
-***This repo is currently subject to frequent, breaking changes!***
+For issues with `oc apply -k` see the [known issues](#known-issues) section below.
 
 ## Prerequisites - Get a cluster
 
@@ -56,12 +42,15 @@ The following icon should appear in the top right of the OpenShift web console a
 NOTE: Reload the page in your browser if you do not see the icon after installing the operator.
 
 ```sh
+# bootstrap the enhanced web terminal
 YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/main/scripts/library/term.sh
+
 . <(curl -s "${YOLO_URL}")
+
 term_init
 ```
 
-NOTE: open a new terminal to activate new configuration
+NOTE: open a new terminal to full activate then new configuration
 
 ---
 
@@ -84,7 +73,7 @@ cd demo-ai-gitops-catalog
 . scripts/functions.sh
 ```
 
-## Apply Configurations
+## Apply Configurations / Demos
 
 Setup basic cluster config
 
@@ -130,7 +119,7 @@ oc apply -k components/configs/cluster/login/overlays/htpasswd
 # disable self provisioner in cluster
 oc apply -k components/configs/cluster/rbac/overlays/no-self-provisioner
 
-# install minio w/ namespace
+# install minio w/ minio namespace
 oc apply -k components/configs/kustomized/minio/overlays/with-namespace
 
 # install the nfs provisioner
@@ -185,6 +174,22 @@ This is currently under development
 # setup workshop with 25 users
 workshop_setup 25
 ```
+
+## Known Issues
+
+`oc apply -k` commands may fail on the first try.
+
+This is inherent to how Kubernetes handles [custom resources (CR)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) - A CR must be created **after it has been defined** via a [custom resource definition (CRD)](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions).
+
+The solution... re-run the command until it succeeds.
+
+The function `apply_firmly` is interchangeable with `oc apply -k` and is similar to the following shell command:
+
+```sh
+until oc apply -k < path to kustomization.yaml >; do : ; done
+```
+
+***This repo is currently subject to frequent, breaking changes!***
 
 ## Development
 
