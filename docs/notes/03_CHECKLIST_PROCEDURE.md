@@ -637,10 +637,50 @@ TODO
 ## Enabling GPU support in OpenShift AI
 [Section 5 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
 
+### Adding a GPU node to an existing OpenShift Container Platform cluster
+(source)[https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-adding-a-gpu-node_creating-machineset-aws]
+
+View the existing nodes, machines, and machine sets
+`oc get nodes`
+
+View the machines and machine sets that exist in the openshift-machine-api namespace
+`oc get machinesets -n openshift-machine-api`
+
+View the machines that exist in the openshift-machine-api namespace 
+`oc get machines -n openshift-machine-api | grep worker`
+
+Make a copy of one of the existing compute MachineSet definitions and output the result to a JSON file
+```
+# get your machineset names
+oc get machineset -n openshift-machine-api
+
+# make a copy of an existing machineset definition
+oc get machineset <your-machineset-name> -n openshift-machine-api -o json > <output-file.json>
+```
+
+Update the following fields:
+- [ ] `.metadata.name` to a name containing `gpu`.
+- [ ] `.spec.selector.matchLabels["machine.openshift.io/cluster-api-machineset"]` to match the new `.metadata.name`.
+- [ ] `.spec.template.metadata.labels["machine.openshift.io/cluster-api-machineset"]` to match the new `.metadata.name`.
+- [ ] `.spec.template.spec.providerSpec.value.instanceType` to `g4dn.xlarge`.
+
+Apply the configuration to create the machine
+`oc apply -f docs/notes/configs/ocp-machineset.json`
+
+Verify the machineset you created is running
+`oc -n openshift-machine-api get machinesets | grep gpu`
+
+View the Machine object that the machine set created 
+`oc -n openshift-machine-api get machines | grep gpu`
+
+
+### Deploying the Node Feature Discovery Operator
+(source)[https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-deploying-the-node-feature-discovery-operator_creating-machineset-aws]
+
+
+
 ## Configuring distributed workloads
 [Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
-
-TODO
 
 ### Components required for Distributed Workloads
 1. dashboard
@@ -696,12 +736,6 @@ What is this cluster-queue doing? This ClusterQueue admits Workloads if and only
 - The sum of the memory requests is less than or equal to 36Gi.
 - The total number of pods is less than or equal to 5.
 
-```shell
-oc get -n my-namespace localqueues
-# Alternatively, use the alias `queue` or `queues`
-oc get -n my-namespace queues
-```
-
 ![IMPORTANT] 
 Replace the example quota values (9 CPUs, 36 GiB memory, and 5 NVIDIA GPUs) with the appropriate values for your cluster queue. The cluster queue will start a distributed workload only if the total required resources are within these quota limits. Only homogenous NVIDIA GPUs are supported.
 
@@ -735,13 +769,37 @@ Verify the local queue is created
 `oc get -n sandbox queues`
 
 ### Configuring the CodeFlare Operator
-Go to the `redhat-ods-applications` project
-`oc project redhat-ods-applications`
-
 Get the `codeflare-operator-config` configmap
-`oc describe configmaps codeflare-operator-config`
+`oc get cm codeflare-operator-config -n redhat-ods-applications -o yaml`
 
-TODO (configurations ingress, mtls, ca)[https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads#configuring-the-codeflare-operator_distributed-workloads]
+In the `codeflare-operator-config`, data:config.yaml:kuberay section, you can patch the (following)[https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads#configuring-the-codeflare-operator_distributed-workloads]
+
+```yaml
+kuberay:
+  rayDashboardOAuthEnabled: false
+  ingressDomain: "kind"
+  mTLSEnabled: false
+  certGeneratorImage: quay.io/project-codeflare/ray:latest-py39-cu118
+```
+
+TODO test mTLS
+
+Apply the configuration to update the object
+`oc apply -f docs/notes/configs/rhoai-codeflare-operator-config.yaml`
+
+![IMPORTANT] 
+This does not change the values, but it does illustrate where you would enable mTLS in Ray cluster. If mTLS is enabled you must also add and execute the following code in your notebook after you define your `cluster`
+
+(Optional - if you enabled mTLS)
+```python
+from codeflare_sdk import generate_cert
+
+generate_cert.generate_tls_cert(cluster.config.name, cluster.config.namespace)
+generate_cert.export_env(cluster.config.name, cluster.config.namespace)
+
+ray.init(cluster.cluster_uri())
+```
+
 
 source:
 - https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-data-science-operator-using-cli_operator-install 

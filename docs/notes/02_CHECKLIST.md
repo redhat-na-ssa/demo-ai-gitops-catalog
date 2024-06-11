@@ -79,24 +79,29 @@ This is checklist of the technical steps needed to complete the installation of 
   - [ ] TODO Adding a CA bundle
     - [ ] TODO
   - [ ] TODO Enabling GPU support in OpenShift AI
-      - [ ] Install NFD operator
-      - [ ] Configure NFD operator
-      - [ ] NVIDIA
+      - [ ] Adding a GPU node to an existing OpenShift Container Platform cluster
+        - [ ] Make a copy of one of the existing compute MachineSet definitions and output the result to a JSON file
+        - [ ] Update the necessary fields and save the file
+        - [ ] Apply the object to create the GPU enabled machine
+        - [ ] Verify the machineset is running
+        - [ ] Deploy the Node Feature Discovery Operator
         - [ ] Install NVIDIA GPU Operator
         - [ ] Configure operator
           - [ ] Time-slicing
           - [ ] MIG
           - [ ] Hybrid
-      - [ ] Intel Gaudi
-        - [ ] Install Habana Operator
-        - [ ] Configure operator
-          - [ ] 
-      - [ ] AMD
-        - [ ] Install AMD GPU Operator
-        - [ ] Configure operator
-            - [ ] Partitioning
-  - [ ] TODO Configuring distributed workloads
-    - [ ] TODO
+  - [ ] Configuring distributed workloads
+    - [ ] Verify necessary pods are running
+    - [ ] Configure quota management for distributed workloads
+      - [ ] Create an empty Kueue resource flavor default-flavor
+      - [ ] Apply the configuration
+      - [ ] Create a cluster queue to manage the empty Kueue resource flavor
+      - [ ] Apply the configuration
+      - [ ] Create a local queue that points to your cluster queue
+      - [ ] Apply the configuration
+      - [ ] Verify the local queue is created
+    - [ ] Configure the CodeFlare operator
+      - [ ] Review/Patch the kuberay configurations (i.e. mTLS)
   - [ ] Demonstrate Installation and Configuration Declarative Automation (Kustomize, Ansible, Bash, etc.)
 
 ## Administrative Configurations for RHOAI
@@ -116,6 +121,14 @@ This is checklist of the technical steps needed to complete the installation of 
 
 - [ ] Demonstrate Fraud Deteciton Demo
 - [ ] Demonstrate Distributed Workloads Demo
+  - [ ] Access the RHOAI Dashboard
+  - [ ] Create a workbench
+  - [ ] Clone in the codeflare-sdk github repo
+  - [ ] Navigate to the guided-demos
+  - [ ] Update the notebook import, auth, cluster values
+  - [ ] complete the `0_basic_ray.ipynb`
+  - [ ] complete the `1_cluster_job_client.ipynb`
+  - [ ] complete the `2_basic_interactive.ipynb`
 
 source:
 

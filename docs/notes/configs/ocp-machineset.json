@@ -1,0 +1,120 @@
+{
+    "apiVersion": "machine.openshift.io/v1beta1",
+    "kind": "MachineSet",
+    "metadata": {
+        "annotations": {
+            "capacity.cluster-autoscaler.kubernetes.io/labels": "kubernetes.io/arch=amd64",
+            "machine.openshift.io/GPU": "0",
+            "machine.openshift.io/memoryMb": "16384",
+            "machine.openshift.io/vCPU": "4"
+        },
+        "creationTimestamp": "2024-05-28T17:18:56Z",
+        "generation": 2,
+        "labels": {
+            "machine.openshift.io/cluster-api-cluster": "rhoai29-cd8g7"
+        },
+        "name": "rhoai29-cd8g7-worker-us-east-2a-gpu",
+        "namespace": "openshift-machine-api",
+        "resourceVersion": "629586",
+        "uid": "eeb16140-46fa-4363-8792-1a0022699bb8"
+    },
+    "spec": {
+        "replicas": 2,
+        "selector": {
+            "matchLabels": {
+                "machine.openshift.io/cluster-api-cluster": "rhoai29-cd8g7",
+                "machine.openshift.io/cluster-api-machineset": "rhoai29-cd8g7-worker-us-east-2a-gpu"
+            }
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "machine.openshift.io/cluster-api-cluster": "rhoai29-cd8g7",
+                    "machine.openshift.io/cluster-api-machine-role": "worker",
+                    "machine.openshift.io/cluster-api-machine-type": "worker",
+                    "machine.openshift.io/cluster-api-machineset": "rhoai29-cd8g7-worker-us-east-2a-gpu"
+                }
+            },
+            "spec": {
+                "lifecycleHooks": {},
+                "metadata": {},
+                "providerSpec": {
+                    "value": {
+                        "ami": {
+                            "id": "ami-049d8fda91038a0fd"
+                        },
+                        "apiVersion": "machine.openshift.io/v1beta1",
+                        "blockDevices": [
+                            {
+                                "ebs": {
+                                    "encrypted": true,
+                                    "iops": 0,
+                                    "kmsKey": {
+                                        "arn": ""
+                                    },
+                                    "volumeSize": 120,
+                                    "volumeType": "gp3"
+                                }
+                            }
+                        ],
+                        "credentialsSecret": {
+                            "name": "aws-cloud-credentials"
+                        },
+                        "deviceIndex": 0,
+                        "iamInstanceProfile": {
+                            "id": "rhoai29-cd8g7-worker-profile"
+                        },
+                        "instanceType": "g4dn.xlarge",
+                        "kind": "AWSMachineProviderConfig",
+                        "metadata": {
+                            "creationTimestamp": null
+                        },
+                        "metadataServiceOptions": {},
+                        "placement": {
+                            "availabilityZone": "us-east-2a",
+                            "region": "us-east-2"
+                        },
+                        "securityGroups": [
+                            {
+                                "filters": [
+                                    {
+                                        "name": "tag:Name",
+                                        "values": [
+                                            "rhoai29-cd8g7-worker-sg"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "subnet": {
+                            "filters": [
+                                {
+                                    "name": "tag:Name",
+                                    "values": [
+                                        "rhoai29-cd8g7-private-us-east-2a"
+                                    ]
+                                }
+                            ]
+                        },
+                        "tags": [
+                            {
+                                "name": "kubernetes.io/cluster/rhoai29-cd8g7",
+                                "value": "owned"
+                            }
+                        ],
+                        "userDataSecret": {
+                            "name": "worker-user-data"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "status": {
+        "availableReplicas": 2,
+        "fullyLabeledReplicas": 2,
+        "observedGeneration": 2,
+        "readyReplicas": 2,
+        "replicas": 2
+    }
+}

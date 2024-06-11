@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: codeflare-operator-config
+  namespace: redhat-ods-applications
+data:
+  config.yaml: |
+    kuberay:
+      rayDashboardOAuthEnabled: false
+      ingressDomain: "kind"
+      mTLSEnabled: false
+      certGeneratorImage: quay.io/project-codeflare/ray:latest-py39-cu118
+    appwrapper:
+      enabled: true
+    clientConnection:
+      burst: 100
+      qps: 50
+    health:
+      bindAddress: :8081
+      livenessEndpointName: healthz
+      readinessEndpointName: readyz
+    instascale:
+      enabled: false
+      maxScaleoutAllowed: 5
+    leaderElection:
+      leaderElect: null
+      leaseDuration: 0s
+      renewDeadline: 0s
+      resourceLock: ""
+      resourceName: ""
+      resourceNamespace: ""
+      retryPeriod: 0s
+    mcad: {}
+    metrics:
+      bindAddress: :8080
+

@@ -15,6 +15,8 @@ Overview of the features in Red Hat OpenShift 2.9 with dependencies.
 |                     |            |CodeFlare SDK|                   |controls the remote distributed compute jobs and infrastructure for any Python-based env|
 |                     |            |Kuberay      |                   |KubeRay manages remote Ray clusters on OCP for running distributed workloads|
 |                     |            |Kueue        |                   |Manages quotas, queuing and how distributed workloads consume them |
+|                     |            |Multi-Cluster App Dispatcher (MCAD)|                   |a K8s controller to manage batch jobs in a single or multi-cluster environment |
+|                     |            |Instascale   |                   |works with MCAD to get aggregated resources available in the K8s cluster without creating pending pods. Uses machinesets to launch instances on cloud provider |
 |modelmeshserving     |inference   |S3 Store     |                   |                 |
 |kserve               |inference   |             |4 CPUs and 16 GB   |each model is deployed on a model server|
 |                     |            |ServiceMesh  |4 CPUs and 16 GB   |                 |
@@ -63,13 +65,13 @@ RHOAI creates 4x OCP Projects
     - If you want to add an authorization provider for the single-model serving platform, you must install the Red Hat - Authorino Operator
 
 Cluster Size (for installation):
-|vCPU|Memory|Network Bandwidth|Storeage Bandwidth|Qty|Notes|
-|----|------|-----------------|------------------|---|-----|
-|4   | 16   | up to 12.5 Gbps | up to 10.5 Gbps  |3  |not enough resources|
-|4   | 16   | up to 12.5 Gbps | up to 10.5 Gbps  |4  |minimum required to install|
-
-
-- x4 - m6i.xlarge
+|vCPU|Qty|Memory|GPU|GPU Arch|Qty|Network Bandwidth|Storeage Bandwidth|Notes|
+|----|---|------|---|---------|---|-----------------|------------------|-----|
+|4   | 3 | 16   | 0 |---------| 0 |up to 12.5 Gbps | up to 10.5 Gbps  |not enough resources|
+|4   | 4 | 16   | 0 |---------| 0 | up to 12.5 Gbps | up to 10.5 Gbps  |minimum required to install all the components|
+|4   | 5 | 16   | 0 |---------| 0 | up to 12.5 Gbps | up to 10.5 Gbps  |minimum required to create a data science project with a `small` workbench container size|
+|4   | 6 | 16   | 0 |---------| 0 | up to 12.5 Gbps | up to 10.5 Gbps  |minimum required to run the distributed workloads demo `0_basic_ray.ipynb`|
+|4   | 6 | 16   | 1 |nvidia t4| 0 | up to 12.5 Gbps | up to 10.5 Gbps  |minimum required to run the distributed workloads demo `1_cluster_job_client.ipynb`|
 
 ## Links
 
