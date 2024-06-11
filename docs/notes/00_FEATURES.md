@@ -9,6 +9,8 @@ Overview of the features in Red Hat OpenShift 2.9 with dependencies.
 |workbenches          |train       |             |                   |                 |
 |datasciencepipelines |train       |S3 Store     |                   |                 |
 |distributed workloads|train       |             |1.6 vCPU and 2 GiB |                 |
+|                     |            |dashboard    |                   |See above |
+|                     |            |datasciencepipelines    |                   |See above |
 |                     |            |CodeFlare    |                   |Secures deployed Ray clusters and grants access to their URLs |
 |                     |            |CodeFlare SDK|                   |controls the remote distributed compute jobs and infrastructure for any Python-based env|
 |                     |            |Kuberay      |                   |KubeRay manages remote Ray clusters on OCP for running distributed workloads|

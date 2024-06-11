@@ -1,0 +1,9 @@
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: LocalQueue
+metadata:
+  namespace: sandbox
+  name: local-queue-test
+  annotations:
+    kueue.x-k8s.io/default-queue: 'true'
+spec:
+  clusterQueue: cluster-queue

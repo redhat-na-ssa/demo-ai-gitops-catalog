@@ -637,12 +637,111 @@ TODO
 ## Enabling GPU support in OpenShift AI
 [Section 5 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
 
-TODO
-
 ## Configuring distributed workloads
 [Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
 
 TODO
+
+### Components required for Distributed Workloads
+1. dashboard
+1. workbenches
+1. datasciencepipelines
+1. codeflare
+1. kueue
+1. ray
+
+Verify the necessary pods are running - When the status of the codeflare-operator-manager-<pod-id>, kuberay-operator-<pod-id>, and kueue-controller-manager-<pod-id> pods is Running, the pods are ready to use.
+`oc get pods | grep -E 'codeflare|kuberay|kueue'`
+
+#### Configuring quota management for distributed workloads
+
+Create an empty Kueue resource flavor
+Why? Resources in a cluster are typically not homogeneous. A ResourceFlavor is an object that represents these resource variations and allows you to associate them with cluster nodes through labels, taints and tolerations (i.e. gpus).
+
+```yaml
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ResourceFlavor
+metadata:
+  name: default-flavor
+```
+
+Apply the configuration to create the `default-flavor`
+`oc apply -f docs/notes/configs/rhoai-kueue-default-flavor.yaml`
+
+Create a cluster queue to manage the empty Kueue resource flavor
+Why? A ClusterQueue is a cluster-scoped object that governs a pool of resources such as pods, CPU, memory, and hardware accelerators. Only batch administrators should create ClusterQueue objects.
+
+```yaml
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ClusterQueue
+metadata:
+  name: "cluster-queue"
+spec:
+  namespaceSelector: {}  # match all.
+  resourceGroups:
+  - coveredResources: ["cpu", "memory", "nvidia.com/gpu"]
+    flavors:
+    - name: "default-flavor"
+      resources:
+      - name: "cpu"
+        nominalQuota: 9
+      - name: "memory"
+        nominalQuota: 36Gi
+      - name: "nvidia.com/gpu"
+        nominalQuota: 5
+```
+
+What is this cluster-queue doing? This ClusterQueue admits Workloads if and only if:
+- The sum of the CPU requests is less than or equal to 9.
+- The sum of the memory requests is less than or equal to 36Gi.
+- The total number of pods is less than or equal to 5.
+
+```shell
+oc get -n my-namespace localqueues
+# Alternatively, use the alias `queue` or `queues`
+oc get -n my-namespace queues
+```
+
+![IMPORTANT] 
+Replace the example quota values (9 CPUs, 36 GiB memory, and 5 NVIDIA GPUs) with the appropriate values for your cluster queue. The cluster queue will start a distributed workload only if the total required resources are within these quota limits. Only homogenous NVIDIA GPUs are supported.
+
+
+Apply the configuration to create the `cluster-queue`
+`oc apply -f docs/notes/configs/rhoai-kueue-cluster-queue.yaml`
+
+Create a local queue that points to your cluster queue
+Why? A LocalQueue is a namespaced object that groups closely related Workloads that belong to a single namespace. Users submit jobs to a LocalQueue, instead of to a ClusterQueue directly.
+```yaml
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: LocalQueue
+metadata:
+  namespace: sandbox
+  name: local-queue-test
+  annotations:
+    kueue.x-k8s.io/default-queue: 'true'
+spec:
+  clusterQueue: cluster-queue
+```
+
+![NOTE] 
+Update the name value accordingly.
+
+Apply the configuration to create the local-queue object
+`oc apply -f docs/notes/configs/rhoai-kueue-local-queue.yaml`
+
+How do users known what queues they can submit jobs to? Users submit jobs to a LocalQueue, instead of to a ClusterQueue directly. Tenants can discover which queues they can submit jobs to by listing the local queues in their namespace.
+
+Verify the local queue is created
+`oc get -n sandbox queues`
+
+### Configuring the CodeFlare Operator
+Go to the `redhat-ods-applications` project
+`oc project redhat-ods-applications`
+
+Get the `codeflare-operator-config` configmap
+`oc describe configmaps codeflare-operator-config`
+
+TODO (configurations ingress, mtls, ca)[https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads#configuring-the-codeflare-operator_distributed-workloads]
 
 source:
 - https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-data-science-operator-using-cli_operator-install 
