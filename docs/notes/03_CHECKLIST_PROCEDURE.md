@@ -885,7 +885,27 @@ With the Pod and node name, run the nvidia-smi on the correct node.
 1. The first table reflects the information about all available GPUs (the example shows one GPU). 
 1. The second table provides details on the processes using the GPUs.
 
-### Configuring GPUs with time slicing
+### Enabling the GPU Monitoring Dashboard
+[source](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/enable-gpu-monitoring-dashboard.html)
+
+Download the latest NVIDIA DCGM Exporter Dashboard from the DCGM Exporter repository on GitHub:
+`curl -LfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json`
+
+Create a config map from the downloaded file in the openshift-config-managed namespace
+```
+oc create configmap nvidia-dcgm-exporter-dashboard -n openshift-config-managed --from-file=docs/notes/configs/nvidia-dcgm-dashboard-cm.json
+```
+
+Label the config map to expose the dashboard in the Administrator perspective of the web console
+`oc label configmap nvidia-dcgm-exporter-dashboard -n openshift-config-managed "console.openshift.io/dashboard=true"`
+
+Optional: Label the config map to expose the dashboard in the Developer perspecitive of the web console:
+`oc label configmap nvidia-dcgm-exporter-dashboard -n openshift-config-managed "console.openshift.io/odc-dashboard=true"`
+
+View the created resource and verify the labels
+`oc -n openshift-config-managed get cm nvidia-dcgm-exporter-dashboard --show-labels`
+
+### (Optional) Configuring GPUs with time slicing
 (source)[https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/time-slicing-gpus-in-openshift.html#configuring-gpus-with-time-slicing]
 
 Enabling GPU Feature Discovery
@@ -937,6 +957,8 @@ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
  | jq '.items[0].metadata.labels' | grep nvidia
  ```
 
+### (Optional) Configuring the cluster autoscaler
+[source](https://docs.openshift.com/container-platform/4.15/machine_management/applying-autoscaling.html)
 
 ## Configuring distributed workloads
 [Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
@@ -1059,6 +1081,47 @@ generate_cert.export_env(cluster.config.name, cluster.config.namespace)
 ray.init(cluster.cluster_uri())
 ```
 
+## Administrative Configurations for RHOAI
+
+### Create, push and import a custom notebook image
+
+### Configure Cluster Settings
+
+#### Model Serving Platforms
+
+#### PVC Size
+
+#### Stop Idle Notebooks
+
+#### Usage Data Collection
+
+#### Notebook Pod Toleration
+Why? A taint allows a node to refuse a pod to be scheduled unless that pod has a matching toleration. [source](https://docs.openshift.com/container-platform/4.15/nodes/scheduling/nodes-scheduler-taints-tolerations.html?extIdCarryOver=true&intcmp=701f2000001OMHaAAO&sc_cid=7015Y0000048A0IQAU#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
+
+
+
+### Add a new Accelerator Profile
+[Enabling GPU support in OpenShift AI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
+
+Delete the migration-gpu-status ConfigMap
+`oc delete cm migration-gpu-status -n redhat-ods-applications`
+
+Restart the dashboard replicaset
+`oc rollout restart deployment rhods-dashboard -n redhat-ods-applications`
+
+Wait until the Status column indicates that all pods in the rollout have fully restarted
+`oc get pods -n redhat-ods-applications | egrep rhods-dashboard`
+
+Check the acceleratorprofiles
+`oc get acceleratorprofile -n redhat-ods-applications`
+
+Review the acceleratorprofile configuration
+`oc describe acceleratorprofile -n redhat-ods-applications`
+
+### Add a new Serving Runtimes
+
+
+### Configure User and Admin groups
 
 source:
 - https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-data-science-operator-using-cli_operator-install 
