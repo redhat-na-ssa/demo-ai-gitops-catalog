@@ -80,12 +80,25 @@ This is checklist of the technical steps needed to complete the installation of 
     - [ ] TODO
   - [ ] TODO Enabling GPU support in OpenShift AI
       - [ ] Adding a GPU node to an existing OpenShift Container Platform cluster
-        - [ ] Make a copy of one of the existing compute MachineSet definitions and output the result to a JSON file
+        - [ ] View the machines and machine sets that exist in the openshift-machine-api namespace
+        - [ ] Make a copy of one of the existing compute MachineSet definitions 
         - [ ] Update the necessary fields and save the file
-        - [ ] Apply the object to create the GPU enabled machine
-        - [ ] Verify the machineset is running
+        - [ ] Apply the configuration to create the gpu machine
+        - [ ] Verify the gpu machineset you created is running
+        - [ ] View the Machine object that the machine set created 
         - [ ] Deploy the Node Feature Discovery Operator
         - [ ] Install NVIDIA GPU Operator
+          - [ ] Create a Namespace object YAML file
+          - [ ] Apply the Namespace object
+          - [ ] Create an OperatorGroup object YAML file
+          - [ ] Apply the OperatorGroup object
+          - [ ] Create a Subscription object YAML file
+          - [ ] Apply the Subscription object
+          - [ ] Verify the operator is installed and running
+          - [ ] Create an NodeFeatureDiscovery instance
+          - [ ] Verify the NFD pods are running
+          - [ ] Verify the NVIDIA GPU is discovered
+        - [ ] List the available operators for installation
         - [ ] Configure operator
           - [ ] Time-slicing
           - [ ] MIG

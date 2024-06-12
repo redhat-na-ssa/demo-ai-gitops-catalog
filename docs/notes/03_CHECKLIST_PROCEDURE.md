@@ -640,7 +640,7 @@ TODO
 ### Adding a GPU node to an existing OpenShift Container Platform cluster
 (source)[https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-adding-a-gpu-node_creating-machineset-aws]
 
-View the existing nodes, machines, and machine sets
+View the existing nodes
 `oc get nodes`
 
 View the machines and machine sets that exist in the openshift-machine-api namespace
@@ -650,7 +650,7 @@ View the machines that exist in the openshift-machine-api namespace
 `oc get machines -n openshift-machine-api | grep worker`
 
 Make a copy of one of the existing compute MachineSet definitions and output the result to a JSON file
-```
+```shell
 # get your machineset names
 oc get machineset -n openshift-machine-api
 
@@ -664,10 +664,10 @@ Update the following fields:
 - [ ] `.spec.template.metadata.labels["machine.openshift.io/cluster-api-machineset"]` to match the new `.metadata.name`.
 - [ ] `.spec.template.spec.providerSpec.value.instanceType` to `g4dn.xlarge`.
 
-Apply the configuration to create the machine
+Apply the configuration to create the gpu machine
 `oc apply -f docs/notes/configs/ocp-machineset.json`
 
-Verify the machineset you created is running
+Verify the gpu machineset you created is running
 `oc -n openshift-machine-api get machinesets | grep gpu`
 
 View the Machine object that the machine set created 
@@ -677,7 +677,100 @@ View the Machine object that the machine set created
 ### Deploying the Node Feature Discovery Operator
 (source)[https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-deploying-the-node-feature-discovery-operator_creating-machineset-aws]
 
+List the available operators for installation searching for Node Feature Discovery (NFD) 
+`oc get packagemanifests -n openshift-marketplace | grep nfd`
 
+Create a Namespace object YAML file
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-nfd
+```
+
+Apply the Namespace object
+`oc apply -f docs/notes/configs/nfd-operator-ns.yaml`
+
+
+Create an OperatorGroup object YAML file
+```yaml
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: nfd
+  namespace: openshift-nfd
+```
+
+Apply the OperatorGroup object
+```yaml
+oc apply -f docs/notes/configs/nfd-operator-group.yaml
+```
+
+Create a Subscription object YAML file to subscribe a namespace to an Operator
+
+```yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: nfd
+  namespace: openshift-nfd
+spec:
+  channel: stable
+  name: nfd
+  source: redhat-operators 
+  sourceNamespace: openshift-marketplace 
+  installPlanApproval: Automatic
+```
+
+Apply the Subscription object
+`oc apply -f docs/configs/notes/ndf-operator-sub.yaml`
+
+Verify the operator is installed and running
+`oc get pods -n openshift-nfd`
+
+Create an NodeFeatureDiscovery instance
+```yaml
+kind: NodeFeatureDiscovery
+apiVersion: nfd.openshift.io/v1
+metadata:
+  name: nfd-instance
+  namespace: openshift-nfd
+spec:
+  customConfig:
+    configData: 
+  operand:
+    image: 'registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9@sha256:a98a205e5541550dfd46caaf52147f078101a6c6e7221b7fb7cefb9581761dcb'
+    servicePort: 12000
+  workerConfig:
+    configData: |
+      core:
+        sleepInterval: 60s
+      sources:
+        pci:
+          deviceClassWhitelist:
+            - "0200"
+            - "03"
+            - "12"
+          deviceLabelFields:
+            - "vendor"
+```
+
+![IMPORTANT]
+The NFD Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses the PCI ID 10de.
+
+Verify the NFD pods are running on the cluster nodes polling for devices
+`oc get pods -n openshift-nfd` 
+
+Verify the NVIDIA GPU is discovered
+```shell
+# list your nodes
+oc get nodes
+
+# display the role feature list of a gpu node
+oc describe node <NODE_NAME> | egrep 'Roles|pci'
+```
+
+10de appears in the node feature list for the GPU-enabled node. This mean the NFD Operator correctly identified the node from the GPU-enabled MachineSet.
 
 ## Configuring distributed workloads
 [Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
