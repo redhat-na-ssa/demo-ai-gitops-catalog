@@ -120,8 +120,6 @@ This is checklist of the technical steps needed to complete the installation of 
           - [ ] Run the nvidia-smi
         - [ ] Configure operator
           - [ ] Time-slicing
-          - [ ] MIG
-          - [ ] Hybrid
   - [ ] Configuring distributed workloads
     - [ ] Verify necessary pods are running
     - [ ] Configure quota management for distributed workloads

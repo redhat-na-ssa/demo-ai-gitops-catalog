@@ -885,6 +885,59 @@ With the Pod and node name, run the nvidia-smi on the correct node.
 1. The first table reflects the information about all available GPUs (the example shows one GPU). 
 1. The second table provides details on the processes using the GPUs.
 
+### Configuring GPUs with time slicing
+(source)[https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/time-slicing-gpus-in-openshift.html#configuring-gpus-with-time-slicing]
+
+Enabling GPU Feature Discovery
+The feature release on GPU Feature Discovery (GFD) exposes the GPU types as labels and allows users to create node selectors based on these labels to help the scheduler place the pods.
+
+Create the slicing configurations
+Before enabling a time slicing configuration, you need to tell the device plugin what are the possible configurations.
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: device-plugin-config
+  namespace: nvidia-gpu-operator
+data:
+  Tesla-T4: |-
+    version: v1
+    sharing:
+      timeSlicing:
+        resources:
+          - name: nvidia.com/gpu
+            replicas: 8
+```
+
+Apply the device plugin configuration
+`oc apply -f docs/notes/configs/nvidia-gpu-deviceplugin-cm.yaml`
+
+Tell the GPU Operator which ConfigMap to use for the device plugin configuration. You can simply patch the ClusterPolicy custom resource.
+```shell
+oc patch clusterpolicy gpu-cluster-policy \
+    -n nvidia-gpu-operator --type merge \
+    -p '{"spec": {"devicePlugin": {"config": {"name": "device-plugin-config"}}}}'
+```
+
+Apply the configuration to all the nodes you have with Tesla TA GPUs. GFD, labels the nodes with the GPU product, in this example Tesla-T4, so you can use a node selector to label all of the nodes at once.
+```shell
+oc label --overwrite node \
+    --selector=nvidia.com/gpu.product=Tesla-T4 \
+    nvidia.com/device-plugin.config=Tesla-T4
+```
+
+The applied configuration creates eight replicas for Tesla T4 GPUs, so the nvidia.com/gpu external resource is set to 8
+```shell
+oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json | jq '.items[0].status.capacity'
+```
+
+Verify that GFD labels have been added to indicate time-sharing.
+```shell
+oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
+ | jq '.items[0].metadata.labels' | grep nvidia
+ ```
+
+
 ## Configuring distributed workloads
 [Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
 
