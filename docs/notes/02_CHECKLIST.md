@@ -87,7 +87,7 @@ This is checklist of the technical steps needed to complete the installation of 
         - [ ] Verify the gpu machineset you created is running
         - [ ] View the Machine object that the machine set created 
         - [ ] Deploy the Node Feature Discovery Operator
-        - [ ] Install NVIDIA GPU Operator
+          - [ ] List the available operators for installation
           - [ ] Create a Namespace object YAML file
           - [ ] Apply the Namespace object
           - [ ] Create an OperatorGroup object YAML file
@@ -98,7 +98,26 @@ This is checklist of the technical steps needed to complete the installation of 
           - [ ] Create an NodeFeatureDiscovery instance
           - [ ] Verify the NFD pods are running
           - [ ] Verify the NVIDIA GPU is discovered
-        - [ ] List the available operators for installation
+        - [ ] Install NVIDIA GPU Operator
+          - [ ] List the available operators for installation
+          - [ ] Create a Namespace CR
+          - [ ] Apply the Namepsace object YAML file 
+          - [ ] Create an OperatorGroup CR
+          - [ ] Apply the OperatorGroup YAML file
+          - [ ] Run the following command to get the channel value required
+          - [ ] Run the following commands to get the startingCSV value
+          - [ ] Create the following Subscription CR 
+          - [ ] Apply the Subscription CR
+          - [ ] Verify an install plan has been created
+          - [ ] Create the cluster policy
+          - [ ] Apply the clusterpolicy
+          - [ ] Verify the successful installation 
+        - [ ] Running a sample GPU Application
+          - [ ] Create the sample app
+          - [ ] Check the logs of the container
+          - [ ] Get information about the GPU
+          - [ ] View the new pods
+          - [ ] Run the nvidia-smi
         - [ ] Configure operator
           - [ ] Time-slicing
           - [ ] MIG
@@ -132,7 +151,7 @@ This is checklist of the technical steps needed to complete the installation of 
 
 ## Tutorials
 
-- [ ] Demonstrate Fraud Deteciton Demo
+- [ ] Demonstrate Fraud Detection Demo
 - [ ] Demonstrate Distributed Workloads Demo
   - [ ] Access the RHOAI Dashboard
   - [ ] Create a workbench

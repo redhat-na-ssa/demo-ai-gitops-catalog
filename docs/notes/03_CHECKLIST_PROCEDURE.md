@@ -772,6 +772,119 @@ oc describe node <NODE_NAME> | egrep 'Roles|pci'
 
 10de appears in the node feature list for the GPU-enabled node. This mean the NFD Operator correctly identified the node from the GPU-enabled MachineSet.
 
+### Installing the NVIDIA GPU Operator
+(source)[https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#installing-the-nvidia-gpu-operator-using-the-cli]
+
+List the available operators for installation searching for Node Feature Discovery (NFD) 
+`oc get packagemanifests -n openshift-marketplace | grep gpu`
+
+Create a Namespace custom resource (CR) that defines the nvidia-gpu-operator namespace
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nvidia-gpu-operator
+```
+
+Apply the Namepsace object YAML file 
+`oc apply -f docs/notes/configs/nvidia-gpu-operator-ns.yaml`
+
+Create an OperatorGroup CR
+```yaml
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: nvidia-gpu-operator-group
+  namespace: nvidia-gpu-operator
+spec:
+ targetNamespaces:
+ - nvidia-gpu-operator
+ ```
+
+Apply the OperatorGroup YAML file
+```yaml
+oc apply -f docs/notes/configs/nvidia-gpu-operator-group.yaml 
+```
+
+Run the following command to get the channel value required
+`CHANNEL=$(oc get packagemanifest gpu-operator-certified -n openshift-marketplace -o jsonpath='{.status.defaultChannel}')`
+
+Run the following commands to get the startingCSV value
+`oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson | jq -r '.status.channels[] | select(.name == "'$CHANNEL'") | .currentCSV'`
+
+Create the following Subscription CR and save the YAML
+Update the `channel` and `startingCSV` fields with the information returned
+```yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: gpu-operator-certified
+  namespace: nvidia-gpu-operator
+spec:
+  channel: "v24.3"
+  installPlanApproval: Automatic
+  name: gpu-operator-certified
+  source: certified-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: "gpu-operator-certified.v24.3.0"
+```
+
+Apply the Subscription CR
+`oc apply -f docs/notes/configs/nvidia-gpu-operator-subscription.yaml`
+
+Verify an install plan has been created
+`oc get installplan -n nvidia-gpu-operator`
+
+(Optional) Approve the install plan if not `Automatic`
+`INSTALL_PLAN=$(oc get installplan -n nvidia-gpu-operator -oname)`
+
+Create the cluster policy
+`oc get csv -n nvidia-gpu-operator gpu-operator-certified.v24.3.0 -o jsonpath='{.metadata.annotations.alm-examples}' | jq '.[0]' > docs/notes/configs/nvidia-gpu-clusterpolicy.json`
+
+Apply the clusterpolicy
+`oc apply -f docs/notes/configs/nvidia-gpu-clusterpolicy.json`
+
+At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10-20 minutes before digging deeper into any form of troubleshooting because this may take a period of time to finish.
+
+Verify the successful installation of the NVIDIA GPU Operator
+`oc get pods,daemonset -n nvidia-gpu-operator`
+
+### (Optional) Running a sample GPU Application
+Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure the GPUs have bootstrapped correctly
+
+```shell
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cuda-vectoradd
+spec:
+ restartPolicy: OnFailure
+ containers:
+ - name: cuda-vectoradd
+   image: "nvidia/samples:vectoradd-cuda11.2.1"
+   resources:
+     limits:
+       nvidia.com/gpu: 1
+```
+
+Create the sample app
+`oc create -f docs/notes/configs/nvidia-gpu-sample-app.yaml` 
+
+Check the logs of the container
+`oc logs cuda-vectoradd`
+
+Get information about the GPU
+`oc project nvidia-gpu-operator`
+
+View the new pods
+`oc get pod -owide -lopenshift.driver-toolkit=true`
+
+With the Pod and node name, run the nvidia-smi on the correct node.
+`oc exec -it nvidia-driver-daemonset-410.84.202203290245-0-xxgdv -- nvidia-smi`
+
+1. The first table reflects the information about all available GPUs (the example shows one GPU). 
+1. The second table provides details on the processes using the GPUs.
+
 ## Configuring distributed workloads
 [Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
 
