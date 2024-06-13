@@ -343,17 +343,17 @@ ocp_ack_upgrade_4.13(){
 }
 
 ocp_gpu_taint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule --overwrite
-  oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
-  oc adm uncordon -l node-role.kubernetes.io/gpu
+  oc adm taint node -l nvidia.com/gpu.machine nvidia-gpu-only=:NoSchedule --overwrite
+  oc adm drain -l nvidia.com/gpu.machine --ignore-daemonsets --delete-emptydir-data
+  oc adm uncordon -l nvidia.com/gpu.machine
 }
 
 ocp_gpu_untaint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule-
+  oc adm taint node -l nvidia.com/gpu.machine nvidia-gpu-only=:NoSchedule-
 }
 
 ocp_gpu_label_nodes_from_nfd(){
-  oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
+  oc label node -l nvidia.com/gpu.machine nvidia.com/gpu.machine=''
 }
 
 ocp_get_pull_secret(){
