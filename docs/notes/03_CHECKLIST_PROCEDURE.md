@@ -389,7 +389,7 @@ spec:
       kubernetes.podspec-tolerations: enabled
 ```
 
-Create the KnativeServing object in the specified knative-serving namespace
+Apply the KnativeServing object in the specified knative-serving namespace
 
 `oc create -f docs/notes/configs/serverless-istio.yaml`
 
@@ -669,8 +669,6 @@ Check that the AuthorizationPolicy resource was successfully created.
 Check that the EnvoyFilter resource was successfully created.
 `oc get envoyfilter -n istio-system`
 
-
-
 ## Enabling GPU support in OpenShift AI
 [Section 5 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
 
@@ -945,7 +943,7 @@ Optional: Label the config map to expose the dashboard in the Developer perspeci
 View the created resource and verify the labels
 `oc -n openshift-config-managed get cm nvidia-dcgm-exporter-dashboard --show-labels`
 
-### (Optional) Configuring GPUs with time slicing
+### Configuring GPUs with time slicing
 (source)[https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/time-slicing-gpus-in-openshift.html#configuring-gpus-with-time-slicing]
 
 Enabling GPU Feature Discovery
@@ -1043,7 +1041,7 @@ Verify the necessary pods are running - When the status of the codeflare-operato
 #### Configuring quota management for distributed workloads
 
 Create an empty Kueue resource flavor
-Why? Resources in a cluster are typically not homogeneous. A ResourceFlavor is an object that represents these resource variations and allows you to associate them with cluster nodes through labels, taints and tolerations (i.e. gpus).
+Why? Resources in a cluster are typically not homogeneous. A ResourceFlavor is an object that represents these resource variations (i.e. Nvidia A100 versus T4 GPUs) and allows you to associate them with cluster nodes through labels, taints and tolerations.
 
 ```yaml
 apiVersion: kueue.x-k8s.io/v1beta1

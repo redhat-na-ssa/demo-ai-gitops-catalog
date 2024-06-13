@@ -24,6 +24,13 @@ This is checklist of the technical steps needed to complete the installation of 
 - [ ] Installing and managing Red Hat OpenShift AI components
   - [ ] Create a DataScienceCluster object custom resource (CR) file
   - [ ] Apply the DSC object
+- [ ] Adding a BA bundle
+  - [ ] Set environment variables
+  - [ ] Create an OpenSSL config
+  - [ ] Generate a root certificate
+  - [ ] Verify the wildcard certificate
+  - [ ] Add the custom root signed certificate to the customCABundle
+  - [ ] Verify the configuration
 - [ ] Installing KServe dependencies
   - [ ] Create the required namespace for Red Hat OpenShift Service Mesh
   - [ ] Define the required subscription for the Red Hat OpenShift Service Mesh Operator
@@ -34,9 +41,9 @@ This is checklist of the technical steps needed to complete the installation of 
   - [ ] Creating a Knative Serving instance
   - [ ] Install the Serverless Operator
   - [ ] Define a ServiceMeshMember object in a YAML file
-  - [ ] Create the ServiceMeshMember object in the istio-system namespace
+  - [ ] Apply the ServiceMeshMember object in the istio-system namespace
   - [ ] Define a KnativeServing object in a YAML file 
-  - [ ] Create the KnativeServing object in the specified knative-serving namespace
+  - [ ] Apply the KnativeServing object in the specified knative-serving namespace
   - [ ] TODO use a TLS certificate to secure the mapped service 
   - [ ] Verification
     - [ ] Review the default ServiceMeshMemberRoll object in the istio-system namespace and confirm that it includes the knative-serving namespace
@@ -76,9 +83,7 @@ This is checklist of the technical steps needed to complete the installation of 
       - [ ] Create the EnvoyFilter resource in the namespace for your OpenShift Service Mesh instance
       - [ ] Check that the AuthorizationPolicy resource was successfully created
       - [ ] Check that the EnvoyFilter resource was successfully created
-  - [ ] TODO Adding a CA bundle
-    - [ ] TODO
-  - [ ] TODO Enabling GPU support in OpenShift AI
+  - [ ] Enabling GPU support in OpenShift AI
     - [ ] Adding a GPU node to an existing OpenShift Container Platform cluster
       - [ ] View the machines and machine sets that exist in the openshift-machine-api namespace
       - [ ] Make a copy of one of the existing compute MachineSet definitions 
@@ -119,13 +124,22 @@ This is checklist of the technical steps needed to complete the installation of 
         - [ ] View the new pods
         - [ ] Run the nvidia-smi
       - [ ] Download the latest NVIDIA DCGM Exporter Dashboard
-        - [ ] 
+        - [ ] Download the NVIDIA DCGM Exporter Dashboard
+        - [ ] Create a configmap
+        - [ ] Label the config map to expose the Admin dashboard
+        - [ ] Label the config map to expose the Developer dashboard
+        - [ ] View the created resource and verify the labels
       - [ ] Configuring GPUs with time slicing
         - [ ] Create the slicing configurations
         - [ ] Apply the device plugin configuration
         - [ ] Patch the GPU Operator ConfigMap
         - [ ] Label all nodes with GPU
         - [ ] Verify the labels configured
+      - [ ] Configure Taints and Tolerations
+        - [ ] Taint the GPU nodes
+        - [ ] Drain the nodes
+        - [ ] Allow the node to be scheduleable 
+        - [ ] Taint the machinesetsde
       - [ ] (Optional) Configuring the cluster autoscaler
   - [ ] Configuring distributed workloads
     - [ ] Verify necessary pods are running
@@ -170,7 +184,6 @@ This is checklist of the technical steps needed to complete the installation of 
   - [ ] complete the `0_basic_ray.ipynb`
   - [ ] complete the `1_cluster_job_client.ipynb`
   - [ ] complete the `2_basic_interactive.ipynb`
-
 
 ## Links
 
