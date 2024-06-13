@@ -150,6 +150,90 @@ Apply the DSC object
 
 `oc create -f docs/notes/configs/rhoai-operator-dcs.yaml`
 
+## Adding a CA bundle
+[Section 3.2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/working-with-certificates_certs#adding-a-ca-bundle_certs)
+
+Set environment variables to define base directories for generation of a wildcard certificate and key for the gateways.
+```shell
+export BASE_DIR=/tmp/kserve
+export BASE_CERT_DIR=${BASE_DIR}/certs
+```
+
+Set an environment variable to define the common name used by the ingress controller of your OpenShift cluster
+```shell
+export COMMON_NAME=$(oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}' | awk -F'.' '{print $(NF-1)"."$NF}')
+```
+
+Set an environment variable to define the domain name used by the ingress controller of your OpenShift cluster.
+```shell
+export DOMAIN_NAME=$(oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}')
+```
+
+Create the required base directories for the certificate generation, based on the environment variables that you previously set.
+```shell
+mkdir ${BASE_DIR}
+mkdir ${BASE_CERT_DIR}
+```
+
+Create the OpenSSL configuration for generation of a wildcard certificate.
+```shell
+cat <<EOF> ${BASE_DIR}/openssl-san.config
+[ req ]
+distinguished_name = req
+[ san ]
+subjectAltName = DNS:*.${DOMAIN_NAME}
+EOF
+```
+
+Generate a root certificate.
+```shell
+openssl req -x509 -sha256 -nodes -days 3650 -newkey rsa:2048 \
+-subj "/O=Example Inc./CN=${COMMON_NAME}" \
+-keyout $BASE_DIR/root.key \
+-out $BASE_DIR/root.crt
+```
+
+Generate a wildcard certificate signed by the root certificate.
+```shell
+openssl req -x509 -newkey rsa:2048 \
+-sha256 -days 3560 -nodes \
+-subj "/CN=${COMMON_NAME}/O=Example Inc." \
+-extensions san -config ${BASE_DIR}/openssl-san.config \
+-CA $BASE_DIR/root.crt \
+-CAkey $BASE_DIR/root.key \
+-keyout $BASE_DIR/wildcard.key  \
+-out $BASE_DIR/wildcard.crt
+
+openssl x509 -in ${BASE_DIR}/wildcard.crt -text
+```
+
+Verify the wildcard certificate.
+```shell
+openssl verify -CAfile ${BASE_DIR}/root.crt ${BASE_DIR}/wildcard.crt
+```
+
+Open your dscinitialization object via the CLI or terminal
+`oc edit dscinitialization -n redhat-ods-applications`
+
+In the spec section, add the custom root signed certificate to the customCABundle field for trustedCABundle, as shown in the following example:
+```yaml
+spec:
+  trustedCABundle:
+    customCABundle: |
+      -----BEGIN CERTIFICATE-----
+      examplebundle123
+      -----END CERTIFICATE-----
+    managementState: Managed
+```
+
+More info on managementState [source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/working-with-certificates_certs#managing-certificates_certs)
+
+Verify the `odh-trusted-ca-bundle` configmap for your root signed cert in the `odh-ca-bundle.crt:` section
+`oc get cm/odh-trusted-ca-bundle -o yaml -n redhat-ods-applications`
+
+Run the following command to verify that all non-reserved namespaces contain the odh-trusted-ca-bundle ConfigMap
+`oc get configmaps --all-namespaces -l app.kubernetes.io/part-of=opendatahub-operator | grep odh-trusted-ca-bundle`
+
 ### Installing KServe dependencies
 [Section 3.3.1 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#manually-installing-kserve_serving-large-models)
 
@@ -325,51 +409,7 @@ TODO Update
 
 Why? To secure traffic between your Knative Serving instance and the service mesh, you must create secure gateways for your Knative Serving instance.
 
-Set environment variables to define base directories for generation of a wildcard certificate and key for the gateways.
-```yaml
-export BASE_DIR=/tmp/kserve
-export BASE_CERT_DIR=${BASE_DIR}/certs
-```
-
-Set an environment variable to define the common name used by the ingress controller of your OpenShift cluster.
-`export COMMON_NAME=$(oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}' | awk -F'.' '{print $(NF-1)"."$NF}')`
-
-Create the required base directories for the certificate generation, based on the environment variables that you previously set.
-```shell
-mkdir ${BASE_DIR}
-mkdir ${BASE_CERT_DIR}
-```
-
-Create the OpenSSL configuration for generation of a wildcard certificate
-```shell
-cat <<EOF> ${BASE_DIR}/openssl-san.config
-[ req ]
-distinguished_name = req
-[ san ]
-subjectAltName = DNS:*.${DOMAIN_NAME}
-EOF
-```
-
-Generate a root certificate
-```shell
-openssl req -x509 -sha256 -nodes -days 3650 -newkey rsa:2048 \
--subj "/O=Example Inc./CN=${COMMON_NAME}" \
--keyout $BASE_DIR/root.key \
--out $BASE_DIR/root.crt
-```
-
-Generate a wildcard certificate signed by the root certificate
-```shell
-openssl req -x509 -newkey rsa:2048 \
--sha256 -days 3560 -nodes \
--subj "/CN=${COMMON_NAME}/O=Example Inc." \
--extensions san -config ${BASE_DIR}/openssl-san.config \
--CA $BASE_DIR/root.crt \
--CAkey $BASE_DIR/root.key \
--keyout $BASE_DIR/wildcard.key  \
--out $BASE_DIR/wildcard.crt
-openssl x509 -in ${BASE_DIR}/wildcard.crt -text
-```
+The initial steps to generate a root signed certificate were completed previous 
 
 Verify the wildcard certificate
 `openssl verify -CAfile ${BASE_DIR}/root.crt ${BASE_DIR}/wildcard.crt`
@@ -629,78 +669,7 @@ Check that the AuthorizationPolicy resource was successfully created.
 Check that the EnvoyFilter resource was successfully created.
 `oc get envoyfilter -n istio-system`
 
-## Adding a CA bundle
-[Section 3.2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/working-with-certificates_certs#adding-a-ca-bundle_certs)
 
-Set environment variables to define base directories for generation of a wildcard certificate and key for the gateways.
-```
-export BASE_DIR=/tmp/kserve
-export BASE_CERT_DIR=${BASE_DIR}/certs
-```
-
-Set an environment variable to define the common name used by the ingress controller of your OpenShift cluster
-```
-export COMMON_NAME=$(oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}' | awk -F'.' '{print $(NF-1)"."$NF}')
-```
-
-Set an environment variable to define the domain name used by the ingress controller of your OpenShift cluster.
-```
-export DOMAIN_NAME=$(oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}')
-```
-
-Create the required base directories for the certificate generation, based on the environment variables that you previously set.
-```
-mkdir ${BASE_DIR}
-mkdir ${BASE_CERT_DIR}
-```
-
-Create the OpenSSL configuration for generation of a wildcard certificate.
-```
-cat <<EOF> ${BASE_DIR}/openssl-san.config
-[ req ]
-distinguished_name = req
-[ san ]
-subjectAltName = DNS:*.${DOMAIN_NAME}
-EOF
-```
-
-Generate a root certificate.
-```
-openssl req -x509 -sha256 -nodes -days 3650 -newkey rsa:2048 \
--subj "/O=Example Inc./CN=${COMMON_NAME}" \
--keyout $BASE_DIR/root.key \
--out $BASE_DIR/root.crt
-```
-
-Generate a wildcard certificate signed by the root certificate.
-```
-openssl req -x509 -newkey rsa:2048 \
--sha256 -days 3560 -nodes \
--subj "/CN=${COMMON_NAME}/O=Example Inc." \
--extensions san -config ${BASE_DIR}/openssl-san.config \
--CA $BASE_DIR/root.crt \
--CAkey $BASE_DIR/root.key \
--keyout $BASE_DIR/wildcard.key  \
--out $BASE_DIR/wildcard.crt
-
-openssl x509 -in ${BASE_DIR}/wildcard.crt -text
-```
-
-Verify the wildcard certificate.
-```
-openssl verify -CAfile ${BASE_DIR}/root.crt ${BASE_DIR}/wildcard.crt
-```
-
-Open your default-dsci object. In the spec section, add the custom certificate to the customCABundle field for trustedCABundle, as shown in the following example:
-```
-spec:
-  trustedCABundle:
-    customCABundle: |
-      -----BEGIN CERTIFICATE-----
-      examplebundle123
-      -----END CERTIFICATE-----
-    managementState: Managed
-```
 
 ## Enabling GPU support in OpenShift AI
 [Section 5 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
@@ -1181,23 +1150,33 @@ ray.init(cluster.cluster_uri())
 ```
 
 ## Administrative Configurations for RHOAI
+1. Notebook Images
+  - Import new notebook images  
+1. Cluster Settings
+  - Model serving platforms
+  - PVC size (see Backing up data)
+  - Stop idle notebooks
+  - Usage data collection
+  - Notebook pod tolerations
+1. Accelerator Profiles
+  - Manage accelerator profile settings for users in your organization (see Add a new Accelerator Profile)
+1. Serving Runtimes
+  - Single-model serving platform
+  - Multi-model serving platform
+1. User Management
+  - Data scientists
+  - Administrators
 
-### Create, push and import a custom notebook image
+### Backing up data
+Refer to [A Guide to High Availability/Disaster Recovery for Applications on OpenShift](https://www.redhat.com/en/blog/a-guide-to-high-availability/disaster-recovery-for-applications-on-openshift)
 
-### Configure Cluster Settings
+#### Control plane backup and restore operations
+You must [back up etcd](https://docs.openshift.com/container-platform/4.15/backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.html#backup-etcd) data before shutting down a cluster; etcd is the key-value store for OpenShift Container Platform, which persists the state of all resource objects.
 
-#### Model Serving Platforms
+#### Application backup and restore operations
+The OpenShift API for Data Protection (OADP) product safeguards customer applications on OpenShift Container Platform. It offers comprehensive disaster recovery protection, covering OpenShift Container Platform applications, application-related cluster resources, persistent volumes, and internal images. OADP is also capable of backing up both containerized applications and virtual machines (VMs).
 
-#### PVC Size
-
-#### Stop Idle Notebooks
-
-#### Usage Data Collection
-
-#### Notebook Pod Toleration
-Why? A taint allows a node to refuse a pod to be scheduled unless that pod has a matching toleration. [source](https://docs.openshift.com/container-platform/4.15/nodes/scheduling/nodes-scheduler-taints-tolerations.html?extIdCarryOver=true&intcmp=701f2000001OMHaAAO&sc_cid=7015Y0000048A0IQAU#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
-
-
+However, OADP does not serve as a disaster recovery solution for [etcd](https://docs.openshift.com/container-platform/4.15/backup_and_restore/control_plane_backup_and_restore/backing-up-etcd.html#backup-etcd) or OpenShift Operators.
 
 ### Add a new Accelerator Profile
 [Enabling GPU support in OpenShift AI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
@@ -1216,11 +1195,3 @@ Check the acceleratorprofiles
 
 Review the acceleratorprofile configuration
 `oc describe acceleratorprofile -n redhat-ods-applications`
-
-### Add a new Serving Runtimes
-
-
-### Configure User and Admin groups
-
-source:
-- https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-data-science-operator-using-cli_operator-install 
