@@ -8,6 +8,7 @@ Login to cluster via terminal
 `source <(oc completion zsh)`
 
 ## Adding administrative users for OpenShift Container Platform
+
 [Section 2.2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#adding-administrative-users-for-openshift-container-platform_install)
 
 Create an htpasswd file to store the user and password information
@@ -53,6 +54,7 @@ Log in to the cluster as a user from your identity provider, entering the passwo
 `oc login --insecure-skip-tls-verify=true -u <username> -p <password>`
 
 ## Installing the Red Hat OpenShift AI Operator by using the CLI
+
 [Section 2.3 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-the-openshift-data-science-operator_operator-install)
 
 Create a namespace YAML file, for example, rhoai-operator-ns.yaml
@@ -110,6 +112,7 @@ Check the created projects `redhat-ods-applications|redhat-ods-monitoring|redhat
 `oc get projects | grep -i redhat-ods`
 
 ## Installing and managing Red Hat OpenShift AI components
+
 [Section 2.4 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-ai-components-using-cli_component-install)
 
 Create a DataScienceCluster object custom resource (CR) file, for example, rhoai-operator-dsc.yaml
@@ -151,6 +154,7 @@ Apply the DSC object
 `oc create -f docs/notes/configs/rhoai-operator-dcs.yaml`
 
 ### Installing KServe dependencies
+
 [Section 3.3.1 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#manually-installing-kserve_serving-large-models)
 
 Create the required namespace for Red Hat OpenShift Service Mesh.
@@ -241,6 +245,7 @@ istiod-minimal-5c68bf675d-whrns        1/1     Running   0          68s
 ```
 
 #### Creating a Knative Serving instance
+
 [Section 3.3.1.2 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#creating-a-knative-serving-instance_serving-large-models)
 
 Install the Serverless Operator
@@ -268,6 +273,7 @@ Apply the ServiceMeshMember object in the istio-system namespace
 Define a KnativeServing object in a YAML file called serverless-istio.yaml
 
 >adds the following actions to each of the activator and autoscaler pods:
+
 1. Injects an Istio sidecar to the pod. This makes the pod part of the service mesh.
 1. Enables the Istio sidecar to rewrite the HTTP liveness and readiness probes for the pod.
 
@@ -320,12 +326,14 @@ Verify creation of the Knative Serving instance
 `oc get pods -n knative-serving`
 
 #### Creating secure gateways for Knative Serving
+
 [Section 3.3.1.3 source]()
 TODO Update
 
 Why? To secure traffic between your Knative Serving instance and the service mesh, you must create secure gateways for your Knative Serving instance.
 
 Set environment variables to define base directories for generation of a wildcard certificate and key for the gateways.
+
 ```yaml
 export BASE_DIR=/tmp/kserve
 export BASE_CERT_DIR=${BASE_DIR}/certs
@@ -335,12 +343,14 @@ Set an environment variable to define the common name used by the ingress contro
 `export COMMON_NAME=$(oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}' | awk -F'.' '{print $(NF-1)"."$NF}')`
 
 Create the required base directories for the certificate generation, based on the environment variables that you previously set.
+
 ```shell
 mkdir ${BASE_DIR}
 mkdir ${BASE_CERT_DIR}
 ```
 
 Create the OpenSSL configuration for generation of a wildcard certificate
+
 ```shell
 cat <<EOF> ${BASE_DIR}/openssl-san.config
 [ req ]
@@ -351,6 +361,7 @@ EOF
 ```
 
 Generate a root certificate
+
 ```shell
 openssl req -x509 -sha256 -nodes -days 3650 -newkey rsa:2048 \
 -subj "/O=Example Inc./CN=${COMMON_NAME}" \
@@ -359,6 +370,7 @@ openssl req -x509 -sha256 -nodes -days 3650 -newkey rsa:2048 \
 ```
 
 Generate a wildcard certificate signed by the root certificate
+
 ```shell
 openssl req -x509 -newkey rsa:2048 \
 -sha256 -days 3560 -nodes \
@@ -375,6 +387,7 @@ Verify the wildcard certificate
 `openssl verify -CAfile ${BASE_DIR}/root.crt ${BASE_DIR}/wildcard.crt`
 
 Export the wildcard key and certificate that were created by the script to new environment variables
+
 ```shell
 export TARGET_CUSTOM_CERT=${BASE_CERT_DIR}/wildcard.crt
 export TARGET_CUSTOM_KEY=${BASE_CERT_DIR}/wildcard.key
@@ -451,11 +464,13 @@ Review the gateways that you created
 `oc get gateway --all-namespaces`
 
 ### Manually adding an authorization provider
+
 [Section 3.3.3 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#manually-adding-an-authorization-provider_serving-large-models)
 
 Why? Adding an authorization provider allows you to enable token authorization for models that you deploy on the platform, which ensures that only authorized parties can make inference requests to the models.
 
 Create subscription for the Authorino Operator
+
 ```yaml
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -478,6 +493,7 @@ Create a namespace to install the Authorino instance
 `oc create ns redhat-ods-applications-auth-provider`
 
 Enroll the new namespace for the Authorino instance in your existing OpenShift Service Mesh instance, create a new YAML file authorino-smm.yaml with the following contents
+
 ```yaml
   apiVersion: maistra.io/v1
   kind: ServiceMeshMember
@@ -494,6 +510,7 @@ Create the ServiceMeshMember resource on your cluster
 `oc create -f docs/notes/configs/authorino-smm.yaml`
 
 Configure an Authorino instance, create a new YAML file as shown
+
 ```yaml
   apiVersion: operator.authorino.kuadrant.io/v1beta1
   kind: Authorino
@@ -521,11 +538,13 @@ Check the pods (and containers) that are running in the namespace that you creat
 `oc get pods -n redhat-ods-applications-auth-provider -o="custom-columns=NAME:.metadata.name,STATUS:.status.phase,CONTAINERS:.spec.containers[*].name"`
 
 #### Configuring an OpenShift Service Mesh instance to use Authorino
+
 [Section 3.3.3.3 source](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/serving_models/serving-large-models_serving-large-models#configuring-service-mesh-instance-to-use-authorino_serving-large-models)
 
 Why? you must configure your OpenShift Service Mesh instance to use Authorino as an authorization provider
 
 Create a new YAML file with the following contents `servicemesh-smcp-patch.yaml`
+
 ```yaml
 spec:
  techPreview:
@@ -575,11 +594,13 @@ spec:
      matchLabels:
         component: predictor
 ```
+
 Create the AuthorizationPolicy resource in the namespace for your OpenShift Service Mesh instance
 `oc create -n istio-system -f docs/notes/configs/servicemesh-authorization-policy.yaml`
 
 Create another new YAML file with the following contents:
 The EnvoyFilter resource shown continually resets the HTTP host header to the one initially included in any inference request.
+
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
@@ -630,15 +651,18 @@ Check that the EnvoyFilter resource was successfully created.
 `oc get envoyfilter -n istio-system`
 
 ## Adding a CA bundle
+
 [Section 3.2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/working-with-certificates_certs#adding-a-ca-bundle_certs)
 
 TODO
 
 ## Enabling GPU support in OpenShift AI
+
 [Section 5 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
 
 ### Adding a GPU node to an existing OpenShift Container Platform cluster
-(source)[https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-adding-a-gpu-node_creating-machineset-aws]
+
+[source](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-adding-a-gpu-node_creating-machineset-aws)
 
 View the existing nodes
 `oc get nodes`
@@ -650,6 +674,7 @@ View the machines that exist in the openshift-machine-api namespace
 `oc get machines -n openshift-machine-api | grep worker`
 
 Make a copy of one of the existing compute MachineSet definitions and output the result to a JSON file
+
 ```shell
 # get your machineset names
 oc get machineset -n openshift-machine-api
@@ -659,6 +684,7 @@ oc get machineset <your-machineset-name> -n openshift-machine-api -o json > <out
 ```
 
 Update the following fields:
+
 - [ ] `.metadata.name` to a name containing `gpu`.
 - [ ] `.spec.selector.matchLabels["machine.openshift.io/cluster-api-machineset"]` to match the new `.metadata.name`.
 - [ ] `.spec.template.metadata.labels["machine.openshift.io/cluster-api-machineset"]` to match the new `.metadata.name`.
@@ -673,14 +699,15 @@ Verify the gpu machineset you created is running
 View the Machine object that the machine set created 
 `oc -n openshift-machine-api get machines | grep gpu`
 
-
 ### Deploying the Node Feature Discovery Operator
-(source)[https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-deploying-the-node-feature-discovery-operator_creating-machineset-aws]
+
+[source](https://docs.redhat.com/en/documentation/openshift_container_platform/4.15/html/machine_management/managing-compute-machines-with-the-machine-api#nvidia-gpu-aws-deploying-the-node-feature-discovery-operator_creating-machineset-aws)
 
 List the available operators for installation searching for Node Feature Discovery (NFD) 
 `oc get packagemanifests -n openshift-marketplace | grep nfd`
 
 Create a Namespace object YAML file
+
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -691,8 +718,8 @@ metadata:
 Apply the Namespace object
 `oc apply -f docs/notes/configs/nfd-operator-ns.yaml`
 
-
 Create an OperatorGroup object YAML file
+
 ```yaml
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
@@ -702,6 +729,7 @@ metadata:
 ```
 
 Apply the OperatorGroup object
+
 ```yaml
 oc apply -f docs/notes/configs/nfd-operator-group.yaml
 ```
@@ -729,6 +757,7 @@ Verify the operator is installed and running
 `oc get pods -n openshift-nfd`
 
 Create an NodeFeatureDiscovery instance
+
 ```yaml
 kind: NodeFeatureDiscovery
 apiVersion: nfd.openshift.io/v1
@@ -762,6 +791,7 @@ Verify the NFD pods are running on the cluster nodes polling for devices
 `oc get pods -n openshift-nfd` 
 
 Verify the NVIDIA GPU is discovered
+
 ```shell
 # list your nodes
 oc get nodes
@@ -773,12 +803,14 @@ oc describe node <NODE_NAME> | egrep 'Roles|pci'
 10de appears in the node feature list for the GPU-enabled node. This mean the NFD Operator correctly identified the node from the GPU-enabled MachineSet.
 
 ### Installing the NVIDIA GPU Operator
-(source)[https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#installing-the-nvidia-gpu-operator-using-the-cli]
+
+[source](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#installing-the-nvidia-gpu-operator-using-the-cli)
 
 List the available operators for installation searching for Node Feature Discovery (NFD) 
 `oc get packagemanifests -n openshift-marketplace | grep gpu`
 
 Create a Namespace custom resource (CR) that defines the nvidia-gpu-operator namespace
+
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -790,6 +822,7 @@ Apply the Namepsace object YAML file
 `oc apply -f docs/notes/configs/nvidia-gpu-operator-ns.yaml`
 
 Create an OperatorGroup CR
+
 ```yaml
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
@@ -802,6 +835,7 @@ spec:
  ```
 
 Apply the OperatorGroup YAML file
+
 ```yaml
 oc apply -f docs/notes/configs/nvidia-gpu-operator-group.yaml 
 ```
@@ -814,6 +848,7 @@ Run the following commands to get the startingCSV value
 
 Create the following Subscription CR and save the YAML
 Update the `channel` and `startingCSV` fields with the information returned
+
 ```yaml
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -850,6 +885,7 @@ Verify the successful installation of the NVIDIA GPU Operator
 `oc get pods,daemonset -n nvidia-gpu-operator`
 
 ### (Optional) Running a sample GPU Application
+
 Run a simple CUDA VectorAdd sample, which adds two vectors together to ensure the GPUs have bootstrapped correctly
 
 ```shell
@@ -886,12 +922,14 @@ With the Pod and node name, run the nvidia-smi on the correct node.
 1. The second table provides details on the processes using the GPUs.
 
 ### Enabling the GPU Monitoring Dashboard
+
 [source](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/enable-gpu-monitoring-dashboard.html)
 
 Download the latest NVIDIA DCGM Exporter Dashboard from the DCGM Exporter repository on GitHub:
 `curl -LfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json`
 
 Create a config map from the downloaded file in the openshift-config-managed namespace
+
 ```
 oc create configmap nvidia-dcgm-exporter-dashboard -n openshift-config-managed --from-file=docs/notes/configs/nvidia-dcgm-dashboard-cm.json
 ```
@@ -906,13 +944,15 @@ View the created resource and verify the labels
 `oc -n openshift-config-managed get cm nvidia-dcgm-exporter-dashboard --show-labels`
 
 ### (Optional) Configuring GPUs with time slicing
-(source)[https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/time-slicing-gpus-in-openshift.html#configuring-gpus-with-time-slicing]
+
+[source](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/time-slicing-gpus-in-openshift.html#configuring-gpus-with-time-slicing)
 
 Enabling GPU Feature Discovery
 The feature release on GPU Feature Discovery (GFD) exposes the GPU types as labels and allows users to create node selectors based on these labels to help the scheduler place the pods.
 
 Create the slicing configurations
 Before enabling a time slicing configuration, you need to tell the device plugin what are the possible configurations.
+
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -933,6 +973,7 @@ Apply the device plugin configuration
 `oc apply -f docs/notes/configs/nvidia-gpu-deviceplugin-cm.yaml`
 
 Tell the GPU Operator which ConfigMap to use for the device plugin configuration. You can simply patch the ClusterPolicy custom resource.
+
 ```shell
 oc patch clusterpolicy gpu-cluster-policy \
     -n nvidia-gpu-operator --type merge \
@@ -940,6 +981,7 @@ oc patch clusterpolicy gpu-cluster-policy \
 ```
 
 Apply the configuration to all the nodes you have with Tesla TA GPUs. GFD, labels the nodes with the GPU product, in this example Tesla-T4, so you can use a node selector to label all of the nodes at once.
+
 ```shell
 oc label --overwrite node \
     --selector=nvidia.com/gpu.product=Tesla-T4 \
@@ -947,11 +989,13 @@ oc label --overwrite node \
 ```
 
 The applied configuration creates eight replicas for Tesla T4 GPUs, so the nvidia.com/gpu external resource is set to 8
+
 ```shell
 oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json | jq '.items[0].status.capacity'
 ```
 
 Verify that GFD labels have been added to indicate time-sharing.
+
 ```shell
 oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
  | jq '.items[0].metadata.labels' | grep nvidia
@@ -959,14 +1003,16 @@ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
 
 ### Configure Taints and Tolerations
 
-
 ### (Optional) Configuring the cluster autoscaler
+
 [source](https://docs.openshift.com/container-platform/4.15/machine_management/applying-autoscaling.html)
 
 ## Configuring distributed workloads
+
 [Section 2 source](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads)
 
 ### Components required for Distributed Workloads
+
 1. dashboard
 1. workbenches
 1. datasciencepipelines
@@ -1016,6 +1062,7 @@ spec:
 ```
 
 What is this cluster-queue doing? This ClusterQueue admits Workloads if and only if:
+
 - The sum of the CPU requests is less than or equal to 9.
 - The sum of the memory requests is less than or equal to 36Gi.
 - The total number of pods is less than or equal to 5.
@@ -1023,12 +1070,12 @@ What is this cluster-queue doing? This ClusterQueue admits Workloads if and only
 ![IMPORTANT] 
 Replace the example quota values (9 CPUs, 36 GiB memory, and 5 NVIDIA GPUs) with the appropriate values for your cluster queue. The cluster queue will start a distributed workload only if the total required resources are within these quota limits. Only homogenous NVIDIA GPUs are supported.
 
-
 Apply the configuration to create the `cluster-queue`
 `oc apply -f docs/notes/configs/rhoai-kueue-cluster-queue.yaml`
 
 Create a local queue that points to your cluster queue
 Why? A LocalQueue is a namespaced object that groups closely related Workloads that belong to a single namespace. Users submit jobs to a LocalQueue, instead of to a ClusterQueue directly.
+
 ```yaml
 apiVersion: kueue.x-k8s.io/v1beta1
 kind: LocalQueue
@@ -1053,10 +1100,11 @@ Verify the local queue is created
 `oc get -n sandbox queues`
 
 ### (Optional) Configuring the CodeFlare Operator
+
 Get the `codeflare-operator-config` configmap
 `oc get cm codeflare-operator-config -n redhat-ods-applications -o yaml`
 
-In the `codeflare-operator-config`, data:config.yaml:kuberay section, you can patch the (following)[https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads#configuring-the-codeflare-operator_distributed-workloads]
+In the `codeflare-operator-config`, data:config.yaml:kuberay section, you can patch the [following](https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads#configuring-the-codeflare-operator_distributed-workloads)
 
 1. ingressDomain option is null (ingressDomain: "") by default.
 1. mTLSEnabled option is enabled (mTLSEnabled: true) by default.
@@ -1077,6 +1125,7 @@ Recommended to keep default. Apply the configuration to update the object
 This does not change the values, but it does illustrate where you would enable mTLS in Ray cluster. If mTLS is enabled you must also add and execute the following code in your notebook after you define your `cluster`
 
 (Optional - if you enabled mTLS)
+
 ```python
 from codeflare_sdk import generate_cert
 
@@ -1101,11 +1150,11 @@ ray.init(cluster.cluster_uri())
 #### Usage Data Collection
 
 #### Notebook Pod Toleration
+
 Why? A taint allows a node to refuse a pod to be scheduled unless that pod has a matching toleration. [source](https://docs.openshift.com/container-platform/4.15/nodes/scheduling/nodes-scheduler-taints-tolerations.html?extIdCarryOver=true&intcmp=701f2000001OMHaAAO&sc_cid=7015Y0000048A0IQAU#nodes-scheduler-taints-tolerations-about_nodes-scheduler-taints-tolerations)
 
-
-
 ### Add a new Accelerator Profile
+
 [Enabling GPU support in OpenShift AI](https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/enabling-gpu-support_install)
 
 Delete the migration-gpu-status ConfigMap
@@ -1125,8 +1174,8 @@ Review the acceleratorprofile configuration
 
 ### Add a new Serving Runtimes
 
-
 ### Configure User and Admin groups
 
 source:
+
 - https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2.9/html/installing_and_uninstalling_openshift_ai_self-managed/installing-and-deploying-openshift-ai_install#installing-openshift-data-science-operator-using-cli_operator-install 

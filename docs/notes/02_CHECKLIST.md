@@ -17,7 +17,7 @@ This is checklist of the technical steps needed to complete the installation of 
   - [ ] Create an OperatorGroup object custom resource (CR) file
   - [ ] Apply the OperatorGroup object
   - [ ] Create a Subscription object CR file
-  - [ ] Apply the Subscription object   
+  - [ ] Apply the Subscription object
   - [ ] Verification
     - [ ] Check the installed operators
     - [ ] Check the created projects
@@ -79,54 +79,54 @@ This is checklist of the technical steps needed to complete the installation of 
   - [ ] TODO Adding a CA bundle
     - [ ] TODO
   - [ ] TODO Enabling GPU support in OpenShift AI
-      - [ ] Adding a GPU node to an existing OpenShift Container Platform cluster
-        - [ ] View the machines and machine sets that exist in the openshift-machine-api namespace
-        - [ ] Make a copy of one of the existing compute MachineSet definitions 
-        - [ ] Update the necessary fields and save the file
-        - [ ] Apply the configuration to create the gpu machine
-        - [ ] Verify the gpu machineset you created is running
-        - [ ] View the Machine object that the machine set created 
-        - [ ] Deploy the Node Feature Discovery Operator
-          - [ ] List the available operators for installation
-          - [ ] Create a Namespace object YAML file
-          - [ ] Apply the Namespace object
-          - [ ] Create an OperatorGroup object YAML file
-          - [ ] Apply the OperatorGroup object
-          - [ ] Create a Subscription object YAML file
-          - [ ] Apply the Subscription object
-          - [ ] Verify the operator is installed and running
-          - [ ] Create an NodeFeatureDiscovery instance
-          - [ ] Verify the NFD pods are running
-          - [ ] Verify the NVIDIA GPU is discovered
-        - [ ] Install NVIDIA GPU Operator
-          - [ ] List the available operators for installation
-          - [ ] Create a Namespace CR
-          - [ ] Apply the Namepsace object YAML file 
-          - [ ] Create an OperatorGroup CR
-          - [ ] Apply the OperatorGroup YAML file
-          - [ ] Run the following command to get the channel value required
-          - [ ] Run the following commands to get the startingCSV value
-          - [ ] Create the following Subscription CR 
-          - [ ] Apply the Subscription CR
-          - [ ] Verify an install plan has been created
-          - [ ] Create the cluster policy
-          - [ ] Apply the clusterpolicy
-          - [ ] Verify the successful installation 
-        - [ ] (Optional) Running a sample GPU Application
-          - [ ] Create the sample app
-          - [ ] Check the logs of the container
-          - [ ] Get information about the GPU
-          - [ ] View the new pods
-          - [ ] Run the nvidia-smi
-        - [ ] Download the latest NVIDIA DCGM Exporter Dashboard
-          - [ ] 
-        - [ ] Configuring GPUs with time slicing
-          - [ ] Create the slicing configurations
-          - [ ] Apply the device plugin configuration
-          - [ ] Patch the GPU Operator ConfigMap
-          - [ ] Label all nodes with GPU
-          - [ ] Verify the labels configured
-        - [ ] (Optional) Configuring the cluster autoscaler
+    - [ ] Adding a GPU node to an existing OpenShift Container Platform cluster
+      - [ ] View the machines and machine sets that exist in the openshift-machine-api namespace
+      - [ ] Make a copy of one of the existing compute MachineSet definitions 
+      - [ ] Update the necessary fields and save the file
+      - [ ] Apply the configuration to create the gpu machine
+      - [ ] Verify the gpu machineset you created is running
+      - [ ] View the Machine object that the machine set created 
+      - [ ] Deploy the Node Feature Discovery Operator
+        - [ ] List the available operators for installation
+        - [ ] Create a Namespace object YAML file
+        - [ ] Apply the Namespace object
+        - [ ] Create an OperatorGroup object YAML file
+        - [ ] Apply the OperatorGroup object
+        - [ ] Create a Subscription object YAML file
+        - [ ] Apply the Subscription object
+        - [ ] Verify the operator is installed and running
+        - [ ] Create an NodeFeatureDiscovery instance
+        - [ ] Verify the NFD pods are running
+        - [ ] Verify the NVIDIA GPU is discovered
+      - [ ] Install NVIDIA GPU Operator
+        - [ ] List the available operators for installation
+        - [ ] Create a Namespace CR
+        - [ ] Apply the Namepsace object YAML file 
+        - [ ] Create an OperatorGroup CR
+        - [ ] Apply the OperatorGroup YAML file
+        - [ ] Run the following command to get the channel value required
+        - [ ] Run the following commands to get the startingCSV value
+        - [ ] Create the following Subscription CR 
+        - [ ] Apply the Subscription CR
+        - [ ] Verify an install plan has been created
+        - [ ] Create the cluster policy
+        - [ ] Apply the clusterpolicy
+        - [ ] Verify the successful installation 
+      - [ ] (Optional) Running a sample GPU Application
+        - [ ] Create the sample app
+        - [ ] Check the logs of the container
+        - [ ] Get information about the GPU
+        - [ ] View the new pods
+        - [ ] Run the nvidia-smi
+      - [ ] Download the latest NVIDIA DCGM Exporter Dashboard
+        - [ ] 
+      - [ ] Configuring GPUs with time slicing
+        - [ ] Create the slicing configurations
+        - [ ] Apply the device plugin configuration
+        - [ ] Patch the GPU Operator ConfigMap
+        - [ ] Label all nodes with GPU
+        - [ ] Verify the labels configured
+      - [ ] (Optional) Configuring the cluster autoscaler
   - [ ] Configuring distributed workloads
     - [ ] Verify necessary pods are running
     - [ ] Configure quota management for distributed workloads

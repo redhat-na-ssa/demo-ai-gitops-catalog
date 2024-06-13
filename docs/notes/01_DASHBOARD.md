@@ -56,7 +56,7 @@ Deep dive into the Red Hat OpenShift AI 2.9 Dashboard
         1. Cron
     1. Schedule
         1. Max concurrent runs
-        1. Timeframe
+        1. Time frame
         1. Catchup if behind schedule
     1. Review the pipeline success
         1. Graph
