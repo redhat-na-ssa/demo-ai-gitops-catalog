@@ -790,6 +790,9 @@ The NFD Operator uses vendor PCI IDs to identify hardware in a node. NVIDIA uses
 Verify the NFD pods are running on the cluster nodes polling for devices
 `oc get pods -n openshift-nfd` 
 
+Label the GPU node Role as 'gpu, worker' for readability
+`oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''`
+
 Verify the NVIDIA GPU is discovered
 
 ```shell
@@ -1002,6 +1005,30 @@ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
  ```
 
 ### Configure Taints and Tolerations
+Prevent non-GPU workloads from being scheduled on the GPU nodes. 
+
+```shell
+# taint the GPU nodes
+oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule --overwrite
+
+# cordon the GPU node, drain the GPU tained nodes and terminate workloads
+oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
+
+# allow the GPU node to be scheduleable again per tolerations
+oc adm uncordon -l node-role.kubernetes.io/gpu
+```
+
+```shell
+# get the name of the gpu node
+MACHINE_SET_TYPE=$(oc get machineset -n openshift-machine-api -o name |  egrep gpu)
+
+# taint the machineset for any new nodes that get added to be tainted
+oc -n openshift-machine-api \
+  patch "${MACHINE_SET_TYPE}" \
+  --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
+```
+
+Tolerations will be set in the RHOAI accelerator profiles.
 
 ### (Optional) Configuring the cluster autoscaler
 
