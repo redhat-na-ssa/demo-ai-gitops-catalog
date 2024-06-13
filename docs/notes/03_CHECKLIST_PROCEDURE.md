@@ -957,6 +957,9 @@ oc get node --selector=nvidia.com/gpu.product=Tesla-T4-SHARED -o json \
  | jq '.items[0].metadata.labels' | grep nvidia
  ```
 
+### Configure Taints and Tolerations
+
+
 ### (Optional) Configuring the cluster autoscaler
 [source](https://docs.openshift.com/container-platform/4.15/machine_management/applying-autoscaling.html)
 
@@ -1049,23 +1052,25 @@ How do users known what queues they can submit jobs to? Users submit jobs to a L
 Verify the local queue is created
 `oc get -n sandbox queues`
 
-### Configuring the CodeFlare Operator
+### (Optional) Configuring the CodeFlare Operator
 Get the `codeflare-operator-config` configmap
 `oc get cm codeflare-operator-config -n redhat-ods-applications -o yaml`
 
 In the `codeflare-operator-config`, data:config.yaml:kuberay section, you can patch the (following)[https://access.redhat.com/documentation/en-us/red_hat_openshift_ai_self-managed/2.9/html/working_with_distributed_workloads/configuring-distributed-workloads_distributed-workloads#configuring-the-codeflare-operator_distributed-workloads]
 
+1. ingressDomain option is null (ingressDomain: "") by default.
+1. mTLSEnabled option is enabled (mTLSEnabled: true) by default.
+1. rayDashboardOauthEnabled option is enabled (rayDashboardOAuthEnabled: true) by default.
+
 ```yaml
 kuberay:
-  rayDashboardOAuthEnabled: false
-  ingressDomain: "kind"
-  mTLSEnabled: false
-  certGeneratorImage: quay.io/project-codeflare/ray:latest-py39-cu118
+  rayDashboardOAuthEnabled: true
+  ingressDomain: ""
+  mTLSEnabled: true
+  #certGeneratorImage: quay.io/project-codeflare/ray:latest-py39-cu118
 ```
 
-TODO test mTLS
-
-Apply the configuration to update the object
+Recommended to keep default. Apply the configuration to update the object
 `oc apply -f docs/notes/configs/rhoai-codeflare-operator-config.yaml`
 
 ![IMPORTANT] 

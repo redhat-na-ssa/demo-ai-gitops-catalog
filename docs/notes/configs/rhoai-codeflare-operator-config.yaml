@@ -6,10 +6,10 @@ metadata:
 data:
   config.yaml: |
     kuberay:
-      rayDashboardOAuthEnabled: false
-      ingressDomain: "kind"
-      mTLSEnabled: false
-      certGeneratorImage: quay.io/project-codeflare/ray:latest-py39-cu118
+      rayDashboardOAuthEnabled: true
+      ingressDomain: ""
+      mTLSEnabled: true
+      #certGeneratorImage: quay.io/project-codeflare/ray:latest-py39-cu118
     appwrapper:
       enabled: true
     clientConnection:

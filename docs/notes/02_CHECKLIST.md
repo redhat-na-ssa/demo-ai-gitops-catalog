@@ -112,14 +112,21 @@ This is checklist of the technical steps needed to complete the installation of 
           - [ ] Create the cluster policy
           - [ ] Apply the clusterpolicy
           - [ ] Verify the successful installation 
-        - [ ] Running a sample GPU Application
+        - [ ] (Optional) Running a sample GPU Application
           - [ ] Create the sample app
           - [ ] Check the logs of the container
           - [ ] Get information about the GPU
           - [ ] View the new pods
           - [ ] Run the nvidia-smi
-        - [ ] Configure operator
-          - [ ] Time-slicing
+        - [ ] Download the latest NVIDIA DCGM Exporter Dashboard
+          - [ ] 
+        - [ ] Configuring GPUs with time slicing
+          - [ ] Create the slicing configurations
+          - [ ] Apply the device plugin configuration
+          - [ ] Patch the GPU Operator ConfigMap
+          - [ ] Label all nodes with GPU
+          - [ ] Verify the labels configured
+        - [ ] (Optional) Configuring the cluster autoscaler
   - [ ] Configuring distributed workloads
     - [ ] Verify necessary pods are running
     - [ ] Configure quota management for distributed workloads
@@ -130,8 +137,8 @@ This is checklist of the technical steps needed to complete the installation of 
       - [ ] Create a local queue that points to your cluster queue
       - [ ] Apply the configuration
       - [ ] Verify the local queue is created
-    - [ ] Configure the CodeFlare operator
-      - [ ] Review/Patch the kuberay configurations (i.e. mTLS)
+    - [ ] Review the CodeFlare operator configurations
+      - [ ] Review/Patch the kuberay configuration options
   - [ ] Demonstrate Installation and Configuration Declarative Automation (Kustomize, Ansible, Bash, etc.)
 
 ## Administrative Configurations for RHOAI
@@ -143,7 +150,10 @@ This is checklist of the technical steps needed to complete the installation of 
   - [ ] Stop Idle Notebooks
   - [ ] Usage Data Collection
   - [ ] Notebook Pod Toleration
-- [ ] Add a new Accelerator Profile
+- [ ] Add an Accelerator Profile
+  - [ ] Delete the migration-gpu-status ConfigMap
+  - [ ] Restart the dashboard replicaset
+  - [ ] Check the acceleratorprofiles
 - [ ] Add a new Serving Runtimes
 - [ ] Configure User and Admin groups
 
@@ -156,11 +166,11 @@ This is checklist of the technical steps needed to complete the installation of 
   - [ ] Clone in the codeflare-sdk github repo
   - [ ] Navigate to the guided-demos
   - [ ] Update the notebook import, auth, cluster values
+  - [ ] Access the RayCluster Dashboard
   - [ ] complete the `0_basic_ray.ipynb`
   - [ ] complete the `1_cluster_job_client.ipynb`
   - [ ] complete the `2_basic_interactive.ipynb`
 
-source:
 
 ## Links
 
