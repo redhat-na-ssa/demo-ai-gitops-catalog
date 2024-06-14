@@ -2,3 +2,8 @@ apiVersion: kueue.x-k8s.io/v1beta1
 kind: ResourceFlavor
 metadata:
   name: default-flavor
+spec:
+  tolerations:
+  - effect: NoSchedule
+    operator: Exists
+    key: nvidia-gpu-only

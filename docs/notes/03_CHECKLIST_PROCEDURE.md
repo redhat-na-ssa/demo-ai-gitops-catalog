@@ -1194,6 +1194,11 @@ apiVersion: kueue.x-k8s.io/v1beta1
 kind: ResourceFlavor
 metadata:
   name: default-flavor
+spec:
+  tolerations:
+  - effect: NoSchedule
+    operator: Exists
+    key: nvidia-gpu-only
 ```
 
 Apply the configuration to create the `default-flavor`
@@ -1348,3 +1353,5 @@ Check the acceleratorprofiles
 
 Review the acceleratorprofile configuration
 `oc describe acceleratorprofile -n redhat-ods-applications`
+
+Verify the `taints` key set in your Node/MachineSets match your Accelerator Profile.
