@@ -7,7 +7,7 @@ spec:
   customConfig:
     configData: 
   operand:
-    image: 'registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9@sha256:a98a205e5541550dfd46caaf52147f078101a6c6e7221b7fb7cefb9581761dcb'
+    image: 'registry.redhat.io/openshift4/ose-node-feature-discovery@sha256:96984b49c21fa4b76e8ca26735521a0a32daa4c5e330397641fe47ae4d774df4'
     servicePort: 12000
   workerConfig:
     configData: |

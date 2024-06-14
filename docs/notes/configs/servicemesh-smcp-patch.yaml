@@ -4,5 +4,5 @@ spec:
      extensionProviders:
      - name: redhat-ods-applications-auth-provider
        envoyExtAuthzGrpc:
-         service: <name_of_authorino_instance>-authorino-authorization.<namespace_for_authorino_instance>.svc.cluster.local
+         service: authorino-authorino-authorization.redhat-ods-applicatiions-auth-provider.svc.cluster.local
          port: 50051
