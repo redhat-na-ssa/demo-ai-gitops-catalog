@@ -1,7 +1,7 @@
 apiVersion: kueue.x-k8s.io/v1beta1
 kind: LocalQueue
 metadata:
-  namespace: sandbox
+  namespace: distributed-training-01 
   name: local-queue-test
   annotations:
     kueue.x-k8s.io/default-queue: 'true'

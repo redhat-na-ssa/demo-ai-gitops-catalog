@@ -755,11 +755,11 @@ oc get machineset <your-machineset-name> -n openshift-machine-api -o json > scra
 
 Update the following fields:
 
-- [ ] `.spec.replicas` from `0` to `1`
+- [ ] `.spec.replicas` from `0` to `2`
 - [ ] `.metadata.name` to a name containing `gpu`.
 - [ ] `.spec.selector.matchLabels["machine.openshift.io/cluster-api-machineset"]` to match the new `.metadata.name`.
 - [ ] `.spec.template.metadata.labels["machine.openshift.io/cluster-api-machineset"]` to match the new `.metadata.name`.
-- [ ] `.spec.template.spec.providerSpec.value.instanceType` to `g4dn.xlarge`.
+- [ ] `.spec.template.spec.providerSpec.value.instanceType` to `g4dn.4xlarge`.
 
 Apply the configuration to create the gpu machine
 `oc apply -f scratch/machineset.json`
@@ -964,6 +964,16 @@ Verify the successful installation of the NVIDIA GPU Operator
 (Opinion) When the NVIDIA operator completes labeling the nodes, you can add a label to the GPU node Role as `gpu, worker` for readability
 `oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''`
 
+In order to apply this label to new machines/nodes:
+
+```shell
+MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep gpu | head -n1)
+
+oc -n openshift-machine-api \
+  patch "${MACHINE_SET_TYPE}" \
+  --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
+```
+
 ### (Optional) Running a sample GPU Application (1min)
 
 [Sample App](https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#running-a-sample-gpu-application)
@@ -1106,6 +1116,14 @@ oc label --overwrite node \
     nvidia.com/device-plugin.config=Tesla-T4
 ```
 
+Patch the NVIDIA GPU Operator ClusterPolicy to use the timeslicing configuration by default.
+
+```shell
+oc patch clusterpolicy gpu-cluster-policy \
+    -n nvidia-gpu-operator --type merge \
+    -p '{"spec": {"devicePlugin": {"config": {"default": "Tesla-T4"}}}}'
+```
+
 The applied configuration creates eight replicas for Tesla T4 GPUs, so the nvidia.com/gpu external resource is set to 8
 
 ```shell
@@ -1130,10 +1148,20 @@ Look for the following
 
 Prevent non-GPU workloads from being scheduled on the GPU nodes.
 
-Taint the GPU nodes
+Taint the GPU nodes with `nvidia-gpu-only`. This MUST match the Accelerator profile taint key you use (by default may be different, i.e. `nvidia.com/gpu`).
 
 ```shell
 oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule --overwrite
+```
+
+Update the `ClusterPolicy` in the NVIDIA GPU Operator under the `nvidia-gpu-operator` project. Add the below section to `.spec.daemonsets:`
+
+```shell
+  daemonsets:
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+      key: nvidia-gpu-only
 ```
 
 Cordon the GPU node, drain the GPU tained nodes and terminate workloads
@@ -1154,7 +1182,7 @@ Get the name of the gpu node
 MACHINE_SET_TYPE=$(oc get machineset -n openshift-machine-api -o name |  egrep gpu)
 ```
 
-Taint the machineset for any new nodes that get added to be tainted
+Taint the machineset for any new nodes that get added to be tainted with `nvidia-gpu-only`
 
 ```shell
 oc -n openshift-machine-api \
@@ -1162,7 +1190,7 @@ oc -n openshift-machine-api \
   --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
 ```
 
-Tolerations will be set in the RHOAI accelerator profiles.
+Tolerations will be set in the RHOAI accelerator profiles that match the Taint key.
 
 ### (Optional) Configuring the cluster autoscaler
 
