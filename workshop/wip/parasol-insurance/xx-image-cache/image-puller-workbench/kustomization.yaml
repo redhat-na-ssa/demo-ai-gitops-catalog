@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: image-puller
 
 resources:
-- ../../../../../components/configs/kustomized/image-puller/base
+- ../../../../../components/cluster-configs/kustomized/image-puller/base
 
 patches:
   - target:

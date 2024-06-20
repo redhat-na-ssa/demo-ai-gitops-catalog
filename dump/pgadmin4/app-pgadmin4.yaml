@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: cluster-config
   source:
-    path: components/configs/simple/pgadmin4
+    path: components/cluster-configs/simple/pgadmin4
     repoURL: https://github.com/redhat-na-ssa/demo-ai-gitops-catlog.git
     targetRevision: main
   syncPolicy:

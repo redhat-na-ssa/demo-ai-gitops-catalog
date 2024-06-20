@@ -6,12 +6,12 @@
 Custom 404, 503 error
 
 ```
-oc apply -f components/configs/console/base/error-pages-custom-cm.yaml
+oc apply -f components/cluster-configs/console/base/error-pages-custom-cm.yaml
 oc patch -n openshift-ingress-operator ingresscontroller/default --patch '{"spec":{"httpErrorCodePages":{"name":"error-pages-custom"}}}' --type=merge
 ```
 
 ```
-# oc apply -f components/configs/console/base/error-pages-normal-cm.yaml
+# oc apply -f components/cluster-configs/console/base/error-pages-normal-cm.yaml
 # oc patch -n openshift-ingress-operator ingresscontroller/default --patch '{"spec":{"httpErrorCodePages":{"name":"error-pages-normal"}}}' --type=merge
 oc patch -n openshift-ingress-operator ingresscontroller/default --patch '{"spec":{"httpErrorCodePages":{"name":""}}}' --type=merge
 ```

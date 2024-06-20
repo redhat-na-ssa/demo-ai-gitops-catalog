@@ -4,11 +4,11 @@ kind: Kustomization
 resources:
 - ../../components/operators/web-terminal/operator/overlays/fast
 - ../../components/operators/web-terminal/instance/overlays/enhanced
-- ../../components/configs/cluster/autoscale/overlays/default
-# - ../../components/configs/cluster/etcd-backup/overlays/default
-# - ../../components/configs/cluster/namespace-cleanup/overlays/sandbox
-- ../../components/configs/cluster/console-config/overlays/default
-- ../../components/configs/cluster/console-samples
-- ../../components/configs/cluster/namespaces/overlays/default
-- ../../components/configs/cluster/rbac/overlays/no-self-provisioner
-- ../../components/configs/kustomized/ubi-images/overlays/cluster
+- ../../components/cluster-configs/cluster/autoscale/overlays/default
+# - ../../components/cluster-configs/cluster/etcd-backup/overlays/default
+# - ../../components/cluster-configs/cluster/namespace-cleanup/overlays/sandbox
+- ../../components/cluster-configs/cluster/console-config/overlays/default
+- ../../components/cluster-configs/cluster/console-samples
+- ../../components/cluster-configs/cluster/namespaces/overlays/default
+- ../../components/cluster-configs/cluster/rbac/overlays/no-self-provisioner
+- ../../components/cluster-configs/kustomized/ubi-images/overlays/cluster

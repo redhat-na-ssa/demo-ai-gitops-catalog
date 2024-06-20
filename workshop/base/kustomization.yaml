@@ -3,10 +3,10 @@ kind: Kustomization
 
 resources:
 - ../../demos/base/rhoai
-- ../../components/configs/kustomized/rhoai-config
+- ../../components/cluster-configs/kustomized/rhoai-config
 
-- ../../components/configs/cluster/rbac/overlays/workshop
-- ../../components/configs/cluster/login/overlays/htpasswd
+- ../../components/cluster-configs/cluster/rbac/overlays/workshop
+- ../../components/cluster-configs/cluster/login/overlays/htpasswd
 
 - ../../demos/base/all
 - ../../demos/base/nvidia-gpu-autoscale

@@ -31,7 +31,7 @@ spec:
 Dump current configuration
 
 ```
-pushd components/configs/login/base
+pushd components/cluster-configs/login/base
 oc exec deployment/oauth-openshift -- cat /var/config/system/secrets/v4-0-config-system-ocp-branding-template/login.html > login.html
 oc exec deployment/oauth-openshift -- cat /var/config/system/secrets/v4-0-config-system-ocp-branding-template/errors.html > errors.html
 oc exec deployment/oauth-openshift -- cat /var/config/system/secrets/v4-0-config-system-ocp-branding-template/providers.html > providers.html
@@ -41,7 +41,7 @@ popd
 Apply custom login template
 
 ```
-pushd components/configs/login/base
+pushd components/cluster-configs/login/base
 oc -n openshift-config \
   delete secret login-custom
 

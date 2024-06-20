@@ -6,37 +6,37 @@
       values:
         name: config-cluster-console
         namespace: openshift-gitops
-        path: components/configs/cluster/console-config/overlays/argocd
+        path: components/cluster-configs/cluster/console-config/overlays/argocd
     - cluster: local
       url: https://kubernetes.default.svc
       values:
         name: config-cluster-console-samples
         namespace: openshift-gitops
-        path: components/configs/cluster/console-samples
+        path: components/cluster-configs/cluster/console-samples
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:
     #     name: config-cluster-login
     #     namespace: openshift-config
-    #     path: components/configs/login/overlays/default
+    #     path: components/cluster-configs/login/overlays/default
     - cluster: local
       url: https://kubernetes.default.svc
       values:
         name: config-cluster-namespaces
         namespace: openshift-gitops
-        path: components/configs/cluster/namespaces/overlays/default
+        path: components/cluster-configs/cluster/namespaces/overlays/default
     - cluster: local
       url: https://kubernetes.default.svc
       values:
         name: config-cluster-rbac
         namespace: openshift-gitops
-        path: components/configs/cluster/rbac/overlays/manual-user-config
+        path: components/cluster-configs/cluster/rbac/overlays/manual-user-config
     - cluster: local
       url: https://kubernetes.default.svc
       values:
         name: config-sandbox-cleanup
         namespace: openshift-gitops
-        path: components/configs/cluster/namespace-cleanup/overlays/sandbox
+        path: components/cluster-configs/cluster/namespace-cleanup/overlays/sandbox
     # - cluster: local
     #   url: https://kubernetes.default.svc
     #   values:

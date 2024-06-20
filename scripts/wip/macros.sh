@@ -29,5 +29,5 @@ setup_operator_pipelines(){
 
 setup_namespaces(){
   # setup namespaces
-  oc apply -k components/configs/cluster/namespaces/overlays/default
+  oc apply -k components/cluster-configs/cluster/namespaces/overlays/default
 }
