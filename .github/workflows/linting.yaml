@@ -53,19 +53,18 @@ jobs:
   lint-manifests:
     runs-on: ubuntu-latest
     env:
-      # KUSTOMIZE_VERSION: kustomize_v5.0.1
-      # KUSTOMIZE_URL: https://github.com/kubernetes-sigs/kustomize/releases/download/${KUSTOMIZE_VERSION}/${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
+      # KUSTOMIZE_VERSION: 5.0.1
       BIN_PATH: /usr/bin
     steps:
       - name: Install Kustomize
         run: |
           set -x
-          LATEST=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name | tr -d '"')
-          LATEST_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/${LATEST}/${LATEST}_linux_amd64.tar.gz
-          DOWNLOAD_URL=${KUSTOMIZE_URL:-${LATEST_URL}}
+          LATEST=$( curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name | sed 's#kustomize/##; s#"##g')
+          BIN_VERSION=${KUSTOMIZE_VERSION}:-${LATEST}}
+          DOWNLOAD_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${BIN_VERSION}/kustomize_v${BIN_VERSION}_linux_amd64.tar.gz
 
           sudo curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kustomize
-          sudo chmod +x ${BIN_PATH}/kustomize
+          sudo chmod +x "${BIN_PATH}"/kustomize
       - name: Code Checkout
         uses: actions/checkout@v4
       - name: Validate Manifests
