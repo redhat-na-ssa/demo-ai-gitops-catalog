@@ -25,10 +25,10 @@ State your goal
 
 ### Kustomized Code
 
-[Code](../../components/cluster-configs/kustomized/rhoai-config/)
+[Code](../../components/kustomized/rhoai-config/)
 
 ### Rollback / Uninstall
 
 ```sh
-oc delete -k components/cluster-configs/kustomized/rhoai-config
+oc delete -k components/kustomized/rhoai-config
 ```

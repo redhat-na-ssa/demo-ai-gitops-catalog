@@ -17,7 +17,7 @@ spec:
   source:
     git:
       uri: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git
-    contextDir: components/cluster-configs/kustomized/custom-notebook-images/base/lightgbm
+    contextDir: components/kustomized/custom-notebook-images/base/lightgbm
   strategy:
     dockerStrategy:
       from:

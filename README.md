@@ -120,10 +120,10 @@ oc apply -k components/cluster-configs/cluster/login/overlays/htpasswd
 oc apply -k components/cluster-configs/cluster/rbac/overlays/no-self-provisioner
 
 # install minio w/ minio namespace
-oc apply -k components/cluster-configs/kustomized/minio/overlays/with-namespace
+oc apply -k components/kustomized/minio/overlays/with-namespace
 
 # install the nfs provisioner
-oc apply -k components/cluster-configs/kustomized/nfs-provisioner/overlays/default
+oc apply -k components/kustomized/nfs-provisioner/overlays/default
 ```
 
 Examples with operators that require CRDs
@@ -199,7 +199,7 @@ Always reference with a commit hash or tag
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/cluster-configs/kustomized/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.04
+  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/kustomized/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.04
 ```
 
 ## Development
