@@ -60,7 +60,7 @@ jobs:
         run: |
           set -x
           LATEST=$( curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name | sed 's#kustomize/##; s#"##g')
-          BIN_VERSION=${KUSTOMIZE_VERSION}:-${LATEST}}
+          BIN_VERSION=${KUSTOMIZE_VERSION:-${LATEST}}
           DOWNLOAD_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${BIN_VERSION}/kustomize_v${BIN_VERSION}_linux_amd64.tar.gz
 
           curl "${DOWNLOAD_URL}" -sL | sudo tar zx -C "${BIN_PATH}/" kustomize
