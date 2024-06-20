@@ -14,23 +14,6 @@ on:  # yamllint disable-line rule:truthy
       - docs/*.md
 
 jobs:
-  lint-kustomize:
-    runs-on: ubuntu-latest
-    env:
-      KUSTOMIZE_VERSION: 3.9.4
-      KUSTOMIZE_URL: https://github.com/kubernetes-sigs/kustomize/releases/download/v${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64
-      BIN_PATH: /usr/bin
-    steps:
-      - name: Install Kustomize
-        run: |
-          sudo curl "${KUSTOMIZE_URL}" -L -o ${BIN_PATH}/kustomize
-          sudo chmod +x ${BIN_PATH}/kustomize
-      - name: Code Checkout
-        uses: actions/checkout@v4
-      - name: Validate Manifests
-        run: |
-          [ -d ./bootstrap/base ] && touch bootstrap/base/sealed-secrets-secret.yaml
-          ./scripts/validate_manifests.sh
 
   lint-yaml:
     runs-on: ubuntu-latest
@@ -66,3 +49,26 @@ jobs:
         with:
           dockerfile: Dockerfile
           recursive: true
+
+  lint-manifests:
+    runs-on: ubuntu-latest
+    env:
+      # KUSTOMIZE_VERSION: kustomize_v5.0.1
+      # KUSTOMIZE_URL: https://github.com/kubernetes-sigs/kustomize/releases/download/${KUSTOMIZE_VERSION}/${KUSTOMIZE_VERSION}_linux_amd64.tar.gz
+      BIN_PATH: /usr/bin
+    steps:
+      - name: Install Kustomize
+        run: |
+          LATEST=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name)
+          LATEST_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/${LATEST}/${LATEST}_linux_amd64.tar.gz
+          DOWNLOAD_URL=${KUSTOMIZE_URL:-${LATEST_URL}}
+
+          sudo curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kustomize
+          sudo chmod +x ${BIN_PATH}/kustomize
+      - name: Code Checkout
+        uses: actions/checkout@v4
+      - name: Validate Manifests
+        run: |
+          [ -d ./bootstrap/base ] && touch bootstrap/base/sealed-secrets-secret.yaml
+          ./scripts/validate_kustomize.sh
+          ./scripts/validate_helm.sh
