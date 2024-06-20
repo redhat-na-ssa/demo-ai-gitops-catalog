@@ -60,7 +60,7 @@ jobs:
       - name: Install Kustomize
         run: |
           set -x
-          LATEST=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name)
+          LATEST=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name | tr -d '"')
           LATEST_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/${LATEST}/${LATEST}_linux_amd64.tar.gz
           DOWNLOAD_URL=${KUSTOMIZE_URL:-${LATEST_URL}}
 
