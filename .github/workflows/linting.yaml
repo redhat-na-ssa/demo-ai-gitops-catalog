@@ -63,7 +63,7 @@ jobs:
           BIN_VERSION=${KUSTOMIZE_VERSION}:-${LATEST}}
           DOWNLOAD_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${BIN_VERSION}/kustomize_v${BIN_VERSION}_linux_amd64.tar.gz
 
-          sudo curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kustomize
+          curl "${DOWNLOAD_URL}" -sL | sudo tar zx -C "${BIN_PATH}/" kustomize
           sudo chmod +x "${BIN_PATH}"/kustomize
       - name: Code Checkout
         uses: actions/checkout@v4
