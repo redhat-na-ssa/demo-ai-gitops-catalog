@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/python-39
+FROM registry.access.redhat.com/ubi8/python-311
 
 ENV LS_DIR=/opt/app-root/src \
     HOME=/opt/app-root/src
@@ -7,6 +7,8 @@ WORKDIR ${LS_DIR}
 
 # copy and install dependencies
 COPY --chown=1001:0 requirements.txt .
+
+# hadolint ignore=DL3013
 RUN pip3 install --no-cache-dir -U pip setuptools wheel && \
     pip3 install --no-cache-dir -r requirements.txt
 

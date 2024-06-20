@@ -3,8 +3,10 @@ kind: Kustomization
 
 namespace: virt-demo
 
-commonLabels:
-  demo: virtualization
+labels:
+- includeSelectors: false
+  pairs:
+    demo: virtualization
 
 resources:
 - namespace.yaml

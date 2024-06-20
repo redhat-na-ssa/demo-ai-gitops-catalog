@@ -3,6 +3,7 @@ FROM docker.io/heartexlabs/label-studio:ubi_latest
 ENV DEBUG=true
 
 # update: label-studio version
+# hadolint ignore=DL3013
 RUN pip install --no-cache-dir -U \
       label-studio pip
 

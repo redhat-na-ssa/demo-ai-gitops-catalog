@@ -4,11 +4,13 @@ kind: Kustomization
 commonAnnotations:
   opendatahub.io/notebook-image-creator: ai-catalog
 
-commonLabels:
-  component: custom-notebook-images
-  # note: the following label allows the notebook to show up in the dashboard
-  # note: byon = bring your own notebook?
-  app.kubernetes.io/created-by: byon
+labels:
+- includeSelectors: false
+  pairs:
+    component: custom-notebook-images
+    # note: the following label allows the notebook to show up in the dashboard
+    # note: byon = bring your own notebook?
+    app.kubernetes.io/created-by: byon
 
 namespace: custom-notebooks
 

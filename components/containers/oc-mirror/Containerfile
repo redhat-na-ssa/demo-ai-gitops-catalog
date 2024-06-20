@@ -27,6 +27,7 @@ RUN curl -sL "${OC4_URL}" | \
       echo "source /etc/bash_completion.d/oc-mirror" >> /etc/skel/.bashrc
 
 # setup: user
+# hadolint ignore=SC2028
 RUN \
     sed -i '/^export PS1=.*/d' /etc/skel/.bashrc && \
     echo "export PS1='\W \`git branch --show-current 2>/dev/null | sed -r -e \"s@^(.+)@\(\1\) @\"\`$ '" >> /etc/skel/.bashrc && \

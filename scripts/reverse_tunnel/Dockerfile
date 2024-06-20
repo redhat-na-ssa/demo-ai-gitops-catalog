@@ -1,5 +1,6 @@
 FROM registry.access.redhat.com/ubi9/ubi:9.4
 
+# hadolint ignore=DL3001
 RUN dnf upgrade -y && \
     dnf install -y bind-utils openssh-clients which && \
     dnf clean all && \
