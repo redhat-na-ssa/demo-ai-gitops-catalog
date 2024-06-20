@@ -114,10 +114,10 @@ Various [kustomized configs](components/cluster-configs) can be applied individu
 
 ```sh
 # setup htpasswd based login
-oc apply -k components/cluster-configs/cluster/login/overlays/htpasswd
+oc apply -k components/cluster-configs/login/overlays/htpasswd
 
 # disable self provisioner in cluster
-oc apply -k components/cluster-configs/cluster/rbac/overlays/no-self-provisioner
+oc apply -k components/cluster-configs/rbac/overlays/no-self-provisioner
 
 # install minio w/ minio namespace
 oc apply -k components/kustomized/minio/overlays/with-namespace
@@ -232,7 +232,7 @@ scripts/lint.sh
 
 <!-- ### Sandbox Namespace
 
-If you have deployed a default cluster the `sandbox` [namespace](components/cluster-configs/cluster/namespaces/instance/sandbox/namespace.yaml) is useable by all [authenticated users](components/cluster-configs/cluster/namespaces/instance/sandbox/rolebinding-edit.yaml). All objects in the sandbox are [cleaned out weekly](components/cluster-configs/cluster/namespace-cleanup/overlays/sandbox/sandbox-cleanup-cj.yaml). -->
+If you have deployed a default cluster the `sandbox` [namespace](components/cluster-configs/namespaces/instance/sandbox/namespace.yaml) is useable by all [authenticated users](components/cluster-configs/namespaces/instance/sandbox/rolebinding-edit.yaml). All objects in the sandbox are [cleaned out weekly](components/cluster-configs/namespace-cleanup/overlays/sandbox/sandbox-cleanup-cj.yaml). -->
 
 ### Internal Docs
 

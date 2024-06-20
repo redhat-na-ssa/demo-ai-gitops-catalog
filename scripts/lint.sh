@@ -68,6 +68,6 @@ py_bin_checks
 lint_spelling     || exit 1
 lint_scripts      || exit 1
 lint_dockerfiles  || exit 1
-# lint_yaml         || exit 1
-# lint_kustomize    || exit 1
-# lint_helm         || exit 1
+lint_yaml         || exit 1
+lint_kustomize    || exit 1
+lint_helm         || exit 1

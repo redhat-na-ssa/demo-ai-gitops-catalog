@@ -5,8 +5,8 @@ resources:
 - ../../demos/base/rhoai
 - ../../components/kustomized/rhoai-config
 
-- ../../components/cluster-configs/cluster/rbac/overlays/workshop
-- ../../components/cluster-configs/cluster/login/overlays/htpasswd
+- ../../components/cluster-configs/rbac/overlays/workshop
+- ../../components/cluster-configs/login/overlays/htpasswd
 
 - ../../demos/base/all
 - ../../demos/base/nvidia-gpu-autoscale

@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../../components/cluster-configs/cluster/autoscale/overlays/gpus-accelerator-label
+  - ../../../components/cluster-configs/autoscale/overlays/gpus-accelerator-label
   - ../../../components/operators/gpu-operator-certified/instance/overlays/aws-time-sliced-2
   - ../../../components/operators/gpu-operator-certified/operator/overlays/stable
   - ../../../components/operators/nfd/instance/overlays/only-nvidia
