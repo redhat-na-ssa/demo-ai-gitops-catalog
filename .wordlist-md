@@ -9,6 +9,7 @@ AmazonSageMakerFullAccess
 Analytics
 Ansible
 ArgoCD
+ArgoCD's
 Authorino
 Bitnami
 CICD
@@ -296,6 +297,7 @@ openvinotoolkit
 operatorGroup
 operatorGroups
 patchesJson
+pipelinerun
 podman
 popd
 postgres
@@ -319,6 +321,7 @@ redhat
 redhat-na-ssa
 redistributions
 repo
+resourceexclusion
 reusability
 rh
 rhacs
