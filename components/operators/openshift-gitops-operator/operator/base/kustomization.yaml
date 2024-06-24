@@ -6,5 +6,5 @@ resources:
   - operator-group.yaml
   - subscription.yaml
 
-components:
-  - ../components/enable-console-plugin
+# components:
+#   - ../components/enable-console-plugin
