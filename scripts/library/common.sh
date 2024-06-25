@@ -36,7 +36,7 @@ until_true(){
   echo "[OK]"
 }
 
-export_function(){
+extract_function(){
   EXPORT_NAME=${1:-ocp_aws_cluster}
   FILE=${2:-scripts/library/ocp.sh}
 

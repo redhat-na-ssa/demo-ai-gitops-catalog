@@ -201,7 +201,7 @@ ocp_aws_create_metal_machineset(){
   
   INSTANCE_TYPE=${1:-m5n.metal}
 
-  ocp_aws_clone_machineset "${INSTANCE_TYPE}"
+  ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}"
 
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
@@ -230,7 +230,7 @@ ocp_aws_create_gpu_machineset(){
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
 
-  ocp_aws_clone_machineset "${INSTANCE_TYPE}"
+  ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}"
 
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
