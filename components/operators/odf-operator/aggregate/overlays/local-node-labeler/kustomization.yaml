@@ -4,4 +4,6 @@ kind: Kustomization
 resources:
   - ../../../operator/overlays/stable-4.14
   - ../../../instance/overlays/local-storage
-  - ../../../config-helpers/node-labeler/overlays/default
+
+components:
+  - ../../../components/node-labeler
