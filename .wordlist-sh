@@ -28,6 +28,7 @@ basename
 bashrc
 BASHRC
 bB
+blockDevices
 busybox
 bz
 bzcat
@@ -54,6 +55,7 @@ dcgm
 defaultCertificate
 defaultChannel
 deployables
+deviceName
 df
 dirname
 DIRS
@@ -65,6 +67,7 @@ dnf
 dockerfiles
 dport
 dryrun
+ebs
 ecr
 eE
 eee
@@ -110,6 +113,7 @@ installModes
 installPlanApproval
 InstanceId
 instanceType
+iops
 iptables
 journalctl
 Jx
@@ -121,6 +125,7 @@ klusterlet
 KLUSTERLET
 klusterletaddonconfigs
 klusterlets
+kmsKey
 krew
 KREW
 ksh
@@ -268,7 +273,9 @@ VELERO
 venv
 virtctl
 vmSize
+volumeSize
 volumeSnapshot
+volumeType
 vwc
 vzx
 WantedBy
@@ -279,6 +286,7 @@ wo
 wordlist
 xargs
 xlarge
+xvdb
 xz
 yamllint
 yml
