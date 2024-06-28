@@ -106,7 +106,7 @@ This script handles configurations that are not fully declarative, require imper
 
 ## Cherry Picking Configurations
 
-Various [kustomized configs](components/cluster-configs) can be applied individually.
+Various [kustomized configs](components/kustomized) and [cluster configs](components/cluster-configs) can be applied individually.
 
 [Operator installs](components/operators/) can be done quickly via `oc` - similar to the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog).
 
@@ -195,7 +195,7 @@ until oc apply -k < path to kustomization.yaml >; do : ; done
 
 Always reference with a commit hash or tag
 
-```
+```sh
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
