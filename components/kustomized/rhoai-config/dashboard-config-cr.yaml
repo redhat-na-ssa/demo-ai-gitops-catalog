@@ -3,6 +3,9 @@ kind: OdhDashboardConfig
 metadata:
   name: odh-dashboard-config
   namespace: redhat-ods-applications
+  labels:
+    app.kubernetes.io/part-of: rhods-dashboard
+    app.opendatahub.io/rhods-dashboard: 'true'
 spec:
   dashboardConfig:
     enablement: true
@@ -10,6 +13,7 @@ spec:
     disableProjects: false
     disableBiasMetrics: false
     disableSupport: false
+    disableHome: false
     disablePipelines: false
     disableProjectSharing: false
     disableModelServing: false
@@ -20,14 +24,15 @@ spec:
     disableKServeAuth: false
     disableISVBadges: false
     disableInfo: false
+    disableKServeMetrics: true
     disableClusterManager: false
     disablePerformanceMetrics: false
     disableBYONImageStream: false
     disableModelRegistry: true
     disableTracking: false
   groupsConfig:
-    adminGroups: rhoai-admins
-    allowedGroups: 'rhoai-users,system:authenticated'
+    adminGroups: rhods-admins
+    allowedGroups: 'system:authenticated'
   modelServerSizes:
     - name: Small
       resources:
@@ -56,36 +61,17 @@ spec:
   notebookController:
     enabled: true
     notebookNamespace: rhods-notebooks
-    notebookTolerationSettings:
-      enabled: false
-      key: NotebooksOnly
-    pvcSize: 10Gi
+    pvcSize: 20Gi
   notebookSizes:
     # kludge: everyone picks the largest, why offer more than one?
     - name: Demo / Workshop
       resources:
         limits:
           cpu: '6'
-          memory: 20Gi
+          memory: 24Gi
         requests:
           cpu: '3'
-          memory: 10Gi
-    - name: Small
-      resources:
-        limits:
-          cpu: '2'
-          memory: 8Gi
-        requests:
-          cpu: '1'
-          memory: 8Gi
-    # - name: Medium
-    #   resources:
-    #     limits:
-    #       cpu: '6'
-    #       memory: 24Gi
-    #     requests:
-    #       cpu: '3'
-    #       memory: 24Gi
+          memory: 24Gi
     # - name: Large
     #   resources:
     #     limits:
@@ -97,8 +83,10 @@ spec:
     # - name: X Large
     #   resources:
     #     limits:
-    #       cpu: '40'
-    #       memory: 186Gi
-    #     requests:
     #       cpu: '30'
     #       memory: 120Gi
+    #     requests:
+    #       cpu: '15'
+    #       memory: 120Gi
+  templateDisablement: []
+  templateOrder: []

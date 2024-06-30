@@ -1,7 +1,7 @@
 kind: Group
 apiVersion: user.openshift.io/v1
 metadata:
-  name: rhoai-admins
+  name: rhods-admins
 users:
   - b64:kube:admin
   - admin
