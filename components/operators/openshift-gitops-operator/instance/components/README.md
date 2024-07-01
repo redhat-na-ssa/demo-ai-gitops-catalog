@@ -20,7 +20,7 @@ This repo currently contains the following components:
 
 Components can be added to a base by adding the `components` section to your overlay `kustomization.yaml` file:
 
-```
+```sh
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
