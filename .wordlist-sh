@@ -73,6 +73,7 @@ eE
 eee
 ef
 egrep
+elasticsearches
 elif
 emptydir
 entrypoint
@@ -115,17 +116,21 @@ InstanceId
 instanceType
 iops
 iptables
+jaegers
+jaegertracing
 journalctl
 Jx
 kam
 keygen
 keyout
 keyset
+kialis
 klusterlet
 KLUSTERLET
 klusterletaddonconfigs
 klusterlets
 kmsKey
+knativeservings
 krew
 KREW
 ksh
@@ -136,6 +141,7 @@ LsO
 MachineAutoscaler
 machinesets
 MAINTINAER
+maistra
 managedclusteractions
 managedclusteraddons
 managedclusterinfos
@@ -212,6 +218,7 @@ qi
 readme
 redis
 req
+reqs
 resourcegroup
 restic
 rf
@@ -226,6 +233,7 @@ SCHEMAS
 searchcustomizations
 searchoperators
 ServerAliveInterval
+servicemeshcontrolplanes
 servingCertificate
 servingCerts
 sha
