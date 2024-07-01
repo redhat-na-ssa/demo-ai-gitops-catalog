@@ -54,7 +54,7 @@ spec:
           command:
             - /bin/bash
             - -c
-            - /scripts/wait-for-servicemesh.sh
+            - /scripts/job.sh
           volumeMounts:
             - name: scripts
               mountPath: /scripts
