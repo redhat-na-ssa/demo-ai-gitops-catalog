@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - ../../demos/base/rhoai
-- ../../components/kustomized/rhoai-config
+# - ../../components/kustomized/rhoai-config
 
 - ../../components/cluster-configs/rbac/overlays/workshop
 - ../../components/cluster-configs/login/overlays/htpasswd

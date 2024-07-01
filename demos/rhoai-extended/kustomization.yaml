@@ -6,7 +6,7 @@ resources:
 
   - ../../components/kustomized/custom-notebook-images/overlays/rhoai
   - ../../components/kustomized/minio/overlays/with-namespace
-  - ../../components/kustomized/rhoai-config
+  # - ../../components/kustomized/rhoai-config
   - ../../components/kustomized/rhoai-data-connector/overlays/group-project
   - ../../components/kustomized/rhoai-data-connector/overlays/kserve-project
   - ../../components/kustomized/rhoai-data-connector/overlays/modelmesh-project
