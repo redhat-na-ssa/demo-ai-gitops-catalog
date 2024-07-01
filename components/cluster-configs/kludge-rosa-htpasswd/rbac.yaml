@@ -1,10 +1,27 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: htpasswd-workshop-kludge
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: htpasswd-workshop-kludge
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - list
+  - get
+  - patch
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  labels:
-    kludge: "true"
   name: htpasswd-workshop-kludge
-  namespace: openshift-config
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role

@@ -1,8 +1,6 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  labels:
-    kludge: "true"
   name: htpasswd-workshop-kludge
   namespace: openshift-config
 spec:
@@ -12,8 +10,6 @@ spec:
     spec:
       template:
         metadata:
-          labels:
-            kludge: "true"
         spec:
           containers:
           - args:
@@ -23,7 +19,7 @@ spec:
               #set -x
               CURRENT=$(oc extract secret/htpasswd-secret --to=- | sha256sum)
               EXPECTED=$(oc extract secret/workshop-htpasswd --to=- | sha256sum)
-              if [ "x${CURRENT}" == "x${EXPECTED}"  ]; then
+              if [ "${CURRENT}" == "${EXPECTED}"  ]; then
                 echo OK
               else
                 oc extract secret/htpasswd-secret --to=- | sha256sum
