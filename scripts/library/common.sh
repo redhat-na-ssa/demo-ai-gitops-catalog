@@ -36,9 +36,9 @@ until_true(){
   echo "[OK]"
 }
 
-export_function(){
-  FUNC_NAME=${1:-ocp_aws_cluster}
+extract_function(){
+  EXPORT_NAME=${1:-ocp_aws_cluster}
   FILE=${2:-scripts/library/ocp.sh}
 
-  sed -n '/'"${FUNC_NAME}"'(){/,/^}/p' "${FILE}"
+  sed -n '/'"${EXPORT_NAME}"'(){/,/^}/p' "${FILE}"
 }

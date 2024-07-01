@@ -4,7 +4,7 @@ rules:
   document-start: disable
   line-length: disable
   comments-indentation: disable
-  new-line-at-end-of-file: disable
+  new-line-at-end-of-file: enable
   indentation:
     indent-sequences: whatever
     ignore: kludgeops/

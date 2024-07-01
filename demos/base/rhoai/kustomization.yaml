@@ -2,10 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - ../../../components/app-configs/rhoai-config
   - ../../../components/operators/authorino-operator/operator/overlays/managed-services
   - ../../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../../components/operators/rhods-operator/operator/overlays/fast
-  - ../../../components/operators/rhods-operator/instance/overlays/2.9.1
+  # - ../../../components/operators/rhods-operator/instance/overlays/2.8+
   - ../../../components/operators/serverless-operator/operator/overlays/stable
   - ../../../components/operators/servicemeshoperator/operator/overlays/stable
 

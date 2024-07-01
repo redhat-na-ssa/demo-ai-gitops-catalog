@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.3-labs
-ARG IMAGE_NAME=registry.access.redhat.com/ubi9/ubi
+ARG IMAGE_NAME=registry.access.redhat.com/ubi9/ubi:9.4
 FROM ${IMAGE_NAME}
 
 # cherry picked from below
@@ -43,6 +43,7 @@ RUN curl -sL "${OC4_URL}" | \
 COPY --chown=0:0 entrypoint.sh /
 
 # setup: user
+# hadolint ignore=SC2028
 RUN \
     # setup $PS1 prompt
     sed -i '/^export PS1=.*/d' /etc/skel/.bashrc && \

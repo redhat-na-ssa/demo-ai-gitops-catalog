@@ -6,8 +6,7 @@ Do not use the `base` directory directly, as you will need to patch the `channel
 
 The current *overlays* available are for the following channels:
 
-* [managed-services](operator/overlays/alpha)
-* [stable](operator/overlays/stable)
+* [managed-services](operator/overlays/managed-services)
 
 ## Usage
 

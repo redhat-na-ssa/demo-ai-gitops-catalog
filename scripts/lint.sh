@@ -4,7 +4,7 @@ set -e
 
 usage(){
   echo "
-  usage: scripts/lint.sh
+  usage: $0
   "
 }
 
@@ -27,11 +27,6 @@ py_bin_checks(){
   which pip || exit 0
 }
 
-lint_scripts(){
-  which shellcheck || return
-  find . -name '*.sh' -not \( -path '*/venv/*' -o -path '*/scratch/*' \) -print0 | xargs -0 shellcheck
-}
-
 lint_spelling(){
   which aspell || return
   which pyspelling || return
@@ -39,6 +34,11 @@ lint_spelling(){
   [ -e .wordlist-md ] || return
 
   pyspelling -c .pyspelling.yml
+}
+
+lint_scripts(){
+  which shellcheck || return
+  find . -not \( -path '*/venv/*' -o -path '*/scratch/*' \) -name '*.sh'  -print0 | xargs -0 shellcheck
 }
 
 lint_dockerfiles(){
@@ -53,8 +53,13 @@ lint_yaml(){
 }
 
 lint_kustomize(){
-  [ -e scripts/validate_manifests.sh ] || return
-  scripts/validate_manifests.sh
+  [ -e scripts/validate_kustomize.sh ] || return
+  scripts/validate_kustomize.sh
+}
+
+lint_helm(){
+  [ -e scripts/validate_helm.sh ] || return
+  scripts/validate_helm.sh
 }
 
 py_check_venv
@@ -65,3 +70,4 @@ lint_scripts      || exit 1
 lint_dockerfiles  || exit 1
 lint_yaml         || exit 1
 lint_kustomize    || exit 1
+lint_helm         || exit 1

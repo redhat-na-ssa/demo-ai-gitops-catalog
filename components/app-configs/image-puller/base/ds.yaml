@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: image-puller
+  namespace: openshift-config
+spec:
+  selector:
+    matchLabels:
+      name: image-puller
+  template:
+    metadata:
+      labels:
+        name: image-puller
+    spec:
+      containers:
+      - name: tools
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+        command:
+        - tail
+        - -f
+        - /dev/null
+        resources:
+          limits:
+            memory: 20Mi
+          requests:
+            cpu: 10m
+            memory: 10Mi

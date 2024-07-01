@@ -24,6 +24,5 @@ resources:
   - ../../base
 
 components:
-  - ../../components/console-plugin
   - ../../components/monitoring-dashboard
 ```

@@ -1,0 +1,26 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: registry-v2
+data:
+  REGISTRY_AUTH: htpasswd
+  REGISTRY_AUTH_HTPASSWD_PATH: /config/htpasswd
+  REGISTRY_AUTH_HTPASSWD_REALM: Registry
+  REGISTRY_HTTP_SECRET: 1559d180c2ce1acc3c41ef745535d5
+  # REGISTRY_HTTP_TLS_CERTIFICATE=/config/registry.crt
+  # REGISTRY_HTTP_TLS_KEY=/config/registry.key
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: registry-v2
+stringData:
+  htpasswd: |
+    # add a user / password with the following
+    # NOTE: the leading extra space so you do not leave a password in shell history
+    #  PASSWORD=alongsecret
+    # echo -n "$PASSWORD" | htpasswd -inB -C10 admin
+    # or
+    # htpasswd -nB -C10 admin
+type: Opaque

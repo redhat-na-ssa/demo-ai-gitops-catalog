@@ -10,7 +10,7 @@ The intention of this repository is to help support practical use of OpenShift f
 
 Please look at the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog) if you only need to automate an operator install.
 
-In this repo, look at various [kustomized configs](components/configs) and [argo apps](components/argocd/apps) for ideas.
+In this repo, look at various [kustomized configs](components/cluster-configs) and [argo apps](components/argocd/apps) for ideas.
 
 For issues with `oc apply -k` see the [known issues](#known-issues) section below.
 
@@ -106,7 +106,7 @@ This script handles configurations that are not fully declarative, require imper
 
 ## Cherry Picking Configurations
 
-Various [kustomized configs](components/configs) can be applied individually.
+Various kustomized [app configs](components/app-configs) and [cluster configs](components/cluster-configs) can be applied individually.
 
 [Operator installs](components/operators/) can be done quickly via `oc` - similar to the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog).
 
@@ -114,16 +114,16 @@ Various [kustomized configs](components/configs) can be applied individually.
 
 ```sh
 # setup htpasswd based login
-oc apply -k components/configs/cluster/login/overlays/htpasswd
+oc apply -k components/cluster-configs/login/overlays/htpasswd
 
 # disable self provisioner in cluster
-oc apply -k components/configs/cluster/rbac/overlays/no-self-provisioner
+oc apply -k components/cluster-configs/rbac/overlays/no-self-provisioner
 
 # install minio w/ minio namespace
-oc apply -k components/configs/kustomized/minio/overlays/with-namespace
+oc apply -k components/app-configs/minio/overlays/with-namespace
 
 # install the nfs provisioner
-oc apply -k components/configs/kustomized/nfs-provisioner/overlays/default
+oc apply -k components/app-configs/nfs-provisioner/overlays/default
 ```
 
 Examples with operators that require CRDs
@@ -195,11 +195,11 @@ until oc apply -k < path to kustomization.yaml >; do : ; done
 
 Always reference with a commit hash or tag
 
-```
+```sh
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/configs/kustomized/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.04
+  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/app-configs/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.04
 ```
 
 ## Development
@@ -232,7 +232,7 @@ scripts/lint.sh
 
 <!-- ### Sandbox Namespace
 
-If you have deployed a default cluster the `sandbox` [namespace](components/configs/cluster/namespaces/instance/sandbox/namespace.yaml) is useable by all [authenticated users](components/configs/cluster/namespaces/instance/sandbox/rolebinding-edit.yaml). All objects in the sandbox are [cleaned out weekly](components/configs/cluster/namespace-cleanup/overlays/sandbox/sandbox-cleanup-cj.yaml). -->
+If you have deployed a default cluster the `sandbox` [namespace](components/cluster-configs/namespaces/instance/sandbox/namespace.yaml) is useable by all [authenticated users](components/cluster-configs/namespaces/instance/sandbox/rolebinding-edit.yaml). All objects in the sandbox are [cleaned out weekly](components/cluster-configs/namespace-cleanup/overlays/sandbox/sandbox-cleanup-cj.yaml). -->
 
 ### Internal Docs
 

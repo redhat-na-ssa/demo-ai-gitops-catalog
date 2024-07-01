@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+patches:
+  - path: patch-datasciencecluster-health-check.yaml
+    target:
+      kind: ArgoCD
+  - path: patch-datasciencepipelineapplication-health-check.yaml
+    target:
+      kind: ArgoCD
+  - path: patch-notebook-health-check.yaml
+    target:
+      kind: ArgoCD
+  - path: patch-inferenceservice-health-check.yaml
+    target:
+      kind: ArgoCD

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 enable_console_plugin(){
   [ -z "${PLUGIN_NAME}" ] && return 1
