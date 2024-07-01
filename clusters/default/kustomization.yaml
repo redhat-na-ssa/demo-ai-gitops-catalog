@@ -11,4 +11,4 @@ resources:
 - ../../components/cluster-configs/console-samples
 - ../../components/cluster-configs/namespaces/overlays/default
 - ../../components/cluster-configs/rbac/overlays/no-self-provisioner
-- ../../components/kustomized/ubi-images/overlays/cluster
+- ../../components/app-configs/ubi-images/overlays/cluster

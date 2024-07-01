@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../../demos/rhoai-nvidia-gpu-autoscale
-  # - ../../../../components/kustomized/rhoai-config
+  # - ../../../../components/app-configs/rhoai-config
 
 patches:
   - target:

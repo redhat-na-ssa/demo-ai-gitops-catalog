@@ -4,21 +4,21 @@ kind: Kustomization
 resources:
   - ../rhoai
 
-  - ../../components/kustomized/custom-notebook-images/overlays/rhoai
-  - ../../components/kustomized/minio/overlays/with-namespace
-  # - ../../components/kustomized/rhoai-config
-  - ../../components/kustomized/rhoai-data-connector/overlays/group-project
-  - ../../components/kustomized/rhoai-data-connector/overlays/kserve-project
-  - ../../components/kustomized/rhoai-data-connector/overlays/modelmesh-project
-  - ../../components/kustomized/rhoai-modelmesh/overlays/modelmesh-project
-  - ../../components/kustomized/rhoai-model-runtimes
-  # - ../../components/kustomized/rhoai-kserve-instances
-  - ../../components/kustomized/rhoai-notebook/overlays/group-project
-  - ../../components/kustomized/rhoai-pipelines/overlays/group-project
-  - ../../components/kustomized/rhoai-projects
-  - ../../components/kustomized/rhoai-rbac
-  - ../../components/kustomized/rhoai-rbac-notebooks
-  # - ../../components/kustomized/rhoai-trustyai
+  - ../../components/app-configs/custom-notebook-images/overlays/rhoai
+  - ../../components/app-configs/minio/overlays/with-namespace
+  # - ../../components/app-configs/rhoai-config
+  - ../../components/app-configs/rhoai-data-connector/overlays/group-project
+  - ../../components/app-configs/rhoai-data-connector/overlays/kserve-project
+  - ../../components/app-configs/rhoai-data-connector/overlays/modelmesh-project
+  - ../../components/app-configs/rhoai-modelmesh/overlays/modelmesh-project
+  - ../../components/app-configs/rhoai-model-runtimes
+  # - ../../components/app-configs/rhoai-kserve-instances
+  - ../../components/app-configs/rhoai-notebook/overlays/group-project
+  - ../../components/app-configs/rhoai-pipelines/overlays/group-project
+  - ../../components/app-configs/rhoai-projects
+  - ../../components/app-configs/rhoai-rbac
+  - ../../components/app-configs/rhoai-rbac-notebooks
+  # - ../../components/app-configs/rhoai-trustyai
 
 patches:
   - target:

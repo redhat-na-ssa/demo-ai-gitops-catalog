@@ -106,7 +106,7 @@ This script handles configurations that are not fully declarative, require imper
 
 ## Cherry Picking Configurations
 
-Various [kustomized configs](components/kustomized) and [cluster configs](components/cluster-configs) can be applied individually.
+Various kustomized [app configs](components/app-configs) and [cluster configs](components/cluster-configs) can be applied individually.
 
 [Operator installs](components/operators/) can be done quickly via `oc` - similar to the [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog).
 
@@ -120,10 +120,10 @@ oc apply -k components/cluster-configs/login/overlays/htpasswd
 oc apply -k components/cluster-configs/rbac/overlays/no-self-provisioner
 
 # install minio w/ minio namespace
-oc apply -k components/kustomized/minio/overlays/with-namespace
+oc apply -k components/app-configs/minio/overlays/with-namespace
 
 # install the nfs provisioner
-oc apply -k components/kustomized/nfs-provisioner/overlays/default
+oc apply -k components/app-configs/nfs-provisioner/overlays/default
 ```
 
 Examples with operators that require CRDs
@@ -199,7 +199,7 @@ Always reference with a commit hash or tag
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/kustomized/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.04
+  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/app-configs/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.04
 ```
 
 ## Development

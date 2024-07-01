@@ -3,9 +3,9 @@
 ## General Issues
 
 - [ ] Current RHOAI documentation [does not explain GPU operation](https://ai-on-openshift.io/odh-rhods/nvidia-gpus/) with RHOAI well
-- [ ] `odh-dashboard-conf` needs `groupsConfig` to [setup RBAC](../../components/kustomized/rhoai-config/dashboard-config-cr.yaml) - over-engineered dashboard, poor security
+- [ ] `odh-dashboard-conf` needs `groupsConfig` to [setup RBAC](../../components/app-configs/rhoai-config/dashboard-config-cr.yaml) - over-engineered dashboard, poor security
 - [ ] Poorly documented, inconsistent labels to display resources in dashboard
-  - Why are [data sci projects](components/kustomized/rhoai-projects) different than regular projects?
+  - Why are [data sci projects](components/app-configs/rhoai-projects) different than regular projects?
   - label `app.kubernetes.io/created-by: byon`
 - [ ] You can't customize the list of potential notebook images per namespace for multi-homed use cases.
   - Ex: everyone on the cluster sees the same notebook images - list can get very big.
@@ -21,4 +21,4 @@
 
 ## Potential enhancements
 
-- [ ] Move config for idle notebooks to CR vs [configmap](../../components/kustomized/rhoai-config/nb-culler-config.yaml)
+- [ ] Move config for idle notebooks to CR vs [configmap](../../components/app-configs/rhoai-config/nb-culler-config.yaml)

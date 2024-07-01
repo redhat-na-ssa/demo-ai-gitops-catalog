@@ -43,7 +43,7 @@ runai_setup_control_plane(){
 
   runai_help
 
-  oc apply -k "${GIT_ROOT}"/components/kustomized/runai-setup
+  oc apply -k "${GIT_ROOT}"/components/app-configs/runai-setup
 
   which helm || return 1
   helm repo add runai-backend https://backend-charts.storage.googleapis.com
@@ -146,5 +146,5 @@ runai_setup_cluster(){
 
 runai_uninstall(){
   helm uninstall runai-cluster -n runai
-  oc delete -k "${GIT_ROOT}"/components/kustomized/runai-setup
+  oc delete -k "${GIT_ROOT}"/components/app-configs/runai-setup
 }
