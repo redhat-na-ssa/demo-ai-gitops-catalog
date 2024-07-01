@@ -1,4 +1,4 @@
-# make-kubeadmin-cluster-admin
+# fix-kubeadmin-cluster-admin
 
 ## Purpose
 
