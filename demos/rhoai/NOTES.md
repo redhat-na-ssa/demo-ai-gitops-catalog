@@ -11,6 +11,39 @@
   - Ex: everyone on the cluster sees the same notebook images - list can get very big.
 - [ ] CUDA based images do not use Nvidia's CUDA as the official base (Poor Maintenance)
 
+### RHOAI 2.10.0
+
+Out of the Box Issues
+
+FeatureTrackers
+
+Error: redhat-ods-applications-mesh-control-plane-creation
+
+```sh
+PreConditionsFailed applying [mesh-control-plane-creation]: 1 error occurred:
+* failed to find the pre-requisite Service Mesh Operator subscription, please ensure Service Mesh Operator is installed. failed to find the pre-requisite operator subscription "servicemeshoperator", please ensure operator is installed. missing operator "servicemeshoperator"
+```
+
+Error: redhat-ods-applications-mesh-metrics-collection
+
+```sh
+Failed applying [mesh-metrics-collection]: 2 errors occurred:
+* failed to find Service Mesh Control Plane: no matches for kind "ServiceMeshControlPlane" in version "maistra.io/v2"
+* service mesh control plane is not ready
+```
+
+DSCInitialization details
+
+Error: default-dsci
+
+```sh
+2 errors occurred:
+* failed to get object istio-system/data-science-smcp: no matches for kind "ServiceMeshControlPlane" in version "maistra.io/v2"
+* 2 errors occurred:
+* failed to find Service Mesh Control Plane: no matches for kind "ServiceMeshControlPlane" in version "maistra.io/v2"
+* service mesh control plane is not ready
+```
+
 ## Data Science Pipelines
 
 - [ ] Do they really work? Maybe, Sometimes, No

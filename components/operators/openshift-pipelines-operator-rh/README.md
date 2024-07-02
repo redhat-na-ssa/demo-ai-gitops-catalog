@@ -7,10 +7,11 @@ Do not use the `base` directory directly, as you will need to patch the `channel
 The current *overlays* available are for the following channels:
 
 * [latest](operator/overlays/latest)
-* [pipelines-1.10](operator/overlays/pipelines-1.10)
 * [pipelines-1.11](operator/overlays/pipelines-1.11)
-* [pipelines-1.8](operator/overlays/pipelines-1.8)
-* [pipelines-1.9](operator/overlays/pipelines-1.9)
+* [pipelines-1.12](operator/overlays/pipelines-1.12)
+* [pipelines-1.13](operator/overlays/pipelines-1.13)
+* [pipelines-1.14](operator/overlays/pipelines-1.14)
+* [pipelines-1.15](operator/overlays/pipelines-1.15)
 
 ## Usage
 

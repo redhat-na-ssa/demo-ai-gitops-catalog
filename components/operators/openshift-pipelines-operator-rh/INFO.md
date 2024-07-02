@@ -23,17 +23,20 @@ _Red Hat OpenShift Pipelines Operator_ gets installed into a single namespace (o
 
 ### Components
 
-- Tekton Pipelines: v0.47.4
-- Tekton Triggers: v0.24.1
-- Pipelines as Code: 0.19.4
-- Tekton Chains: v0.16.0
-- Tekton Hub (tech-preview): v1.13.0
-- Tekton Results (tech-preview): v0.6.0
+- Tekton Pipelines: v0.59.1
+- Tekton Triggers: v0.27.0
+- Pipelines as Code: v0.27.1
+- Tekton Chains: v0.20.1
+- Tekton Hub (tech-preview): v1.17.0
+- Tekton Results (tech-preview): v0.10.0
+- Manual Approval Gate (tech-preview): v0.2.2
 
 ## Getting Started
-In order to get familiar with _OpenShift Pipelines_ concepts and create your first pipeline, follow the [OpenShift Pipelines Docs](https://docs.openshift.com/container-platform/4.13/cicd/pipelines/creating-applications-with-cicd-pipelines.html).
+
+In order to get familiar with _OpenShift Pipelines_ concepts and create your first pipeline, follow the [OpenShift Pipelines Docs](https://docs.openshift.com/pipelines/1.15/create/creating-applications-with-cicd-pipelines.html).
 
 ## CLI (tkn)
+
 Tekton Pipelines cli project provides a CLI (tkn) for interacting with OpenShift Pipelines.
 
 [Download tkn](/command-line-tools) (links will be available on `command line tools` page after this operator is installed).
