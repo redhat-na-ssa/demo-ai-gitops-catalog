@@ -341,13 +341,13 @@ $(for channel in $(pkg_manifest_get_channels "${NAME}" | grep -v NAME)
 
 If you have cloned the \`gitops-catalog\` repository, you can install ${DISPLAY_NAME} based on the overlay of your choice by running from the root (\`gitops-catalog\`) directory.
 
-\`\`\`yaml
+\`\`\`sh
 oc apply -k ${BASE_DIR}/operator/overlays/<channel>
 \`\`\`
 
 Or, without cloning:
 
-\`\`\`yaml
+\`\`\`sh
 oc apply -k ${GIT_REPO}/${BASE_DIR}/operator/overlays/<channel>
 \`\`\`
 
