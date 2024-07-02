@@ -4,6 +4,19 @@ kind: Kustomization
 resources:
   - ../rhoai
 
+  # - ../../components/app-configs/rhoai-config
+  # - ../../components/operators/authorino-operator/operator/overlays/managed-services
+  # - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
+  # - ../../components/operators/rhods-operator/instance/overlays/all
+  # - ../../components/operators/serverless-operator/operator/overlays/stable
+
+  # service mesh optional
+  # - ../../components/operators/kiali-ossm/operator/overlays/stable
+
+  # service mesh deprecated - https://docs.openshift.com/container-platform/4.15/service_mesh/v2x/installing-ossm.html#installing-ossm
+  # - ../../components/operators/jaeger-product/operator/overlays/stable
+  # - ../../components/operators/elasticsearch-operator/operator/overlays/stable
+
   - ../../components/app-configs/custom-notebook-images/overlays/rhoai
   - ../../components/app-configs/minio/overlays/with-namespace
   # - ../../components/app-configs/rhoai-config

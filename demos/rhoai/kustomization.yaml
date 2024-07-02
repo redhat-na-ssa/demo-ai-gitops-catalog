@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../base
   - ../base/rhoai
+  - ../../components/operators/openshift-ai/instance/overlays/2.8+
 
 patches:
   - target:
