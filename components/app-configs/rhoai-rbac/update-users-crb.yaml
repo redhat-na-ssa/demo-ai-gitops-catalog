@@ -9,6 +9,7 @@ rules:
     resources:
     - groups
     resourceNames:
+    - rhoai-self-provisioners
     - rhoai-users
     verbs:
     - update
