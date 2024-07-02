@@ -14,8 +14,6 @@ spec:
             type: SelfSigned
         managementState: Managed
         name: knative-serving
-    trustyai:
-      managementState: Removed
     ray:
       managementState: Removed
     kueue:
