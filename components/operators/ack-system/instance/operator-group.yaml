@@ -2,6 +2,5 @@
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: ack-operatorgroup
+  name: ack-system
   namespace: ack-system
-spec: {}

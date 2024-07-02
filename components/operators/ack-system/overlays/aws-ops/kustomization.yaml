@@ -21,4 +21,4 @@ patches:
 #           - aws-ops
 #     target:
 #       kind: OperatorGroup
-#       name: ack-operatorgroup
+#       name: ack-system
