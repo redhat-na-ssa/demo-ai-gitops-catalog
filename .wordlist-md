@@ -108,6 +108,8 @@ dockerconfigjson
 Dockerfile
 dotnet
 DotNET
+dsci
+DSCInitialization
 ec
 elasticsearch
 env
@@ -115,6 +117,7 @@ EOF
 eus
 eventing
 Eventing
+FeatureTrackers
 finalizer
 FullAccess
 generatorOptions
@@ -248,6 +251,7 @@ OCSInitialization
 OCSInitilization
 odf
 odo
+ods
 ok
 olm
 OLM

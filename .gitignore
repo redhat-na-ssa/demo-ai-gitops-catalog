@@ -13,6 +13,7 @@ dictionary.dic
 *.swp
 .*.swp
 *.swo
+tmp
 
 # bfg - because we never commit large data or passwords to git
 ..bfg-report/
