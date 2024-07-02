@@ -9,6 +9,7 @@ resources:
   # - ../../../components/operators/rhods-operator/instance/overlays/2.8+
   - ../../../components/operators/serverless-operator/operator/overlays/stable
   - ../../../components/operators/servicemeshoperator/operator/overlays/stable
+  - ../../../components/operators/openshift-servicemesh/instance/overlays/default
 
   # service mesh optional
   # - ../../../../components/operators/kiali-ossm/operator/overlays/stable
