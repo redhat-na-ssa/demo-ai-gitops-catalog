@@ -13,4 +13,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Base'
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Minimal'
