@@ -6,7 +6,7 @@ metadata:
   labels:
     controller-tools.k8s.io: "1.0"
     kueue.x-k8s.io/queue-name: local-queue-test
-  name: interactivetest
+  name: science-experiment
   namespace: sandbox
 spec:
   autoscalerOptions:
