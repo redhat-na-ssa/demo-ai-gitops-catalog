@@ -1,0 +1,16 @@
+apiVersion: ray.io/v1
+kind: RayCluster
+metadata:
+  # annotations:
+  #   app.kubernetes.io/managed-by: /notebook/sandbox/raytest-2
+  labels:
+    controller-tools.k8s.io: "1.0"
+    kueue.x-k8s.io/queue-name: local-queue
+  name: minimal
+  namespace: sandbox
+spec:
+  headGroupSpec:
+    rayStartParams:
+      block: "true"
+      dashboard-host: 0.0.0.0
+      num-gpus: "0"

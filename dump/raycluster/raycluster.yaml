@@ -26,7 +26,7 @@ spec:
     rayStartParams:
       block: "true"
       dashboard-host: 0.0.0.0
-      num-gpus: "1"
+      num-gpus: "0"
     serviceType: ClusterIP
     template:
       metadata: {}
@@ -69,11 +69,11 @@ spec:
             limits:
               cpu: "2"
               memory: 8G
-              nvidia.com/gpu: "1"
+              # nvidia.com/gpu: "1"
             requests:
               cpu: "2"
               memory: 8G
-              nvidia.com/gpu: "1"
+              # nvidia.com/gpu: "1"
           volumeMounts:
           - mountPath: /etc/pki/tls/certs/odh-trusted-ca-bundle.crt
             name: odh-trusted-ca-cert
@@ -95,7 +95,7 @@ spec:
         - args:
           - --https-address=:8443
           - --provider=openshift
-          - --openshift-service-account=interactivetest-oauth-proxy
+          - --openshift-service-account=science-experiment-oauth-proxy
           - --upstream=http://localhost:8265
           - --tls-cert=/etc/tls/private/tls.crt
           - --tls-key=/etc/tls/private/tls.key
@@ -106,7 +106,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: cookie_secret
-                name: interactivetest-oauth-config
+                name: science-experiment-oauth-config
           image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:1ea6a01bf3e63cdcf125c6064cbd4a4a270deaf0f157b3eabb78f60556840366
           name: oauth-proxy
           ports:
@@ -125,8 +125,8 @@ spec:
           - cd /home/ray/workspace/tls && openssl req -nodes -newkey rsa:2048 -keyout
             server.key -out server.csr -subj '/CN=ray-head' && printf "authorityKeyIdentifier=keyid,issuer\nbasicConstraints=CA:FALSE\nsubjectAltName
             = @alt_names\n[alt_names]\nDNS.1 = 127.0.0.1\nDNS.2 = localhost\nDNS.3
-            = ${FQ_RAY_IP}\nDNS.4 = $(awk 'END{print $1}' /etc/hosts)\nDNS.5 = rayclient-interactivetest-sandbox.apps.cluster-q42z4.q42z4.sandbox2843.opentlc.com\nDNS.6
-            = interactivetest-head-svc.sandbox.svc">./domain.ext && cp /home/ray/workspace/ca/*
+            = ${FQ_RAY_IP}\nDNS.4 = $(awk 'END{print $1}' /etc/hosts)\nDNS.5 = rayclient-science-experiment-sandbox.apps.cluster-q42z4.q42z4.sandbox2843.opentlc.com\nDNS.6
+            = science-experiment-head-svc.sandbox.svc">./domain.ext && cp /home/ray/workspace/ca/*
             . && openssl x509 -req -CA ca.crt -CAkey ca.key -in server.csr -out
             server.crt -days 365 -CAcreateserial -extfile domain.ext
           image: registry.redhat.io/ubi9@sha256:770cf07083e1c85ae69c25181a205b7cdef63c11b794c89b3b487d4670b4c328
@@ -138,7 +138,6 @@ spec:
             readOnly: true
           - mountPath: /home/ray/workspace/tls
             name: server-cert
-        serviceAccountName: interactivetest-oauth-proxy
         tolerations:
         - effect: NoSchedule
           key: nvidia-gpu-only
@@ -160,22 +159,22 @@ spec:
           name: odh-ca-cert
         - name: proxy-tls-secret
           secret:
-            secretName: interactivetest-proxy-tls-secret
+            secretName: science-experiment-proxy-tls-secret
         - name: ca-vol
           secret:
-            secretName: ca-secret-interactivetest
+            secretName: ca-secret-science-experiment
         - emptyDir: {}
           name: server-cert
   rayVersion: 2.23.0
   suspend: false
   workerGroupSpecs:
-  - groupName: small-group-interactivetest
+  - groupName: small-group-science-experiment
     maxReplicas: 2
     minReplicas: 2
     numOfHosts: 1
     rayStartParams:
       block: "true"
-      num-gpus: "1"
+      num-gpus: "0"
     replicas: 2
     scaleStrategy: {}
     template:
@@ -212,11 +211,11 @@ spec:
             limits:
               cpu: "2"
               memory: 8G
-              nvidia.com/gpu: "1"
+              # nvidia.com/gpu: "1"
             requests:
               cpu: "2"
               memory: 8G
-              nvidia.com/gpu: "1"
+              # nvidia.com/gpu: "1"
           volumeMounts:
           - mountPath: /etc/pki/tls/certs/odh-trusted-ca-bundle.crt
             name: odh-trusted-ca-cert
@@ -276,6 +275,6 @@ spec:
           name: odh-ca-cert
         - name: ca-vol
           secret:
-            secretName: ca-secret-interactivetest
+            secretName: ca-secret-science-experiment
         - emptyDir: {}
           name: server-cert
