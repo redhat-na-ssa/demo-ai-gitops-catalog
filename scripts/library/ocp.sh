@@ -298,7 +298,7 @@ ocp_aws_cluster_autoscaling(){
   ocp_control_nodes_schedulable
 
   # scale workers to 1
-  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker)"
+  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker | head -n1)"
   ocp_scale_machineset 1 "${WORKER_MS}"
 }
 
