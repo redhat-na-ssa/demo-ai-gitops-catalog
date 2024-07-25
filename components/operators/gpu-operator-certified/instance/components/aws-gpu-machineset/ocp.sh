@@ -89,7 +89,7 @@ ocp_aws_clone_worker_machineset(){
     echo "Creating: machineset - ${SHORT_NAME}"
     oc -n openshift-machine-api \
       get "${MACHINE_SET_WORKER}" -o yaml | \
-        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE%.*}"'/g
+        sed '/machine/ s/-worker/-'"${SHORT_NAME}"'/g
           /^  name:/ s/cluster-.*/'"${SHORT_NAME}"'/g
           /name/ s/-worker/-'"${SHORT_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
