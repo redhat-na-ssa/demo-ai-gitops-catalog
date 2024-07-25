@@ -46,6 +46,7 @@ containerregistry
 coreos
 crd
 crds
+creationTimestamp
 crt
 CTRL
 currentCSVDesc
@@ -220,6 +221,7 @@ redis
 req
 reqs
 resourcegroup
+resourceVersion
 restic
 rf
 RG
@@ -261,6 +263,7 @@ tcp
 tkn
 tls
 tpm
+uid
 uname
 uncordon
 uniq
