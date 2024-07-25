@@ -5,3 +5,4 @@ metadata:
 spec:
   notebookController:
     pvcSize: 20Gi
+    enabled: true

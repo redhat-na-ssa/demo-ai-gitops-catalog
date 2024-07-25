@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - ../../../components/operators/rhods-operator/operator/overlays/stable
   - ../../../components/operators/servicemeshoperator/operator/overlays/stable
-  - ../../../components/operators/servicemeshoperator/instance/overlays/default

@@ -5,10 +5,8 @@ TIMEOUT_SECONDS=60
 
 wait_for_service_mesh(){
   echo "Checking status of all service_mesh pre-reqs"
-  SERVICEMESH_RESOURCES=(
-    crd/kialis.kiali.io:condition=established \
-    crd/jaegers.jaegertracing.io:condition=established \
-    crd/elasticsearches.logging.openshift.io:condition=established \
+
+SERVICEMESH_RESOURCES=(
     crd/knativeservings.operator.knative.dev:condition=established \
     crd/servicemeshcontrolplanes.maistra.io:condition=established \
   )

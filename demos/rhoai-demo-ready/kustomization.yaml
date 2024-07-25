@@ -11,6 +11,8 @@ resources:
   # TODO: reconcile issues with item above
   - ../../components/operators/rhods-operator/instance/overlays/all
   - ../../components/operators/serverless-operator/operator/overlays/stable
+  # - ../../components/operators/serverless-operator/instance/knative-eventing/overlays/default
+  # - ../../components/operators/serverless-operator/instance/knative-serving/overlays/default
 
   # - ../../components/app-configs/custom-notebook-images/overlays/rhoai
   # - ../../components/app-configs/minio/overlays/with-namespace

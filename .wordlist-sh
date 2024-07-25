@@ -52,6 +52,7 @@ CTRL
 currentCSVDesc
 CustomResourceDefinition
 daemonsets
+datasciencecluster
 dcgm
 defaultCertificate
 defaultChannel
@@ -68,6 +69,8 @@ dnf
 dockerfiles
 dport
 dryrun
+dsc
+dscinitialization
 ebs
 ecr
 eE
@@ -232,6 +235,7 @@ SCHED
 schedulable
 schemas
 SCHEMAS
+SCRIPTPATH
 searchcustomizations
 searchoperators
 ServerAliveInterval
