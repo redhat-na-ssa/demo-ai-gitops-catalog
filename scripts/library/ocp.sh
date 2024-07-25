@@ -116,7 +116,7 @@ ocp_aws_clone_worker_machineset(){
   "
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
-  SHORT_NAME=${2:-${INSTANCE_TYPE%.*}}
+  SHORT_NAME=${2:-${INSTANCE_TYPE/./-}}
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
@@ -128,9 +128,9 @@ ocp_aws_clone_worker_machineset(){
     echo "Creating: machineset - ${SHORT_NAME}"
     oc -n openshift-machine-api \
       get "${MACHINE_SET_WORKER}" -o yaml | \
-        sed '/machine/ s/cluster-.*-worker/'"${SHORT_NAME}"'/g
-          /^  name:/ s/cluster-.*-worker/'"${SHORT_NAME}"'/g
-          /name/ s/cluster-.*-worker/'"${SHORT_NAME}"'/g
+        sed '/machine/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
+          /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
+          /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
           /cluster-api-autoscaler/d
           /uid:/d
