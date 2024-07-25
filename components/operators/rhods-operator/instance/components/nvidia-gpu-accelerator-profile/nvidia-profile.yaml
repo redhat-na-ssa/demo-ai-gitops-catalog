@@ -12,8 +12,8 @@ spec:
   identifier: nvidia.com/gpu
   tolerations:
     - effect: NoSchedule
-      key: nvidia-gpu-only
+      key: nvidia.com/gpu
       operator: Exists
     - effect: NoSchedule
-      key: nvidia.com/gpu
+      key: nvidia-gpu-only
       operator: Exists

@@ -49,8 +49,12 @@ ocp_aws_create_gpu_machineset(){
   # taint nodes for gpu-only workloads
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
-  
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
+
+  # oc -n openshift-machine-api \
+  #   patch "${MACHINE_SET_TYPE}" \
+  #   --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
+
   # should use the default profile
   # oc -n openshift-machine-api \
   #   patch "${MACHINE_SET_TYPE}" \
