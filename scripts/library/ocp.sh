@@ -569,3 +569,9 @@ ocp_aro_clone_machineset(){
       oc apply -f -
   fi
 }
+
+ocp_clean_cluster(){
+  oc delete pod \
+    -n openshift-kube-controller-manager \
+    -l app=installer
+}
