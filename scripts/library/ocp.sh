@@ -128,7 +128,7 @@ ocp_aws_clone_worker_machineset(){
     echo "Creating: machineset - ${SHORT_NAME}"
     oc -n openshift-machine-api \
       get "${MACHINE_SET_WORKER}" -o yaml | \
-        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
+        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE%.*}"'/g
           /^  name:/ s/cluster-.*/'"${SHORT_NAME}"'/g
           /name/ s/-worker/-'"${SHORT_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
@@ -270,13 +270,13 @@ ocp_create_machineset_autoscale(){
   MACHINE_MAX=${2:-4}
   MACHINE_SETS=${3:-$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | sed 's@.*/@@' )}
 
-  for set in ${MACHINE_SETS}
+  for machine_set in ${MACHINE_SETS}
   do
 cat << YAML | oc apply -f -
 apiVersion: "autoscaling.openshift.io/v1beta1"
 kind: "MachineAutoscaler"
 metadata:
-  name: "${set}"
+  name: "${machine_set}"
   namespace: "openshift-machine-api"
 spec:
   minReplicas: ${MACHINE_MIN}
@@ -284,7 +284,7 @@ spec:
   scaleTargetRef:
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
-    name: "${set}"
+    name: "${machine_set}"
 YAML
   done
 }
