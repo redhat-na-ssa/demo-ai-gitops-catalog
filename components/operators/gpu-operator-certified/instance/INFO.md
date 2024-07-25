@@ -36,6 +36,20 @@ Time-slicing GPU can be any Nvidia type (as documented by Nvidia):
   - `g3.8xlarge`  - 2 x M60
   - `g3.16xlarge` - 4 x M60
 
+Override device plugin config per node
+
+```sh
+# add override label
+oc label node < hostname > nvidia.com/device-plugin.config=time-sliced-4
+
+# add override label
+oc label node \
+    -l nvidia.com/gpu.product=Tesla-T4 \
+    nvidia.com/device-plugin.config=tesla-t4
+
+# remove override label
+oc label node < hostname > nvidia.com/device-plugin.config-
+```
 
 ## Links
 
