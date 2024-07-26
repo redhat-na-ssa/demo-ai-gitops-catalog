@@ -4,8 +4,8 @@ kind: Kustomization
 namespace: openshift-storage
 
 resources:
-  - console-plugin.yaml
   - console-plugin-job.yaml
+  # - console-plugin.yaml
   - namespace.yaml
   - operator-group.yaml
   - subscription.yaml
