@@ -3,7 +3,7 @@ kind: Component
 
 resources:
   - console-plugin-job.yaml
-  - console-plugin.yaml
+  # - console-plugin.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
