@@ -4,7 +4,7 @@ kind: Component
 resources:
   - configmap.yaml
   - console-plugin-job.yaml
-  - consoleplugin.yaml
+  - console-plugin.yaml
   - deployment.yaml
   - service.yaml
 
