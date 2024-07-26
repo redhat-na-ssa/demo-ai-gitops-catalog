@@ -1,13 +1,14 @@
 # rhoai-dashboard-access
 
 ## Purpose
+
 This component is designed help admins configure the default access to the RHOAI Dashboard.
 
 ## Usage
 
 This component can be added to a base by adding the `components` section to your overlay `kustomization.yaml` file:
 
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 

@@ -10,7 +10,7 @@ For more information, see [this](https://github.com/opendatahub-io/odh-dashboard
 
 This component can be added to a base by adding the `components` section to your overlay `kustomization.yaml` file:
 
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -18,7 +18,5 @@ resources:
   - ../../base
 
 components:
-  - ../../components/idle-notebook-culling
+  - ../../components/fix-kubeadmin-cluster-admin
 ```
-
-You can customize the time notebooks can remain running while inactive by updating the [culler-config.yaml](./culler-config.yaml) file.
