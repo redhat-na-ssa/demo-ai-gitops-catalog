@@ -582,3 +582,13 @@ ocp_clean_install_pods(){
     -A \
     -l app=installer
 }
+
+ocp_get_kubeconfigs(){
+  # https://rcarrata.com/openshift/regenerate-kubeconfig/
+  # https://gist.githubusercontent.com/rcarrata/016da295c1421cccbfbd66ed9a7922bc/raw/855486c363734892988cdf1b5d0d26ece5e0960a/regenerate-kubeconfig.sh
+  # https://access.redhat.com/solutions/6054981
+  # https://access.redhat.com/solutions/5286371
+  # https://access.redhat.com/solutions/6112601
+
+  oc -n openshift-kube-apiserver extract secret/node-kubeconfigs
+}
