@@ -61,15 +61,16 @@ usage_host(){
   echo "
     Add reverse-tunnel user:
 
-    sudo useradd reverse-tunnel -g -m -d ${APP_PATH} -k /dev/null
-    sudo chmod 770 ${APP_PATH}
     sudo usermod \$USER -a -G reverse-tunnel
+    sudo useradd reverse-tunnel -U -m -d ${APP_PATH} -k /dev/null
+    sudo chmod 770 ${APP_PATH}
 
     Install script and env into ${APP_PATH}:
 
     cp reverse_tunnel.sh ${APP_PATH}/
     cp reverse_tunnel.env.sample ${APP_PATH}/env
     cp reverse-tunnel.service /etc/systemd/system/
+    chown reverse-tunnel:reverse-tunnel /etc/reverse_tunnel/*
 
     Enable service:
 
