@@ -67,7 +67,7 @@ usage_host(){
 
     Install script and env into ${APP_PATH}:
 
-    cp reverse_tunnel.sh ${APP_PATH}/
+    cp reverse_tunnel.sh /usr/local/bin/
     cp reverse_tunnel.env.sample ${APP_PATH}/env
     cp reverse-tunnel.service /etc/systemd/system/
     chown reverse-tunnel:reverse-tunnel /etc/reverse_tunnel/*
@@ -102,7 +102,7 @@ check_install(){
   [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
   [ -e "${SSH_KEY}" ] || gen_key
 
-  [ "$(get_script_path)" == "${APP_PATH}" ] && return
+  [ "$(get_script_path)" == "/usr/local/bin" ] && return
   
   usage
 }
