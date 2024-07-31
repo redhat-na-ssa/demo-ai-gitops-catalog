@@ -86,9 +86,9 @@ kludge_install_app(){
   # install script and env into ${APP_PATH}
   sudo su root /bin/bash -c "
     chmod 770 ${APP_PATH}/
-    cp reverse_tunnel.sh /usr/local/bin/
-    cp reverse_tunnel.env.sample ${APP_PATH}/env
-    cp reverse-tunnel.service /etc/systemd/system/
+    cp ${SCRIPT_DIR}/reverse_tunnel.sh /usr/local/bin/
+    cp ${SCRIPT_DIR}/reverse_tunnel.env.sample ${APP_PATH}/env
+    cp ${SCRIPT_DIR}/reverse-tunnel.service /etc/systemd/system/
     chown reverse-tunnel:reverse-tunnel ${APP_PATH}/*
   "
 }
