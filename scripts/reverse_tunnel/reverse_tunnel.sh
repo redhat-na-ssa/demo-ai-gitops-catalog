@@ -70,6 +70,8 @@ usage_host(){
 }
 
 kludge_install_user(){
+  id reverse-tunnel && return
+
   # add reverse-tunnel user
   sudo usermod "${USER}" -a -G reverse-tunnel
 
@@ -79,6 +81,7 @@ kludge_install_user(){
 }
 
 kludge_install_app(){
+  [ "$(get_script_path)" == "/usr/local/bin" ] && return
 
   # install script and env into ${APP_PATH}
   sudo su root /bin/bash -c "
@@ -110,8 +113,8 @@ check_install(){
   [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
   [ -e "${SSH_KEY}" ] || gen_key
 
-  id reverse-tunnel || kludge_install_user
-  [ "$(get_script_path)" == "/usr/local/bin" ] && return || kludge_install_app
+  kludge_install_user
+  kludge_install_app && return
   
   usage
 }
