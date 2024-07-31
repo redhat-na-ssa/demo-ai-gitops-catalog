@@ -81,7 +81,8 @@ kludge_install_user(){
 }
 
 kludge_install_app(){
-  [ "$(get_script_path)" == "/usr/local/bin" ] && return
+  SCRIPT_DIR=$(get_script_path)
+  [ "${SCRIPT_DIR}" == "/usr/local/bin" ] && return
 
   # install script and env into ${APP_PATH}
   sudo su root /bin/bash -c "
