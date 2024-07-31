@@ -59,19 +59,6 @@ usage_ocp(){
 
 usage_host(){
   echo "
-    Add reverse-tunnel user:
-
-    sudo usermod \$USER -a -G reverse-tunnel
-    sudo useradd reverse-tunnel -U -m -d ${APP_PATH} -k /dev/null
-    sudo chmod 770 ${APP_PATH}
-
-    Install script and env into ${APP_PATH}:
-
-    cp reverse_tunnel.sh /usr/local/bin/
-    cp reverse_tunnel.env.sample ${APP_PATH}/env
-    cp reverse-tunnel.service /etc/systemd/system/
-    chown reverse-tunnel:reverse-tunnel /etc/reverse_tunnel/*
-
     Enable service:
 
     systemctl enable reverse-tunnel --now
@@ -80,6 +67,27 @@ usage_host(){
     journalctl -u reverse-tunnel
   "
   exit 0
+}
+
+kludge_install_user(){
+  # add reverse-tunnel user
+  sudo usermod "${USER}" -a -G reverse-tunnel
+
+  sudo su root /bin/bash -c "
+    useradd reverse-tunnel -U -m -d ${APP_PATH} -k /dev/null
+    chmod 770 ${APP_PATH}
+  "
+}
+
+kludge_install_app(){
+
+  # install script and env into ${APP_PATH}
+  sudo su root /bin/bash -c "
+    cp reverse_tunnel.sh /usr/local/bin/
+    cp reverse_tunnel.env.sample ${APP_PATH}/env
+    cp reverse-tunnel.service /etc/systemd/system/
+    chown reverse-tunnel:reverse-tunnel ${APP_PATH}/*
+  "
 }
 
 kludge_uninstall(){
