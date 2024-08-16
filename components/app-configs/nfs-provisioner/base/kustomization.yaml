@@ -6,7 +6,8 @@ namespace: nfs-provisioner
 resources:
 - https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/deploy
 - namespace.yaml
-- scc.yaml
+# - scc-houstmount-anyuid.yaml
+- scc-rolebinding.yaml
 
 patches:
 - patch: |-
@@ -24,14 +25,14 @@ patches:
         - name: NFS_SERVER
           value: pi.hou
         - name: NFS_PATH
-          value: /k8s-data
+          value: /nfs-data
     - op: replace
       path: /spec/template/spec/volumes
       value:
         - name: nfs-client-root
           nfs:
             server: pi.hou
-            path: /k8s-data
+            path: /nfs-data
   target:
     kind: Deployment
 - patch: |-

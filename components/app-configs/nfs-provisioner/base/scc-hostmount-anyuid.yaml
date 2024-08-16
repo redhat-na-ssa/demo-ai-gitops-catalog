@@ -23,18 +23,14 @@ metadata:
   name: nfs-provisioner-hostmount-anyuid
 readOnlyRootFilesystem: true
 requiredDropCapabilities:
-# - KILL
 - MKNOD
-# - SETUID
-# - SETGID
 runAsUser:
   type: RunAsAny
 seLinuxContext:
   type: MustRunAs
 supplementalGroups:
   type: RunAsAny
-users:
-- system:serviceaccount:openshift-infra:pv-recycler-controller
+users: []
 volumes:
 - configMap
 - csi
