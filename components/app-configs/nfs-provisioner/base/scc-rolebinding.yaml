@@ -1,13 +1,28 @@
 ---
-kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
 metadata:
-  name: nfs-client-provisioner-hostmount-anyuid
-subjects:
-  - kind: ServiceAccount
-    name: nfs-client-provisioner
-    namespace: nfs-provisioner
+  name: nfs-provisioner-hostmount-anyuid
+rules:
+- apiGroups:
+  - security.openshift.io
+  resourceNames:
+  - hostmount-anyuid
+  # - nfs-provisioner-hostmount-anyuid
+  resources:
+  - securitycontextconstraints
+  verbs:
+  - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: nfs-provisioner-hostmount-anyuid
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: 'system:openshift:scc:hostmount-anyuid'
+  name: nfs-provisioner-hostmount-anyuid
+subjects:
+- kind: ServiceAccount
+  name: nfs-client-provisioner
+  namespace: nfs-provisioner

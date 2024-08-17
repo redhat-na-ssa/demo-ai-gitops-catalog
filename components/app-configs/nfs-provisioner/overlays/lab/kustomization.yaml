@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+
+patches:
+- target:
+    kind: Deployment
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env
+      value:
+        - name: PROVISIONER_NAME
+          value: k8s-sigs.io/nfs-subdir-external-provisioner
+        - name: NFS_SERVER
+          value: 172.23.42.10
+        - name: NFS_PATH
+          value: /vol_wag1_dtn_octest
+    - op: replace
+      path: /spec/template/spec/volumes
+      value:
+        - name: nfs-client-root
+          nfs:
+            server: 172.23.42.10
+            path: /vol_wag1_dtn_octest
