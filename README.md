@@ -242,6 +242,7 @@ If you have deployed a default cluster the `sandbox` [namespace](components/clus
 ## External Links
 
 - [GitOps Catalog](https://github.com/redhat-cop/gitops-catalog)
+- [Helm Chart Catalog](https://github.com/redhat-cop/helm-charts)
 - [Enhanced Web Terminal Container](https://github.com/redhat-na-ssa/ocp-web-terminal-enhanced)
 - [AI Pilot Gitops](https://github.com/redhat-na-stp-ai-practice/openshift-ai-pilot-gitops)
 - [ArgoCD - Example](https://github.com/gnunn-gitops/cluster-config)
