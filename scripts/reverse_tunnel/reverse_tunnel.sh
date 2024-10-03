@@ -59,18 +59,6 @@ usage_ocp(){
 
 usage_host(){
   echo "
-    Add reverse-tunnel user:
-
-    sudo useradd reverse-tunnel -g -m -d ${APP_PATH} -k /dev/null
-    sudo chmod 770 ${APP_PATH}
-    sudo usermod \$USER -a -G reverse-tunnel
-
-    Install script and env into ${APP_PATH}:
-
-    cp reverse_tunnel.sh ${APP_PATH}/
-    cp reverse_tunnel.env.sample ${APP_PATH}/env
-    cp reverse-tunnel.service /etc/systemd/system/
-
     Enable service:
 
     systemctl enable reverse-tunnel --now
@@ -79,6 +67,31 @@ usage_host(){
     journalctl -u reverse-tunnel
   "
   exit 0
+}
+
+kludge_install_user(){
+  id reverse-tunnel && return
+
+  # add reverse-tunnel user
+  sudo usermod "${USER}" -a -G reverse-tunnel
+
+  sudo su root /bin/bash -c "
+    useradd reverse-tunnel -U -m -d ${APP_PATH} -k /dev/null
+  "
+}
+
+kludge_install_app(){
+  SCRIPT_DIR=$(get_script_path)
+  [ "${SCRIPT_DIR}" == "/usr/local/bin" ] && return
+
+  # install script and env into ${APP_PATH}
+  sudo su root /bin/bash -c "
+    chmod 770 ${APP_PATH}/
+    cp ${SCRIPT_DIR}/reverse_tunnel.sh /usr/local/bin/
+    [ -e ${SCRIPT_DIR}/env.sample ] || cp ${SCRIPT_DIR}/env.sample ${APP_PATH}/env
+    cp ${SCRIPT_DIR}/reverse-tunnel.service /etc/systemd/system/
+    chown reverse-tunnel:reverse-tunnel ${APP_PATH}/*
+  "
 }
 
 kludge_uninstall(){
@@ -101,7 +114,8 @@ check_install(){
   [ -z "${SSH_KEY}" ] && var_unset "SSH_KEY"
   [ -e "${SSH_KEY}" ] || gen_key
 
-  [ "$(get_script_path)" == "${APP_PATH}" ] && return
+  kludge_install_user
+  kludge_install_app && return
   
   usage
 }

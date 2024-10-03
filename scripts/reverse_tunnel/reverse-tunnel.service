@@ -13,7 +13,7 @@ RestartSec=20
 WorkingDirectory=/etc/reverse_tunnel/
 EnvironmentFile=/etc/reverse_tunnel/env
 User=reverse-tunnel
-ExecStart=/etc/reverse_tunnel/reverse_tunnel.sh
+ExecStart=/usr/local/bin/reverse_tunnel.sh
 
 [Install]
 WantedBy=multi-user.target
