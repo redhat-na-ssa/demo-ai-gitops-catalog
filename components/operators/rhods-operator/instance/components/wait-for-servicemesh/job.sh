@@ -22,4 +22,11 @@ SERVICEMESH_RESOURCES=(
   done
 }
 
+approve_install(){
+    oc -n redhat-ods-operator \
+    patch subscription rhods-operator \
+    --type=merge --patch '{"spec":{"installPlanApproval":{"Automatic"}}}'
+}
+
 wait_for_service_mesh
+approve_install
