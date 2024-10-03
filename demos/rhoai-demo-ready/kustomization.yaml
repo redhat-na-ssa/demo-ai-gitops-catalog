@@ -45,13 +45,13 @@ patches:
         path: /spec/text
         value: 'DEMO: Red Hat OpenShift AI (RHOAI)'
     # kludge: allow servicemesh to install before rhoai
-  - target:
-      kind: Subscription
-      name: rhods-operator
-    patch: |-
-      - op: replace
-        path: /spec/installPlanApproval
-        value: Manual
+  # - target:
+  #     kind: Subscription
+  #     name: rhods-operator
+  #   patch: |-
+  #     - op: replace
+  #       path: /spec/installPlanApproval
+  #       value: Manual
   # - target:
   #     group: user.openshift.io
   #     kind: Group
