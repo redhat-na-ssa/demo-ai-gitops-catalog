@@ -7,9 +7,10 @@
 # ocp_aws_create_gpu_machineset
 # ocp_aws_clone_worker_machineset
 # ocp_aws_taint_gpu_machineset
-# ocp_create_machineset_autoscale'
+# ocp_create_machineset_autoscale
+# '
 
-# for function in $FUNCTIONS
+# for function in ${FUNCTIONS}
 # do
 #   extract_function $function scripts/library/ocp.sh >> tmp
 #   echo >> tmp
