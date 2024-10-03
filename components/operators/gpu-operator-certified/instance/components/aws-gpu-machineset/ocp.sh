@@ -6,9 +6,11 @@
 # ocp_aws_cluster
 # ocp_aws_create_gpu_machineset
 # ocp_aws_clone_worker_machineset
-# ocp_create_machineset_autoscale'
+# ocp_aws_taint_gpu_machineset
+# ocp_create_machineset_autoscale
+# '
 
-# for function in $FUNCTIONS
+# for function in ${FUNCTIONS}
 # do
 #   extract_function $function scripts/library/ocp.sh >> tmp
 #   echo >> tmp
@@ -45,16 +47,7 @@ ocp_aws_create_gpu_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
-
-  # taint nodes for gpu-only workloads
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
-
-  # oc -n openshift-machine-api \
-  #   patch "${MACHINE_SET_TYPE}" \
-  #   --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
-
+  
   # should use the default profile
   # oc -n openshift-machine-api \
   #   patch "${MACHINE_SET_TYPE}" \
@@ -110,6 +103,18 @@ ocp_aws_clone_worker_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${SHORT_NAME}"'":""}}}}}}'
+}
+
+ocp_aws_taint_gpu_machineset(){
+  INSTANCE_TYPE=${1:-g4dn.4xlarge}
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+
+  echo "Patching: ${MACHINE_SET_TYPE}"
+
+  # taint nodes for gpu-only workloads
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_TYPE}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
 }
 
 ocp_create_machineset_autoscale(){

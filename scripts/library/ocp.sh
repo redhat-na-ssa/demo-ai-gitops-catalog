@@ -243,15 +243,6 @@ ocp_aws_create_gpu_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
-
-  # taint nodes for gpu-only workloads
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
-
-  # oc -n openshift-machine-api \
-  #   patch "${MACHINE_SET_TYPE}" \
-  #   --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia-gpu-only","value":"","effect":"NoSchedule"}]}}}}'
   
   # should use the default profile
   # oc -n openshift-machine-api \
@@ -270,6 +261,18 @@ ocp_aws_create_gpu_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
+}
+
+ocp_aws_taint_gpu_machineset(){
+  INSTANCE_TYPE=${1:-g4dn.4xlarge}
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+
+  echo "Patching: ${MACHINE_SET_TYPE}"
+
+  # taint nodes for gpu-only workloads
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_TYPE}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
 }
 
 ocp_create_machineset_autoscale(){
@@ -332,8 +335,8 @@ ocp_set_scheduler_profile(){
   SCHED_PROFILE=${1:-LowNodeUtilization}
 
   # LowNodeUtilization, HighNodeUtilization, NoScoring
-  echo "see https://docs.openshift.com/container-platform/4.11/nodes/scheduling/nodes-scheduler-profiles.html"
-  echo "OPTIONS: LowNodeUtilization, HighNodeUtilization, NoScoring"
+  echo "see https://docs.openshift.com/container-platform/4.16/nodes/scheduling/nodes-scheduler-profiles.html"
+  echo "OPTIONS: LowNodeUtilization (default), HighNodeUtilization, NoScoring"
   echo "SCHED_PROFILE: ${SCHED_PROFILE}"
 
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}' 
@@ -411,13 +414,13 @@ ocp_ack_upgrade_4.13(){
 }
 
 ocp_gpu_taint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule --overwrite
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
   oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
   oc adm uncordon -l node-role.kubernetes.io/gpu
 }
 
 ocp_gpu_untaint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia-gpu-only=:NoSchedule-
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }
 
 ocp_gpu_label_nodes_from_nfd(){
