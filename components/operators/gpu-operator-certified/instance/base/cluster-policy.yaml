@@ -55,9 +55,6 @@ spec:
       - effect: NoSchedule
         key: nvidia.com/gpu
         operator: Exists
-      - effect: NoSchedule
-        key: nvidia-gpu-only
-        operator: Exists
   devicePlugin:
     enabled: true
     config:

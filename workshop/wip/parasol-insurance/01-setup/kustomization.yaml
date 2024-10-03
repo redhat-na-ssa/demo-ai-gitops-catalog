@@ -33,9 +33,6 @@ patches:
           - effect: NoSchedule
             key: nvidia.com/gpu
             operator: Exists
-          - effect: NoSchedule
-            key: nvidia-gpu-only
-            operator: Exists
   - path: exclude-sc-ceph-rbd.yaml
   - path: exclude-sc-gp3.yaml
   - path: exclude-cm.yaml
