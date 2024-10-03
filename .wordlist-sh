@@ -28,15 +28,19 @@ basename
 bashrc
 BASHRC
 bB
+bc
 blockDevices
 busybox
 bz
 bzcat
 catalogSource
 catalogSourceNamespace
+cccbfbd
+cdf
 ce
 chgrp
 chmod
+chown
 chroot
 clustermanagementaddons
 clustermanagers
@@ -51,6 +55,7 @@ crt
 CTRL
 currentCSVDesc
 CustomResourceDefinition
+da
 daemonsets
 datasciencecluster
 dcgm
@@ -72,6 +77,7 @@ dryrun
 dsc
 dscinitialization
 ebs
+ece
 ecr
 eE
 eee
@@ -138,6 +144,8 @@ knativeservings
 krew
 KREW
 ksh
+kubeconfig
+kubeconfigs
 kubeval
 ln
 LowNodeUtilization
@@ -219,6 +227,7 @@ pv
 py
 pyspelling
 qi
+rcarrata
 readme
 redis
 req
