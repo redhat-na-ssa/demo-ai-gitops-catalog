@@ -1,5 +1,10 @@
 installPlanApproval: Automatic
-name: null
-channel: latest
+# -- ex: `web-terminal`
+name: ""
+# -- ex: `fast`
+channel: ""
 source: redhat-operators
 sourceNamespace: openshift-marketplace
+# -- ex: `web-terminal.v1.7.0`
+# (optional)
+startingCSV:
