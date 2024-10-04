@@ -1,0 +1,12 @@
+{{- if ne .Values.namespace "openshift-operators" }}
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+{{- if .Values.targetNamespace }}
+spec:
+  targetNamespaces:
+    - {{ .Values.targetNamespace }}
+{{- end }}
+{{- end }}

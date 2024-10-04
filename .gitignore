@@ -3,7 +3,7 @@ data/
 scratch/
 files.txt
 bootstrap/sealed-secrets-secret.yaml
-**/charts/
+components/operators/**/charts/
 dictionary.dic
 *.log
 

@@ -1,0 +1,15 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: {{ .Values.subscriptionName | default .Values.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  channel: {{ .Values.channel | required "channel is required" }}
+  installPlanApproval: {{ .Values.installPlanApproval }}
+  name: {{ .Values.name | required "name is required" }}
+  source: {{ .Values.source }}
+  sourceNamespace: {{ .Values.sourceNamespace }}
+  {{- with .Values.startingCSV }}
+  startingCSV: {{ . }}
+  {{- end }}
