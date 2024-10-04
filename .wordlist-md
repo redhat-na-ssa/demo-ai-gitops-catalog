@@ -103,6 +103,7 @@ devworkspaces
 DevWorkspaces
 dir
 disableNameSuffixHash
+displayName
 dns
 DNS
 dockerconfigjson
@@ -362,6 +363,7 @@ stringsource
 subdir
 sublicense
 TALM
+targetNamespace
 TaskRun
 TBD
 tekton
