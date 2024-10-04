@@ -261,6 +261,24 @@ ocp_aws_create_gpu_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
+  
+#  # fix storage
+
+# cat << YAML > /tmp/patch.yaml
+# spec:
+#   template:
+#     spec:
+#       providerSpec:
+#         value:
+#           blockDevices:
+#             - ebs:
+#                 volumeSize: 120
+#                 volumeType: gp3
+# YAML
+
+#   oc -n openshift-machine-api \
+#     patch "${MACHINE_SET_TYPE}" \
+#     --type=merge --patch "$(cat /tmp/patch.yaml)"
 }
 
 ocp_aws_taint_gpu_machineset(){
