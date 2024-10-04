@@ -1,3 +1,5 @@
 installPlanApproval: Automatic
+name: null
+channel: latest
 source: redhat-operators
 sourceNamespace: openshift-marketplace
