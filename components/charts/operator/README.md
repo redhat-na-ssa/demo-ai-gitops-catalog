@@ -2,15 +2,17 @@
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+A Helm chart to assist in installing operators
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | channel | string | `""` | ex: `fast` |
+| displayName | string | `nil` | ex: `A description here` |
 | installPlanApproval | string | `"Automatic"` |  |
 | name | string | `""` | ex: `web-terminal` |
+| namespace | string | `nil` |  |
 | source | string | `"redhat-operators"` |  |
 | sourceNamespace | string | `"openshift-marketplace"` |  |
 | startingCSV | string | `nil` | ex: `web-terminal.v1.7.0` (optional) |

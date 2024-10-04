@@ -1,6 +1,7 @@
 apiVersion: v2
 name: operator
-description: A Helm chart for Kubernetes
+description: |
+  A Helm chart to assist in installing operators
 
 # A chart can be either an 'application' or a 'library' chart.
 #
