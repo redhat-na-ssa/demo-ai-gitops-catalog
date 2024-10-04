@@ -1,0 +1,23 @@
+# -- ex: `fast`
+channel: ""
+
+# -- (string, [optional])
+# ex: `Web Terminal Operator`
+displayName:
+
+installPlanApproval: Automatic
+
+# -- ex: `web-terminal`
+name: ""
+
+# -- (string, [optional])
+# ex: `openshift-operators`
+targetNamespace:
+
+source: redhat-operators
+
+sourceNamespace: openshift-marketplace
+
+# -- (string, [optional])
+# ex: `web-terminal.v1.7.0`
+startingCSV:
