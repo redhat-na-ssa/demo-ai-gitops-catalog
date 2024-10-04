@@ -1,12 +1,10 @@
+{{- if .Values.namespace }}
 {{- if ne (include "operator.namespace" .) "openshift-operators" }}
-{{- with .Values.namespace }}
 apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    {{- with .Values.displayName }}
-    openshift.io/display-name: {{ . | default "test" }}
-    {{- end }}
+    openshift.io/display-name: {{ .Values.displayName }}
   labels:
     openshift.io/cluster-monitoring: 'true'
   name: {{ include "operator.namespace" . }}
