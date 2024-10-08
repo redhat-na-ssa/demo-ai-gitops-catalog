@@ -16,19 +16,6 @@ ocp_check_info(){
   sleep "${SLEEP_SECONDS:-8}"
 }
 
-ocp_kubeadmin_remove(){
-  FORCE=${1:-No}
-
-  if [ "${FORCE}" = "YES" ]; then
-    [ ! -e scratch/kubeadmin.yaml ] && \
-      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
-    oc delete secret kubeadmin -n kube-system
-  else
-    echo "${RED}WARNING: you must run - ocp_remove_kubeadmin YES${NC}"
-    return
-  fi
-}
-
 ocp_kubeadmin_create(){
   PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
@@ -55,6 +42,19 @@ stringData:
   password: ${PASS}
 type: Opaque
 YAML
+}
+
+ocp_kubeadmin_remove(){
+  FORCE=${1:-No}
+
+  if [ "${FORCE}" = "YES" ]; then
+    [ ! -e scratch/kubeadmin.yaml ] && \
+      oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
+    oc delete secret kubeadmin -n kube-system
+  else
+    echo "${RED}WARNING: you must run - ocp_remove_kubeadmin YES${NC}"
+    return
+  fi
 }
 
 ocp_get_apps_domain(){
@@ -612,4 +612,41 @@ ocp_get_kubeconfigs(){
   # https://access.redhat.com/solutions/6112601
 
   oc -n openshift-kube-apiserver extract secret/node-kubeconfigs
+}
+
+ocp_auth_create_group(){
+  OCP_GROUP=${1:-${DEFAULT_OCP_GROUP}}
+
+  oc get group "${OCP_GROUP}" > /dev/null 2>&1 && return
+
+echo "
+apiVersion: user.openshift.io/v1
+kind: Group
+metadata:
+  name: ${OCP_GROUP}
+" | oc apply -f-
+
+}
+
+ocp_auth_add_to_group(){
+  USER=${1:-admin}
+  OCP_GROUP=${2:-${DEFAULT_OCP_GROUP}}
+  
+  ocp_auth_create_group "${OCP_GROUP}"
+
+  oc adm groups add-users \
+  "${OCP_GROUP}" "${USER}"
+}
+
+ocp_auth_setup_user(){
+  USER=${1:-admin}
+  PASS=${2:-$(genpass)}
+  OCP_GROUP=${3:-${DEFAULT_OCP_GROUP}}
+
+  htpasswd_add_user "${USER}" "${PASS}"
+  ocp_auth_add_to_group "${USER}" "${OCP_GROUP}"
+
+  echo "
+    run: htpasswd_ocp_set_file
+  "
 }
