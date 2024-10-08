@@ -24,4 +24,3 @@ patches:
       group: config.openshift.io
       kind: OAuth
       name: cluster
-
