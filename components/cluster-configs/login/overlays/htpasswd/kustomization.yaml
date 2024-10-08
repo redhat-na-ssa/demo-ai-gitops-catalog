@@ -3,10 +3,6 @@ kind: Kustomization
 
 namespace: openshift-config
 
-commonAnnotations:
-  # argocd.argoproj.io/compare-options: IgnoreExtraneous
-  argocd.argoproj.io/sync-options: Prune=false
-
 resources:
   - ../../base
   # - htpasswd-secret.yaml
@@ -28,4 +24,4 @@ patches:
       group: config.openshift.io
       kind: OAuth
       name: cluster
-      version: v1
+
