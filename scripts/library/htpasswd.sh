@@ -52,6 +52,30 @@ htpasswd_ocp_set_file(){
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
+htpasswd_validate_user(){
+  USER=${1:-admin}
+  PASS=${2:-admin}
+  KUBECONFIG=${KUBECONFIG:-~/.kube/config}
+  TMP_CONFIG=scratch/kubeconfig.XXX
+
+  echo "This may take a few minutes..."
+  echo "Press <ctrl> + c to cancel"
+
+  # login to ocp
+  cp "${KUBECONFIG}" "${TMP_CONFIG}"
+
+  retry oc --kubeconfig "${TMP_CONFIG}" login \
+    -u "${USER}" -p "${PASS}" > /dev/null 2>&1 || return 1
+  
+  # verify user is present
+  oc get user "${USER}" || return 1
+
+  # cleanup tmp config
+  rm "${TMP_CONFIG}"
+
+  echo "Login validated: ${USER}"
+}
+
 which age 2>/dev/null || return 0
 
 htpasswd_encrypt_file(){
