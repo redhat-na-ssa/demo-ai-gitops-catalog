@@ -1,13 +1,6 @@
 #!/bin/bash
 
-HTPASSWD_FILE=scratch/htpasswd
-
-# shellcheck disable=SC2120
-genpass(){
-  < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
-}
-
-which htpasswd || return 1
+which htpasswd || return 0
 
 DEFAULT_HTPASSWD=scratch/htpasswd-local
 DEFAULT_OCP_GROUP=users
@@ -52,6 +45,8 @@ htpasswd_ocp_set_file(){
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
+which age || return 0
+
 htpasswd_encrypt_file(){
   HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
 
@@ -69,41 +64,4 @@ htpasswd_decrypt_file(){
     -i ~/.ssh/id_rsa \
     -o "${HTPASSWD_FILE}" \
     "$(basename "${HTPASSWD_FILE}")".age
-}
-
-ocp_auth_create_group(){
-  OCP_GROUP=${1:-${DEFAULT_OCP_GROUP}}
-
-  oc get group "${OCP_GROUP}" > /dev/null 2>&1 && return
-
-echo "
-apiVersion: user.openshift.io/v1
-kind: Group
-metadata:
-  name: ${OCP_GROUP}
-" | oc apply -f-
-
-}
-
-ocp_auth_add_to_group(){
-  USER=${1:-admin}
-  OCP_GROUP=${2:-${DEFAULT_OCP_GROUP}}
-  
-  ocp_auth_create_group "${OCP_GROUP}"
-
-  oc adm groups add-users \
-  "${OCP_GROUP}" "${USER}"
-}
-
-ocp_auth_setup_user(){
-  USER=${1:-admin}
-  PASS=${2:-$(genpass)}
-  OCP_GROUP=${3:-${DEFAULT_OCP_GROUP}}
-
-  htpasswd_add_user "${USER}" "${PASS}"
-  ocp_auth_add_to_group "${USER}" "${OCP_GROUP}"
-
-  echo "
-    run: htpasswd_ocp_set_file
-  "
 }
