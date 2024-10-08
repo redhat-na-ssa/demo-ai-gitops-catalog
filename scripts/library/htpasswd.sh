@@ -18,7 +18,8 @@ htpasswd_add_user(){
     USERNAME: ${USER}
     PASSWORD: ${PASS}
 
-    FILENAME: ${HTPASSWD_FILE}
+    FILENAME:  ${HTPASSWD_FILE}
+    PASSWORDS: ${HTPASSWD_FILE}.txt
   "
 
   [ -e "${HTPASSWD_FILE}" ] || touch "${HTPASSWD_FILE}"
