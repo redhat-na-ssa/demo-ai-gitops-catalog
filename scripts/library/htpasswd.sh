@@ -3,7 +3,6 @@
 which htpasswd || return 0
 
 DEFAULT_HTPASSWD=scratch/htpasswd-local
-DEFAULT_OCP_GROUP=users
 
 htpasswd_add_user(){
   USER=${1:-admin}
