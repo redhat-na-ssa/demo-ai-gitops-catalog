@@ -52,6 +52,7 @@ crd
 crds
 creationTimestamp
 crt
+ctrl
 CTRL
 currentCSVDesc
 CustomResourceDefinition
@@ -150,6 +151,7 @@ kubeval
 ln
 LowNodeUtilization
 LsO
+lt
 MachineAutoscaler
 machinesets
 MAINTINAER

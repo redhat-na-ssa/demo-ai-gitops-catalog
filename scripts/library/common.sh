@@ -15,9 +15,24 @@ genpass(){
   < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
 }
 
+apply_config(){
+  retry oc apply -f "$1" 2>/dev/null
+}
+
+apply_kustomize(){
+  if [ ! -f "$1/kustomization.yaml" ]; then
+    echo "Please provide a dir with 'kustomization.yaml'"
+    echo "'kustomization.yaml' not found in ${1}"
+    return 0
+  fi
+
+  retry oc apply -k "$1" 2>/dev/null
+}
+
 apply_firmly(){
   if [ ! -f "${1}/kustomization.yaml" ]; then
-    echo "Please provide a dir with \"kustomization.yaml\""
+    echo "Please provide a dir with 'kustomization.yaml'"
+    echo "'kustomization.yaml' not found in ${1}"
     return 0
   fi
 
@@ -27,12 +42,37 @@ apply_firmly(){
 
 until_true(){
   echo "Running:" "${@}"
+  echo "Press <ctrl> + c to cancel"
   until "${@}" 1>&2
   do
     echo "again..."
     sleep 20
   done
 
+  echo "[OK]"
+}
+
+retry(){
+  local n=1
+  local max=12
+  local delay=20
+
+  echo "Running:" "${@}"
+  echo "Repeat: x${max}"
+  echo "Delay: ${delay}s"
+
+  # until "${@}" 1>&2
+  until "${@}"
+  do
+    if [[ $n -lt $max ]]; then
+      ((n++))
+      echo "Retry after $delay sec"
+      sleep $delay
+    else
+      echo "Failed after $n attempts."
+        return 1
+    fi
+  done
   echo "[OK]"
 }
 
