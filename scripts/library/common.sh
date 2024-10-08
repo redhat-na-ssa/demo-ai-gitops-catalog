@@ -1,39 +1,32 @@
 #!/bin/bash
 
-# shellcheck disable=SC2034
-RED='\033[1;31m'
-BLUE='\033[1;36m'
-PURPLE='\033[1;35m'
-ORANGE='\033[0;33m'
-NC='\033[0m' # No Color
-
-# echo -e "${BLUE}INFO:${NC}"
-# echo -e "${RED}ERROR:${NC}"
-# echo -e "${ORANGE}WARNING:${NC}""
-
 genpass(){
   < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
 }
 
 apply_config(){
+  if [ ! -f "$1" ]; then
+    echo "${1:-file} not found"
+    return 1
+  fi
   retry oc apply -f "$1" 2>/dev/null
 }
 
 apply_kustomize(){
-  if [ ! -f "$1/kustomization.yaml" ]; then
+  if [ ! -f "${1}/kustomization.yaml" ]; then
     echo "Please provide a dir with 'kustomization.yaml'"
     echo "'kustomization.yaml' not found in ${1}"
-    return 0
+    return 1
   fi
 
   retry oc apply -k "$1" 2>/dev/null
 }
 
 apply_firmly(){
-  if [ ! -f "${1}/kustomization.yaml" ]; then
+  if [ ! -f "${1:-.}/kustomization.yaml" ]; then
     echo "Please provide a dir with 'kustomization.yaml'"
     echo "'kustomization.yaml' not found in ${1}"
-    return 0
+    return 1
   fi
 
   # until oc kustomize "${1}" --enable-helm | oc apply -f- 2>/dev/null

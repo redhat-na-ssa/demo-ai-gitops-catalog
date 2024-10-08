@@ -3,14 +3,11 @@
 
 # shellcheck disable=SC2034
 
+################# standard init #################
+
 # 8 seconds is usually enough time for the average user to realize they foobar
 export SLEEP_SECONDS=8
 
-################# standard init #################
-
-RED='\033[1;31m'
-BLUE='\033[1;36m'
-PURPLE='\033[1;35m'
 ORANGE='\033[0;33m'
 NC='\033[0m' # No Color
 
