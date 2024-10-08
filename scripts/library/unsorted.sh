@@ -9,6 +9,7 @@ __run_all_functions(){
   # shellcheck disable=SC2013
   for i in $(grep -v '^ *#' /tmp/test-fun)
   do
+    echo -e "${RED}DEBUG: ${ORANGE}$i${NC}"
     $i && sed -i "/$i/d" /tmp/test-fun
   done
 }
