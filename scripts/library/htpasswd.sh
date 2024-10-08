@@ -30,6 +30,9 @@ htpasswd_ocp_get_file(){
   HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
 
   oc -n openshift-config \
+    get "${HTPASSWD_FILE}" || return 1
+
+  oc -n openshift-config \
     extract secret/"${HTPASSWD_NAME}" \
     --keys=htpasswd \
     --to=- > "${HTPASSWD_FILE}"
@@ -38,6 +41,8 @@ htpasswd_ocp_get_file(){
 htpasswd_ocp_set_file(){
   HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
   HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
+
+  touch "${HTPASSWD_FILE}" || return 1
 
   oc -n openshift-config \
     set data secret/"${HTPASSWD_NAME}" \
