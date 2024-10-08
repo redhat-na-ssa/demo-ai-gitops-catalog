@@ -1,6 +1,6 @@
 #!/bin/bash
 
-which htpasswd || return 0
+which htpasswd 2>/dev/null || return 0
 
 DEFAULT_HTPASSWD=scratch/htpasswd-local
 
@@ -49,7 +49,7 @@ htpasswd_ocp_set_file(){
     --from-file=htpasswd="${HTPASSWD_FILE}"
 }
 
-which age || return 0
+which age 2>/dev/null || return 0
 
 htpasswd_encrypt_file(){
   HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
