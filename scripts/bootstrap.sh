@@ -28,14 +28,14 @@ check_git_root(){
   fi
 }
 
-get_script_path(){
+check_script_path(){
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   echo "SCRIPT_DIR: ${SCRIPT_DIR}"
 }
 
 check_shell
 check_git_root
-get_script_path
+check_script_path
 
 ################# standard init #################
 

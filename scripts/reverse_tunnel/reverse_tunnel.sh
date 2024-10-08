@@ -81,7 +81,7 @@ kludge_install_user(){
 }
 
 kludge_install_app(){
-  SCRIPT_DIR=$(get_script_path)
+  SCRIPT_DIR=$(check_script_path)
   [ "${SCRIPT_DIR}" == "/usr/local/bin" ] && return
 
   # install script and env into ${APP_PATH}
@@ -142,7 +142,7 @@ var_unset(){
   echo "${1} env var is NOT set"
 }
 
-get_script_path(){
+check_script_path(){
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
   echo "${SCRIPT_DIR}"
 }

@@ -1,14 +1,11 @@
 #!/bin/bash
 # shellcheck disable=SC1091,SC2034
 
-RED='\033[1;31m'
-BLUE='\033[1;36m'
-PURPLE='\033[1;35m'
 ORANGE='\033[0;33m'
 NC='\033[0m' # No Color
 
 check_shell(){
-  [ -n "$BASH_VERSION" ] && return
+  [ -n "${BASH_VERSION}" ] && return
   echo -e "${ORANGE}WARNING: These scripts are ONLY tested in a bash shell${NC}"
   sleep "${SLEEP_SECONDS:-8}"
 }
@@ -27,7 +24,7 @@ check_git_root(){
   fi
 }
 
-get_script_path(){
+check_script_path(){
   [ -n "${SCRIPT_DIR}" ] && return
 
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -70,7 +67,7 @@ is_sourced(){
 
 check_shell
 check_git_root
-get_script_path
+check_script_path
 source_library
 setup_bin_path
 
