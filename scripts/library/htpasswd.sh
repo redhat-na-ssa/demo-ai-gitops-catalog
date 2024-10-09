@@ -1,7 +1,5 @@
 #!/bin/bash
 
-which htpasswd 2>/dev/null || return 0
-
 DEFAULT_HTPASSWD=scratch/htpasswd-local
 
 htpasswd_add_user(){
@@ -22,8 +20,8 @@ htpasswd_add_user(){
     PASSWORDS: ${HTPASSWD_FILE}.txt
   "
 
-  [ -e "${HTPASSWD_FILE}" ] || touch "${HTPASSWD_FILE}" "${HTPASSWD_FILE}".txt
-  sed -i '/# '"${USER}"'/d' "${HTPASSWD_FILE}.txt"
+  touch "${HTPASSWD_FILE}" "${HTPASSWD_FILE}".txt
+  sed -i '/# '"${USER}"'/d' "${HTPASSWD_FILE}".txt
   echo "# ${USER} - ${PASS}" >> "${HTPASSWD_FILE}.txt"
   htpasswd -bB -C 10 "${HTPASSWD_FILE}" "${USER}" "${PASS}"
 }
@@ -33,12 +31,12 @@ htpasswd_ocp_get_file(){
   HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
 
   oc -n openshift-config \
-    get "${HTPASSWD_FILE}" || return 1
+    get secret/"${HTPASSWD_NAME}" > /dev/null 2>&1 || return 1
 
   oc -n openshift-config \
     extract secret/"${HTPASSWD_NAME}" \
     --keys=htpasswd \
-    --to=- > "${HTPASSWD_FILE}"
+    --to=- > "${HTPASSWD_FILE}" 2>/dev/null
 }
 
 htpasswd_ocp_set_file(){
@@ -59,7 +57,8 @@ htpasswd_validate_user(){
   TMP_CONFIG=scratch/kubeconfig.XXX
 
   echo "This may take a few minutes..."
-  echo "Press <ctrl> + c to cancel"
+  echo "Press <ctrl> + c to cancel
+  "
 
   # login to ocp
   cp "${KUBECONFIG}" "${TMP_CONFIG}"
@@ -73,10 +72,12 @@ htpasswd_validate_user(){
   # cleanup tmp config
   rm "${TMP_CONFIG}"
 
-  echo "Login validated: ${USER}"
+  echo ""
+  echo "Validated Login: ${USER}"
+  echo ""
 }
 
-which age 2>/dev/null || return 0
+which age >/dev/null 2>&1 || return 0
 
 htpasswd_encrypt_file(){
   HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
