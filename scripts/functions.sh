@@ -16,7 +16,7 @@ check_git_root(){
   if [ -d .git ] && [ -d scripts ]; then
     GIT_ROOT=$(pwd)
     export GIT_ROOT
-    echo "GIT_ROOT: ${GIT_ROOT}"
+    echo "GIT_ROOT:   ${GIT_ROOT}"
     return
   else
     echo "Please run this script from the root of the git repo"
@@ -28,6 +28,7 @@ check_script_path(){
   [ -n "${SCRIPT_DIR}" ] && return
 
   SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+  export SCRIPT_DIR
   echo "SCRIPT_DIR: ${SCRIPT_DIR}"
 }
 
@@ -75,4 +76,4 @@ usage(){
   echo "USAGE: get_functions"
 }
 
-usage
+is_sourced && usage

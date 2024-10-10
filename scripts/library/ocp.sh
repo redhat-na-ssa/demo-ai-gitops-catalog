@@ -318,7 +318,7 @@ YAML
 }
 
 ocp_aws_cluster_autoscaling(){
-  oc apply -k "${GIT_ROOT}"/components/cluster-configs/autoscale/overlays/gpus
+  oc apply -k https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/cluster-configs/autoscale/overlays/gpus
 
   ocp_aws_create_gpu_machineset g4dn.4xlarge
   ocp_create_machineset_autoscale 0 3

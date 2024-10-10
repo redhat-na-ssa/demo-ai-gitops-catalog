@@ -46,23 +46,22 @@ until_true(){
 }
 
 retry(){
-  local n=1
-  local max=9
+  local attempts=20
   local delay=20
 
   echo "Running:" "${@}"
-  echo "Retry: x${max}"
-  echo "Delay: ${delay}s"
+  echo "Attempts:  ${attempts}"
+  echo "Delay:     ${delay}s"
 
   # until "${@}" 1>&2
   until "${@}"
   do
-    if [[ $n -lt $max ]]; then
-      ((n++))
-      echo "Retry #$n - waiting ${delay}s"
+    if [[ $attempts -gt "1" ]]; then
+      ((attempts--))
+      echo "Remaining attempts: $attempts - waiting ${delay}s"
       sleep $delay
     else
-      echo "Failed after $n attempts."
+      echo "[FAILED]"
         return 1
     fi
   done

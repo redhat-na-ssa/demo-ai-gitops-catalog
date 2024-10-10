@@ -6,11 +6,13 @@ OPENSHIFT_CLIENTS_URL=https://mirror.openshift.com/pub/openshift-v4/x86_64/clien
 bin_check(){
   name=${1:-oc}
 
+  which "${name}" && return 0
+
   OS="$(uname | tr '[:upper:]' '[:lower:]')"
   ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
 
   echo "
-    CLI:    ${name}
+    CLI:    ${name} (NOT found)
     OS:     ${OS}
     ARCH:   ${ARCH}
   "
@@ -69,7 +71,7 @@ download_helm(){
 
 download_oc(){
   BIN_VERSION=stable-4.14
-  DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/ocp/${BIN_VERSION}/openshift-client-linux.tar.gz
+  DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/ocp/${BIN_VERSION}/openshift-client-${OS}.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" oc kubectl
 }
 
