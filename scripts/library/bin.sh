@@ -6,10 +6,18 @@ OPENSHIFT_CLIENTS_URL=https://mirror.openshift.com/pub/openshift-v4/x86_64/clien
 bin_check(){
   name=${1:-oc}
 
-  which "${name}" && return 0
+  BIN_PATH=${BIN_PATH:-scratch/bin}
+  BASH_COMP=${BASH_COMP:-scratch/bash}
 
   OS="$(uname | tr '[:upper:]' '[:lower:]')"
   ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
+
+  [ -d "${BIN_PATH}" ] || mkdir -p "${BIN_PATH}"
+  [ -d "${BASH_COMP}" ] || mkdir -p "${BASH_COMP}"
+
+  [ -e "${BIN_PATH}/${name}" ] || download_"${name}"
+ 
+  which "${name}" && return 0
 
   echo "
     CLI:    ${name} (NOT found)
@@ -17,14 +25,6 @@ bin_check(){
     ARCH:   ${ARCH}
   "
 
-  BIN_PATH=${BIN_PATH:-scratch/bin}
-  BASH_COMP=${BASH_COMP:-scratch/bash}
-
-  [ -d "${BIN_PATH}" ] || mkdir -p "${BIN_PATH}"
-  [ -d "${BASH_COMP}" ] || mkdir -p "${BASH_COMP}"
-
-  [ -e "${BIN_PATH}/${name}" ] || download_"${name}"
- 
   case ${name} in
     oc|odo|virtctl)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
