@@ -17,10 +17,10 @@ bin_check(){
 
   [ -e "${BIN_PATH}/${name}" ] || download_"${name}"
  
-  which "${name}" && return 0
+  # which "${name}" && return 0
 
   echo "
-    CLI:    ${name} (NOT found)
+    CLI:    ${name}
     OS:     ${OS}
     ARCH:   ${ARCH}
   "
