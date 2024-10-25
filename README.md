@@ -247,3 +247,4 @@ If you have deployed a default cluster the `sandbox` [namespace](components/clus
 - [AI Pilot Gitops](https://github.com/redhat-na-stp-ai-practice/openshift-ai-pilot-gitops)
 - [ArgoCD - Example](https://github.com/gnunn-gitops/cluster-config)
 - [ArgoCD - Patterns](https://github.com/gnunn-gitops/standards)
+- [OpenShift - Automation](https://github.com/jharmison-redhat/openshift-setup)
