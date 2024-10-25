@@ -1,5 +1,5 @@
-kind: DataScienceCluster
 apiVersion: datasciencecluster.opendatahub.io/v1
+kind: DataScienceCluster
 metadata:
   name: default-dsc
 spec:
@@ -25,4 +25,6 @@ spec:
     modelmeshserving:
       managementState: Removed
     datasciencepipelines:
+      managementState: Removed
+    trainingoperator:
       managementState: Removed
