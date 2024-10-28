@@ -46,7 +46,7 @@ until_true(){
 }
 
 retry(){
-  local attempts=20
+  local attempts=30
   local delay=20
 
   echo "Running:" "${@}"
