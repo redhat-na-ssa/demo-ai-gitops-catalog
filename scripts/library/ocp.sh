@@ -117,6 +117,7 @@ ocp_aws_clone_worker_machineset(){
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   SHORT_NAME=${2:-${INSTANCE_TYPE/./-}}
+  HD_SIZE=200
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
@@ -132,6 +133,8 @@ ocp_aws_clone_worker_machineset(){
           /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
+          s/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
+          s/volumeType: gp2/volumeType: gp3/
           /cluster-api-autoscaler/d
           /uid:/d
           /generation:/d
