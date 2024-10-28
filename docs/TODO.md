@@ -1,5 +1,6 @@
 # TODO Items
 
+- [ ] add: increase storage for workers to 200 GB
 - [ ] add: create example jupyter containers with ubi base
 - [ ] add: scripted caching mirror registry
 - [ ] add: openldap w/ idp and ldapsync example
