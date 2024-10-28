@@ -1,0 +1,10 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: odh-segment-key-config
+  namespace: redhat-ods-applications
+  labels:
+    app.kubernetes.io/part-of: segment-io
+    app.opendatahub.io/segment-io: 'true'
+data:
+  segmentKeyEnabled: 'false'
