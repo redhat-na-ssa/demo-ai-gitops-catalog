@@ -7,10 +7,13 @@ resources:
 
   - ../../components/operators/authorino-operator/operator/overlays/managed-services
   - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
-  # - ../../components/app-configs/rhoai-config
-  # TODO: reconcile issues with item above
+  - ../../components/operators/servicemeshoperator/operator/overlays/stable
+
   - ../../components/operators/rhods-operator/instance/overlays/all
   - ../../components/operators/serverless-operator/operator/overlays/stable
+
+  # - ../../components/app-configs/rhoai-config
+  # TODO: reconcile issues with item above
   # - ../../components/operators/serverless-operator/instance/knative-eventing/overlays/default
   # - ../../components/operators/serverless-operator/instance/knative-serving/overlays/default
 
@@ -28,13 +31,6 @@ resources:
   # - ../../components/app-configs/rhoai-projects
   # - ../../components/app-configs/rhoai-rbac
   # - ../../components/app-configs/rhoai-rbac-notebooks
-
-  # service mesh optional
-  # - ../../components/operators/kiali-ossm/operator/overlays/stable
-
-  # service mesh deprecated - https://docs.openshift.com/container-platform/4.15/service_mesh/v2x/installing-ossm.html#installing-ossm
-  # - ../../components/operators/jaeger-product/operator/overlays/stable
-  # - ../../components/operators/elasticsearch-operator/operator/overlays/stable
 
 patches:
   - target:
