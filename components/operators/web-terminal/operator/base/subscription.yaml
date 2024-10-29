@@ -10,4 +10,4 @@ spec:
   source: redhat-operators
   sourceNamespace: openshift-marketplace
   # kludge: fix v1.9.0 bug
-  startingCSV: web-terminal.v1.7.0
+  # startingCSV: web-terminal.v1.7.0

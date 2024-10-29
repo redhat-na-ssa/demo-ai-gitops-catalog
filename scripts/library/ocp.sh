@@ -72,7 +72,7 @@ ocp_aws_cluster(){
 ocp_aws_get_key(){
   # get aws creds
   ocp_aws_cluster || return 1
-  
+
   AWS_ACCESS_KEY_ID=$(oc -n kube-system extract secret/aws-creds --keys=aws_access_key_id --to=-)
   AWS_SECRET_ACCESS_KEY=$(oc -n kube-system extract secret/aws-creds --keys=aws_secret_access_key --to=-)
   AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-2}
@@ -95,7 +95,7 @@ ocp_aws_setup_ack_system(){
 
   for type in ec2 ecr iam lambda route53 s3 sagemaker
   do
-    
+
     oc apply -k "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha
 
     if oc -n "${NAMESPACE}" get secret "${type}-user-secrets" -o name; then
@@ -117,6 +117,7 @@ ocp_aws_clone_worker_machineset(){
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   SHORT_NAME=${2:-${INSTANCE_TYPE/./-}}
+  HD_SIZE=200
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
@@ -132,6 +133,8 @@ ocp_aws_clone_worker_machineset(){
           /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
+          s/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
+          s/volumeType: gp2/volumeType: gp3/
           /cluster-api-autoscaler/d
           /uid:/d
           /generation:/d
@@ -201,7 +204,7 @@ ocp_aws_create_metal_machineset(){
   # https://aws.amazon.com/ec2/instance-types/m5zn
   # m5.metal
   # m5n.metal
-  
+
   INSTANCE_TYPE=${1:-m5n.metal}
 
   ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}"
@@ -243,7 +246,7 @@ ocp_aws_create_gpu_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
-  
+
   # should use the default profile
   # oc -n openshift-machine-api \
   #   patch "${MACHINE_SET_TYPE}" \
@@ -253,15 +256,15 @@ ocp_aws_create_gpu_machineset(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
-  
+
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
-  
+
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
-  
+
 #  # fix storage
 
 # cat << YAML > /tmp/patch.yaml
@@ -357,7 +360,7 @@ ocp_set_scheduler_profile(){
   echo "OPTIONS: LowNodeUtilization (default), HighNodeUtilization, NoScoring"
   echo "SCHED_PROFILE: ${SCHED_PROFILE}"
 
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}' 
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}'
 }
 
 # save money in aws
@@ -394,7 +397,7 @@ ocp_run_on_all_nodes(){
   case $1 in
     --confirm)
       shift
- 
+
       COMMAND=${*:-uptime}
       ALL_NODES=$(oc get nodes --show-kind --no-headers|awk '/node/{print $1}')
 
@@ -405,7 +408,7 @@ ocp_run_on_all_nodes(){
           # shellcheck disable=SC2086
           oc debug "$node" -- chroot /host ${COMMAND}
       done
-      ;; 
+      ;;
    *)
       echo "-------------------------------------------------------------------"
       echo "WARNING. This runs as root on all nodes!"
@@ -459,7 +462,7 @@ ocp_mirror_set_pull_secret(){
   oc -n openshift-config \
     extract secret/pull-secret \
     --to=- | tee "${GIT_ROOT}/scratch/pull-secret" > "${DOCKER_CONFIG}/config.json"
-  
+
   # cat scratch/pull-secret | jq .
 }
 
@@ -515,7 +518,7 @@ ocp_mirror_operator_catalog_list(){
   echo "INDEX: ${INDEX}"
 
   oc mirror list operators --catalog "${INDEX}"
-  
+
   echo ""
 }
 
@@ -548,7 +551,7 @@ ocp_aro_get_key(){
   # get az creds
   ocp_aro_cluster || return
   AZ_TENANT_ID=redhat0.onmicrosoft.com
-  
+
   AZ_CLIENT_ID=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_id --to=-)
   AZ_CLIENT_SECRET=$(oc -n kube-system extract secret/azure-credentials --keys=azure_client_secret --to=-)
   AZ_DEFAULT_REGION=$(oc -n kube-system extract secret/azure-credentials --keys=azure_region --to=-)
@@ -631,7 +634,7 @@ metadata:
 ocp_auth_add_to_group(){
   USER=${1:-admin}
   OCP_GROUP=${2:-${DEFAULT_OCP_GROUP}}
-  
+
   ocp_auth_create_group "${OCP_GROUP}"
 
   oc adm groups add-users \

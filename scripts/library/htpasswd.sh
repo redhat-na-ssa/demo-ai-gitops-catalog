@@ -7,11 +7,6 @@ htpasswd_add_user(){
   PASS=${2:-$(genpass)}
   HTPASSWD_FILE=${3:-${DEFAULT_HTPASSWD}}
 
-  if ! which htpasswd >/dev/null; then
-    echo "Error: install htpasswd"
-    return 1
-  fi
-
   echo "
     USERNAME: ${USER}
     PASSWORD: ${PASS}
@@ -23,7 +18,16 @@ htpasswd_add_user(){
   touch "${HTPASSWD_FILE}" "${HTPASSWD_FILE}".txt
   sed -i '/# '"${USER}"'/d' "${HTPASSWD_FILE}".txt
   echo "# ${USER} - ${PASS}" >> "${HTPASSWD_FILE}.txt"
-  htpasswd -bB -C 10 "${HTPASSWD_FILE}" "${USER}" "${PASS}"
+
+  if which htpasswd >/dev/null 2>&1; then
+    echo "using local htpasswd..."
+    htpasswd -b -B -C10 "${HTPASSWD_FILE}" "${USER}" "${PASS}"
+  else
+    echo "using oc to run pod..."
+    oc run \
+      --image httpd \
+      -q --rm -i minion -- /bin/sh -c 'sleep 2; htpasswd -n -b -B -C10 '"${USER}"' '"${PASS}"'' > "${HTPASSWD_FILE}" 2>/dev/null
+  fi
 }
 
 htpasswd_ocp_get_file(){
@@ -65,7 +69,7 @@ htpasswd_validate_user(){
 
   retry oc --kubeconfig "${TMP_CONFIG}" login \
     -u "${USER}" -p "${PASS}" > /dev/null 2>&1 || return 1
-  
+
   # verify user is present
   oc get user "${USER}" || return 1
 

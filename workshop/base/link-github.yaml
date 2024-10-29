@@ -8,4 +8,4 @@ spec:
   text: GitHub - Fraud Detection
   applicationMenu:
     section: Git Repos
-    imageURL: /static/assets/github.svg
+    imageURL: /static/assets/public/imgs/logos/github.svg
