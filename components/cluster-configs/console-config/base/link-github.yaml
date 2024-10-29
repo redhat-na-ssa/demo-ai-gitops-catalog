@@ -8,7 +8,7 @@ spec:
   text: GitHub - GitOps Catalog
   applicationMenu:
     section: Git Repos
-    imageURL: /static/assets/github.svg
+    imageURL: /static/assets/public/imgs/logos/github.svg
     # see /static/assets in the web console for more icons
     # oc -n openshift-console exec -it deploy/console -- ls /opt/bridge/static/assets
     # https://github.com/openshift/origin-web-console/tree/enterprise-3.11/app/images/logos
