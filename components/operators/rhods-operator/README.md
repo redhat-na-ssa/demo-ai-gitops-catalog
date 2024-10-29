@@ -13,25 +13,26 @@ The current *overlays* available are for the following channels:
 * [fast](operator/overlays/fast)
 * [stable](operator/overlays/stable)
 * [stable-2.10](operator/overlays/stable-2.10)
+* [stable-2.13](operator/overlays/stable-2.13)
 * [stable-2.8](operator/overlays/stable-2.8)
 
 ## Usage
 
 If you have cloned the `gitops-catalog` repository, you can install Red Hat OpenShift AI based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
 
-```
+```sh
 oc apply -k rhods-operator/operator/overlays/<channel>
 ```
 
 Or, without cloning:
 
-```
+```sh
 oc apply -k https://github.com/redhat-cop/gitops-catalog/rhods-operator/operator/overlays/<channel>
 ```
 
 As part of a different overlay in your own GitOps repo:
 
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
