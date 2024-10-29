@@ -1,0 +1,13 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: sandbox-dashboard
+spec:
+  href: '/k8s'
+  location: NamespaceDashboard
+  # This text will appear in a box called "Launcher" under "namespace" or "project" in the web console
+  text: Custom Link Text
+  namespaceDashboard:
+    namespaces:
+    # for these specific namespaces
+    - sandbox

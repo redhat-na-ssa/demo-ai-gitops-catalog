@@ -1,0 +1,8 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: help-link
+spec:
+  href: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/issues'
+  location: HelpMenu
+  text: Github - Open Issue
