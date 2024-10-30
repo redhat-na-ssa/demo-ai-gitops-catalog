@@ -112,7 +112,7 @@ spec:
                   --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
               }
 
-              ocp_create_machineset_autoscale(){
+              ocp_machineset_create_autoscale(){
                 MACHINE_MIN=${1:-0}
                 MACHINE_MAX=${2:-4}
                 MACHINE_SETS=${3:-$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | sed 's@.*/@@' )}

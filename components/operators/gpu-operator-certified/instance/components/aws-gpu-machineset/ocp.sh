@@ -4,10 +4,10 @@
 # See https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
 # FUNCTIONS='
 # ocp_aws_cluster
-# ocp_aws_create_gpu_machineset
-# ocp_aws_clone_worker_machineset
-# ocp_aws_taint_gpu_machineset
-# ocp_create_machineset_autoscale
+# ocp_aws_machineset_create_gpu
+# ocp_aws_machineset_clone_worker
+# ocp_aws_machineset_taint_gpu
+# ocp_machineset_create_autoscale
 # '
 
 # for function in ${FUNCTIONS}
@@ -24,7 +24,7 @@ ocp_aws_cluster(){
   echo "AWS cluster detected"
 }
 
-ocp_aws_create_gpu_machineset(){
+ocp_aws_machineset_create_gpu(){
   # https://aws.amazon.com/ec2/instance-types/g4
   # single gpu: g4dn.{2,4,8,16}xlarge
   # multi gpu:  g4dn.12xlarge
@@ -37,7 +37,7 @@ ocp_aws_create_gpu_machineset(){
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
 
-  ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}"
+  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}"
 
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
@@ -67,10 +67,10 @@ ocp_aws_create_gpu_machineset(){
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
 
-ocp_aws_clone_worker_machineset(){
+ocp_aws_machineset_clone_worker(){
   [ -z "${1}" ] && \
   echo "
-    usage: ocp_aws_clone_worker_machineset < instance type, default g4dn.4xlarge > < machine set name >
+    usage: ocp_aws_machineset_clone_worker < instance type, default g4dn.4xlarge > < machine set name >
   "
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
@@ -105,7 +105,7 @@ ocp_aws_clone_worker_machineset(){
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${SHORT_NAME}"'":""}}}}}}'
 }
 
-ocp_aws_taint_gpu_machineset(){
+ocp_aws_machineset_taint_gpu(){
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
@@ -117,7 +117,7 @@ ocp_aws_taint_gpu_machineset(){
     --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
 }
 
-ocp_create_machineset_autoscale(){
+ocp_machineset_create_autoscale(){
   MACHINE_MIN=${1:-0}
   MACHINE_MAX=${2:-4}
   MACHINE_SETS=${3:-$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | sed 's@.*/@@' )}

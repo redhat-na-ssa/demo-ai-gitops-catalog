@@ -9,10 +9,10 @@ ocp_aws_cluster(){
   echo "AWS cluster detected"
 }
 
-ocp_aws_clone_worker_machineset(){
+ocp_aws_machineset_clone_worker(){
   [ -z "${1}" ] && \
   echo "
-    usage: ocp_aws_clone_worker_machineset < instance type, default g4dn.4xlarge > < machine set name >
+    usage: ocp_aws_machineset_clone_worker < instance type, default g4dn.4xlarge > < machine set name >
   "
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
@@ -47,7 +47,7 @@ ocp_aws_create_odf_machineset(){
   INSTANCE_TYPE=${1:-m6a.2xlarge}
   SHORT_NAME=${2:-odf-infra}
 
-  ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}" "${SHORT_NAME}"
+  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}" "${SHORT_NAME}"
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
 
