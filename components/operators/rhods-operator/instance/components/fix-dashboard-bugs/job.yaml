@@ -21,10 +21,11 @@ rules:
       - deployments
       - deployments/scale
     verbs:
-      # - get
+      - get
       - list
       - patch
-      # - update
+    resourceNames:
+      - rhods-dashboard
   - apiGroups:
       - ''
     resources:

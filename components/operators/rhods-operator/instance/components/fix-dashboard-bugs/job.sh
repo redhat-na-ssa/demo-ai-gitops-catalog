@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-set -ex
+set -e
 
 TIMEOUT_SECONDS=60
 
@@ -15,9 +15,6 @@ fix_dashboard_bugs(){
 }
 
 scale_down_dashboard_madness(){
-  oc -n redhat-ods-applications \
-    get deployment \
-
   oc -n redhat-ods-applications \
     scale deployment/rhods-dashboard \
     --replicas=2
