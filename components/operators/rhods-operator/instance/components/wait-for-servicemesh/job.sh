@@ -7,8 +7,13 @@ patch_approval(){
   APPROVAL=${1:-Automatic}
 
   oc -n redhat-ods-operator \
-  patch subscription rhods-operator \
-  --type=merge --patch '{"spec":{"installPlanApproval":"'"${APPROVAL}"'"}}'
+    patch subscription rhods-operator \
+    --type=merge --patch '{"spec":{"installPlanApproval":"'"${APPROVAL}"'"}}'
+
+  INSTALL_PLAN=$(oc -n redhat-ods-operator get installplan -l operators.coreos.com/rhods-operator.redhat-ods-operator -o name)
+  oc -n redhat-ods-operator \
+    patch "${INSTALL_PLAN}" \
+    --type=merge --patch '{"spec":{"approved":true}}'
 }
 
 wait_for_service_mesh(){
@@ -30,8 +35,8 @@ SERVICEMESH_RESOURCES=(
     patch_approval Manual
 
     oc wait --for="${CONDITION}" "${RESOURCE}" --timeout="${TIMEOUT_SECONDS}s"
-    patch_approval Automatic
   done
 }
 
 wait_for_service_mesh
+patch_approval
