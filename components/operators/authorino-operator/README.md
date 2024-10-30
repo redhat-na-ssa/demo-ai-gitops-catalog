@@ -1,16 +1,16 @@
-# 
+# Authorino Operator
 
-Install .
+Install Authorino Operator.
 
 Do not use the `base` directory directly, as you will need to patch the `channel` based on the version of OpenShift you are using, or the version of the operator you want to use.
 
 The current *overlays* available are for the following channels:
 
-
+* [tech-preview-v1](operator/overlays/tech-preview-v1)
 
 ## Usage
 
-If you have cloned the `gitops-catalog` repository, you can install  based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
+If you have cloned the `gitops-catalog` repository, you can install Authorino Operator based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
 
 ```sh
 oc apply -k authorino-operator/operator/overlays/<channel>
