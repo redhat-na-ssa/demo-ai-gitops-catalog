@@ -252,6 +252,7 @@ SCRIPTPATH
 searchcustomizations
 searchoperators
 ServerAliveInterval
+serverlessservices
 servicemeshcontrolplanes
 servingCertificate
 servingCerts
