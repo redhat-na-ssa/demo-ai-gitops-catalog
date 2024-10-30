@@ -3,7 +3,7 @@ kind: ConsoleLink
 metadata:
   name: sandbox-dashboard
 spec:
-  href: '/k8s'
+  href: 'https://link-goes-here.com'
   location: NamespaceDashboard
   # This text will appear in a box called "Launcher" under "namespace" or "project" in the web console
   text: Custom Link Text
