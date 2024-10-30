@@ -6,8 +6,9 @@
 # ocp_aws_cluster
 # ocp_aws_machineset_create_gpu
 # ocp_aws_machineset_clone_worker
-# ocp_aws_machineset_taint_gpu
+# ocp_aws_machineset_fix_storage
 # ocp_machineset_create_autoscale
+# ocp_machineset_taint_gpu
 # '
 
 # for function in ${FUNCTIONS}
@@ -47,7 +48,7 @@ ocp_aws_machineset_create_gpu(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
-  
+
   # should use the default profile
   # oc -n openshift-machine-api \
   #   patch "${MACHINE_SET_TYPE}" \
@@ -57,14 +58,32 @@ ocp_aws_machineset_create_gpu(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
-  
+
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
-  
+
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
+
+#  # fix storage
+
+# cat << YAML > /tmp/patch.yaml
+# spec:
+#   template:
+#     spec:
+#       providerSpec:
+#         value:
+#           blockDevices:
+#             - ebs:
+#                 volumeSize: 120
+#                 volumeType: gp3
+# YAML
+
+#   oc -n openshift-machine-api \
+#     patch "${MACHINE_SET_TYPE}" \
+#     --type=merge --patch "$(cat /tmp/patch.yaml)"
 }
 
 ocp_aws_machineset_clone_worker(){
@@ -99,22 +118,28 @@ ocp_aws_machineset_clone_worker(){
       oc apply -f -
   fi
 
+  # fix aws storage
+  ocp_aws_machineset_fix_storage "${MACHINE_SET_NAME}"
+
   # cosmetic pretty
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${SHORT_NAME}"'":""}}}}}}'
 }
 
-ocp_aws_machineset_taint_gpu(){
-  INSTANCE_TYPE=${1:-g4dn.4xlarge}
-  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+ocp_aws_machineset_fix_storage(){
+  MACHINE_SETS=${1:-$(oc -n openshift-machine-api get machineset -o name)}
+  HD_SIZE=200
 
-  echo "Patching: ${MACHINE_SET_TYPE}"
-
-  # taint nodes for gpu-only workloads
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
+  for machine_set in ${MACHINE_SETS}
+  do
+    echo "Patching aws storage for machineset: ${machine_set}"
+    oc -n openshift-machine-api \
+      get "${machine_set}" -o yaml | \
+        sed 's/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
+          s/volumeType: gp2/volumeType: gp3/' | \
+      oc apply -f -
+  done
 }
 
 ocp_machineset_create_autoscale(){
@@ -139,4 +164,16 @@ spec:
     name: "${machine_set}"
 YAML
   done
+}
+
+ocp_machineset_taint_gpu(){
+  SHORT_NAME=${1:-g4dn}
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
+
+  echo "Patching: ${MACHINE_SET}"
+
+  # taint nodes for gpu-only workloads
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
 }
