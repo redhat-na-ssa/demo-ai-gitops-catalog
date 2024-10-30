@@ -52,7 +52,16 @@ ocp_kubeadmin_remove(){
       oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
     oc delete secret kubeadmin -n kube-system
   else
-    echo "${RED}WARNING: you must run - ocp_remove_kubeadmin YES${NC}"
+    echo -e "${RED}
+    WARNING: you must run - ocp_remove_kubeadmin YES
+
+    WARNING: you will lose access to your cluster if you do not
+      have a way to login to your cluster without kubeadmin. 
+      
+      Examples:
+        - An identity provider with a cluster-admin user setup
+        - A kubeconfig file
+    ${NC}"
     return
   fi
 }
