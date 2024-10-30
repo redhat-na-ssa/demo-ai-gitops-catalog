@@ -2,14 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../../demos/base/rhoai
-- ../../components/app-configs/rhoai-config
+# - ../../components/app-configs/rhoai-config
+- ../../demos/rhoai-workshop-ready
 
 - ../../components/cluster-configs/rbac/overlays/workshop
 - ../../components/cluster-configs/login/overlays/htpasswd
-
-- ../../demos/base/all
-- ../../demos/base/nvidia-gpu-autoscale
 
 - htpasswd-secret.yaml
 - link-github.yaml
