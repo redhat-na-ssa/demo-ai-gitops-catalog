@@ -1,20 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+components:
+  - ../components/rhoai-prereqs
+
 resources:
   - ../rhoai-nvidia-gpu-autoscale
-
-  - ../../components/operators/authorino-operator/operator/overlays/tech-preview-v1
-  - ../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
-  - ../../components/operators/serverless-operator/operator/overlays/stable
-  - ../../components/operators/servicemeshoperator/operator/overlays/stable
-
   - ../../components/operators/rhods-operator/instance/overlays/all
 
   # - ../../components/app-configs/rhoai-config
   # TODO: reconcile issues with item above
-  # - ../../components/operators/serverless-operator/instance/knative-eventing/overlays/default
-  # - ../../components/operators/serverless-operator/instance/knative-serving/overlays/default
 
   # - ../../components/app-configs/custom-notebook-images/overlays/rhoai
   # - ../../components/app-configs/minio/overlays/with-namespace
