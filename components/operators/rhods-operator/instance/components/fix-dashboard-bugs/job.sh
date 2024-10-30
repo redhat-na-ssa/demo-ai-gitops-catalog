@@ -1,30 +1,27 @@
 #!/usr/bin/bash
-set -e
+set -ex
 
 TIMEOUT_SECONDS=60
 
-fix_dashboard_bugs(){
-  echo ""
-
-SERVERLESS_RESOURCES=(
-    crd/serverlessservices.networking.internal.knative.dev:condition=established \
-  )
-
-  for crd in "${SERVERLESS_RESOURCES[@]}"
-  do
-    RESOURCE=$(echo "$crd" | cut -d ":" -f 1)
-    CONDITION=$(echo "$crd" | cut -d ":" -f 2)
-
-    echo "Waiting for ${RESOURCE} state to be ${CONDITION}..."
-    oc wait --for="${CONDITION}" "${RESOURCE}" --timeout="${TIMEOUT_SECONDS}s"
-  done
-}
-
 restart_pods(){
-    oc -n redhat-ods-operator \
+  oc -n redhat-ods-applications \
     delete pods \
     -l deployment=rhods-dashboard
 }
 
+fix_dashboard_bugs(){
+  sleep "${TIMEOUT_SECONDS}"
+  restart_pods
+}
+
+scale_down_dashboard_madness(){
+  oc -n redhat-ods-applications \
+    get deployment \
+
+  oc -n redhat-ods-applications \
+    scale deployment/rhods-dashboard \
+    --replicas=2
+}
+
+scale_down_dashboard_madness
 fix_dashboard_bugs
-restart_pods

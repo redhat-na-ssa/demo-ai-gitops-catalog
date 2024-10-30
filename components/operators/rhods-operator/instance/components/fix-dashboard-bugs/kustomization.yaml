@@ -11,6 +11,6 @@ generatorOptions:
 
 configMapGenerator:
   - name: fix-dashboard-bugs
-    namespace: redhat-ods-operator
+    namespace: redhat-ods-applications
     files:
       - job.sh
