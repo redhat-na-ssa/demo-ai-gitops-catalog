@@ -126,7 +126,6 @@ ocp_aws_machineset_clone_worker(){
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   SHORT_NAME=${2:-${INSTANCE_TYPE/./-}}
-  HD_SIZE=200
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
@@ -142,8 +141,6 @@ ocp_aws_machineset_clone_worker(){
           /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
-          s/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
-          s/volumeType: gp2/volumeType: gp3/
           /cluster-api-autoscaler/d
           /uid:/d
           /generation:/d
@@ -152,6 +149,9 @@ ocp_aws_machineset_clone_worker(){
           s/replicas.*/replicas: 0/' | \
       oc apply -f -
   fi
+
+  # fix aws storage
+  ocp_aws_machineset_fix_storage "${MACHINE_SET_NAME}"
 
   # cosmetic pretty
   oc -n openshift-machine-api \
@@ -163,13 +163,16 @@ ocp_aws_machineset_fix_storage(){
   MACHINE_SETS=${1:-$(oc -n openshift-machine-api get machineset -o name)}
   HD_SIZE=200
 
-    echo "Patching storage for machineset: ${SHORT_NAME}"
+  for machine_set in ${MACHINE_SETS}
+  do
+    echo "Patching aws storage for machineset: ${machine_set}"
     oc -n openshift-machine-api \
-      get "${MACHINE_SET_WORKER}" -o yaml | \
+      get "${machine_set}" -o yaml | \
         sed 's/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
           s/volumeType: gp2/volumeType: gp3/' | \
       oc apply -f -
-  fi
+  done
+}
 
 ocp_aws_create_odf_machineset(){
   INSTANCE_TYPE=${1:-m6a.2xlarge}
