@@ -310,7 +310,7 @@ ocp_aws_machineset_create_gpu(){
 
 ocp_machineset_taint_gpu(){
   SHORT_NAME=${1:-g4dn}
-  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
 
   echo "Patching: ${MACHINE_SET}"
 
