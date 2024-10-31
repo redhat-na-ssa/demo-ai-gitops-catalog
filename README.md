@@ -199,7 +199,7 @@ Always reference with a commit hash or tag
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/app-configs/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.04
+  - https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/app-configs/nvidia-gpu-verification/overlays/toleration-replicas-6?ref=v0.09
 ```
 
 ## Development
