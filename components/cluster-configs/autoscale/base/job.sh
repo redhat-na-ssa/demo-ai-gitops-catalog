@@ -3,4 +3,4 @@
 
 . /scripts/ocp.sh
 
-ocp_create_machineset_autoscale "${MACHINE_MIN}" "${MACHINE_MAX}"
+ocp_machineset_create_autoscale "${MACHINE_MIN}" "${MACHINE_MAX}"

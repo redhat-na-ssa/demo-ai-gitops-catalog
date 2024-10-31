@@ -11,6 +11,7 @@ components:
   - ../../components/components-training
   - ../../components/default-notebook-pvc-size
   - ../../components/disable-telemetry
+  - ../../components/fix-dashboard-bugs
   - ../../components/fix-kubeadmin-cluster-admin
   - ../../components/idle-notebook-culling
   - ../../components/model-server-pod-sizes

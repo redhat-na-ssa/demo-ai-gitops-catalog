@@ -120,6 +120,7 @@ HighNodeUtilization
 HOSTNAME
 hou
 httpd
+ic
 iid
 ingresscontrollers
 initalize
@@ -252,6 +253,7 @@ SCRIPTPATH
 searchcustomizations
 searchoperators
 ServerAliveInterval
+serverlessservices
 servicemeshcontrolplanes
 servingCertificate
 servingCerts

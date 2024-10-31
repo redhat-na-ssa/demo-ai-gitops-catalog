@@ -14,7 +14,7 @@ automatically created when installing the operator.
 
 The components provided with the OpenShift Serverless operator require minimum cluster sizes on
 OpenShift Container Platform. For more information, see the documentation on [Getting started
-with OpenShift Serverless](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.13/html/serverless/installing-serverless#install-serverless-operator).
+with OpenShift Serverless](https://docs.redhat.com/en/documentation/red_hat_openshift_serverless/1.34/html/serving/getting-started-with-knative-serving#serverless-applications).
 
 # Supported Features
 - **Easy to get started:** Provides a simplified developer experience to deploy
@@ -82,5 +82,5 @@ With its extensive help pages and autocompletion support, it frees you from memo
 # Further Information
 For documentation on OpenShift Serverless, see:
 - [Installation
-Guide](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.13/html/serverless/installing-serverless)
-- [Develop Serverless Applications](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.13/html/serverless/serving#serverless-applications)
+Guide](https://docs.redhat.com/en/documentation/red_hat_openshift_serverless/1.34/html/installing_openshift_serverless/index)
+- [Develop Serverless Applications](https://docs.redhat.com/en/documentation/red_hat_openshift_serverless/1.34/html/serving/getting-started-with-knative-serving#serverless-applications)

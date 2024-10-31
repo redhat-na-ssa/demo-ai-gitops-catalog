@@ -72,7 +72,7 @@ nvidia_setup_mig_config(){
   MIG_CONFIG=${2:-all-1g.5gb}
   INSTANCE_TYPE=p4d.24xlarge
 
-  ocp_aws_create_gpu_machineset "${INSTANCE_TYPE}" 
+  ocp_aws_machineset_create_gpu "${INSTANCE_TYPE}" 
 
   oc apply -k "${GIT_ROOT}"/components/operators/gpu-operator-certified/instance/overlays/mig-"${MIG_MODE}"
 

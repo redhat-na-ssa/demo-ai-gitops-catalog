@@ -52,7 +52,16 @@ ocp_kubeadmin_remove(){
       oc get secret kubeadmin -n kube-system -o yaml > scratch/kubeadmin.yaml || return 1
     oc delete secret kubeadmin -n kube-system
   else
-    echo "${RED}WARNING: you must run - ocp_remove_kubeadmin YES${NC}"
+    echo -e "${RED}
+    WARNING: you must run - ocp_remove_kubeadmin YES
+
+    WARNING: you will lose access to your cluster if you do not
+      have a way to login to your cluster without kubeadmin. 
+      
+      Examples:
+        - An identity provider with a cluster-admin user setup
+        - A kubeconfig file
+    ${NC}"
     return
   fi
 }
@@ -109,15 +118,14 @@ ocp_aws_setup_ack_system(){
   done
 }
 
-ocp_aws_clone_worker_machineset(){
+ocp_aws_machineset_clone_worker(){
   [ -z "${1}" ] && \
   echo "
-    usage: ocp_aws_clone_worker_machineset < instance type, default g4dn.4xlarge > < machine set name >
+    usage: ocp_aws_machineset_clone_worker < instance type, default g4dn.4xlarge > < machine set name >
   "
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   SHORT_NAME=${2:-${INSTANCE_TYPE/./-}}
-  HD_SIZE=200
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
@@ -133,8 +141,6 @@ ocp_aws_clone_worker_machineset(){
           /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
-          s/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
-          s/volumeType: gp2/volumeType: gp3/
           /cluster-api-autoscaler/d
           /uid:/d
           /generation:/d
@@ -144,17 +150,35 @@ ocp_aws_clone_worker_machineset(){
       oc apply -f -
   fi
 
+  # fix aws storage
+  ocp_aws_machineset_fix_storage "${MACHINE_SET_NAME}"
+
   # cosmetic pretty
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${SHORT_NAME}"'":""}}}}}}'
 }
 
+ocp_aws_machineset_fix_storage(){
+  MACHINE_SETS=${1:-$(oc -n openshift-machine-api get machineset -o name)}
+  HD_SIZE=200
+
+  for machine_set in ${MACHINE_SETS}
+  do
+    echo "Patching aws storage for machineset: ${machine_set}"
+    oc -n openshift-machine-api \
+      get "${machine_set}" -o yaml | \
+        sed 's/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
+          s/volumeType: gp2/volumeType: gp3/' | \
+      oc apply -f -
+  done
+}
+
 ocp_aws_create_odf_machineset(){
   INSTANCE_TYPE=${1:-m6a.2xlarge}
   SHORT_NAME=${2:-odf-infra}
 
-  ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}" "${SHORT_NAME}"
+  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}" "${SHORT_NAME}"
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
 
@@ -200,14 +224,14 @@ YAML
 
 }
 
-ocp_aws_create_metal_machineset(){
+ocp_aws_machineset_create_metal(){
   # https://aws.amazon.com/ec2/instance-types/m5zn
   # m5.metal
   # m5n.metal
 
   INSTANCE_TYPE=${1:-m5n.metal}
 
-  ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}"
+  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}"
 
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
@@ -223,7 +247,7 @@ ocp_aws_create_metal_machineset(){
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
 
-ocp_aws_create_gpu_machineset(){
+ocp_aws_machineset_create_gpu(){
   # https://aws.amazon.com/ec2/instance-types/g4
   # single gpu: g4dn.{2,4,8,16}xlarge
   # multi gpu:  g4dn.12xlarge
@@ -236,7 +260,7 @@ ocp_aws_create_gpu_machineset(){
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
 
-  ocp_aws_clone_worker_machineset "${INSTANCE_TYPE}"
+  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}"
 
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
@@ -284,19 +308,19 @@ ocp_aws_create_gpu_machineset(){
 #     --type=merge --patch "$(cat /tmp/patch.yaml)"
 }
 
-ocp_aws_taint_gpu_machineset(){
-  INSTANCE_TYPE=${1:-g4dn.4xlarge}
-  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+ocp_machineset_taint_gpu(){
+  SHORT_NAME=${1:-g4dn}
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
 
-  echo "Patching: ${MACHINE_SET_TYPE}"
+  echo "Patching: ${MACHINE_SET}"
 
   # taint nodes for gpu-only workloads
   oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
+    patch "${MACHINE_SET}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
 }
 
-ocp_create_machineset_autoscale(){
+ocp_machineset_create_autoscale(){
   MACHINE_MIN=${1:-0}
   MACHINE_MAX=${2:-4}
   MACHINE_SETS=${3:-$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | sed 's@.*/@@' )}
@@ -323,17 +347,17 @@ YAML
 ocp_aws_cluster_autoscaling(){
   oc apply -k https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/cluster-configs/autoscale/overlays/gpus
 
-  ocp_aws_create_gpu_machineset g4dn.4xlarge
-  ocp_create_machineset_autoscale 0 3
+  ocp_aws_machineset_create_gpu g4dn.4xlarge
+  ocp_machineset_create_autoscale 0 3
 
   # scale workers to 1
   WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker | head -n1)"
-  ocp_scale_machineset 1 "${WORKER_MS}"
+  ocp_machineset_scale 1 "${WORKER_MS}"
 
   ocp_control_nodes_schedulable
 }
 
-ocp_scale_machineset(){
+ocp_machineset_scale(){
   REPLICAS=${1:-1}
   MACHINE_SETS=${2:-$(oc -n openshift-machine-api get machineset -o name)}
 
@@ -370,7 +394,7 @@ ocp_save_money(){
   ocp_control_nodes_schedulable
 
   # scale to zero
-  ocp_scale_machineset 0
+  ocp_machineset_scale 0
 
   # place as many pods on as few nodes as possible
   ocp_set_scheduler_profile HighNodeUtilization
@@ -444,7 +468,7 @@ ocp_gpu_untaint_nodes(){
   oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }
 
-ocp_gpu_label_nodes_from_nfd(){
+ocp_gpu_pretty_label(){
   oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
 }
 

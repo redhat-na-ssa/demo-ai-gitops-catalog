@@ -15,4 +15,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'This cluster was deployed via the AI GitOps catalog'
+        value: 'This cluster was configured via the AI GitOps catalog'
