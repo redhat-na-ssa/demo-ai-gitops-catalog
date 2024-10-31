@@ -208,6 +208,21 @@ helm template --output-dir './yaml' './console-plugin-nvidia-gpu'
 oc apply -f https://raw.githubusercontent.com/NVIDIA/gpu-operator/master/tests/gpu-pod.yaml
 ```
 
+## OCP GPU Console Errors
+
+Error
+
+```sh
+GPUOperatorReconciliationFailed
+GPUOperatorReconciliationFailedNfdLabelsMissing NFD
+```
+
+Fix
+
+```sh
+oc -n nvidia-gpu-operator delete pod --all
+```
+
 Links
 
 - https://cloud.redhat.com/blog/autoscaling-nvidia-gpus-on-red-hat-openshift
