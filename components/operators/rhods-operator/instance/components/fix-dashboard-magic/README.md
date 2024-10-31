@@ -1,4 +1,4 @@
-# fix-dashboard-bugs
+# fix-dashboard-magic
 
 ## Purpose
 
@@ -16,5 +16,5 @@ resources:
   - ../../base
 
 components:
-  - ../../components/fix-dashboard-bugs
+  - ../../components/fix-dashboard-magic
 ```

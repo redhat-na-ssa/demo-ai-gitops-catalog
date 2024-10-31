@@ -4,3 +4,10 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: ServerSideApply=true
   name: odh-dashboard-config
+spec:
+  # bug: if this is missing the dashboard loses it's mind
+  # https://issues.redhat.com/browse/RHOAIENG-15245
+  dashboardConfig:
+    disableBiasMetrics: true
+    disableKServe: false
+    disableModelMesh: false
