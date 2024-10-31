@@ -1,0 +1,68 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: nemo
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+  - name: 'dev'
+    annotations:
+      openshift.io/imported-from: nvcr.io/nvidia/nemo:dev
+    scheduled: true
+    from:
+      kind: DockerImage
+      name: nvcr.io/nvidia/nemo:dev
+    referencePolicy:
+      type: Local
+  - name: latest
+    from:
+      kind: ImageStreamTag
+      name: nemo:dev
+    referencePolicy:
+      type: Local
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: nemo-notebook
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+    opendatahub.io/notebook-image-creator: ai-catalog
+    opendatahub.io/notebook-image-desc: |
+      Nvidia NeMo!
+
+      Code on any device with a consistent development environment
+      Use cloud servers to speed up tests, compilations, downloads, and more
+      Preserve battery life when you're on the go; all intensive tasks run on your server
+    opendatahub.io/notebook-image-name: NeMo
+    opendatahub.io/notebook-image-url: TBD
+    opendatahub.io/notebook-image-order: '10'
+  labels:
+    # note: the following label allows the notebook to show up in the dashboard
+    # note: byon = bring your own notebook?
+    app.kubernetes.io/created-by: byon
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/notebook-image: "true"
+spec:
+  lookupPolicy:
+    local: true
+  tags:
+  - name: 'dev'
+    annotations:
+      opendatahub.io/default-image: 'true'
+      opendatahub.io/workbench-image-recommended: 'true'
+      opendatahub.io/notebook-python-dependencies: >-
+        [{"name":"NeMo","version": "0.0.1"}]
+      opendatahub.io/notebook-software: >-
+        [{"name":"Python","version":"v3.11"},
+        {"name":"Python","version":"v3.12"}]
+    referencePolicy:
+      type: Local
+  - name: latest
+    from:
+      kind: ImageStreamTag
+      name: nemo:dev
+    referencePolicy:
+      type: Local

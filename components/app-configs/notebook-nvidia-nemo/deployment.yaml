@@ -1,0 +1,93 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nemo-notebook
+  labels:
+    deployment: nemo-notebook
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"nemo:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"nemo\")].image","paused":"false"}]
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: nemo-notebook
+  strategy:
+    # type: RollingUpdate
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deployment: nemo-notebook
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: nemo
+          image: nvcr.io/nvidia/nemo:dev
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: HOME
+              value: /workspace
+          command:
+            - /bin/sh
+            - -c
+            - |
+              #!/bin/sh
+              jupyter lab \
+                --ServerApp.ip=0.0.0.0 \
+                --ServerApp.allow_origin="*" \
+                --ServerApp.open_browser=False \
+                --ServerApp.token=''
+          ports:
+            - name: http
+              containerPort: 8888
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '2'
+              memory: 8Gi
+            requests:
+              cpu: '1'
+              memory: 4Gi
+          # startupProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: http
+          #     scheme: HTTP
+          #   timeoutSeconds: 1
+          #   periodSeconds: 30
+          #   successThreshold: 1
+          #   failureThreshold: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: http
+          #     scheme: HTTP
+          #   timeoutSeconds: 5
+          #   periodSeconds: 30
+          #   successThreshold: 1
+          #   failureThreshold: 3
+          # livenessProbe:
+          #   httpGet:
+          #     path: /health
+          #     port: http
+          #     scheme: HTTP
+          #   timeoutSeconds: 8
+          #   periodSeconds: 100
+          #   successThreshold: 1
+          #   failureThreshold: 3
+          volumeMounts:
+            - name: shm
+              mountPath: /dev/shm
+            - name: home
+              mountPath: /workspace
+              subPath: cache
+      volumes:
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 512Mi
+        - name: home
+          emptyDir: {}
