@@ -10,7 +10,7 @@ spec:
     cores:
       min: 0
       # 16 cores * 7 nodes = 112
-      max: 112
+      max: 128
     memory:
       min: 0
       # 32 GB * 3 = 96
