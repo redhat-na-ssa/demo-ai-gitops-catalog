@@ -2,6 +2,16 @@
 
 # https://mirror.openshift.com/pub/openshift-v4
 
+ocp_add_admin_user(){
+  HT_USERNAME=${1:-admin}
+  HT_PASSWORD=${2:-$(genpass)}
+
+  htpasswd_ocp_get_file
+  htpasswd_add_user "${HT_USERNAME}" "${HT_PASSWORD}"
+  htpasswd_ocp_set_file
+  htpasswd_validate_user "${HT_USERNAME}" "${HT_PASSWORD}"
+}
+
 ocp_check_login(){
   oc whoami || return 1
   oc cluster-info | head -n1

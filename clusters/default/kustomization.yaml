@@ -10,6 +10,7 @@ resources:
 # - ../../components/cluster-configs/etcd-backup/overlays/default
 # - ../../components/cluster-configs/namespace-cleanup/overlays/sandbox
 
+- ../../components/cluster-configs/login/overlays/htpasswd
 - ../../components/cluster-configs/namespaces/overlays/default
 - ../../components/cluster-configs/rbac/overlays/no-self-provisioner
 

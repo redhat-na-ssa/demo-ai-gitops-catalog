@@ -3,3 +3,4 @@ kind: Component
 
 resources:
   - rolebinding.yaml
+  # - group.yaml
