@@ -20,4 +20,3 @@ components:
   - ../../components/notebook-pod-sizes
   - ../../components/nvidia-gpu-accelerator-profile
   - ../../components/runtime-template-triton
-
