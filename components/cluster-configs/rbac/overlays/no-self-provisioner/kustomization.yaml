@@ -3,9 +3,7 @@ kind: Kustomization
 
 components:
   - ../../components/groups-basic
+  - ../../components/no-self-provisioner
 
 resources:
   - ../../base
-
-patches:
-  - path: self-provisioner.yaml
