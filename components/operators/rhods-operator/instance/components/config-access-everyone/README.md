@@ -16,7 +16,7 @@ resources:
   - ../../base
 
 components:
-  - ../../components/rhoai-dashboard-access
+  - ../../components/config-access-everyone
 ```
 
 You can customize the access by updating the [patch-rhoai-dashboard.yaml](./patch-rhoai-dashboard.yaml) file.
