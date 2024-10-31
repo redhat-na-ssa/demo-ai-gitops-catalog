@@ -21,4 +21,4 @@ configMapGenerator:
       - job.sh
       # - ../../../../../../scripts/library/ocp.sh
       # kludge: refer to source
-      - https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/v0.08/scripts/library/ocp.sh
+      - https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/v0.09/scripts/library/ocp.sh
