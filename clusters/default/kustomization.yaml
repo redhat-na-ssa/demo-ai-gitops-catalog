@@ -2,13 +2,17 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- ../../components/operators/web-terminal/operator/overlays/fast
-- ../../components/operators/web-terminal/instance/overlays/enhanced
+- ../../components/app-configs/ubi-images/overlays/cluster
 - ../../components/cluster-configs/autoscale/overlays/default
-# - ../../components/cluster-configs/etcd-backup/overlays/default
-# - ../../components/cluster-configs/namespace-cleanup/overlays/sandbox
 - ../../components/cluster-configs/console-config/overlays/default
 - ../../components/cluster-configs/console-samples
+
+# - ../../components/cluster-configs/etcd-backup/overlays/default
+# - ../../components/cluster-configs/namespace-cleanup/overlays/sandbox
+
 - ../../components/cluster-configs/namespaces/overlays/default
 - ../../components/cluster-configs/rbac/overlays/no-self-provisioner
-- ../../components/app-configs/ubi-images/overlays/cluster
+
+- ../../components/operators/web-terminal/operator/overlays/fast
+- ../../components/operators/web-terminal/instance/overlays/enhanced
+
