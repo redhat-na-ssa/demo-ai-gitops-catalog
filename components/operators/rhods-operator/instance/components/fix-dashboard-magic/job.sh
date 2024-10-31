@@ -17,7 +17,7 @@ fix_dashboard_bugs(){
 scale_down_dashboard_madness(){
 
   echo -n 'Waiting for RHOAI dashboard.'
-  until oc get -n redhat-ods-applications deployment/rhods-dashboard -o name 2>/dev/null
+  until oc get -n redhat-ods-applications deployment/rhods-dashboard -o name #2>/dev/null
   do
     echo -n .
     sleep 5
