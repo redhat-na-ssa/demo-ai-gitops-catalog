@@ -6,7 +6,7 @@ resources:
 
 components:
   - ../../components/components-training
+  - ../../components/config-access-everyone
   - ../../components/default-notebook-pvc-size
   - ../../components/idle-notebook-culling
   - ../../components/notebook-pod-sizes
-  - ../../components/rhoai-dashboard-access

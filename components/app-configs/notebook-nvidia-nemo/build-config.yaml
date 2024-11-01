@@ -1,0 +1,31 @@
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: nemo-notebook-build
+spec:
+  # nodeSelector:
+  #   kubernetes.io/hostname: node
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "nemo-notebook:dev"
+  source:
+    dockerfile: |
+      FROM nvcr.io/nvidia/nemo:dev
+      ENV HOME=/workspace
+      ENTRYPOINT jupyter lab --ServerApp.ip=0.0.0.0 --ServerApp.allow_origin="*" --ServerApp.open_browser=False --ServerApp.token=''
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nemo:latest
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChange:
+        from:
+          kind: ImageStreamTag
+          name: nemo:latest
+  runPolicy: SerialLatestOnly

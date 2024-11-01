@@ -6,5 +6,5 @@ resources:
 
 components:
   - ../../components/components-serving
+  - ../../components/config-access-everyone
   - ../../components/model-server-pod-sizes
-  - ../../components/rhoai-dashboard-access

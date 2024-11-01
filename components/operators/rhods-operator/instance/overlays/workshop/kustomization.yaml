@@ -17,6 +17,6 @@ components:
   - ../../components/fix-kubeadmin-cluster-admin
   - ../../components/idle-notebook-culling
   - ../../components/model-server-pod-sizes
-  - ../../components/notebook-pod-sizes
+  - ../../components/notebook-pod-sizes-workshop
   - ../../components/nvidia-gpu-accelerator-profile
   - ../../components/runtime-template-triton

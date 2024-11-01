@@ -1,14 +1,13 @@
 # notebook-pod-sizes
 
 ## Purpose
-
-This component is designed help admins configure the default sizes users can select from when creating a new workbenches.
+This component is designed help admins configure the default sizes users can select from when creating a new Workbenches.
 
 ## Usage
 
 This component can be added to a base by adding the `components` section to your overlay `kustomization.yaml` file:
 
-```yaml
+```
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
