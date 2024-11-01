@@ -15,9 +15,13 @@ spec:
     spec:
       containers:
       - name: notebook
-        image: quay.io/opendatahub-contrib/workbench-images:rstudio-c9s-py39_2023b_latest
+        # image: quay.io/opendatahub-contrib/workbench-images:rstudio-c9s-py39_2023b_latest
+        image: docker.io/kubeflownotebookswg/jupyter:latest
+        env:
+          - name: HOME
+            value: /workspace
         ports:
-        - containerPort: 8787
+        - containerPort: 8888
           protocol: TCP
           name: notebook
         - containerPort: 8000
@@ -60,9 +64,9 @@ spec:
         volumeMounts:
           - name: shm
             mountPath: /dev/shm
-          # - name: home
-          #   mountPath: /opt/app-root/src
-          #   subPath: data
+          - name: home
+            mountPath: /workspace
+            subPath: data
       volumes:
         - name: shm
           emptyDir:

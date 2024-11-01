@@ -7,7 +7,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   port:
-    targetPort: 8787
+    targetPort: 8888
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge

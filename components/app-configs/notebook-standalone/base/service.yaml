@@ -12,8 +12,8 @@ spec:
     port: 8000
     targetPort: 8000
   - name: notebook
-    port: 8787
-    targetPort: 8787
+    port: 8888
+    targetPort: 8888
   - name: oauth-proxy
     port: 8080
     targetPort: 8080

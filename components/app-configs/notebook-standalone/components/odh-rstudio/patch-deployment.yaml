@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notebook
+spec:
+  template:
+    spec:
+      containers:
+        - name: notebook
+          image: quay.io/opendatahub-contrib/workbench-images:rstudio-c9s-py39_2023b_latest
