@@ -8,4 +8,3 @@ spec:
       containers:
         - name: notebook
           image: quay.io/opendatahub-contrib/workbench-images:rstudio-c9s-py39_2023b_latest
-
