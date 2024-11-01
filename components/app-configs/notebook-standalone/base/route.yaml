@@ -2,9 +2,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: jupyter
-  labels:
-    app: jupyter
+  name: notebook
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -15,16 +13,14 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: jupyter
+    name: notebook
     weight: 100
   wildcardPolicy: None
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: jupyter-demo
-  labels:
-    app: jupyter
+  name: notebook-demo
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -35,6 +31,6 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: jupyter
+    name: notebook
     weight: 100
   wildcardPolicy: None
