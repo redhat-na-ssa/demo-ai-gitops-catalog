@@ -9,8 +9,8 @@ metadata:
       CUDA, TensorFlow, OpenCV, mesa-libGL, Graphviz for Computer Vision
     opendatahub.io/notebook-image-name: 'OpenCV'
     opendatahub.io/notebook-image-order: '10'
-    opendatahub.io/notebook-image-url: >-
-      https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
+    opendatahub.io/notebook-image-url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
+    opendatahub.io/recommended-accelerators: '["nvidia.com/gpu"]'
   name: opencv-notebook
   labels:
     # note: the following label allows the notebook to show up in the dashboard
