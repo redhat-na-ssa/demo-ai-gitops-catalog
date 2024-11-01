@@ -8,3 +8,7 @@ spec:
       containers:
         - name: notebook
           image: docker.io/kubeflownotebookswg/rstudio
+          volumeMounts:
+            - name: home
+              mountPath: /home/jovyan
+              subPath: data

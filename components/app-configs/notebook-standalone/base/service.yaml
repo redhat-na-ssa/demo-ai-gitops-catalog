@@ -8,12 +8,12 @@ metadata:
   name: notebook
 spec:
   ports:
-  - name: demo
-    port: 8000
-    targetPort: 8000
   - name: notebook
     port: 8888
     targetPort: 8888
+  - name: demo
+    port: 8000
+    targetPort: 8000
   - name: oauth-proxy
     port: 8080
     targetPort: 8080

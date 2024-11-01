@@ -5,3 +5,28 @@ patches:
   - path: patch-deployment.yaml
     target:
       kind: Deployment
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/ports/0
+        value:
+          containerPort: 8787
+          protocol: TCP
+          name: notebook
+    target:
+      kind: Deployment
+  - patch: |-
+      - op: replace
+        path: /spec/ports/0
+        value:
+          name: notebook
+          protocol: TCP
+          port: 8787
+          targetPort: 8787
+    target:
+      kind: Service
+  - patch: |-
+      - op: replace
+        path: /spec/port/targetPort
+        value: 8787
+    target:
+      kind: Route

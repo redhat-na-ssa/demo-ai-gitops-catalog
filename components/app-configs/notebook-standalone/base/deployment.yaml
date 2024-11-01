@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
     # image.openshift.io/triggers: >-
-    #   [{"from":{"kind":"ImageStreamTag","name":"nemo:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"nemo\")].image","paused":"false"}]
+    #   [{"from":{"kind":"ImageStreamTag","name":"notebook:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"notebook\")].image","paused":"false"}]
 spec:
   replicas: 1
   strategy:
@@ -15,7 +15,6 @@ spec:
     spec:
       containers:
       - name: notebook
-        # image: quay.io/opendatahub-contrib/workbench-images:rstudio-c9s-py39_2023b_latest
         image: docker.io/kubeflownotebookswg/jupyter:latest
         env:
           - name: HOME
