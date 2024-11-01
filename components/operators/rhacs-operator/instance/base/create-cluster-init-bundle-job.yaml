@@ -29,7 +29,7 @@ spec:
                 max_attempts=20
 
                 echo "Waiting for central to be available..."
-                until $(curl -k --output /dev/null --silent --head --fail https://central); do
+                until $(curl -s -k --output /dev/null --head --fail https://central); do
                   if [ ${max_attempts} -lt 1 ];then
                     echo "Max attempts reached"
                     exit 1
