@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notebook
+spec:
+  template:
+    spec:
+      containers:
+        - name: notebook
+          image: docker.io/kubeflownotebookswg/codeserver
+          volumeMounts:
+            - name: home
+              mountPath: /home/jovyan
+              subPath: data
