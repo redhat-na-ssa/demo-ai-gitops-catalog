@@ -5,4 +5,4 @@ metadata:
 spec:
   groupsConfig:
     adminGroups: rhods-admins
-    allowedGroups: rhods-users
+    allowedGroups: workshop-users
