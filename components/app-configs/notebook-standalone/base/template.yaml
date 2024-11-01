@@ -1,0 +1,69 @@
+---
+kind: Template
+apiVersion: template.openshift.io/v1
+labels:
+  template: standalone-notebook
+  app.kubernetes.io/part-of: standalone-notebook
+  app.kubernetes.io/component: ide
+metadata:
+  name: standalone-notebook
+  labels:
+    template: standalone-notebook
+  annotations:
+    openshift.io/display-name: A Standalone Jupyter Notebook
+    openshift.io/provider-display-name: Community
+    description: Data Science Notebook in OpenShift
+    iconClass: icon-python
+    tags: python
+    openshift.io/documentation-url: "https://github.com/redhat-na-ssa/demo-ai-gitops-catalog"
+    openshift.io/support-url: "https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/issues"
+    template.openshift.io/bindable: "false"
+parameters:
+- name: APPLICATION_NAME
+  displayName: Application Name
+  required: true
+  value: standalone-notebook
+- name: VOLUME_SIZE
+  displayName: Volume Size
+  value: 5Gi
+  required: true
+- name: NOTEBOOK_MEM_LIMIT
+  displayName: Notebook Memory Limit
+  value: 1792Mi
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: NOTEBOOK_CPU_LIMIT
+  displayName: Notebook CPU Limit
+  value: 1700m
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: WEBDAV_MEM_LIMIT
+  displayName: WebDav Memory Limit
+  value: 256M
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: WEBDAV_CPU_LIMIT
+  displayName: WebDav CPU Limit
+  value: 300m
+  required: true
+  description: Consider the pod quota limits on your namespace
+- name: NOTEBOOK_PASSWORD
+  displayName: Notebook Password
+  from: "[A-Za-z0-9]{32}"
+  generate: expression
+  required: true
+  description: Password for Notebook
+- name: NOTEBOOK_IMAGE
+  description: The base image for notebook
+  value: quay.io/opendatahub-contrib/workbench-images:code-server-ubi9-py39_2023b_latest
+  required: true
+- name: WEBDAV_NODE_IMAGE
+  description: The base image for WebDav
+  value: quay.io/codekow/webdav:latest
+  required: true
+message: |-
+  The following application has been created in your project: ${APPLICATION_NAME}.
+
+  For more information about using this template, including OpenShift considerations,
+  see "https://github.com/redhat-na-ssa/demo-ai-gitops-catalog"
+objects: []
