@@ -1,6 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: custom-notebooks
+
 commonAnnotations:
   opendatahub.io/notebook-image-creator: ai-catalog
 
@@ -11,8 +13,6 @@ labels:
     # note: the following label allows the notebook to show up in the dashboard
     # note: byon = bring your own notebook?
     app.kubernetes.io/created-by: byon
-
-namespace: custom-notebooks
 
 resources:
   - ./code-server

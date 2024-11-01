@@ -7,7 +7,8 @@ spec:
     type: Git
     git:
       uri: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git
-    contextDir: components/app-configs/custom-notebook-images/base/opencv
+      ref: main
+    contextDir: components/app-configs/rhoai-custom-images/base/opencv
   strategy:
     type: Docker
     dockerStrategy:
