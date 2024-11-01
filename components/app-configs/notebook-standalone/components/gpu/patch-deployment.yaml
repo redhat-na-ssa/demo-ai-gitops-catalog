@@ -7,25 +7,6 @@ spec:
     spec:
       containers:
         - name: notebook
-          image: nvcr.io/nvidia/nemo:dev
-          env:
-            - name: HOME
-              value: /workspace
-          command:
-            - /bin/sh
-            - -c
-            - |
-              #!/bin/sh
-              jupyter lab \
-                --ServerApp.ip=0.0.0.0 \
-                --ServerApp.port=8787 \
-                --ServerApp.allow_origin="*" \
-                --ServerApp.open_browser=False \
-                --ServerApp.token=''
           resources:
             limits:
               nvidia.com/gpu: 1
-          volumeMounts:
-            - name: home
-              mountPath: /workspace
-              subPath: data
