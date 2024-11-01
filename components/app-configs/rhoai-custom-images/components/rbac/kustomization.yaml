@@ -3,8 +3,3 @@ kind: Component
 
 resources:
   - rolebinding.yaml
-
-# patches:
-#   - path: patch-admin-group.yaml
-#     target:
-#       kind: Group
