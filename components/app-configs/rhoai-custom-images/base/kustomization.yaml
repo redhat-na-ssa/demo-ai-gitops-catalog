@@ -19,6 +19,3 @@ resources:
   - ./lightgbm
   - ./opencv
   - ./rstudio
-  - custom-notebooks-rb.yaml
-  - namespace.yaml
-  - namespace-rb.yaml
