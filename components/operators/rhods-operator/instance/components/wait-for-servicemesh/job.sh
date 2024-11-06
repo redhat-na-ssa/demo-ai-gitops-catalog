@@ -17,6 +17,13 @@ patch_approval(){
     patch subscription rhods-operator \
     --type=merge --patch '{"spec":{"installPlanApproval":"'"${APPROVAL}"'"}}'
 
+  echo -n 'Waiting for RHOAI install plan.'
+  until oc -n redhat-ods-operator get installplan -l operators.coreos.com/rhods-operator.redhat-ods-operator 2>/dev/null
+  do
+    echo -n .
+    sleep 5
+  done; echo
+
   INSTALL_PLAN=$(oc -n redhat-ods-operator get installplan -l operators.coreos.com/rhods-operator.redhat-ods-operator -o name)
   oc -n redhat-ods-operator \
     patch "${INSTALL_PLAN}" \
