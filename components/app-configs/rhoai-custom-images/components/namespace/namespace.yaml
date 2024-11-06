@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: custom-notebooks
   annotations:
-    openshift.io/display-name: Custom Jupyter Notebooks
+    openshift.io/display-name: Custom Notebook Images
