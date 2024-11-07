@@ -23,25 +23,27 @@ The current *overlays* available are for the following channels:
 * [rhacs-4.1](operator/overlays/rhacs-4.1)
 * [rhacs-4.2](operator/overlays/rhacs-4.2)
 * [rhacs-4.3](operator/overlays/rhacs-4.3)
+* [rhacs-4.4](operator/overlays/rhacs-4.4)
+* [rhacs-4.5](operator/overlays/rhacs-4.5)
 * [stable](operator/overlays/stable)
 
 ## Usage
 
 If you have cloned the `gitops-catalog` repository, you can install Advanced Cluster Security for Kubernetes based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
 
-```
+```sh
 oc apply -k rhacs-operator/operator/overlays/<channel>
 ```
 
 Or, without cloning:
 
-```
+```sh
 oc apply -k https://github.com/redhat-cop/gitops-catalog/rhacs-operator/operator/overlays/<channel>
 ```
 
 As part of a different overlay in your own GitOps repo:
 
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
