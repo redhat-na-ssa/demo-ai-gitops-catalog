@@ -10,6 +10,6 @@ labels:
     demo: catalog
 
 resources:
-  - ../../components/cluster-configs/console-config/overlays/default
+  - ../../../components/cluster-configs/console-config/overlays/default
   - banner-demo.yaml
-  - link-github.yaml
+  - link-gh-demo.yaml

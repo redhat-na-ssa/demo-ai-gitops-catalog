@@ -151,6 +151,7 @@ httpErrorCodePages
 https
 iam
 IAM
+ide
 idp
 IgnoreExtraneous
 igor
@@ -321,6 +322,8 @@ RollingUpdate
 Rollout
 rolloutStrategy
 rpardini
+rstudio
+RStudio
 runtime
 sagemaker
 Sagemaker
