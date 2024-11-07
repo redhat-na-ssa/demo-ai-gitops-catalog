@@ -3,5 +3,5 @@ kind: Kustomization
 
 resources:
   - banner-cluster.yaml
-  - link-github.yaml
+  - link-gh-ssa.yaml
   - link-help.yaml
