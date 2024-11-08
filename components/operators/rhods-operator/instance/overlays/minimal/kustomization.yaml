@@ -5,6 +5,7 @@ resources:
   - ../../base
 
 components:
+  - ../../components/additional-namespaces
   - ../../components/config-access-everyone
   - ../../components/disable-telemetry
   - ../../components/fix-kubeadmin-cluster-admin
