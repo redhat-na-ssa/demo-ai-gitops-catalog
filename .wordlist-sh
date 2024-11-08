@@ -255,6 +255,7 @@ searchoperators
 ServerAliveInterval
 serverlessservices
 servicemeshcontrolplanes
+servicemeshmembers
 servingCertificate
 servingCerts
 sha
