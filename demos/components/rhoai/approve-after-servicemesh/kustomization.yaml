@@ -8,7 +8,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: wait-for-servicemesh
+  - name: approve-after-servicemesh
     namespace: redhat-ods-operator
     files:
       - job.sh

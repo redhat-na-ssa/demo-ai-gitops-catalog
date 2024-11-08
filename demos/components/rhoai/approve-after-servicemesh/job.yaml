@@ -2,13 +2,17 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: wait-for-servicemesh
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  name: approve-after-servicemesh
   namespace: redhat-ods-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: wait-for-servicemesh
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  name: approve-after-servicemesh
 rules:
   - apiGroups:
       - apiextensions.k8s.io
@@ -30,20 +34,24 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: wait-for-servicemesh
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  name: approve-after-servicemesh
 subjects:
   - kind: ServiceAccount
-    name: wait-for-servicemesh
+    name: approve-after-servicemesh
     namespace: redhat-ods-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: wait-for-servicemesh
+  name: approve-after-servicemesh
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: wait-for-servicemesh
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  name: approve-after-servicemesh
   namespace: redhat-ods-operator
 spec:
   template:
@@ -61,9 +69,9 @@ spec:
       volumes:
         - name: scripts
           configMap:
-            name: wait-for-servicemesh
+            name: approve-after-servicemesh
             defaultMode: 0755
       restartPolicy: Never
-      serviceAccount: wait-for-servicemesh
-      serviceAccountName: wait-for-servicemesh
+      serviceAccount: approve-after-servicemesh
+      serviceAccountName: approve-after-servicemesh
   backoffLimit: 4
