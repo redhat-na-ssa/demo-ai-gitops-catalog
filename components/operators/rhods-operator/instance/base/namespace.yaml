@@ -1,8 +1,27 @@
+---
 apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    openshift.io/display-name: "OpenShift Data Science / AI Applications"
+    openshift.io/display-name: "OpenShift AI - Main Applications"
   labels:
     openshift.io/cluster-monitoring: 'true'
   name: redhat-ods-applications
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/display-name: "OpenShift AI - Monitoring"
+  labels:
+    openshift.io/cluster-monitoring: 'true'
+  name: redhat-ods-monitoring
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/display-name: "OpenShift AI - Individual Notebooks"
+  labels:
+    openshift.io/cluster-monitoring: 'true'
+  name: rhods-notebooks
