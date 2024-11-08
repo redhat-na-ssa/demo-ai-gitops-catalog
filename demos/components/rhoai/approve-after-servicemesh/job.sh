@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+# shellcheck disable=SC2119,SC2120
 set -e
 
 TIMEOUT_SECONDS=60
