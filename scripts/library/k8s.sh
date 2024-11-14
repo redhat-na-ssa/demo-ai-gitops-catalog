@@ -115,16 +115,19 @@ k8s_ns_delete_most_resources_force(){
   done
 }
 
-k8s_api_start_proxy(){
-  echo "k8s api proxy: starting..."
-  kubectl proxy -p 8001 &
-  API_PROXY_PID=$!
-  sleep 3
-}
+k8s_api_proxy(){
+  ACTION=${1:-start}
+  PORT=${2:-8001}
 
-k8s_api_stop_proxy(){
-  echo "k8s api proxy: stopping..."
-  kill "${API_PROXY_PID}"
+  if [ "${ACTION}" = "start" ]; then
+    echo "k8s api proxy: starting..."
+    kubectl proxy -p "${PORT}" &
+    API_PROXY_PID=$!
+    sleep 3
+  else
+    echo "k8s api proxy: stopping..."
+    kill "${API_PROXY_PID}"
+  fi
 }
 
 # do core resources first, which are at a separate api location
@@ -150,10 +153,10 @@ k8s_api_dump_noncore(){
 }
 
 k8s_api_dump_resources(){
-  k8s_api_start_proxy
+  k8s_api_proxy start
   k8s_api_dump_core
   k8s_api_dump_noncore
-  k8s_api_stop_proxy
+  k8s_api_proxy stop
 }
 
 k8s_delete_extended_resource_on_all_nodes(){
