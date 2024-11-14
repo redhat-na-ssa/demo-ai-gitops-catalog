@@ -14,7 +14,7 @@ configMapGenerator:
       - ocp-default-crds-4.16.txt
       - namespaces.txt
       - uninstall.sh
- 
+
 patches:
   - path: patch-job.yaml
     target:
