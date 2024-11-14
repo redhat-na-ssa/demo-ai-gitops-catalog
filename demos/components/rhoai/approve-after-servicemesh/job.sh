@@ -4,6 +4,15 @@ set -e
 
 TIMEOUT_SECONDS=60
 
+self_destruct(){
+
+  echo "
+    engaging self cleaning in ${TIMEOUT_SECONDS}s...
+  "
+  sleep "${TIMEOUT_SECONDS}"
+  oc -n redhat-ods-operator delete jobs --all
+}
+
 approve_installplan(){
   echo -n 'Waiting for RHOAI install plan...'
   until oc -n redhat-ods-operator get installplan -l operators.coreos.com/rhods-operator.redhat-ods-operator -o name >/dev/null 2>&1
@@ -55,3 +64,4 @@ wait_for_service_mesh(){
 wait_for_service_mesh
 patch_approval
 approve_installplan
+self_destruct
