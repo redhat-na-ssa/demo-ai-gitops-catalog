@@ -46,7 +46,6 @@ Error: default-dsci
 
 ## Data Science Pipelines
 
-- [ ] Do they really work? Maybe, Sometimes, No
 - [ ] Pipelines are stored in the mariadb instance instead of cluster resources like a CR
   - Table `run_details` contains field `WorkflowSpecManifest` contains `PipelineRun`
 - [ ] `mariadb-pipelines-definition` Deployment sets env var `MYSQL_ALLOW_EMPTY_PASSWORD=true` (Security: Data Exposure)

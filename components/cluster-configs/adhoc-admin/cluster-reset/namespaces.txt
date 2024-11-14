@@ -1,0 +1,3 @@
+istio-system
+knative-eventing
+knative-serving

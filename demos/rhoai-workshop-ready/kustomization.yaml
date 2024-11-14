@@ -8,24 +8,6 @@ resources:
   - ../rhoai-nvidia-gpu-autoscale
   - ../../components/operators/rhods-operator/instance/overlays/all
 
-  # - ../../components/app-configs/rhoai-config
-  # TODO: reconcile issues with item above
-
-  # - ../../components/app-configs/custom-notebook-images/overlays/rhoai
-  # - ../../components/app-configs/minio/overlays/with-namespace
-  # - ../../components/app-configs/rhoai-config
-  # - ../../components/app-configs/rhoai-data-connector/overlays/group-project
-  # - ../../components/app-configs/rhoai-data-connector/overlays/kserve-project
-  # - ../../components/app-configs/rhoai-data-connector/overlays/modelmesh-project
-  # - ../../components/app-configs/rhoai-modelmesh/overlays/modelmesh-project
-  # - ../../components/app-configs/rhoai-model-runtimes
-  # - ../../components/app-configs/rhoai-kserve-instances
-  # - ../../components/app-configs/rhoai-notebook/overlays/group-project
-  # - ../../components/app-configs/rhoai-pipelines/overlays/group-project
-  # - ../../components/app-configs/rhoai-projects
-  # - ../../components/app-configs/rhoai-rbac
-  # - ../../components/app-configs/rhoai-rbac-notebooks
-
 patches:
   - target:
       kind: ConsoleNotification
@@ -34,8 +16,3 @@ patches:
       - op: replace
         path: /spec/text
         value: 'DEMO: Red Hat OpenShift AI (RHOAI)'
-  # - target:
-  #     group: user.openshift.io
-  #     kind: Group
-  #     name: workshop-users
-  #   path: patch-workshop-users.yaml
