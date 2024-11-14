@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2120
 
 TIMEOUT=60
 DEFAULT_CRDS=ocp-default-crds-4.16.txt
