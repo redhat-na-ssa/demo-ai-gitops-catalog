@@ -2,11 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 components:
-- ../components/rhoai
+  - ../../components/rhoai-prereqs
 
 resources:
-  - ../base
-  - ../../components/operators/rhods-operator/instance/overlays/minimal
+  - ../rhoai-nvidia-gpu-autoscale
+  - ../../../components/operators/rhods-operator/instance/overlays/all
 
 patches:
   - target:
@@ -15,4 +15,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/text
-        value: 'DEMO: Red Hat OpenShift AI (RHOAI) - Minimal'
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI)'
