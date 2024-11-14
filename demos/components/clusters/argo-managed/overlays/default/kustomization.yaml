@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - ../../../../components/argocd/apps/overlays/manual-user-config
+  - ../../../../../../components/argocd/apps/overlays/manual-user-config
 
 patches:
   - target:
