@@ -3,7 +3,7 @@ kind: Kustomization
 
 components:
   - ../../components/aws-nvidia-gpu-autoscale
-  - ../../components/rhoai
+  - ../../components/rhoai-servicemesh
 
 resources:
   - ../../base
