@@ -1,5 +1,8 @@
 # Notes
 
+You need an NCR API Key to pull container images and models.
+It will need to be setup for the default SA in the namespace.
+
 ## Quickstart
 
 Query NIM Open AI API
