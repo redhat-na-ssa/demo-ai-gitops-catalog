@@ -13,6 +13,6 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: api
+    name: nim
     weight: 100
   wildcardPolicy: None
