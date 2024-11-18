@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: llama3
+  name: nim
 spec:
   replicas: 1
   strategy:
@@ -53,17 +53,22 @@ spec:
         #   periodSeconds: 5
         #   successThreshold: 1
         #   failureThreshold: 10
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
         volumeMounts:
           - name: shm
             mountPath: /dev/shm
-          - name: nim-cache
+          - name: empty
             mountPath: /opt/nim/.cache
             subPath: data
       volumes:
+        - name: empty
+          emptyDir: {}
         - name: shm
           emptyDir:
             medium: Memory
-            sizeLimit: 512Mi
+            # sizeLimit: 512Mi
         - name: nim-cache
           persistentVolumeClaim:
             claimName: nim
