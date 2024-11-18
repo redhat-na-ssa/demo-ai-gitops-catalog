@@ -59,12 +59,10 @@ spec:
         volumeMounts:
           - name: shm
             mountPath: /dev/shm
-          - name: empty
+          - name: nim-cache
             mountPath: /opt/nim/.cache
-            subPath: data
+            subPath: cache
       volumes:
-        - name: empty
-          emptyDir: {}
         - name: shm
           emptyDir:
             medium: Memory
