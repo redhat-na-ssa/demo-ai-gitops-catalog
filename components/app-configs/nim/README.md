@@ -9,6 +9,7 @@ Query NIM Open AI API
 
 ```sh
 URL=https://$(oc get route -o go-template='{{.spec.host}}' nim)/v1/completions
+PROMPT="Once upon a time"
 
 curl -s -X 'POST' \
   "${URL}" \
@@ -16,7 +17,7 @@ curl -s -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
       "model": "meta/llama3-8b-instruct",
-      "prompt": "Once upon a time",
-      "max_tokens": 64
+      "prompt": "'"${PROMPT}"'",
+      "max_tokens": 100
     }' | jq .choices[0].text
 ```
