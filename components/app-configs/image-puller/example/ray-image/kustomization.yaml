@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+components:
+  - ../../../components/image-puller
+
+patches:
+  - target:
+      kind: DaemonSet
+      name: image-puller
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: ray-puller
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: quay.io/modh/ray:2.35.0-py39-cu121

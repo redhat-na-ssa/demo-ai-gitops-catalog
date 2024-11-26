@@ -1,9 +1,7 @@
----
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: image-puller
-  namespace: openshift-config
 spec:
   selector:
     matchLabels:
@@ -14,12 +12,12 @@ spec:
         name: image-puller
     spec:
       containers:
-      - name: tools
-        imagePullPolicy: Always
-        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+      - name: manchurian
         command:
         - sleep
         - '3600'
+        imagePullPolicy: Always
+        image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
         resources:
           limits:
             memory: 20Mi
