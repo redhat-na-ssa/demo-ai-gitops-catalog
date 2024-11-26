@@ -17,9 +17,8 @@ spec:
       - name: tools
         image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
         command:
-        - tail
-        - -f
-        - /dev/null
+        - sleep
+        - 3600
         resources:
           limits:
             memory: 20Mi
