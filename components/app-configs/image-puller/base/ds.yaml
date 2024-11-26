@@ -15,10 +15,11 @@ spec:
     spec:
       containers:
       - name: tools
+        imagePullPolicy: Always
         image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
         command:
         - sleep
-        - 3600
+        - '3600'
         resources:
           limits:
             memory: 20Mi
