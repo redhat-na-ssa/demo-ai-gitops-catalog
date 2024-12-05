@@ -3,8 +3,9 @@
 This demo is:
 
 - hard to reproduce consistently due to gaps in the source repo configuration
-- lacks any useful documentation around deployment
+- lacks useful documentation around self managed deployment
 - inconsistent in the use of automation
+- scripts embeded in `yaml` - messy to maintain and contribute
 - costs a lot of $$$ to run / idle
 
 ## Issues
