@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: adhoc-admin-helper
+spec:
+  template:
+    spec:
+      containers:
+        - name: minion
+          env:
+            - name: ADHOC_SCRIPT
+              value: /scripts/custom/uninstall.sh
+          volumeMounts:
+            - name: custom
+              mountPath: /scripts/custom
+      volumes:
+        - name: custom
+          configMap:
+            name: demo-cleanup
+            defaultMode: 0755

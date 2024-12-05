@@ -5,5 +5,15 @@ kind: Kustomization
 namespace: adhoc-admin
 
 resources:
-  - admin-rolebinding.yaml
+  - job.yaml
   - namespace.yaml
+  - rbac.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: adhoc-admin-helper
+    namespace: adhoc-admin
+    files:
+      - job.sh

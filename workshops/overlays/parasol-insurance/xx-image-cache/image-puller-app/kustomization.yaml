@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: image-puller
 
-resources:
+components:
 - ../../../../../components/app-configs/image-puller/base
 
 patches:

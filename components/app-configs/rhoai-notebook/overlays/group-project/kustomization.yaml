@@ -3,5 +3,8 @@ kind: Kustomization
 
 namespace: ds-group
 
+components:
+  - ../../components/pvc
+
 resources:
-- ../../base
+  - ../../base

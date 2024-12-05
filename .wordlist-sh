@@ -6,6 +6,7 @@ acks
 addext
 addon
 adp
+adrezni
 af
 AllNamespaces
 amd
@@ -45,13 +46,18 @@ chroot
 clustermanagementaddons
 clustermanagers
 CN
+consoleplugin
 Containerfile
 containerregistry
 coreos
 crd
 crds
 creationTimestamp
+crs
 crt
+csv
+csvs
+CSVS
 ctrl
 CTRL
 currentCSVDesc
@@ -69,6 +75,7 @@ df
 dirname
 DIRS
 displayName
+distruct
 dl
 DL
 dn
@@ -184,6 +191,7 @@ multiclusterhubs
 multiclusterobservabilities
 MultiNamespace
 musl
+mutatingwebhookconfiguration
 namedCertificates
 nat
 nbB
@@ -256,6 +264,7 @@ ServerAliveInterval
 serverlessservices
 servicemeshcontrolplanes
 servicemeshmembers
+servicemeshoperator
 servingCertificate
 servingCerts
 sha
@@ -297,6 +306,7 @@ userpreferences
 usr
 uuid
 UUID
+validatingwebhookconfiguration
 validatingwebhookconfigurations
 validators
 velero
@@ -312,6 +322,7 @@ vzx
 WantedBy
 wc
 webhook
+webhooks
 wipefs
 wo
 wordlist
