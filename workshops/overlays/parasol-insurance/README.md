@@ -1,4 +1,4 @@
-# Kludge the parasol insurance demo to work with more efficient resource management
+# Kludge the parasol insurance demo to work efficiently
 
 This demo is:
 
