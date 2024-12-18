@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-nim
+  annotations:
+    openshift.io/display-name: "Demo - NIM"

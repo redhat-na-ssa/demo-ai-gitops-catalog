@@ -1,0 +1,30 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: adhoc-admin-helper-
+  name: adhoc-admin-helper
+  namespace: adhoc-admin
+spec:
+  template:
+    spec:
+      containers:
+        - name: minion
+          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+          # image: registry.redhat.io/openshift4/cli
+          command:
+            - /bin/bash
+            - -c
+            - /scripts/job.sh
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: adhoc-admin-helper
+            defaultMode: 0755
+      restartPolicy: Never
+      terminationGracePeriodSeconds: 30
+      serviceAccount: adhoc-admin-helper
+      serviceAccountName: adhoc-admin-helper

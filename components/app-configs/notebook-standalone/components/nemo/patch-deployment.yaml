@@ -17,7 +17,8 @@ spec:
             - |
               #!/bin/sh
               jupyter lab \
-                --ServerApp.ip=0.0.0.0:8888 \
+                --ServerApp.ip=0.0.0.0 \
+                --ServerApp.port=8888 \
                 --ServerApp.allow_origin="*" \
                 --ServerApp.open_browser=False \
                 --ServerApp.token=''

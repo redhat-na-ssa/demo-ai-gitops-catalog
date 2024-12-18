@@ -1,0 +1,17 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: nvcr
+data:
+  .dockerconfigjson: |
+    {
+      "auths": {
+        "nvcr.io": {
+          "username": "$oauthtoken",
+          "password": "<token>",
+          "auth": "base64 of $oauthtoken:<token>",
+          "email": ""
+        }
+      }
+    }
+type: kubernetes.io/dockerconfigjson

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+components:
+  - ../../components/rhoai-prereqs
+
+resources:
+  - ../rhoai-nvidia-gpu-autoscale
+  - ../../../components/operators/rhods-operator/instance/overlays/all
+
+patches:
+  - target:
+      kind: ConsoleNotification
+      name: banner-demo
+    patch: |-
+      - op: replace
+        path: /spec/text
+        value: 'DEMO: Red Hat OpenShift AI (RHOAI)'
