@@ -1,16 +1,16 @@
-## Setup AWS Controllers for Kubernetes / ACK Operators
+# Setup AWS Controllers for Kubernetes / ACK Operators
 
 Create AWS users (service principles)
 
 NOTICE: Keep output from `aws iam create-access-key ...`
 
-```
+```sh
 # create s3 user
 aws iam create-user --user-name ack-user-s3
 aws iam create-access-key --user-name ack-user-s3
 ```
 
-```
+```sh
 # create sagemaker user
 aws iam create-user --user-name ack-user-sagemaker
 aws iam create-access-key --user-name ack-user-sagemaker
@@ -18,21 +18,18 @@ aws iam create-access-key --user-name ack-user-sagemaker
 
 Assign Amazon Resource Name (ARN) policy to users
 
-```
-
+```sh
 # attach user policy - s3
 aws iam attach-user-policy \
     --user-name ack-user-s3 \
     --policy-arn 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
-
 ```
 
-```
+```sh
 # attach user policy - sagemaker (ec2,sagemaker)
 aws iam attach-user-policy \
     --user-name ack-user-sagemaker \
     --policy-arn  'arn:aws:iam::aws:policy/AmazonSageMakerFullAccess'
-
 ```
 
 ## Links
