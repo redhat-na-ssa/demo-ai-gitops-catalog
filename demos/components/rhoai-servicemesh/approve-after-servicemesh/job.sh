@@ -31,7 +31,7 @@ patch_approval(){
   APPROVAL=${1:-Automatic}
 
   echo -n 'Waiting for RHOAI subscription...'
-  until oc get -n redhat-ods-operator subscription rhods-operator -o name >/dev/null 2>&1
+  until oc get -n redhat-ods-operator subscriptions.operators.coreos.com/rhods-operator -o name >/dev/null 2>&1
   do
     echo -n .
     sleep 5
