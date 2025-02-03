@@ -38,7 +38,7 @@ patch_approval(){
   done; echo
 
   oc -n redhat-ods-operator \
-    patch subscription rhods-operator \
+    patch subscriptions.operators.coreos.com/rhods-operator \
     --type=merge --patch '{"spec":{"installPlanApproval":"'"${APPROVAL}"'"}}'
 }
 
