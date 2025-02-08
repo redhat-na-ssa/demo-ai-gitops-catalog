@@ -8,6 +8,7 @@ labels:
 
 resources:
 - deployment.yaml
+# - pull-secret.yaml
 - pvc.yaml
 - route.yaml
 - service.yaml
