@@ -79,6 +79,8 @@ CRD
 CRDs
 creds
 CRs
+csi
+CSI
 CSS
 cuda
 CUDA
@@ -390,6 +392,7 @@ UI
 untar
 untardir
 useable
+VER
 vllm
 VolSync
 vscode
@@ -401,6 +404,7 @@ whoami
 wip
 workspaces
 Workspaces
+wunderio
 www
 XDG
 yaml

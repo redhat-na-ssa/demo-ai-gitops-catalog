@@ -1,9 +1,9 @@
 #!/bin/bash
-# shellcheck disable=SC2120
+# shellcheck disable=SC2120,SC2129
 
 TIMEOUT=60
-DEFAULT_CRDS=ocp-default-crds-4.16.txt
-UNWANTED_CRDS=/tmp/unwanted-crds.txt
+OCP_VER=4.16
+OCP_DEFAULTS=ocp-defaults-${OCP_VER}.txt
 
 cd "$(dirname "$0")" && pwd
 
@@ -38,11 +38,7 @@ k8s_null_finalizers(){
   kubectl delete ${ARGS} "${OBJ}"
 }
 
-delete_namespaces(){
-  xargs -l oc delete ns < namespaces.txt
-}
-
-delete_machine_sets(){
+reset_machine_sets(){
   GPU_MACHINE_SET=$(oc -n openshift-machine-api get machinesets -o name | grep -E -v 'worker')
   for set in ${GPU_MACHINE_SET}
   do
@@ -50,52 +46,64 @@ delete_machine_sets(){
   done
 }
 
-get_unwanted_crds(){
-  oc get crds -o name | sed 's/.*\///' > "${UNWANTED_CRDS}"
+delete_list(){
+  LIST_FILE=${1}
+  xargs -l oc delete < "${LIST_FILE}"
+}
 
-  for obj in $(< "${DEFAULT_CRDS}")
+get_unwanted_obj(){
+  OBJ=${1}
+  DEFAULT_LIST=${2}
+
+  TMP_FILE="/tmp/${OBJ}.txt"
+
+  oc get "${OBJ}" -o name > "${TMP_FILE}"
+
+  while read -r obj
   do
-    sed -i "/${obj}/d" "${UNWANTED_CRDS}"
-  done
+    [ -z "${obj}" ] && return
+    sed -i "/${obj##*/}$/d" "${TMP_FILE}"
+  done < <(grep "${OBJ}" < "${DEFAULT_LIST}")
 }
 
 get_crs(){
-  get_unwanted_crds
+  get_unwanted_obj crd "${OCP_DEFAULTS}"
 
-  for obj in $(< "${UNWANTED_CRDS}")
+  for obj in $(< "${TMP_FILE}")
   do
     CR=$(oc get "${obj}" -A -o go-template='{{range .items}}'"${obj}"'/{{.metadata.name}}{{if .metadata.namespace}} {{.metadata.namespace}}{{end}}{{"\n"}}{{end}}')
     [ -n "${CR// }" ] && echo "${CR}"
   done
 }
 
-delete_crs(){
+reset_crs(){
   while read -r obj ns
   do
     k8s_null_finalizers "${obj}" "${ns}"
   done < <(get_crs)
 }
 
-delete_crds(){
-  xargs -l oc delete crds < "${UNWANTED_CRDS}"
+reset_webhooks(){
+  get_unwanted_obj validatingwebhookconfiguration "${OCP_DEFAULTS}"
+  delete_list "${TMP_FILE}"
+
+  get_unwanted_obj mutatingwebhookconfiguration "${OCP_DEFAULTS}"
+  delete_list "${TMP_FILE}"
 }
 
-delete_webhooks(){
-  WEBHOOK=$(oc get validatingwebhookconfiguration,mutatingwebhookconfiguration -o name | grep -E 'tekton.dev|devfile|maistra')
-  for set in ${WEBHOOK}
-  do
-    oc -n openshift-machine-api delete "$set"
-  done
-}
-
-delete_misc(){
+reset_misc(){
   oc -n knative-serving delete knativeservings.operator.knative.dev knative-serving
   oc -n openshift-operators delete deploy devworkspace-webhook-server
 
   oc delete consoleplugin console-plugin-nvidia-gpu
 }
 
-delete_csvs(){
+reset_namespaces(){
+  get_unwanted_obj namespace "${OCP_DEFAULTS}"
+  delete_list "${TMP_FILE}"
+}
+
+reset_csvs(){
 
   CSVS=(
     operators.coreos.com/authorino-operator.openshift-operators
@@ -125,19 +133,31 @@ uninstall_demo(){
 
   echo "start: uninstall"
 
-  delete_webhooks
-  delete_crs
-  delete_csvs
-  delete_machine_sets
-  delete_misc
+  reset_webhooks
+  reset_crs
+  reset_csvs
+  reset_misc
+  reset_machine_sets
 
-  oc delete --ignore-not-found=true --timeout=0s --force -k https://github.com/adrezni/cluster-jump-start/demos/default
+  # oc delete --ignore-not-found=true --timeout=0s --force -k https://github.com/adrezni/cluster-jump-start/demos/default
 
   delete_crds
-  delete_namespaces
+  reset_namespaces
 
   echo "end: uninstall"
 }
 
+get_ocp_defaults(){
+  OCP_DEFAULTS=${OCP_DEFAULTS:-ocp-defaults-${OCP_VER:-4.16}.txt}
+  oc get crd -o name | sort -u > "${OCP_DEFAULTS}"
+  oc get csv -o name -A | sort -u >> "${OCP_DEFAULTS}"
+  oc get ns -o name | sort -u >> "${OCP_DEFAULTS}"
+  oc get validatingwebhookconfiguration,mutatingwebhookconfiguration -o name | sort -u >> "${OCP_DEFAULTS}"
+
+  sort -u "${OCP_DEFAULTS}" > tmp
+  mv tmp "${OCP_DEFAULTS}"
+}
+
+# get_ocp_defaults
 uninstall_demo
-self_distruct
+# self_distruct

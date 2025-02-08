@@ -11,8 +11,7 @@ configMapGenerator:
   - name: demo-cleanup
     namespace: adhoc-admin
     files:
-      - ocp-default-crds-4.16.txt
-      - namespaces.txt
+      - ocp-defaults-4.16.txt
       - uninstall.sh
 
 patches:
