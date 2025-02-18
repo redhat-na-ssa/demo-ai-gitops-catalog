@@ -68,7 +68,7 @@ ocp_aro_machineset_clone_worker(){
           s/replicas.*/replicas: 0/' | \
       oc apply -f -
     
-    MACHINE_SET_NAME="${SHORT_NAME}"
+    MACHINE_SET_NAME="machinesets.machine.openshift.io/${SHORT_NAME}"
   fi
 
   # cosmetic pretty
