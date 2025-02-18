@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: job-setup-machineset
+  name: job-setup-autoscale
 rules:
 - apiGroups:
   - machine.openshift.io
@@ -22,6 +22,7 @@ rules:
   - secrets
   resourceNames:
   - aws-creds
+  - azure-credentials
   verbs:
   - get
   - list
@@ -33,24 +34,24 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: job-setup-machineset
+  name: job-setup-autoscale
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: job-setup-machineset
+  name: job-setup-autoscale
 subjects:
   - kind: ServiceAccount
-    name: job-setup-machineset
+    name: job-setup-autoscale
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: job-setup-machineset
+  name: job-setup-autoscale
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job-setup-machineset
+  name: job-setup-autoscale
   annotations:
     argocd.argoproj.io/hook: Sync
     # argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -80,9 +81,9 @@ spec:
       volumes:
         - name: scripts
           configMap:
-            name: job-setup-machineset
+            name: job-setup-autoscale
             defaultMode: 0755
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
-      serviceAccount: job-setup-machineset
-      serviceAccountName: job-setup-machineset
+      serviceAccount: job-setup-autoscale
+      serviceAccountName: job-setup-autoscale
