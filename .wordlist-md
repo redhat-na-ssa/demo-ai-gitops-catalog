@@ -30,6 +30,8 @@ ArgoCD's
 argoproj
 arn
 ARN
+aro
+ARO
 auth
 authfile
 authorino
@@ -219,6 +221,7 @@ managementState
 mariadb
 mastersSchedulable
 memberof
+microsoft
 mig
 minio
 mkdir
@@ -246,6 +249,7 @@ nodeFeatureDiscovery
 noobaa
 Noobaa
 NuGet
+nv
 nvidia
 Nvidia's
 nw
