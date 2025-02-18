@@ -40,10 +40,10 @@ ocp_aro_get_key(){
 ocp_aro_machineset_clone_worker(){
   [ -z "${1}" ] && \
   echo "
-    usage: ocp_aro_machineset_clone_worker < instance type, default Standard_NC64as_T4_v3 > < machine set name >
+    usage: ocp_aro_machineset_clone_worker < instance type, default Standard_D4s_v3 > < machine set name >
   "
 
-  INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
+  INSTANCE_TYPE=${1:-Standard_D4s_v3}
   SHORT_NAME=${2:-test}
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
@@ -78,19 +78,11 @@ ocp_aro_machineset_clone_worker(){
 }
 
 ocp_aro_machineset_create_gpu(){
-  # https://aws.amazon.com/ec2/instance-types/g4
-  # single gpu: g4dn.{2,4,8,16}xlarge
-  # multi gpu:  g4dn.12xlarge
-  # practical:  g4ad.4xlarge
-  # a100 (MIG): p4d.24xlarge
-  # h100 (MIG): p5.48xlarge
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nv-family
 
-  # https://aws.amazon.com/ec2/instance-types/dl1
-  # 8 x gaudi:  dl1.24xlarge
+  INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
 
-  INSTANCE_TYPE=${1:-g4dn.4xlarge}
-
-  ocp_aro_machineset_clone_worker "${INSTANCE_TYPE}"
+  ocp_aro_machineset_clone_worker "${INSTANCE_TYPE}" gpu
 
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
@@ -118,47 +110,4 @@ ocp_aro_machineset_create_gpu(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
-
-#  # fix storage
-
-# cat << YAML > /tmp/patch.yaml
-# spec:
-#   template:
-#     spec:
-#       providerSpec:
-#         value:
-#           blockDevices:
-#             - ebs:
-#                 volumeSize: 120
-#                 volumeType: gp3
-# YAML
-
-#   oc -n openshift-machine-api \
-#     patch "${MACHINE_SET_TYPE}" \
-#     --type=merge --patch "$(cat /tmp/patch.yaml)"
-}
-
-ocp_aro_clone_worker(){
-  [ -z "${1}" ] && \
-  echo "
-    usage: ocp_aro_clone_worker < instance type, default Standard_NC64as_T4_v3 >
-  "
-
-  INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
-  INSTANCE_NAME=$(echo "${INSTANCE_TYPE,,}" | tr '_' '-')
-  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
-
-  # check for an existing instance machine set
-  if oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep -q "${INSTANCE_NAME}"; then
-    echo "Exists: machineset - ${INSTANCE_TYPE}"
-  else
-    echo "Creating: machineset - ${INSTANCE_NAME}"
-    oc -n openshift-machine-api \
-      get "${MACHINE_SET}" -o yaml | \
-        sed '/machine/ s/-worker/-'"${INSTANCE_TYPE}"'/g
-          /name/ s/-worker/-'"${INSTANCE_NAME}"'/g
-          s/vmSize.*/vmSize: '"${INSTANCE_TYPE}"'/
-          s/replicas.*/replicas: 0/' | \
-      oc apply -f -
-  fi
 }
