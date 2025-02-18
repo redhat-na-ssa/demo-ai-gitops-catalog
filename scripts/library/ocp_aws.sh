@@ -30,7 +30,7 @@ ocp_aws_machineset_clone_worker(){
   "
 
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
-  SHORT_NAME=${2:-${INSTANCE_TYPE/./-}}
+  SHORT_NAME=${2:-${INSTANCE_TYPE//./-}}
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
