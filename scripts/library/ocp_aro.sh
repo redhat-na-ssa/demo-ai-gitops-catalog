@@ -83,7 +83,7 @@ ocp_aro_machineset_create_gpu(){
   INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
   INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
 
-  ocp_aro_machineset_clone_worker "${INSTANCE_TYPE}" gpu
+  ocp_aro_machineset_clone_worker "${INSTANCE_TYPE}"
 
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
 
