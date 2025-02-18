@@ -195,6 +195,7 @@ mutatingwebhookconfiguration
 namedCertificates
 nat
 nbB
+ncast
 ne
 newkey
 NGC
@@ -206,6 +207,7 @@ NoScoring
 ns
 NUM
 nvme
+nvv
 oadp
 observability
 observabilityaddons
@@ -270,6 +272,7 @@ servingCerts
 sha
 shellcheck
 SingleNamespace
+sizebasic
 skel
 sl
 sL
