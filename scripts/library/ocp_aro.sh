@@ -67,6 +67,8 @@ ocp_aro_machineset_clone_worker(){
           /creationTimestamp:/d
           s/replicas.*/replicas: 0/' | \
       oc apply -f -
+    
+    MACHINE_SET_NAME="${SHORT_NAME}"
   fi
 
   # cosmetic pretty
