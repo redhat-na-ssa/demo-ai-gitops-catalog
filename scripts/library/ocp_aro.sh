@@ -45,7 +45,7 @@ ocp_aro_machineset_clone_worker(){
 
   INSTANCE_TYPE=${1:-Standard_D4s_v3}
   SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
-
+  SHORT_NAME=${SHORT_NAME,,}
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
