@@ -47,7 +47,7 @@ ocp_aro_machineset_clone_worker(){
   SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
   SHORT_NAME=${SHORT_NAME,,}
 
-  MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
+  MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "^${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
   # check for an existing instance machine set
@@ -82,10 +82,12 @@ ocp_aro_machineset_create_gpu(){
   # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nv-family
 
   INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
+  SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
+  SHORT_NAME=${SHORT_NAME,,}
 
   ocp_aro_machineset_clone_worker "${INSTANCE_TYPE}"
 
-  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "^${SHORT_NAME}" | head -n1)
 
   echo "Patching: ${MACHINE_SET_TYPE}"
 
