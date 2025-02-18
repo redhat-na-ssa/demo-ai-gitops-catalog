@@ -55,13 +55,13 @@ ocp_aws_machineset_create_gpu(){
   #   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"no-time-sliced"}}}}}}'
 
   # should help auto provisioner
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
+  # oc -n openshift-machine-api \
+  #   patch "${MACHINE_SET_TYPE}" \
+  #   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
 
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
+  # oc -n openshift-machine-api \
+  #   patch "${MACHINE_SET_TYPE}" \
+  #   --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
 
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
