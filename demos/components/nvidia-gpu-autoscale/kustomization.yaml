@@ -3,7 +3,7 @@ kind: Component
 
 resources:
   - ../../../components/cluster-configs/autoscale/overlays/gpus
-  - ../../../components/operators/gpu-operator-certified/instance/overlays/aws-time-sliced
+  - ../../../components/operators/gpu-operator-certified/instance/overlays/time-sliced
   - ../../../components/operators/gpu-operator-certified/operator/overlays/stable
   - ../../../components/operators/nfd/instance/overlays/only-nvidia
   - ../../../components/operators/nfd/operator/overlays/stable
