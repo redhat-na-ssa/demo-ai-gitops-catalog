@@ -47,7 +47,7 @@ ocp_aro_machineset_clone_worker(){
   SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
   SHORT_NAME=${SHORT_NAME,,}
 
-  MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "\/${SHORT_NAME}" | head -n1)
+  MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "/${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
   # check for an existing instance machine set
@@ -55,6 +55,7 @@ ocp_aro_machineset_clone_worker(){
     echo "Exists: machineset - ${MACHINE_SET_NAME}"
   else
     echo "Creating: machineset - ${SHORT_NAME}"
+
     oc -n openshift-machine-api \
       get "${MACHINE_SET_WORKER}" -o yaml | \
         sed '/machine/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
@@ -86,8 +87,8 @@ ocp_aro_machineset_create_gpu(){
   SHORT_NAME=${SHORT_NAME,,}
 
   ocp_aro_machineset_clone_worker "${INSTANCE_TYPE}"
-
-  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "\/${SHORT_NAME}" | head -n1)
+  
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "/${SHORT_NAME}" | head -n1)
 
   echo "Patching: ${MACHINE_SET_TYPE}"
 
