@@ -44,7 +44,7 @@ ocp_aro_machineset_clone_worker(){
   "
 
   INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
-  SHORT_NAME=${2:-${INSTANCE_TYPE/_/-}}
+  SHORT_NAME=${2:-test}
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
@@ -59,7 +59,7 @@ ocp_aro_machineset_clone_worker(){
         sed '/machine/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
           /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${SHORT_NAME}"'/g
-          s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
+          s/vmSize.*/vmSize: '"${INSTANCE_TYPE}"'/
           /cluster-api-autoscaler/d
           /uid:/d
           /generation:/d
@@ -68,9 +68,6 @@ ocp_aro_machineset_clone_worker(){
           s/replicas.*/replicas: 0/' | \
       oc apply -f -
   fi
-
-  # fix aws storage
-  ocp_aws_machineset_fix_storage "${MACHINE_SET_NAME}"
 
   # cosmetic pretty
   oc -n openshift-machine-api \
