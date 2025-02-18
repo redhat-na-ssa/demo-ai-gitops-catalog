@@ -67,7 +67,7 @@ spec:
           image: registry.redhat.io/openshift4/ose-cli
           env:
             - name: INSTANCE_TYPE
-              value: "Standard_NC64as_T4_v3"
+              value: "Standard_NC4as_T4_v3"
             - name: NAMESPACE
               valueFrom:
                 fieldRef:

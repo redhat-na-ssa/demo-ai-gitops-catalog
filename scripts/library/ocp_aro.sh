@@ -80,9 +80,10 @@ ocp_aro_machineset_clone_worker(){
 }
 
 ocp_aro_machineset_create_gpu(){
-  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nv-family
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nvv3-series?tabs=sizebasic#sizes-in-series
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncast4v3-series?tabs=sizebasic#sizes-in-series
 
-  INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
+  INSTANCE_TYPE=${1:-Standard_NC4as_T4_v3}
   SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
   SHORT_NAME=${SHORT_NAME,,}
 
@@ -103,13 +104,13 @@ ocp_aro_machineset_create_gpu(){
   #   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"no-time-sliced"}}}}}}'
 
   # should help auto provisioner
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
+  # oc -n openshift-machine-api \
+  #   patch "${MACHINE_SET_TYPE}" \
+  #   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}}}}'
 
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
+  # oc -n openshift-machine-api \
+  #   patch "${MACHINE_SET_TYPE}" \
+  #   --type=merge --patch '{"metadata":{"labels":{"cluster-api/accelerator":"nvidia-gpu"}}}'
 
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
