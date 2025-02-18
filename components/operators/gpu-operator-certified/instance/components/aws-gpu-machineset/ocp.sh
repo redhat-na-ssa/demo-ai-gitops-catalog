@@ -13,7 +13,7 @@
 
 # for function in ${FUNCTIONS}
 # do
-#   extract_function $function scripts/library/ocp.sh >> tmp
+#   extract_function $function scripts/library/ocp*.sh >> tmp
 #   echo >> tmp
 # done
 
