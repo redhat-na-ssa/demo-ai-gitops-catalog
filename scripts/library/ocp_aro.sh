@@ -112,5 +112,5 @@ ocp_aro_machineset_create_gpu(){
 
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
+    --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"vmSize":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
