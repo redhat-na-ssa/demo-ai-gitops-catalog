@@ -4,4 +4,4 @@ kind: Component
 resources:
   - ../../../components/operators/aikit-operator/aggregate
   - ../../../components/operators/intel-device-plugins-operator/operator/overlays/alpha
-  - ../../../components/operators/ovms-operator/aggregate
+  # - ../../../components/operators/ovms-operator/aggregate
