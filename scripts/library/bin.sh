@@ -16,7 +16,7 @@ bin_check(){
   [ -d "${BASH_COMP}" ] || mkdir -p "${BASH_COMP}"
 
   [ -e "${BIN_PATH}/${name}" ] || download_"${name}"
- 
+
   # which "${name}" && return 0
 
   echo "
@@ -31,7 +31,7 @@ bin_check(){
       ${name} version --client 2>&1
       [ "$name" == "oc" ] && kubectl completion bash > "${BASH_COMP}/kubectl.sh"
       ;;
-    helm|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|s2i|subctl|crane)
+    helm|kit|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version 2>&1 || ${name} --version
       [ -e .oc-mirror.log ] && rm .oc-mirror.log
@@ -108,6 +108,23 @@ download_kn(){
   mv "${BIN_PATH}/kn-linux-amd64" "${BIN_PATH}/kn"
 }
 
+download_kit(){
+  BIN_VERSION=v1.2.1
+  # DOWNLOAD_URL=https://github.com/jozu-ai/kitops/releases/latest/download/kitops-linux-x86_64.tar.gz
+  DOWNLOAD_URL=https://github.com/jozu-ai/kitops/releases/download/${BIN_VERSION}/kitops-linux-x86_64.tar.gz
+  echo $DOWNLOAD_URL
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kit
+  chmod +x "${BIN_PATH}/kit"
+}
+
+download_oras(){
+  BIN_VERSION=1.2.2
+  DOWNLOAD_URL=https://github.com/oras-project/oras/releases/download/v${BIN_VERSION}/oras_${BIN_VERSION}_linux_amd64.tar.gz
+  echo $DOWNLOAD_URL
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" oras
+  chmod +x "${BIN_PATH}/oras"
+}
+
 download_rhoas(){
   BIN_VERSION=0.53.0
   DOWNLOAD_URL=https://github.com/redhat-developer/app-services-cli/releases/download/v${BIN_VERSION}/rhoas_${BIN_VERSION}_linux_amd64.tar.gz
@@ -123,7 +140,7 @@ download_subctl(){
 download_virtctl(){
   BIN_VERSION=1.3.1
   DOWNLOAD_URL=https://github.com/kubevirt/kubevirt/releases/download/v${BIN_VERSION}/virtctl-v${BIN_VERSION}-linux-amd64
-  curl "${DOWNLOAD_URL}" -sL -o "${BIN_PATH}/virtctl" 
+  curl "${DOWNLOAD_URL}" -sL -o "${BIN_PATH}/virtctl"
   chmod +x "${BIN_PATH}/virtctl"
 }
 

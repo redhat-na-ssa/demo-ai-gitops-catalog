@@ -140,12 +140,14 @@ iptables
 jaegers
 jaegertracing
 journalctl
+jozu
 Jx
 kam
 keygen
 keyout
 keyset
 kialis
+kitops
 klusterlet
 KLUSTERLET
 klusterletaddonconfigs
@@ -218,6 +220,7 @@ openssl
 operatorframework
 opm
 Opqaue
+oras
 OU
 OwnNamespace
 packagemanifest
