@@ -29,8 +29,8 @@ ocp_aws_setup_ack_system(){
 
   ocp_aws_get_key || return
 
-  SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-  cd "${SCRIPTPATH}"
+  SCRIPTPATH="$( cd -- "$(dirname "$0")" || return >/dev/null 2>&1 ; pwd -P )"
+  cd "${SCRIPTPATH}" || return
 
   oc apply -k ../instance
 
