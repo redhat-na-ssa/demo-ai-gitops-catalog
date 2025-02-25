@@ -11,7 +11,7 @@ patches:
       name: ack-eks-controller
     patch: |-
       - op: replace
-        path: /spekschannel
+        path: /spec/channel
         value: 'alpha'
   - target:
       kind: ConfigMap
