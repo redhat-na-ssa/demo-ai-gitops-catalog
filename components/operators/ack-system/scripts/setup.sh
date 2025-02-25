@@ -34,7 +34,7 @@ ocp_aws_setup_ack_system(){
 
   oc apply -k ../aggregate/popular
 
-  for type in ec2 ecr iam lambda route53 s3 sagemaker
+  for type in ec2 ecr eks iam lambda route53 s3 sagemaker
   do
 
     oc apply -k ../../ack-${type}-controller/operator/overlays/alpha
