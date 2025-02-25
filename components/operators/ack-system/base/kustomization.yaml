@@ -4,4 +4,6 @@ kind: Kustomization
 namespace: ack-system
 
 resources:
+  - https://raw.githubusercontent.com/aws-controllers-k8s/runtime/main/config/crd/bases/services.k8s.aws_adoptedresources.yaml
+  - https://raw.githubusercontent.com/aws-controllers-k8s/runtime/main/config/crd/bases/services.k8s.aws_fieldexports.yaml
   - user-config-cm.yaml
