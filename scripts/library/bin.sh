@@ -31,7 +31,7 @@ bin_check(){
       ${name} version --client 2>&1
       [ "$name" == "oc" ] && kubectl completion bash > "${BASH_COMP}/kubectl.sh"
       ;;
-    helm|kit|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane)
+    hcp|helm|kit|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version 2>&1 || ${name} --version
       [ -e .oc-mirror.log ] && rm .oc-mirror.log
@@ -92,6 +92,13 @@ download_odo(){
 download_opm(){
   BIN_VERSION=latest
   DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/ocp/${BIN_VERSION}/opm-linux.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
+}
+
+download_hcp(){
+  BIN_VERSION=2.7.3-7
+  # https://developers.redhat.com/content-gateway/rest/browse/pub/mce/clients/hcp-cli/
+  DOWNLOAD_URL=https://developers.redhat.com/content-gateway/file/pub/mce/clients/hcp-cli/${BIN_VERSION}/hcp-cli-${BIN_VERSION}-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
 }
 
