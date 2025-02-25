@@ -1,0 +1,80 @@
+apiVersion: hypershift.openshift.io/v1beta1
+kind: HostedCluster
+metadata:
+  name: example
+  namespace: local-cluster
+spec:
+  fips: false
+  release:
+    image: 'quay.io/openshift-release-dev/ocp-release:4.14.3-x86_64'
+  dns:
+    baseDomain: sandbox832.opentlc.com
+    privateZoneID: Z0372526250U9D46MGG92
+    publicZoneID: Z1UJ4YBYMA2SI
+  controllerAvailabilityPolicy: SingleReplica
+  infraID: dev-26qgl
+  etcd:
+    managed:
+      storage:
+        persistentVolume:
+          size: 8Gi
+          storageClassName: gp3-csi
+        type: PersistentVolume
+    managementType: Managed
+  infrastructureAvailabilityPolicy: SingleReplica
+  platform:
+    aws:
+      cloudProviderConfig:
+        subnet:
+          id: subnet-0bc687e4bf8e507f3
+        vpc: vpc-0ab99db2ee96decee
+        zone: us-west-2a
+      endpointAccess: Public
+      region: us-west-2
+      rolesRef:
+        controlPlaneOperatorARN: 'arn:aws:iam::374605609722:role/dev-26qgl-control-plane-operator'
+        imageRegistryARN: 'arn:aws:iam::374605609722:role/dev-26qgl-openshift-image-registry'
+        ingressARN: 'arn:aws:iam::374605609722:role/dev-26qgl-openshift-ingress'
+        kubeCloudControllerARN: 'arn:aws:iam::374605609722:role/dev-26qgl-cloud-controller'
+        networkARN: 'arn:aws:iam::374605609722:role/dev-26qgl-cloud-network-config-controller'
+        nodePoolManagementARN: 'arn:aws:iam::374605609722:role/dev-26qgl-node-pool'
+        storageARN: 'arn:aws:iam::374605609722:role/dev-26qgl-aws-ebs-csi-driver-controller'
+    type: AWS
+  secretEncryption:
+    aescbc:
+      activeKey:
+        name: development-etcd-encryption-key
+    type: aescbc
+  networking:
+    clusterNetwork:
+      - cidr: 10.132.0.0/14
+    machineNetwork:
+      - cidr: 10.0.0.0/16
+    networkType: OVNKubernetes
+    serviceNetwork:
+      - cidr: 172.31.0.0/16
+  clusterID: ca8a6245-2d63-4d81-be0d-7a35654822c0
+  pullSecret:
+    name: development-pull-secret
+  configuration: {}
+  issuerURL: 'https://oidc-storage-26qgl.s3.us-east-2.amazonaws.com/dev-26qgl'
+  sshKey:
+    name: development-ssh-key
+  autoscaling: {}
+  olmCatalogPlacement: management
+  services:
+    - service: APIServer
+      servicePublishingStrategy:
+        type: LoadBalancer
+    - service: OAuthServer
+      servicePublishingStrategy:
+        type: Route
+    - service: Konnectivity
+      servicePublishingStrategy:
+        type: Route
+    - service: Ignition
+      servicePublishingStrategy:
+        type: Route
+    - service: OVNSbDb
+      servicePublishingStrategy:
+        type: Route
