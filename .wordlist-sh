@@ -16,8 +16,7 @@ applicationset
 applicationsets
 argocds
 args
-aro
-ARO
+ARGS
 aspell
 awk
 az
@@ -59,7 +58,6 @@ csv
 csvs
 CSVS
 ctrl
-CTRL
 currentCSVDesc
 CustomResourceDefinition
 da
@@ -74,7 +72,6 @@ deviceName
 df
 dirname
 DIRS
-displayName
 distruct
 dl
 DL
@@ -89,10 +86,8 @@ ebs
 ece
 ecr
 eE
-eee
 ef
 egrep
-elasticsearches
 elif
 emptydir
 entrypoint
@@ -132,13 +127,10 @@ iid
 ingresscontrollers
 initalize
 installModes
-installPlanApproval
 InstanceId
 instanceType
 iops
 iptables
-jaegers
-jaegertracing
 journalctl
 jozu
 Jx
@@ -146,7 +138,6 @@ kam
 keygen
 keyout
 keyset
-kialis
 kitops
 klusterlet
 KLUSTERLET
@@ -158,12 +149,12 @@ krew
 KREW
 ksh
 kubeconfig
+KUBECONFIG
 kubeconfigs
 kubeval
 ln
 LowNodeUtilization
 LsO
-lt
 MachineAutoscaler
 machinesets
 MAINTINAER
@@ -267,7 +258,6 @@ SCRIPTPATH
 searchcustomizations
 searchoperators
 ServerAliveInterval
-serverlessservices
 servicemeshcontrolplanes
 servicemeshmembers
 servicemeshoperator
@@ -282,7 +272,6 @@ sl
 sL
 sLfO
 sLo
-sourceNamespace
 sS
 StrictHostKeyChecking
 su
