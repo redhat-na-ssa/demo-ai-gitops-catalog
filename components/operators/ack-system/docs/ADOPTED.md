@@ -6,9 +6,9 @@ Example:
 
 A preexisting S3 bucket called `sagemaker-fingerprint-data` exists in AWS.
 
-When trying to create a `Bucket` CR in k8s / OpenShift the following error appears:
+When trying to create a `Bucket` CR with the same name above, in k8s / OpenShift, the following error appears:
 
-```
+```sh
 Status:
 ACK.Terminal
 
@@ -45,13 +45,12 @@ Any changes outside of k8s / OpenShift will be overwritten by the CR.
 
 Good Luck!
 
-```
+```yaml
 metadata:
   # delete the following 2 lines
   # before deleting the CR
   finalizers:
     - finalizers.s3.services.k8s.aws/Bucket
-...
 ```
 
 ## Links
