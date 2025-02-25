@@ -55,4 +55,5 @@ metadata:
 
 ## Links
 
-- <https://aws-controllers-k8s.github.io/community/docs/user-docs/adopted-resource>
+- https://aws-controllers-k8s.github.io/community/docs/user-docs/adopted-resource
+- https://aws-controllers-k8s.github.io/community/docs/user-docs/deletion-policy
