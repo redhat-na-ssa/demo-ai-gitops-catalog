@@ -32,7 +32,7 @@ ocp_aws_setup_ack_system(){
   SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
   cd "${SCRIPTPATH}"
 
-  oc apply -k ../aggregate/popular
+  oc apply -k ../instance
 
   for type in ec2 ecr eks iam lambda route53 s3 sagemaker
   do
