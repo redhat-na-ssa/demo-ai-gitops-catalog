@@ -6,3 +6,7 @@ namespace: ack-system
 resources:
   - namespace.yaml
   - operator-group.yaml
+
+components:
+  - ../components/crd-adopted-resource
+  - ../components/crd-field-export
