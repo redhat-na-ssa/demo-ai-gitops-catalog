@@ -34,5 +34,7 @@ aws iam attach-user-policy \
 
 ## Links
 
+- [AWS Controllers for Kubernetes (ACK) - Docs](https://aws-controllers-k8s.github.io/community/docs/community/overview/)
+- [ACK in Openshift - Docs](https://aws-controllers-k8s.github.io/community/docs/user-docs/openshift)
 - [IAM Policy - S3](https://github.com/aws-controllers-k8s/s3-controller/blob/main/config/iam/recommended-policy-arn)
 - [IAM Policy - Sagemaker](https://github.com/aws-controllers-k8s/sagemaker-controller/blob/main/config/iam/recommended-policy-arn)
