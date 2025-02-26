@@ -5,35 +5,22 @@
 Create sts-creds
 
 ```sh
-aws sts get-caller-identity --query "Arn" --output text
+ARN=$(aws sts get-caller-identity --query "Arn" --output text)
 
-# arn:aws:iam::1234567890:user/<aws_username>
-```
-
-assume-role.json
-
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "<arn>" 
-            },
-            "Action": "sts:AssumeRole"
-        }
-    ]
-}
+echo ${ARN}
+sed "s@\${ARN}@${ARN}@g" assume-role.json > scratch/assume-role.json
 ```
 
 ```sh
-aws iam create-role \
+ROLE_ARN=$(aws iam create-role \
   --role-name hcp-cli-role \
-  --assume-role-policy-document file://assume-role.json \
-  --query "Role.Arn"
+  --assume-role-policy-document file://scratch/assume-role.json \
+  --query "Role.Arn")
 
-# arn:aws:iam::820196288204:role/hcp-cli-role
+# ROLE_ARN=${ROLE_ARN#\"arn:aws:iam::}
+# ROLE_ARN=${ROLE_ARN%:role/hcp-cli-role\"}
+
+echo ${ROLE_ARN}
 ```
 
 ```sh
@@ -44,20 +31,30 @@ aws iam put-role-policy \
 ```
 
 ```sh
-aws sts get-session-token --output json > sts-creds.json
+aws sts get-session-token --output json > scratch/sts-creds.json
 ```
 
 Create hcp aws cluster
 
 ```sh
+oc new-project clusters
+
+OCP_DOMAIN=$(ocp_get_domain)
+BASE_DOMAIN=${OCP_DOMAIN/*.sandbox/sandbox}
+
 # Set environment variables
-export REGION="us-east-1"
-export CLUSTER_NAME="example"
-export STS_CREDS="example-sts-creds-json"  # JSON file from step 2
-export NAMESPACE="example-namespace"
-export ROLE_ARN="example-role-arn" # Role ARN from step 3
-export PULL_SECRET="example-pull-secret-file" # Pull secret file path from step 4
-export BASE_DOMAIN="www.example.com" # Base domain for this cluster
+export REGION="us-east-2"
+export CLUSTER_NAME="hosted-0"
+export STS_CREDS="scratch/sts-creds.json"
+export NAMESPACE="clusters"
+export ROLE_ARN="${ROLE_ARN}"
+export PULL_SECRET=scratch/pull-secret
+export BASE_DOMAIN=${BASE_DOMAIN}
+
+# fix missing cm
+oc patch cloudcredential cluster \
+  --type=merge \
+  --patch '{"spec":{"credentialsMode":"Manual"}}'
 
 hcp create cluster aws \
   --name $CLUSTER_NAME \
@@ -66,6 +63,14 @@ hcp create cluster aws \
   --sts-creds $STS_CREDS \
   --role-arn $ROLE_ARN \
   --pull-secret $PULL_SECRET \
+  --region $REGION \
+  --base-domain $BASE_DOMAIN
+
+hcp destroy cluster aws \
+  --name $CLUSTER_NAME \
+  --namespace $NAMESPACE \
+  --sts-creds $STS_CREDS \
+  --role-arn $ROLE_ARN \
   --region $REGION \
   --base-domain $BASE_DOMAIN
 ```

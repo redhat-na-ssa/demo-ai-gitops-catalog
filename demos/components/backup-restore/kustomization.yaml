@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - ../../../components/operators/redhat-oadp-operator/instance/overlays/default
+  - ../../../components/operators/redhat-oadp-operator/operator/overlays/stable-1.4

@@ -8,7 +8,7 @@ The current *overlays* available are for the following channels:
 
 * [stable](operator/overlays/stable)
 * [stable-1.0](operator/overlays/stable-1.0)
-* [stable-1.1](operator/overlays/stable-1.1)
+* [stable-1.1](operator/overlays/stable-1.4)
 
 ## Usage
 
