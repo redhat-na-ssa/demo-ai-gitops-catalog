@@ -59,6 +59,7 @@ CICD
 CIDR
 cli
 clientSecret
+cloudcredential
 clusterissuer
 clusterpolicies
 ClusterPolicy
@@ -79,6 +80,7 @@ cp
 cr
 CRD
 CRDs
+credentialsMode
 creds
 CRs
 csi

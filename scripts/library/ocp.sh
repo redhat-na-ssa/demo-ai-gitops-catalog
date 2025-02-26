@@ -125,7 +125,7 @@ ocp_get_apps_domain(){
 
 ocp_get_domain(){
   OCP_APPS_DOMAIN=$(ocp_get_apps_domain)
-  echo ${OCP_APPS_DOMAIN#apps.}
+  echo "${OCP_APPS_DOMAIN#apps.}"
 }
 
 ocp_machineset_taint_gpu(){
