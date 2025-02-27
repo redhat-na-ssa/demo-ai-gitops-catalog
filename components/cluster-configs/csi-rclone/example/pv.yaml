@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rclone-example
+  labels:
+    name: rclone-example
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 20Gi
+  storageClassName: rclone
+  csi:
+    driver: csi-rclone
+    volumeHandle: data-id
+    volumeAttributes:
+      remote: "s3"
+      remotePath: "bucket/extra"
+      s3-provider: "Minio"
+      s3-endpoint: "http://minio.minio:9000"
+      s3-access-key-id: "minioadmin"
+      s3-secret-access-key: "minioadmin"

@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: toolbox
+  labels:
+    run: toolbox
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: Always
+    name: toolbox
+    volumeMounts:
+      - mountPath: /data
+        name: rclone-example
+  volumes:
+  - name: rclone-example
+    persistentVolumeClaim:
+      claimName: rclone-example
