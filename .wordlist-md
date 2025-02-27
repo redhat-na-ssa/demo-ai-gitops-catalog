@@ -59,6 +59,7 @@ CICD
 CIDR
 cli
 clientSecret
+cloudcredential
 clusterissuer
 clusterpolicies
 ClusterPolicy
@@ -79,6 +80,7 @@ cp
 cr
 CRD
 CRDs
+credentialsMode
 creds
 CRs
 csi
@@ -144,6 +146,7 @@ GPUs
 grafana
 gui
 Hashicorp
+hcp
 heartexlabs
 homelab
 html
@@ -372,6 +375,8 @@ strimzi
 Strimzi
 stringData
 stringsource
+sts
+STS
 subdir
 sublicense
 TALM

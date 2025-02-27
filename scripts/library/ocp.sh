@@ -123,6 +123,11 @@ ocp_get_apps_domain(){
   oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
 }
 
+ocp_get_domain(){
+  OCP_APPS_DOMAIN=$(ocp_get_apps_domain)
+  echo "${OCP_APPS_DOMAIN#apps.}"
+}
+
 ocp_machineset_taint_gpu(){
   SHORT_NAME=${1:-g4dn}
   MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
