@@ -7,6 +7,7 @@ resources:
   - ../../instance
   - ../../../ack-ec2-controller/operator/overlays/alpha
   - ../../../ack-ecr-controller/operator/overlays/alpha
+  - ../../../ack-eks-controller/operator/overlays/alpha
   - ../../../ack-iam-controller/operator/overlays/alpha
   - ../../../ack-lambda-controller/operator/overlays/alpha
   - ../../../ack-route53-controller/operator/overlays/alpha

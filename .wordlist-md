@@ -119,6 +119,8 @@ DotNET
 dsci
 DSCInitialization
 ec
+eks
+EKS
 elasticsearch
 env
 EOF
