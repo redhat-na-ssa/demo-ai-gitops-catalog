@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2068
 
 # see https://ksingh7.medium.com/lets-automate-let-s-encrypt-tls-certs-for-openshift-4-211d6c081875
 
@@ -69,7 +70,7 @@ request_le_cert(){
     --issue \
     --dnssleep 60 \
     --dns dns_aws \
-    "${LE_DOMAINS[@]}"
+    ${LE_DOMAINS[@]}
 
   "${ACME_DIR}"/acme.sh \
     --install-cert \
@@ -77,7 +78,7 @@ request_le_cert(){
     --key-file "${CERT_DIR}"/key.pem \
     --fullchain-file "${CERT_DIR}"/fullchain.pem \
     --ca-file "${CERT_DIR}"/ca.cer \
-    "${LE_DOMAINS[@]}"
+    ${LE_DOMAINS[@]}
 
 }
 
