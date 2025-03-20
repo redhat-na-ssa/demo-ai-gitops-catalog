@@ -116,7 +116,7 @@ download_kn(){
 }
 
 download_kit(){
-  BIN_VERSION=v1.2.1
+  BIN_VERSION=v1.2.2
   # DOWNLOAD_URL=https://github.com/jozu-ai/kitops/releases/latest/download/kitops-linux-x86_64.tar.gz
   DOWNLOAD_URL=https://github.com/jozu-ai/kitops/releases/download/${BIN_VERSION}/kitops-linux-x86_64.tar.gz
   echo $DOWNLOAD_URL
