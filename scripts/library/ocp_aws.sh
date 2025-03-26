@@ -29,6 +29,8 @@ ocp_aws_machineset_clone_worker(){
     usage: ocp_aws_machineset_clone_worker < instance type, default g4dn.4xlarge > < machine set name >
   "
 
+  ocp_aws_cluster || return
+
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
   SHORT_NAME=${2:-${INSTANCE_TYPE//./-}}
 

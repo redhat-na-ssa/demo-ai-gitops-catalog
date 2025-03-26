@@ -43,6 +43,8 @@ ocp_aro_machineset_clone_worker(){
     usage: ocp_aro_machineset_clone_worker < instance type, default Standard_D4s_v3 > < machine set name >
   "
 
+  ocp_aro_cluster || return
+
   INSTANCE_TYPE=${1:-Standard_D4s_v3}
   SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
   SHORT_NAME=${SHORT_NAME,,}
