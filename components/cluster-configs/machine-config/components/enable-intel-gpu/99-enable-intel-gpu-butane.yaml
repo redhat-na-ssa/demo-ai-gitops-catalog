@@ -1,0 +1,19 @@
+variant: openshift
+version: 4.16.0
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 99-enable-intel-gpu
+storage:
+  files:
+  - path: /etc/crio/crio.conf.d/99-intel-gpu
+    mode: 0644
+    overwrite: true
+    contents:
+      inline: |
+        [crio.runtime]
+        allowed_devices = [
+          "/dev/fuse",
+          "/dev/net/tun",
+          "/dev/dri/renderD128"
+        ]
