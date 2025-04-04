@@ -82,10 +82,10 @@ Setup basic cluster config
 . scripts/functions.sh
 
 # setup a persistent enhanced web terminal on a default cluster
-apply_firmly bootstrap/install-web-terminal
+apply_firmly demos/components/install-web-terminal
 
 # setup a default cluster w/o argocd managing it
-apply_firmly clusters/default
+apply_firmly demos/overlays/default
 ```
 
 Setup a demo
