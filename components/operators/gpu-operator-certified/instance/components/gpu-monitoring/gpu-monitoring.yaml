@@ -1,0 +1,20 @@
+apiVersion: monitoring.openshift.io/v1
+kind: AlertingRule
+metadata:
+  name: gpu-pods
+  namespace: openshift-monitoring 
+spec:
+  groups:
+  - name: gpu-pods
+    rules:
+    - alert: GpuPods
+      annotations:
+        description: A total of {{ $value }} 'nvidia.com/gpu' requested on the cluster.
+        # runbook_url: https://url/readme.md
+        summary: Cloud costs may increase by requesting specialized resources.
+      expr: |
+        sum (kube_pod_resource_request{resource="nvidia.com/gpu"} >= 1) > 0
+        # sum by (namespace, pod) (kube_pod_resource_request{resource="nvidia.com/gpu"} >= 1) > 0
+      # for: 1m
+      labels:
+        severity: info
