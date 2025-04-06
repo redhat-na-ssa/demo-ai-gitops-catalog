@@ -96,7 +96,17 @@ spec:
     metadata:
       serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
       threshold: '1'
-      query: max(kube_pod_status_unschedulable{queue="something"})
+      query: |
+        # sum(kube_pod_resource_request{resource="nvidia.com/gpu"} >=1 ) by (pod,namespace)
+        # sum(kube_pod_status_unschedulable) by (pod,namespace)
+
+        sum (
+        kube_pod_status_unschedulable
+          * on(namespace, pod) group_right(resource)
+        kube_pod_resource_request{resource="nvidia.com/gpu"}
+        )
+        
+        # count by (namespace, pod) (kube_pod_status_unschedulable) and count by (namespace, pod) (kube_pod_resource_request{resource="nvidia.com/gpu"})
       authModes: "bearer"
       # ignoreNullValues: "false"
       # unsafeSsl: "false"
