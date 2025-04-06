@@ -1,85 +1,12 @@
-# https://github.com/naps-product-sa/openshift-batch/blob/slurm-operator/scheduling/slurm-operator/keda-objects.yaml
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: thanos
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: thanos-token
-  annotations:
-    kubernetes.io/service-account.name: thanos
-type: kubernetes.io/service-account-token
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: thanos-monitoring-view
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-monitoring-view
-subjects:
-  - kind: ServiceAccount
-    name: thanos
-    namespace: autoscale-gpu
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: thanos-metrics-reader
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-    verbs:
-      - get
-  - apiGroups:
-      - metrics.k8s.io
-    resources:
-      - pods
-      - nodes
-    verbs:
-      - get
-      - list
-      - watch
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: thanos-metrics-reader
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: thanos-metrics-reader
-subjects:
-  - kind: ServiceAccount
-    name: thanos
-    namespace: autoscale-gpu
----
-apiVersion: keda.sh/v1alpha1
-kind: TriggerAuthentication
-metadata:
-  name: keda-trigger-auth-prometheus
-spec:
-  secretTargetRef:
-    - parameter: bearerToken
-      name: thanos-token
-      key: token
-    - parameter: ca
-      name: thanos-token
-      key: ca.crt
 ---
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: scale-nvidia-gpu
+  namespace: openshift-machine-api
 spec:
-  cooldownPeriod: 100
-  pollingInterval: 10
+  cooldownPeriod: 300
+  pollingInterval: 30
   idleReplicaCount: 0
   minReplicaCount: 1
   maxReplicaCount: 3
@@ -87,26 +14,26 @@ spec:
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
     name: g4dn-4xlarge
-  advanced:
-    restoreToOriginalReplicaCount: true
+  # advanced:
+  #   restoreToOriginalReplicaCount: true
   triggers:
   - type: prometheus
     authenticationRef:
       name: keda-trigger-auth-prometheus
     metadata:
       serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
+      # metricType: value
       threshold: '1'
       query: |
-        # sum(kube_pod_resource_request{resource="nvidia.com/gpu"} >=1 ) by (pod,namespace)
-        # sum(kube_pod_status_unschedulable) by (pod,namespace)
+        # sum(kube_pod_resource_request{resource="nvidia.com/gpu"} >=1 ) by (pod, namespace)
+        # sum(kube_pod_status_unschedulable) by (pod, namespace)
+        # count by (namespace, pod) (kube_pod_status_unschedulable) and count by (namespace, pod) (kube_pod_resource_request{resource="nvidia.com/gpu"})
 
         sum (
-        kube_pod_status_unschedulable
-          * on(namespace, pod) group_right(resource)
-        kube_pod_resource_request{resource="nvidia.com/gpu"}
+          kube_pod_status_unschedulable
+            * on(namespace, pod) group_right(resource)
+          kube_pod_resource_request{resource="nvidia.com/gpu"}
         )
-        
-        # count by (namespace, pod) (kube_pod_status_unschedulable) and count by (namespace, pod) (kube_pod_resource_request{resource="nvidia.com/gpu"})
       authModes: "bearer"
       # ignoreNullValues: "false"
       # unsafeSsl: "false"
