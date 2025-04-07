@@ -8,4 +8,4 @@ patches:
   - target:
       kind: ConfigMap
       name: longhorn-storageclass
-    path: storage-class.yaml 
+    path: storage-class.yaml

@@ -62,5 +62,5 @@ subjects:
   name: longhorn-ui-service-account
   namespace: longhorn-system
 - kind: ServiceAccount
-  name: default # supportbundle-agent-support-bundle uses default sa
+  name: default  # supportbundle-agent-support-bundle uses default sa
   namespace: longhorn-system
