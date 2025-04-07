@@ -8,4 +8,5 @@ helm template --output-dir './scratch' longhorn/longhorn -n longhorn-system -f v
 
 # move yaml into base
 mv scratch/longhorn/templates/* base/
+mv base/uninstall-job.yaml overlays/uninstall
 ```
