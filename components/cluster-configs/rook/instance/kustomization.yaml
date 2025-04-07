@@ -16,9 +16,9 @@ patches:
     - op: replace
       path: /spec/storage/storageClassDeviceSets/0/volumeClaimTemplates/0/spec/resources/requests/storage
       value: 200Gi
-    # - op: replace
-    #   path: /spec/mgr/count
-    #   value: 1
+    - op: replace
+      path: /spec/mgr/count
+      value: 1
     - op: replace
       path: /spec/mgr/allowMultiplePerNode
       value: true
