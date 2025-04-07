@@ -38,10 +38,14 @@ patches:
     kind: CephFilesystem
 - patch: |-
     - op: replace
-      path: /spec/dataPool/replicated/size
-      value: 1
+      path: /spec/dataPool/replicated
+      value:
+        size: 1
+        requireSafeReplicaSize: false
     - op: replace
-      path: /spec/metadataPool/replicated/size
-      value: 1
+      path: /spec/metadataPool/replicated
+      value:
+        size: 1
+        requireSafeReplicaSize: false
   target:
     kind: CephObjectStore

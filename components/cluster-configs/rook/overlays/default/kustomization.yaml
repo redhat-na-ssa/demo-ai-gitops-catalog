@@ -3,7 +3,7 @@ kind: Kustomization
 
 components:
   - ../../components/ceph-cluster-aws
-  # - ../../components/obj-store
+  - ../../components/obj-store
   - ../../components/sc-block
   - ../../components/sc-cephfs
   - ../../components/toolbox
