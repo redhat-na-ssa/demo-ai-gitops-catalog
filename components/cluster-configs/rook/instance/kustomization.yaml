@@ -5,8 +5,8 @@ resources:
 - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/cluster-on-pvc.yaml
 - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/csi/cephfs/snapshotclass.yaml
 - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/csi/rbd/snapshotclass.yaml
-- storage.yaml
-
+- blockfs.yaml
+- cephfs.yaml
 
 patches:
 - patch: |-
