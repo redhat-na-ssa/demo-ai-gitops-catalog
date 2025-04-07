@@ -1,0 +1,159 @@
+---
+# Source: longhorn/templates/deployment-ui.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: longhorn
+    helm.sh/chart: longhorn-1.8.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: v1.8.1
+    app: longhorn-ui
+  name: longhorn-ui
+  namespace: longhorn-system
+  annotations:
+    service.alpha.openshift.io/serving-cert-secret-name: longhorn-ui-tls
+spec:
+  ports:
+  - name: longhorn-ui
+    port: 443
+    targetPort: 8443
+  selector:
+    app: longhorn-ui
+---
+# Source: longhorn/templates/deployment-ui.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app.kubernetes.io/name: longhorn
+    helm.sh/chart: longhorn-1.8.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: v1.8.1
+    app: longhorn-ui
+  name: longhorn-frontend
+  namespace: longhorn-system
+spec:
+  type: ClusterIP
+  selector:
+    app: longhorn-ui
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    nodePort: null
+---
+# Source: longhorn/templates/deployment-ui.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: longhorn
+    helm.sh/chart: longhorn-1.8.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: v1.8.1
+    app: longhorn-ui
+  name: longhorn-ui
+  namespace: longhorn-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: longhorn-ui
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: longhorn
+        helm.sh/chart: longhorn-1.8.1
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/version: v1.8.1
+        app: longhorn-ui
+    spec:
+      serviceAccountName: longhorn-ui-service-account
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - longhorn-ui
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: oauth-proxy
+        image: quay.io/openshift/origin-oauth-proxy:4.16
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8443
+          name: public
+        args:
+        - --https-address=:8443
+        - --provider=openshift
+        - --openshift-service-account=longhorn-ui-service-account
+        - --upstream=http://localhost:8000
+        - --tls-cert=/etc/tls/private/tls.crt
+        - --tls-key=/etc/tls/private/tls.key
+        - --cookie-secret=SECRET
+        - --openshift-sar={"namespace":"longhorn-system","group":"longhorn.io","resource":"setting","verb":"delete"}
+        volumeMounts:
+          - mountPath: /etc/tls/private
+            name: longhorn-ui-tls
+      - name: longhorn-ui
+        image: longhornio/longhorn-ui:v1.8.1
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name : nginx-cache
+          mountPath: /var/cache/nginx/
+        - name : nginx-config
+          mountPath: /var/config/nginx/
+        - name: var-run
+          mountPath: /var/run/
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+          - name: LONGHORN_MANAGER_IP
+            value: "http://longhorn-backend:9500"
+          - name: LONGHORN_UI_PORT
+            value: "8000"
+      volumes:
+      - name: longhorn-ui-tls
+        secret:
+          secretName: longhorn-ui-tls
+      - emptyDir: {}
+        name: nginx-cache
+      - emptyDir: {}
+        name: nginx-config
+      - emptyDir: {}
+        name: var-run
+      priorityClassName: "longhorn-critical"
+---
+# Source: longhorn/templates/deployment-ui.yaml
+# https://github.com/openshift/oauth-proxy/blob/master/contrib/sidecar.yaml
+# Create a proxy service account and ensure it will use the route "proxy"
+# Create a secure connection to the proxy via a route
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app.kubernetes.io/name: longhorn
+    helm.sh/chart: longhorn-1.8.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: v1.8.1
+    app: longhorn-ui
+  name: longhorn-ui
+  namespace: longhorn-system
+spec:
+  to:
+    kind: Service
+    name: longhorn-ui
+  tls:
+    termination: reencrypt
