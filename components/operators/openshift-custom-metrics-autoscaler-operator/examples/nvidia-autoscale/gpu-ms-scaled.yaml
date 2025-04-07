@@ -19,7 +19,7 @@ spec:
   triggers:
   - type: prometheus
     authenticationRef:
-      name: keda-trigger-auth-prometheus
+      name: scale-nvidia-gpu
     metadata:
       serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
       threshold: '1'
