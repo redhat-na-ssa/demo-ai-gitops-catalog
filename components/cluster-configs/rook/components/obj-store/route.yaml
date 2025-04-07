@@ -7,8 +7,8 @@ spec:
   port:
     targetPort: http
   tls:
-     insecureEdgeTerminationPolicy: Redirect
-     termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
   to:
     kind: Service
     name: rook-ceph-rgw-my-store
