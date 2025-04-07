@@ -1,0 +1,15 @@
+openshift:
+  enabled: true
+  ui:
+    route: "longhorn-ui"
+    port: 443
+    proxy: 8443
+image:
+  openshift:
+    oauthProxy:
+      repository: quay.io/openshift/origin-oauth-proxy
+      tag: 4.16
+persistence:
+  defaultClass: false
+defaultSettings:
+  logLevel: Info

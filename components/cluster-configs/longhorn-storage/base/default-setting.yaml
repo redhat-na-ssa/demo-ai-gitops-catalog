@@ -1,0 +1,18 @@
+---
+# Source: longhorn/templates/default-setting.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longhorn-default-setting
+  namespace: longhorn-system
+  labels:
+    app.kubernetes.io/name: longhorn
+    helm.sh/chart: longhorn-1.8.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: v1.8.1
+data:
+  default-setting.yaml: |-
+    priority-class: longhorn-critical
+    disable-revision-counter: true
+    log-level: Info
