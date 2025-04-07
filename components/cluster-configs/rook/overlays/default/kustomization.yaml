@@ -3,8 +3,9 @@ kind: Kustomization
 
 components:
   - ../../components/ceph-cluster-aws
-  - ../../components/fs-block
-  - ../../components/fs-ceph
+  - ../../components/obj-store
+  - ../../components/cs-block
+  - ../../components/cs-cephfs
   - ../../components/toolbox
 
 resources:

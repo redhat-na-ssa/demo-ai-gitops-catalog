@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: s3
+  namespace: rook-ceph
+spec:
+  port:
+    targetPort: http
+  tls:
+     insecureEdgeTerminationPolicy: Redirect
+     termination: edge
+  to:
+    kind: Service
+    name: rook-ceph-rgw-my-store
