@@ -3,8 +3,9 @@ kind: Component
 
 resources:
   - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/csi/cephfs/snapshotclass.yaml
-  - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/csi/cephfs/storageclass.yaml
-  - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/filesystem.yaml
+  # - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/csi/cephfs/storageclass.yaml
+  # - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/filesystem.yaml
+  - storage.yaml
 
 # patches:
 #   - path: exclude-subvol.yaml

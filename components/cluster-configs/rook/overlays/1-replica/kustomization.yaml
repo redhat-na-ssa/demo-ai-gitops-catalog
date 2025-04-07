@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../default
+  - cm.yaml
 
 patches:
 - patch: |-
