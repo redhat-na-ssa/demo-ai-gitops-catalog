@@ -22,7 +22,6 @@ spec:
       name: keda-trigger-auth-prometheus
     metadata:
       serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
-      # metricType: value
       threshold: '1'
       query: |
         # sum(kube_pod_resource_request{resource="nvidia.com/gpu"} >=1 ) by (pod, namespace)
@@ -34,6 +33,6 @@ spec:
             * on(namespace, pod) group_right(resource)
           kube_pod_resource_request{resource="nvidia.com/gpu"}
         )
-      authModes: "bearer"
-      # ignoreNullValues: "false"
-      # unsafeSsl: "false"
+      authModes: bearer
+      # ignoreNullValues: 'false'
+      # unsafeSsl: 'false'

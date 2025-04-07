@@ -1,6 +1,16 @@
-apiVersion: keda.sh/v1alpha1
 kind: KedaController
+apiVersion: keda.sh/v1alpha1
 metadata:
   name: keda
   namespace: openshift-keda
-spec: {}
+spec:
+  admissionWebhooks:
+    logEncoder: console
+    logLevel: info
+  metricsServer:
+    logLevel: '0'
+  operator:
+    logEncoder: console
+    logLevel: info
+  serviceAccount: null
+  watchNamespace: ''
