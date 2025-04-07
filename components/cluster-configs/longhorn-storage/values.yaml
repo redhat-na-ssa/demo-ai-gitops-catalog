@@ -9,3 +9,7 @@ image:
     oauthProxy:
       repository: quay.io/openshift/origin-oauth-proxy
       tag: 4.16
+persistence:
+  defaultClass: false
+defaultSettings:
+  logLevel: Info
