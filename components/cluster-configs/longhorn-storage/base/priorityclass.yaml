@@ -1,0 +1,16 @@
+---
+# Source: longhorn/templates/priorityclass.yaml
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: "longhorn-critical"
+  labels:
+    app.kubernetes.io/name: longhorn
+    helm.sh/chart: longhorn-1.8.1
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: v1.8.1
+description: "Ensure Longhorn pods have the highest priority to prevent any unexpected eviction by the Kubernetes scheduler under node pressure"
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+value: 1000000000
