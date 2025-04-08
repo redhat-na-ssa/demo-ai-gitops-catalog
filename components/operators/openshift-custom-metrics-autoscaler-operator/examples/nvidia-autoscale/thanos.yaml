@@ -1,0 +1,84 @@
+# https://github.com/naps-product-sa/openshift-batch/blob/slurm-operator/scheduling/slurm-operator/keda-objects.yaml
+# https://github.com/MoOyeg/flask-celery-microservice/tree/main
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: thanos-gpu
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: thanos-gpu-token
+  annotations:
+    kubernetes.io/service-account.name: thanos-gpu
+type: kubernetes.io/service-account-token
+---
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: scale-nvidia-gpu
+spec:
+  secretTargetRef:
+    - parameter: bearerToken
+      name: thanos-gpu-token
+      key: token
+    - parameter: ca
+      name: thanos-gpu-token
+      key: ca.crt
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: thanos-gpu-monitoring-view
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-monitoring-view
+subjects:
+  - kind: ServiceAccount
+    name: thanos-gpu
+    namespace: openshift-machine-api
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: thanos-gpu-metrics-reader
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+  - apiGroups:
+      - metrics.k8s.io
+    resources:
+      - pods
+      - nodes
+      - MachineSet
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - machine.openshift.io
+    resources:
+      - MachineSet
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: thanos-gpu-metrics-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: thanos-metrics-reader
+subjects:
+  - kind: ServiceAccount
+    name: thanos-gpu
+    namespace: openshift-machine-api
