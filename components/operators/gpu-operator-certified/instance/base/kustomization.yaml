@@ -9,3 +9,4 @@ components:
   - ../components/monitoring-dashboard
   - ../components/aro-gpu-machineset
   - ../components/aws-gpu-machineset
+  - ../components/gpu-monitoring
