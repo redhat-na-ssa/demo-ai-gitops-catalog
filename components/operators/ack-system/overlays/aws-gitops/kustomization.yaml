@@ -9,7 +9,7 @@ patches:
   - patch: |-
       - op: replace
         path: /data/ACK_WATCH_NAMESPACE
-        value: aws-ops
+        value: aws-gitops
     target:
       kind: ConfigMap
       name: ack-controller-user-config
@@ -18,7 +18,7 @@ patches:
 #       - op: add
 #         path: /spec/targetNamespaces
 #         value:
-#           - aws-ops
+#           - aws-gitops
 #     target:
 #       kind: OperatorGroup
 #       name: ack-system
