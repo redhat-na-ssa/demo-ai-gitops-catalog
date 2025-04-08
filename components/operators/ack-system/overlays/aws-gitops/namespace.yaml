@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: aws-ops
+  name: aws-gitops
   annotations:
     openshift.io/description: |
       Create your ACK Operator CRs Here
       !!! ACK Controllers are ALPHA !!!
-    openshift.io/display-name: AWS Ops via ACK Controllers
+    openshift.io/display-name: AWS GitOps via ACK Controllers

@@ -4,13 +4,6 @@
 # kludges
 # TODO: ArgoCD Hooks
 
-setup_namespace(){
-  NAMESPACE=${1}
-
-  oc new-project "${NAMESPACE}" 2>/dev/null || \
-    oc project "${NAMESPACE}"
-}
-
 ocp_aws_cluster(){
   oc -n kube-system get secret/aws-creds -o name > /dev/null 2>&1 || return 1
 }
@@ -34,23 +27,24 @@ ocp_aws_get_key(){
 ocp_aws_setup_ack_system(){
   NAMESPACE=ack-system
 
-  ocp_aws_get_key
+  ocp_aws_get_key || return
 
-  setup_namespace "${NAMESPACE}"
+  SCRIPTPATH="$( cd -- "$(dirname "$0")" || return >/dev/null 2>&1 ; pwd -P )"
+  cd "${SCRIPTPATH}" || return
 
-  oc apply -k ../"${NAMESPACE}"/aggregate/popular
+  oc apply -k ../instance
 
-  for type in ec2 ecr iam lambda route53 s3 sagemaker
+  for type in ec2 ecr eks iam lambda route53 s3 sagemaker
   do
 
-    oc apply -k ../ack-${type}-controller/operator/overlays/alpha
+    oc apply -k ../../ack-${type}-controller/operator/overlays/alpha
 
-    if oc -n "${NAMESPACE}" get secret "${type}-user-secrets" -o name; then
-      echo "Found: ${type}-user-secrets - not replacing"
+    if oc -n "${NAMESPACE}" get secret "ack-${type}-user-secrets" -o name >/dev/null 2>&1; then
+      echo "Found: ack-${type}-user-secrets - not replacing"
       continue
     fi
 
-    < ../ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
+    < ../../ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
       sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
       oc -n "${NAMESPACE}" apply -f -
   done
