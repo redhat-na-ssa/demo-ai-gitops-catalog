@@ -14,20 +14,24 @@ spec:
     apiVersion: machine.openshift.io/v1beta1
     kind: MachineSet
     name: g4dn-4xlarge
-  # advanced:
+  advanced:
   #   restoreToOriginalReplicaCount: true
+    horizontalPodAutoscalerConfig:
+
   triggers:
   - type: prometheus
     authenticationRef:
       # kind: ClusterTriggerAuthentication
       name: scale-nvidia-gpu
     metadata:
-      serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
-      # namespace for the metrics you want to query, NOT the object you want to scale
-      # there does not seem to be a way to query cluster wide metrics - only per namespace
-      # namespace: "*"
-      # namespace: openshift-machine-api
-      namespace: nvidia-gpu-verification
+      authModes: bearer
+      serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+      # see https://www.redhat.com/en/blog/thanos-querier-versus-thanos-querier
+      #
+      # serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
+      # port 9092 requires the namespace to be specified - only queries on namespace
+      # port 9091 is a cluster wide query
+      # namespace: nvidia-gpu-verification
       metricName: kube_pod_status_unschedulable
       threshold: '1'
       query: |
@@ -38,13 +42,22 @@ spec:
         # count by (namespace, pod) (kube_pod_status_unschedulable) and count by (namespace, pod) (kube_pod_resource_request{resource="nvidia.com/gpu"})
         # sum(kube_pod_status_unschedulable)
 
-        sum(kube_pod_resource_request{resource="nvidia.com/gpu"} >=1 ) by (pod, namespace)
+        # sum(kube_pod_resource_request{resource="nvidia.com/gpu"} >=1 ) by (pod, namespace)
 
-        # sum (
-        #   kube_pod_status_unschedulable
-        #     * on(namespace, pod) group_right(resource)
-        #   kube_pod_resource_request{resource="nvidia.com/gpu"}
-        # )
-      authModes: bearer
+        sum (
+          kube_pod_status_unschedulable
+            * on(namespace, pod) group_right(resource)
+          kube_pod_resource_request{resource="nvidia.com/gpu"}
+        )
       # ignoreNullValues: 'false'
       # unsafeSsl: 'false'
+  - type: prometheus
+    authenticationRef:
+      name: scale-nvidia-gpu
+    metadata:
+      authModes: bearer
+      serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+      metricName: kube_pod_resource_request
+      threshold: '1'
+      query: |
+        sum(kube_pod_resource_request{resource="nvidia.com/gpu"} >=1 )
