@@ -1,0 +1,50 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+components:
+  - ../../components/sno
+  - ../../components/obj-store
+  - ../../components/sc-block
+  - ../../components/sc-cephfs
+  - ../../components/toolbox
+
+resources:
+  - ../../base
+  - cm.yaml
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/replicated/size
+      value: 1
+  target:
+    kind: CephBlockPool
+- patch: |-
+    - op: replace
+      path: /spec/dataPools/0/replicated/size
+      value: 1
+    - op: replace
+      path: /spec/metadataPool/replicated/size
+      value: 1
+  target:
+    kind: CephFilesystem
+- patch: |-
+    - op: replace
+      path: /spec/dataPool/replicated
+      value:
+        size: 1
+        requireSafeReplicaSize: false
+    - op: replace
+      path: /spec/metadataPool/replicated
+      value:
+        size: 1
+        requireSafeReplicaSize: false
+  target:
+    kind: CephObjectStore
+- patch: |-
+    - op: add
+      path: /metadata/annotations/storageclass.kubernetes.io~1is-default-class
+      value: 'true'
+  target:
+    kind: StorageClass
+    name: rook-cephfs
