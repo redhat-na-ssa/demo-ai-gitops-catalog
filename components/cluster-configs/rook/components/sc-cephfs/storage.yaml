@@ -2,7 +2,7 @@
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystem
 metadata:
-  name: cephfspool
+  name: ceph-fs
   namespace: rook-ceph
 spec:
   metadataPool:
@@ -28,8 +28,8 @@ provisioner: rook-ceph.cephfs.csi.ceph.com
 allowVolumeExpansion: true
 parameters:
   clusterID: rook-ceph
-  fsName: cephfspool
-  pool: cephfspool-replicated
+  fsName: ceph-fs
+  pool: ceph-fs-replicated
   csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
   csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
   csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner

@@ -12,7 +12,7 @@ patches:
       value: 1
     - op: replace
       path: /spec/mgr/count
-      value: 1
+      value: 2
     - op: replace
       path: /spec/mgr/allowMultiplePerNode
       value: true
