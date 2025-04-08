@@ -19,11 +19,13 @@ spec:
   triggers:
   - type: prometheus
     authenticationRef:
+      # kind: ClusterTriggerAuthentication
       name: scale-nvidia-gpu
     metadata:
       serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9092
       # namespace for the metrics you want to query, NOT the object you want to scale
       # there does not seem to be a way to query cluster wide metrics - only per namespace
+      # namespace: "*"
       # namespace: openshift-machine-api
       namespace: nvidia-gpu-verification
       metricName: kube_pod_status_unschedulable
