@@ -6,7 +6,7 @@ metadata:
   namespace: rook-ceph
 spec:
   cephVersion:
-    image: quay.io/ceph/ceph:v17.2.3
+    image: quay.io/ceph/ceph:v19.2.1
     allowUnsupported: false
   dataDirHostPath: /var/lib/rook
   skipUpgradeChecks: false
@@ -23,9 +23,9 @@ spec:
         enabled: true
   dashboard:
     enabled: true
-    ssl: true
+    ssl: false
   monitoring:
-    enabled: false
+    enabled: true
   network:
     connections:
       encryption:
@@ -44,7 +44,7 @@ spec:
   annotations:
   labels:
   resources:
-  removeOSDsIfOutAndSafeToRemove: false
+  removeOSDsIfOutAndSafeToRemove: true
   priorityClassNames:
     mon: system-node-critical
     osd: system-node-critical
@@ -54,7 +54,9 @@ spec:
     useAllDevices: true
     devices:
     - name: "sdb"
+    - name: "vdb"
     - name: "sdc"
+    - name: "vdc"
     config:
       osdsPerDevice: "1"
     onlyApplyOSDPlacement: false
