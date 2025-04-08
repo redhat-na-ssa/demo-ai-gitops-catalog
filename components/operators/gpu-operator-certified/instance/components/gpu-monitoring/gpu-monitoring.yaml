@@ -2,7 +2,7 @@ apiVersion: monitoring.openshift.io/v1
 kind: AlertingRule
 metadata:
   name: gpu-pods
-  namespace: openshift-monitoring 
+  namespace: openshift-monitoring
 spec:
   groups:
   - name: gpu-pods
