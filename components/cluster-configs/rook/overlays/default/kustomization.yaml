@@ -4,9 +4,9 @@ kind: Kustomization
 components:
   - ../../components/ceph-cluster-aws
   - ../../components/obj-store
+  - ../../components/operator-toleration-all
   - ../../components/sc-block
   - ../../components/sc-cephfs
-  - ../../components/taint-toleration-all
   - ../../components/toolbox
 
 resources:

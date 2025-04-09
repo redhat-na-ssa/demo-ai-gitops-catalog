@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/crds.yaml
   - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/common.yaml
-  - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/operator-openshift.yaml
 
 patches:
 - patch: |-
