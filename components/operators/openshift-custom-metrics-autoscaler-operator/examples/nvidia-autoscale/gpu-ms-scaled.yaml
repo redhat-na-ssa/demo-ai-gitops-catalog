@@ -51,13 +51,13 @@ spec:
         )
       ignoreNullValues: 'false'
       # unsafeSsl: 'false'
-  - type: prometheus
-    authenticationRef:
-      name: scale-nvidia-gpu
-    metadata:
-      authModes: bearer
-      serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
-      metricName: kube_pod_resource_request
-      threshold: '1'
-      query: |
-        sum(kube_pod_resource_request{resource="nvidia.com/gpu"})
+  # - type: prometheus
+  #   authenticationRef:
+  #     name: scale-nvidia-gpu
+  #   metadata:
+  #     authModes: bearer
+  #     serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+  #     metricName: kube_pod_resource_request
+  #     threshold: '1'
+  #     query: |
+  #       sum(kube_pod_resource_request{resource="nvidia.com/gpu"})
