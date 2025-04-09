@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: rook-ceph-operator-config
+  namespace: rook-ceph
+data:
+  CSI_PLUGIN_TOLERATIONS: |
+    - operator: Exists
+  #   - effect: NoSchedule
+  #     key: node-role.kubernetes.io/control-plane
+  #     operator: Exists
