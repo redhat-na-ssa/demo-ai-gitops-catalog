@@ -3,6 +3,7 @@ kind: Kustomization
 
 components:
   - ../../components/no-metrics
+  - ../../components/taint-toleration-all
 
 resources:
   - ../../base
