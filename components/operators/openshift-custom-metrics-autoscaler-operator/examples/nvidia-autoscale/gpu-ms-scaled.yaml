@@ -32,7 +32,7 @@ spec:
       # port 9092 requires the namespace to be specified - only queries on namespace
       # port 9091 is a cluster wide query
       # namespace: nvidia-gpu-verification
-      # metricName: kube_pod_status_unschedulable
+      metricName: kube_pod_status_unschedulable
       threshold: '1'
       query: |
         # DEBUG
@@ -57,7 +57,7 @@ spec:
     metadata:
       authModes: bearer
       serverAddress: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
-      # metricName: kube_pod_resource_request
+      metricName: kube_pod_resource_request
       threshold: '1'
       query: |
-        (kube_pod_resource_request{resource="nvidia.com/gpu"})
+        sum(kube_pod_resource_request{resource="nvidia.com/gpu"})
