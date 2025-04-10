@@ -31,7 +31,7 @@ rules:
       - list
       - patch
   - apiGroups:
-      - ''
+      - batch
     resources:
       - jobs
     verbs:
