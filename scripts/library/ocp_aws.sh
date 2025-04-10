@@ -165,6 +165,11 @@ ocp_aws_machineset_create_gpu(){
   # https://aws.amazon.com/ec2/instance-types/dl1
   # 8 x gaudi:  dl1.24xlarge
 
+  [ -z "${1}" ] && \
+  echo "
+    usage: ocp_aws_machineset_create_gpu < instance type, default g4dn.4xlarge >
+  "
+
   INSTANCE_TYPE=${1:-g4dn.4xlarge}
 
   ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}"
