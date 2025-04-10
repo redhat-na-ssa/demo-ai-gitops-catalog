@@ -50,6 +50,15 @@ YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/
 term_init
 ```
 
+Make the enhanced web terminal permanent
+
+```sh
+oc apply -k https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/demos/components/install-web-terminal
+
+# delete old web terminal
+$(wtoctl | grep 'oc delete')
+```
+
 NOTE: open a new terminal to full activate the new configuration
 
 ---
