@@ -25,3 +25,4 @@ ignore:
   - "components/containers/web-terminal/src/*"
   - "components/operators/gpu-operator-certified/operator/components/console-plugin-helm/*"
   - "components/charts/*/templates/*"
+  - "components/dump/*"
