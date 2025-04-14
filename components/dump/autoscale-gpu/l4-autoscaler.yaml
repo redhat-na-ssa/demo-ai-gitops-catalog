@@ -1,0 +1,12 @@
+apiVersion: "autoscaling.openshift.io/v1beta1"
+kind: "MachineAutoscaler"
+metadata:
+  name: "gpu-l4-machineset-autoscaler"
+  namespace: "openshift-machine-api"
+spec:
+  minReplicas: 0
+  maxReplicas: 4
+  scaleTargetRef:
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet 
+    name: gpu-l4-machineset
