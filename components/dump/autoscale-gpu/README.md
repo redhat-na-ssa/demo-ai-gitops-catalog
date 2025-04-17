@@ -15,7 +15,7 @@ spec:
       metadata:
         labels:
           cluster-api/accelerator: nvidia-l4
-...
+```
 
 Create a A10 GPU Machineset (g5.xlarge)
 
@@ -32,7 +32,7 @@ spec:
       metadata:
         labels:
           cluster-api/accelerator: nvidia-a10g
-...
+```
 
 Install NFD Operator and NFD Instance as usual
 
