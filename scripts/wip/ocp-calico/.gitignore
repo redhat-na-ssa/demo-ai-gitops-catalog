@@ -1,0 +1,6 @@
+*_vars.yml
+generated/
+scratch/
+inventory.yml
+inventory/
+install-config.yaml

@@ -45,5 +45,5 @@ matrix:
     pipeline:
       - pyspelling.filters.python:
     sources:
-      - '!venv/**|!scratch/**|**/*.py'
+      - '!venv/**|!components/dump/**|!scratch/**|**/*.py'
     default_encoding: utf-8

@@ -129,7 +129,7 @@ ocp_aws_machineset_clone_worker(){
 
 ocp_aws_machineset_fix_storage(){
   MACHINE_SETS=${1:-$(oc -n openshift-machine-api get machineset -o name)}
-  HD_SIZE=200
+  HD_SIZE=${2:-200}
 
   for machine_set in ${MACHINE_SETS}
   do
