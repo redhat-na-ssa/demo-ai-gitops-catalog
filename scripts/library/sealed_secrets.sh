@@ -3,6 +3,20 @@
 SEALED_SECRETS_FOLDER="${GIT_ROOT}/components/operators/sealed-secrets-operator/operator/overlays/default"
 SEALED_SECRETS_SECRET="${GIT_ROOT}/bootstrap/sealed-secrets-secret.yaml"
 
+sealed_secret_check(){
+  if [ -f "${SEALED_SECRETS_SECRET}" ]; then
+    echo "Exists: ${SEALED_SECRETS_SECRET}"
+    oc apply -f "${SEALED_SECRETS_FOLDER}/namespace.yaml"
+    oc apply -f "${SEALED_SECRETS_SECRET}" || return 0
+    oc apply -k "${SEALED_SECRETS_FOLDER}"
+  else
+    echo "Missing: ${SEALED_SECRETS_SECRET}"
+    echo "The master key is required to bootstrap sealed secrets and CANNOT be checked into git."
+    echo
+    [ -n "${NON_INTERACTIVE}" ] || sealed_secret_create
+  fi
+}
+
 sealed_secret_create(){
   read -r -p "Create NEW [${SEALED_SECRETS_SECRET}]? [y/N] " input
   case $input in
@@ -44,18 +58,4 @@ sealed_secret_create(){
       sealed_secret_create
       ;;
   esac
-}
-
-sealed_secret_check(){
-  if [ -f "${SEALED_SECRETS_SECRET}" ]; then
-    echo "Exists: ${SEALED_SECRETS_SECRET}"
-    oc apply -f "${SEALED_SECRETS_FOLDER}/namespace.yaml"
-    oc apply -f "${SEALED_SECRETS_SECRET}" || return 0
-    oc apply -k "${SEALED_SECRETS_FOLDER}"
-  else
-    echo "Missing: ${SEALED_SECRETS_SECRET}"
-    echo "The master key is required to bootstrap sealed secrets and CANNOT be checked into git."
-    echo
-    [ -n "${NON_INTERACTIVE}" ] || sealed_secret_create
-  fi
 }

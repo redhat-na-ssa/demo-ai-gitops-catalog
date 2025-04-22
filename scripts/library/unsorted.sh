@@ -3,17 +3,6 @@
 # https://docs.openshift.com/container-platform/4.12/backup_and_restore/application_backup_and_restore/troubleshooting.html#velero-obtaining-by-accessing-binary_oadp-troubleshooting
 alias velero='oc -n openshift-adp exec deployment/velero -c velero -it -- ./velero'
 
-__run_all_functions(){
-  [ -e "/tmp/test-fun" ] || get_functions | grep -E -v 'argo|^_' > /tmp/test-fun
-
-  # shellcheck disable=SC2013
-  for i in $(grep -v '^ *#' /tmp/test-fun)
-  do
-    echo -e "${RED}DEBUG: ${ORANGE}$i${NC}"
-    $i && sed -i "/$i/d" /tmp/test-fun
-  done
-}
-
 select_folder(){
   FOLDER="${1:-options}"
   PS3="Select by number: "
@@ -39,17 +28,7 @@ select_folder(){
   popd >/dev/null || return
 }
 
-setup_namespace(){
-  NAMESPACE=${1}
 
-  oc new-project "${NAMESPACE}" 2>/dev/null || \
-    oc project "${NAMESPACE}"
-}
-
-ocp_gcp_get_key(){
-  # get gcp creds
-  oc -n kube-system extract secret/gcp-credentials --keys=service_account.json --to=- | jq . > scratch/service_account.json
-}
 
 lint_wordlist_reset(){
   which pyspelling >/dev/null 2>&1 || return 0

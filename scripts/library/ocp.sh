@@ -49,12 +49,6 @@ ocp_auth_setup_user(){
   "
 }
 
-ocp_check_login(){
-  oc whoami || return 1
-  oc cluster-info | head -n1
-  echo
-}
-
 ocp_check_info(){
   echo "== OCP INFO =="
   ocp_check_login || return 1
@@ -63,10 +57,74 @@ ocp_check_info(){
   sleep "${SLEEP_SECONDS:-8}"
 }
 
+ocp_check_login(){
+  oc whoami || return 1
+  oc cluster-info | head -n1
+  echo
+}
+
 ocp_clean_install_pods(){
   oc delete pod \
     -A \
     -l app=installer
+}
+
+ocp_control_nodes_not_schedulable(){
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": false}}'
+}
+
+ocp_control_nodes_schedulable(){
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
+}
+
+ocp_expose_image_registry(){
+  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"defaultRoute":true}}'
+
+  # remove 'default-route-openshift-image-' from route
+  HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+  SHORTER_HOST=$(echo "${HOST}" | sed '/host/ s/default-route-openshift-image-//')
+  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'"${SHORTER_HOST}"'"}}'
+
+  echo "OCP image registry is available at: ${SHORTER_HOST}"
+}
+
+ocp_get_apps_domain(){
+  oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
+}
+
+ocp_get_domain(){
+  OCP_APPS_DOMAIN=$(ocp_get_apps_domain)
+  echo "${OCP_APPS_DOMAIN#apps.}"
+}
+
+ocp_get_kubeconfigs(){
+  # https://rcarrata.com/openshift/regenerate-kubeconfig/
+  # https://gist.githubusercontent.com/rcarrata/016da295c1421cccbfbd66ed9a7922bc/raw/855486c363734892988cdf1b5d0d26ece5e0960a/regenerate-kubeconfig.sh
+  # https://access.redhat.com/solutions/6054981
+  # https://access.redhat.com/solutions/5286371
+  # https://access.redhat.com/solutions/6112601
+
+  oc -n openshift-kube-apiserver extract secret/node-kubeconfigs
+}
+
+ocp_get_pull_secret(){
+  oc -n openshift-config \
+    get secret/pull-secret \
+    --template='{{index .data ".dockerconfigjson" | base64decode}}'
+}
+
+ocp_gpu_pretty_label(){
+  oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
+}
+
+ocp_gpu_taint_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
+  oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
+  oc adm uncordon -l node-role.kubernetes.io/gpu
+}
+
+ocp_gpu_untaint_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }
 
 ocp_kubeadmin_create(){
@@ -119,27 +177,6 @@ ocp_kubeadmin_remove(){
   fi
 }
 
-ocp_get_apps_domain(){
-  oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
-}
-
-ocp_get_domain(){
-  OCP_APPS_DOMAIN=$(ocp_get_apps_domain)
-  echo "${OCP_APPS_DOMAIN#apps.}"
-}
-
-ocp_machineset_taint_gpu(){
-  SHORT_NAME=${1:-g4dn}
-  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
-
-  echo "Patching: ${MACHINE_SET}"
-
-  # taint nodes for gpu-only workloads
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
-}
-
 ocp_machineset_create_autoscale(){
   MACHINE_MIN=${1:-0}
   MACHINE_MAX=${2:-4}
@@ -164,6 +201,19 @@ YAML
   done
 }
 
+ocp_machineset_patch_accelerator(){
+  MACHINE_SET_NAME=${1:-gpu}
+  LABEL=${2:-nvidia-gpu}
+
+  oc -n openshift-machine-api \
+    patch machineset "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"'"${LABEL}"'"}}}}}}'
+  
+  oc -n openshift-machine-api \
+    patch machineset "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
+}
+
 ocp_machineset_scale(){
   REPLICAS=${1:-1}
   MACHINE_SETS=${2:-$(oc -n openshift-machine-api get machineset -o name)}
@@ -175,47 +225,16 @@ ocp_machineset_scale(){
       scale --replicas="${REPLICAS}"
 }
 
-ocp_control_nodes_not_schedulable(){
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": false}}'
-}
+ocp_machineset_taint_gpu(){
+  SHORT_NAME=${1:-g4dn}
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
 
-ocp_control_nodes_schedulable(){
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"mastersSchedulable": true}}'
-}
+  echo "Patching: ${MACHINE_SET}"
 
-ocp_set_scheduler_profile(){
-  SCHED_PROFILE=${1:-LowNodeUtilization}
-
-  # LowNodeUtilization, HighNodeUtilization, NoScoring
-  echo "see https://docs.openshift.com/container-platform/4.16/nodes/scheduling/nodes-scheduler-profiles.html"
-  echo "OPTIONS: LowNodeUtilization (default), HighNodeUtilization, NoScoring"
-  echo "SCHED_PROFILE: ${SCHED_PROFILE}"
-
-  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}'
-}
-
-# save money in aws
-ocp_save_money(){
-
-  # run work on masters
-  ocp_control_nodes_schedulable
-
-  # scale to zero
-  ocp_machineset_scale 0
-
-  # place as many pods on as few nodes as possible
-  ocp_set_scheduler_profile HighNodeUtilization
-}
-
-ocp_expose_image_registry(){
-  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"defaultRoute":true}}'
-
-  # remove 'default-route-openshift-image-' from route
-  HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
-  SHORTER_HOST=$(echo "${HOST}" | sed '/host/ s/default-route-openshift-image-//')
-  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'"${SHORTER_HOST}"'"}}'
-
-  echo "OCP image registry is available at: ${SHORTER_HOST}"
+  # taint nodes for gpu-only workloads
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
 }
 
 ocp_release_info(){
@@ -251,6 +270,40 @@ ocp_run_on_all_nodes(){
 
 }
 
+ocp_save_money(){
+
+  # run work on masters
+  ocp_control_nodes_schedulable
+
+  # scale to zero
+  ocp_machineset_scale 0
+
+  # place as many pods on as few nodes as possible
+  ocp_set_scheduler_profile HighNodeUtilization
+}
+
+ocp_set_scheduler_profile(){
+  SCHED_PROFILE=${1:-LowNodeUtilization}
+
+  # LowNodeUtilization, HighNodeUtilization, NoScoring
+  echo "see https://docs.openshift.com/container-platform/4.16/nodes/scheduling/nodes-scheduler-profiles.html"
+  echo "OPTIONS: LowNodeUtilization (default), HighNodeUtilization, NoScoring"
+  echo "SCHED_PROFILE: ${SCHED_PROFILE}"
+
+  oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}'
+}
+
+ocp_setup_namespace(){
+  NAMESPACE=${1}
+
+  oc new-project "${NAMESPACE}" 2>/dev/null || \
+    oc project "${NAMESPACE}"
+}
+
+ocp_upgrade_ack_4.13(){
+  oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.12-kube-1.26-api-removals-in-4.13":"true"}}' --type=merge
+}
+
 ocp_upgrade_cluster(){
   OCP_VERSION="${1:-latest}"
 
@@ -259,38 +312,4 @@ ocp_upgrade_cluster(){
   else
     oc adm upgrade --to="${OCP_VERSION}"
   fi
-}
-
-ocp_ack_upgrade_4.13(){
-  oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.12-kube-1.26-api-removals-in-4.13":"true"}}' --type=merge
-}
-
-ocp_gpu_taint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
-  oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
-  oc adm uncordon -l node-role.kubernetes.io/gpu
-}
-
-ocp_gpu_untaint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
-}
-
-ocp_gpu_pretty_label(){
-  oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
-}
-
-ocp_get_pull_secret(){
-  oc -n openshift-config \
-    get secret/pull-secret \
-    --template='{{index .data ".dockerconfigjson" | base64decode}}'
-}
-
-ocp_get_kubeconfigs(){
-  # https://rcarrata.com/openshift/regenerate-kubeconfig/
-  # https://gist.githubusercontent.com/rcarrata/016da295c1421cccbfbd66ed9a7922bc/raw/855486c363734892988cdf1b5d0d26ece5e0960a/regenerate-kubeconfig.sh
-  # https://access.redhat.com/solutions/6054981
-  # https://access.redhat.com/solutions/5286371
-  # https://access.redhat.com/solutions/6112601
-
-  oc -n openshift-kube-apiserver extract secret/node-kubeconfigs
 }

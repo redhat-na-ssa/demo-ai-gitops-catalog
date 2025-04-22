@@ -29,6 +29,7 @@ bashrc
 BASHRC
 bB
 bc
+BGP
 blockDevices
 busybox
 bz
@@ -45,6 +46,7 @@ chroot
 clustermanagementaddons
 clustermanagers
 CN
+cniIngressRules
 consoleplugin
 Containerfile
 containerregistry
@@ -104,6 +106,7 @@ fi
 FiloSottile
 finalizers
 FNR
+fromPort
 Fv
 GatewayPorts
 gaudi
@@ -208,12 +211,14 @@ observabilityaddons
 odc
 onmicrosoft
 oO
+OpenShiftSDN
 openssl
 operatorframework
 opm
 Opqaue
 oras
 OU
+OVNKubernetes
 OwnNamespace
 packagemanifest
 packagemanifests
@@ -230,6 +235,7 @@ POSIX
 preferredVersion
 PREROUTING
 printf
+projectcalico
 providerSpec
 PublicDnsName
 publickey
@@ -237,6 +243,7 @@ pv
 py
 pyspelling
 qi
+qO
 rcarrata
 readme
 redis
@@ -255,6 +262,7 @@ schedulable
 schemas
 SCHEMAS
 SCRIPTPATH
+sdn
 searchcustomizations
 searchoperators
 ServerAliveInterval
@@ -285,9 +293,12 @@ systemctl
 systemd
 targetNamespaces
 tcp
+tgz
 tkn
 tls
+toPort
 tpm
+Typha
 uid
 uname
 uncordon
@@ -319,12 +330,14 @@ WantedBy
 wc
 webhook
 webhooks
+wget
 wipefs
 wo
 wordlist
 xargs
 xlarge
 xvdb
+xvz
 xz
 yamllint
 yml

@@ -1,17 +1,5 @@
 #!/bin/bash
 
-ocp_mirror_set_pull_secret(){
-  export DOCKER_CONFIG="${GIT_ROOT}/scratch"
-
-  [ -e "${DOCKER_CONFIG}/config.json" ] && return
-
-  oc -n openshift-config \
-    extract secret/pull-secret \
-    --to=- | tee "${GIT_ROOT}/scratch/pull-secret" > "${DOCKER_CONFIG}/config.json"
-
-  # cat scratch/pull-secret | jq .
-}
-
 ocp_mirror_dry_run(){
   DOC_URL=https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-installation-images.html
 
@@ -33,7 +21,7 @@ ocp_mirror_dry_run(){
 
   [ -d "${REMOVABLE_MEDIA_PATH}" ] || mkdir -p "${REMOVABLE_MEDIA_PATH}"
 
-  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_set_pull_secret
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_setup_pull_secret
 
   echo oc adm release mirror \
     -a "${LOCAL_SECRET_JSON}"  \
@@ -57,7 +45,7 @@ ocp_mirror_operator_catalog_list(){
 
   which oc-mirror >/dev/null 1>&2 || return
 
-  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_set_pull_secret
+  [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_setup_pull_secret
 
   echo "Please be patient. This process is slow..." 1>&2
   echo "oc mirror list operators --catalog ${INDEX}" 1>&2
@@ -69,7 +57,7 @@ ocp_mirror_operator_catalog_list(){
 }
 
 ocp_mirror_operator_catalog_list_all(){
-  VERSION=4.12
+  VERSION=4.16
   # redhat-operators
   INDEX_LIST="registry.redhat.io/redhat/redhat-operator-index:v${VERSION}"
   # certified-operators
@@ -83,4 +71,16 @@ ocp_mirror_operator_catalog_list_all(){
   do
     ocp_mirror_operator_list "${index}"
   done
+}
+
+ocp_mirror_setup_pull_secret(){
+  export DOCKER_CONFIG="${GIT_ROOT}/scratch"
+
+  [ -e "${DOCKER_CONFIG}/config.json" ] && return
+
+  oc -n openshift-config \
+    extract secret/pull-secret \
+    --to=- | tee "${GIT_ROOT}/scratch/pull-secret" > "${DOCKER_CONFIG}/config.json"
+
+  # cat scratch/pull-secret | jq .
 }

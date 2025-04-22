@@ -1,25 +1,11 @@
 #!/bin/bash
-
-genpass(){
-  < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
-}
-
+  
 apply_config(){
   if [ ! -f "$1" ]; then
     echo "${1:-file} not found"
     return 1
   fi
   retry oc apply -f "$1" 2>/dev/null
-}
-
-apply_kustomize(){
-  if [ ! -f "${1}/kustomization.yaml" ]; then
-    echo "Please provide a dir with 'kustomization.yaml'"
-    echo "'kustomization.yaml' not found in ${1}"
-    return 1
-  fi
-
-  retry oc apply -k "$1" 2>/dev/null
 }
 
 apply_firmly(){
@@ -33,16 +19,47 @@ apply_firmly(){
   until_true oc apply -k "${1}" 2>/dev/null
 }
 
-until_true(){
-  echo "Running:" "${@}"
-  echo "Press <ctrl> + c to cancel"
-  until "${@}" 1>&2
+apply_kustomize(){
+  if [ ! -f "${1}/kustomization.yaml" ]; then
+    echo "Please provide a dir with 'kustomization.yaml'"
+    echo "'kustomization.yaml' not found in ${1}"
+    return 1
+  fi
+
+  retry oc apply -k "$1" 2>/dev/null
+}
+
+function_extract(){
+  EXPORT_NAME=${1:-ocp_check_login}
+  FILE=${2:-scripts/library/ocp.sh}
+
+  sed -n '/'"${EXPORT_NAME}"'(){/,/^}/p' "${FILE}"
+}
+
+function_list(){
+  FILE=${1:-scripts/library/ocp.sh}
+  sed -n '/(){/ {/^_/d; s/(){$//p}' "${FILE}" | sort -u
+}
+
+function_sort_file(){
+  FILE=${1:-scripts/library/ocp.sh}
+
+  # create new script
+  echo \
+  "#!/bin/bash
+  " > tmp
+
+  for function in $(function_list "${FILE}")
   do
-    echo "again..."
-    sleep 20
+    function_extract "$function" "${FILE}" >> tmp
+    echo >> tmp
   done
 
-  echo "[OK]"
+  mv tmp "${FILE}"
+}
+
+genpass(){
+  < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
 }
 
 retry(){
@@ -68,9 +85,14 @@ retry(){
   echo "[OK]"
 }
 
-extract_function(){
-  EXPORT_NAME=${1:-ocp_aws_cluster}
-  FILE=${2:-scripts/library/ocp.sh}
+until_true(){
+  echo "Running:" "${@}"
+  echo "Press <ctrl> + c to cancel"
+  until "${@}" 1>&2
+  do
+    echo "again..."
+    sleep 20
+  done
 
-  sed -n '/'"${EXPORT_NAME}"'(){/,/^}/p' "${FILE}"
+  echo "[OK]"
 }

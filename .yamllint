@@ -21,8 +21,9 @@ rules:
       components/operators/ack-controllers/base/adoptedresources-crd.yaml
 
 ignore:
-  - "scratch/*"
+  - "**/scratch/*"
+  - "**/generated/*"
+  - "**/dump/*"
   - "components/containers/web-terminal/src/*"
   - "components/operators/gpu-operator-certified/operator/components/console-plugin-helm/*"
   - "components/charts/*/templates/*"
-  - "components/dump/*"

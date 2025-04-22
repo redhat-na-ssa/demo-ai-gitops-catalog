@@ -1,15 +1,18 @@
 #!/bin/bash
+  
+nvidia_console_plugin_activate(){
+  if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
+    oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
+  else
+    oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" | grep -q console-plugin-nvidia-gpu || \
+      oc patch consoles.operator.openshift.io cluster --patch '[{"op": "add", "path": "/spec/plugins/-", "value": "console-plugin-nvidia-gpu" }]' --type=json
+  fi
 
-nvidia_setup_dashboard_monitor(){
-  curl -sLfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
-  oc -n openshift-config-managed create configmap nvidia-dcgm-exporter-dashboard --from-file=dcgm-exporter-dashboard.json || true
-  oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/dashboard=true" --overwrite
-  oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/odc-dashboard=true" --overwrite
-  oc -n openshift-config-managed get cm nvidia-dcgm-exporter-dashboard --show-labels
-  rm dcgm-exporter-dashboard.json
+  oc patch clusterpolicies.nvidia.com gpu-cluster-policy --patch '{ "spec": { "dcgmExporter": { "config": { "name": "console-plugin-nvidia-gpu" } } } }' --type=merge
+  oc -n nvidia-gpu-operator get deploy -l app.kubernetes.io/name=console-plugin-nvidia-gpu
 }
 
-nvidia_install_console_plugin_dump_helm(){
+nvidia_console_plugin_dump_helm_install(){
   # alternative: if no helm
   OUTPUT_PATH=components/operators/gpu-operator-certified/operator/components/console-plugin
   DUMP_PATH="${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/console-plugin-nvidia-gpu/templates"
@@ -38,7 +41,7 @@ nvidia_install_console_plugin_dump_helm(){
   
 }
 
-nvidia_install_console_plugin(){
+nvidia_console_plugin_install(){
   GIT_URL=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
 
   if which helm; then
@@ -50,24 +53,16 @@ nvidia_install_console_plugin(){
   fi
 }
 
-nvidia_activate_console_plugin(){
-  if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
-    oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
-  else
-    oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" | grep -q console-plugin-nvidia-gpu || \
-      oc patch consoles.operator.openshift.io cluster --patch '[{"op": "add", "path": "/spec/plugins/-", "value": "console-plugin-nvidia-gpu" }]' --type=json
-  fi
-
-  oc patch clusterpolicies.nvidia.com gpu-cluster-policy --patch '{ "spec": { "dcgmExporter": { "config": { "name": "console-plugin-nvidia-gpu" } } } }' --type=merge
-  oc -n nvidia-gpu-operator get deploy -l app.kubernetes.io/name=console-plugin-nvidia-gpu
+nvidia_dashboard_monitor_setup(){
+  curl -sLfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
+  oc -n openshift-config-managed create configmap nvidia-dcgm-exporter-dashboard --from-file=dcgm-exporter-dashboard.json || true
+  oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/dashboard=true" --overwrite
+  oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/odc-dashboard=true" --overwrite
+  oc -n openshift-config-managed get cm nvidia-dcgm-exporter-dashboard --show-labels
+  rm dcgm-exporter-dashboard.json
 }
 
-nvidia_setup_console_plugin(){
-  nvidia_install_console_plugin || return
-  nvidia_activate_console_plugin || return
-}
-
-nvidia_setup_mig_config(){
+nvidia_mig_config_setup(){
   MIG_MODE=${1:-single}
   MIG_CONFIG=${2:-all-1g.5gb}
   INSTANCE_TYPE=p4d.24xlarge
@@ -82,4 +77,9 @@ nvidia_setup_mig_config(){
     patch "${MACHINE_SET_TYPE}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/mig.config":"'"${MIG_CONFIG}"'"}}}}}}'
 
+}
+
+nvidia_setup_console_plugin(){
+  nvidia_console_plugin_install || return
+  nvidia_console_plugin_activate || return
 }

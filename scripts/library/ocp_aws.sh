@@ -1,11 +1,49 @@
 #!/bin/bash
 
+ocp_aws_ack_system_setup(){
+  NAMESPACE=ack-system
+
+  ocp_aws_get_key
+
+  setup_namespace ${NAMESPACE}
+
+  oc apply -k "${GIT_ROOT}"/components/operators/${NAMESPACE}/aggregate/popular
+
+  for type in ec2 ecr iam lambda route53 s3 sagemaker
+  do
+
+    oc apply -k "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha
+
+    if oc -n "${NAMESPACE}" get secret "${type}-user-secrets" -o name; then
+      echo "Found: ${type}-user-secrets - not replacing"
+      continue
+    fi
+
+    < "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
+      sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
+      oc -n ${NAMESPACE} apply -f -
+  done
+}
+
 ocp_aws_cluster(){
   TARGET_NS=kube-system
   OBJ=secret/aws-creds
   echo "Checking if ${OBJ} exists in ${TARGET_NS} namespace"
   oc -n "${TARGET_NS}" get "${OBJ}" -o name > /dev/null 2>&1 || return 1
   echo "AWS cluster detected"
+}
+
+ocp_aws_cluster_autoscaling(){
+  oc apply -k https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/cluster-configs/autoscale/overlays/gpus
+
+  ocp_aws_machineset_create_gpu g4dn.4xlarge
+  ocp_machineset_create_autoscale 0 3
+
+  # scale workers to 1
+  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker | head -n1)"
+  ocp_machineset_scale 1 "${WORKER_MS}"
+
+  ocp_control_nodes_schedulable
 }
 
 ocp_aws_get_key(){
@@ -64,94 +102,6 @@ ocp_aws_machineset_clone_worker(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${SHORT_NAME}"'":""}}}}}}'
-}
-
-ocp_aws_machineset_fix_storage(){
-  MACHINE_SETS=${1:-$(oc -n openshift-machine-api get machineset -o name)}
-  HD_SIZE=${2:-200}
-
-  for machine_set in ${MACHINE_SETS}
-  do
-    echo "Patching aws storage for machineset: ${machine_set}"
-    oc -n openshift-machine-api \
-      get "${machine_set}" -o yaml | \
-        sed 's/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
-          s/volumeType: gp2/volumeType: gp3/' | \
-      oc apply -f -
-  done
-}
-
-ocp_aws_create_odf_machineset(){
-  INSTANCE_TYPE=${1:-m6a.2xlarge}
-  SHORT_NAME=${2:-odf-infra}
-
-  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}" "${SHORT_NAME}"
-
-  MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
-
-  echo "Patching: ${MACHINE_SET_NAME}"
-
-cat << YAML > /tmp/patch.yaml
-spec:
-  replicas: 3
-  template:
-    spec:
-      taints:
-        - key: node.ocs.openshift.io/storage
-          value: 'true'
-          effect: NoSchedule
-      metadata:
-        labels:
-          cluster.ocs.openshift.io/openshift-storage: ''
-          node-role.kubernetes.io/infra: ''
-      providerSpec:
-        value:
-          blockDevices:
-            - ebs:
-                encrypted: true
-                iops: 0
-                kmsKey:
-                  arn: ''
-                volumeSize: 100
-                volumeType: gp3
-            # - deviceName: /dev/xvdb
-            #   ebs:
-            #     encrypted: true
-            #     iops: 0
-            #     kmsKey:
-            #       arn: ''
-            #     volumeSize: 1000
-            #     volumeType: gp3
-YAML
-
-  # patch storage
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_NAME}" \
-    --type=merge --patch "$(cat /tmp/patch.yaml)"
-
-}
-
-ocp_aws_machineset_create_metal(){
-  # https://aws.amazon.com/ec2/instance-types/m5zn
-  # m5.metal
-  # m5n.metal
-
-  INSTANCE_TYPE=${1:-m5n.metal}
-
-  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}"
-
-  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
-
-  echo "Patching: ${MACHINE_SET_TYPE}"
-
-  # cosmetic
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/metal":""}}}}}}'
-
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_TYPE}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
 
 ocp_aws_machineset_create_gpu(){
@@ -220,40 +170,90 @@ ocp_aws_machineset_create_gpu(){
 #     --type=merge --patch "$(cat /tmp/patch.yaml)"
 }
 
-ocp_aws_cluster_autoscaling(){
-  oc apply -k https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/components/cluster-configs/autoscale/overlays/gpus
+ocp_aws_machineset_create_metal(){
+  # https://aws.amazon.com/ec2/instance-types/m5zn
+  # m5.metal
+  # m5n.metal
 
-  ocp_aws_machineset_create_gpu g4dn.4xlarge
-  ocp_machineset_create_autoscale 0 3
+  INSTANCE_TYPE=${1:-m5n.metal}
 
-  # scale workers to 1
-  WORKER_MS="$(oc -n openshift-machine-api get machineset -o name | grep worker | head -n1)"
-  ocp_machineset_scale 1 "${WORKER_MS}"
+  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}"
 
-  ocp_control_nodes_schedulable
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+
+  echo "Patching: ${MACHINE_SET_TYPE}"
+
+  # cosmetic
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_TYPE}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/metal":""}}}}}}'
+
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_TYPE}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"providerSpec":{"value":{"instanceType":"'"${INSTANCE_TYPE}"'"}}}}}}'
 }
 
-ocp_aws_setup_ack_system(){
-  NAMESPACE=ack-system
+ocp_aws_machineset_create_odf(){
+  INSTANCE_TYPE=${1:-m6a.2xlarge}
+  SHORT_NAME=${2:-odf-infra}
 
-  ocp_aws_get_key
+  ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}" "${SHORT_NAME}"
 
-  setup_namespace ${NAMESPACE}
+  MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
 
-  oc apply -k "${GIT_ROOT}"/components/operators/${NAMESPACE}/aggregate/popular
+  echo "Patching: ${MACHINE_SET_NAME}"
 
-  for type in ec2 ecr iam lambda route53 s3 sagemaker
+cat << YAML > /tmp/patch.yaml
+spec:
+  replicas: 3
+  template:
+    spec:
+      taints:
+        - key: node.ocs.openshift.io/storage
+          value: 'true'
+          effect: NoSchedule
+      metadata:
+        labels:
+          cluster.ocs.openshift.io/openshift-storage: ''
+          node-role.kubernetes.io/infra: ''
+      providerSpec:
+        value:
+          blockDevices:
+            - ebs:
+                encrypted: true
+                iops: 0
+                kmsKey:
+                  arn: ''
+                volumeSize: 100
+                volumeType: gp3
+            # - deviceName: /dev/xvdb
+            #   ebs:
+            #     encrypted: true
+            #     iops: 0
+            #     kmsKey:
+            #       arn: ''
+            #     volumeSize: 1000
+            #     volumeType: gp3
+YAML
+
+  # patch storage
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_NAME}" \
+    --type=merge --patch "$(cat /tmp/patch.yaml)"
+
+}
+
+ocp_aws_machineset_fix_storage(){
+  MACHINE_SETS=${1:-$(oc -n openshift-machine-api get machineset -o name)}
+  HD_SIZE=${2:-200}
+
+  for machine_set in ${MACHINE_SETS}
   do
-
-    oc apply -k "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha
-
-    if oc -n "${NAMESPACE}" get secret "${type}-user-secrets" -o name; then
-      echo "Found: ${type}-user-secrets - not replacing"
-      continue
-    fi
-
-    < "${GIT_ROOT}"/components/operators/ack-${type}-controller/operator/overlays/alpha/user-secrets-secret.yaml \
-      sed "s@UPDATE_AWS_ACCESS_KEY_ID@${AWS_ACCESS_KEY_ID}@; s@UPDATE_AWS_SECRET_ACCESS_KEY@${AWS_SECRET_ACCESS_KEY}@" | \
-      oc -n ${NAMESPACE} apply -f -
+    echo "Patching aws storage for machineset: ${machine_set}"
+    oc -n openshift-machine-api \
+      get "${machine_set}" -o yaml | \
+        sed 's/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
+          s/volumeType: gp2/volumeType: gp3/' | \
+      oc apply -f -
   done
 }
