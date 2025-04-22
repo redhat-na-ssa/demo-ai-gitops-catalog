@@ -1,5 +1,5 @@
 #!/bin/bash
-
+  
 apply_config(){
   if [ ! -f "$1" ]; then
     echo "${1:-file} not found"
@@ -47,7 +47,6 @@ function_sort_file(){
   # create new script
   echo \
   "#!/bin/bash
-  
   " > tmp
 
   for function in $(function_list "${FILE}")
