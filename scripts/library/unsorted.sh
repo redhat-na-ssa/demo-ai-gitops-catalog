@@ -28,17 +28,7 @@ select_folder(){
   popd >/dev/null || return
 }
 
-setup_namespace(){
-  NAMESPACE=${1}
 
-  oc new-project "${NAMESPACE}" 2>/dev/null || \
-    oc project "${NAMESPACE}"
-}
-
-ocp_gcp_get_key(){
-  # get gcp creds
-  oc -n kube-system extract secret/gcp-credentials --keys=service_account.json --to=- | jq . > scratch/service_account.json
-}
 
 lint_wordlist_reset(){
   which pyspelling >/dev/null 2>&1 || return 0

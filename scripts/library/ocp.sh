@@ -293,6 +293,13 @@ ocp_set_scheduler_profile(){
   oc patch schedulers.config.openshift.io/cluster --type merge --patch '{"spec":{"profile": "'"${SCHED_PROFILE}"'"}}'
 }
 
+ocp_setup_namespace(){
+  NAMESPACE=${1}
+
+  oc new-project "${NAMESPACE}" 2>/dev/null || \
+    oc project "${NAMESPACE}"
+}
+
 ocp_upgrade_ack_4.13(){
   oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.12-kube-1.26-api-removals-in-4.13":"true"}}' --type=merge
 }
@@ -306,4 +313,3 @@ ocp_upgrade_cluster(){
     oc adm upgrade --to="${OCP_VERSION}"
   fi
 }
-
