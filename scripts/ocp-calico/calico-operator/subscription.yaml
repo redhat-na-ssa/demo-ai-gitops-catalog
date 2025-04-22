@@ -9,4 +9,4 @@ spec:
   name: tigera-operator
   source: certified-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: tigera-operator.v1.36.7
+  # startingCSV: tigera-operator.v1.36.2

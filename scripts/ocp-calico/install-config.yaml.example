@@ -1,0 +1,44 @@
+additionalTrustBundlePolicy: Proxyonly
+apiVersion: v1
+baseDomain: sandbox321.opentlc.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform:
+    aws:
+      zones:
+      - us-east-2a
+      - us-east-2b
+      - us-east-2c
+      type: m5a.2xlarge
+  replicas: 0
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform:
+    aws:
+      zones:
+      - us-east-2a
+      type: m5a.2xlarge
+  replicas: 1
+metadata:
+  creationTimestamp: null
+  name: ocp
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: Calico
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  aws:
+    region: us-east-2
+publish: External
+pullSecret: ''
+sshKey: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIXLGAxOZLWpV1WWRu4GnFWEHVmLiSeXsMoChi4rXvDl cory@kowdora

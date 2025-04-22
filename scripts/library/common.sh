@@ -51,7 +51,7 @@ function_sort_file(){
 
   for function in $(function_list "${FILE}")
   do
-    function_extract $function "${FILE}" >> tmp
+    function_extract "$function" "${FILE}" >> tmp
     echo >> tmp
   done
 
