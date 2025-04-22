@@ -1,5 +1,16 @@
 #!/bin/bash
 
+__run_all_functions(){
+  [ -e "/tmp/test-fun" ] || get_functions | grep -E -v 'argo|^_' > /tmp/test-fun
+
+  # shellcheck disable=SC2013
+  for i in $(grep -v '^ *#' /tmp/test-fun)
+  do
+    echo -e "${RED}DEBUG: ${ORANGE}$i${NC}"
+    $i && sed -i "/$i/d" /tmp/test-fun
+  done
+}
+
 genpass(){
   < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
 }
@@ -68,9 +79,32 @@ retry(){
   echo "[OK]"
 }
 
-extract_function(){
-  EXPORT_NAME=${1:-ocp_aws_cluster}
+function_extract(){
+  EXPORT_NAME=${1:-ocp_check_login}
   FILE=${2:-scripts/library/ocp.sh}
 
   sed -n '/'"${EXPORT_NAME}"'(){/,/^}/p' "${FILE}"
+}
+
+function_list(){
+  FILE=${1:-scripts/library/ocp.sh}
+  sed -n '/(){/ {/^_/d; s/(){$//p}' "${FILE}" | sort -u
+}
+
+function_sort_file(){
+  FILE=${1:-scripts/library/ocp.sh}
+
+  # create new script
+  echo \
+  "#!/bin/bash
+  
+  " > tmp
+
+  for function in $(function_list "${FILE}")
+  do
+    function_extract $function "${FILE}" >> tmp
+    echo >> tmp
+  done
+
+  mv tmp "${FILE}"
 }
