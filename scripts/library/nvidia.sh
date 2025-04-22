@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nvidia_setup_dashboard_monitor(){
+nvidia_dashboard_monitor_setup(){
   curl -sLfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
   oc -n openshift-config-managed create configmap nvidia-dcgm-exporter-dashboard --from-file=dcgm-exporter-dashboard.json || true
   oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/dashboard=true" --overwrite
@@ -9,7 +9,7 @@ nvidia_setup_dashboard_monitor(){
   rm dcgm-exporter-dashboard.json
 }
 
-nvidia_install_console_plugin_dump_helm(){
+nvidia_console_plugin_dump_helm_install(){
   # alternative: if no helm
   OUTPUT_PATH=components/operators/gpu-operator-certified/operator/components/console-plugin
   DUMP_PATH="${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/console-plugin-nvidia-gpu/templates"
@@ -38,7 +38,7 @@ nvidia_install_console_plugin_dump_helm(){
   
 }
 
-nvidia_install_console_plugin(){
+nvidia_console_plugin_install(){
   GIT_URL=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
 
   if which helm; then
@@ -50,7 +50,7 @@ nvidia_install_console_plugin(){
   fi
 }
 
-nvidia_activate_console_plugin(){
+nvidia_console_plugin_activate(){
   if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
     oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
   else
@@ -63,11 +63,11 @@ nvidia_activate_console_plugin(){
 }
 
 nvidia_setup_console_plugin(){
-  nvidia_install_console_plugin || return
-  nvidia_activate_console_plugin || return
+  nvidia_console_plugin_install || return
+  nvidia_console_plugin_activate || return
 }
 
-nvidia_setup_mig_config(){
+nvidia_mig_config_setup(){
   MIG_MODE=${1:-single}
   MIG_CONFIG=${2:-all-1g.5gb}
   INSTANCE_TYPE=p4d.24xlarge
