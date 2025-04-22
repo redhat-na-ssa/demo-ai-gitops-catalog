@@ -30,6 +30,27 @@ htpasswd_add_user(){
   fi
 }
 
+htpasswd_decrypt_file(){
+  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+  which age >/dev/null 2>&1 || return
+
+  age --decrypt \
+    -i ~/.ssh/id_ed25519 \
+    -i ~/.ssh/id_rsa \
+    -o "${HTPASSWD_FILE}" \
+    "$(basename "${HTPASSWD_FILE}")".age
+}
+
+htpasswd_encrypt_file(){
+  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
+  which age >/dev/null 2>&1 || return
+
+  age --encrypt --armor \
+    -R authorized_keys \
+    -o "$(basename "${HTPASSWD_FILE}")".age \
+    "${HTPASSWD_FILE}"
+}
+
 htpasswd_ocp_get_file(){
   HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
   HTPASSWD_NAME=$(basename "${HTPASSWD_FILE}")
@@ -81,23 +102,3 @@ htpasswd_validate_user(){
   echo ""
 }
 
-which age >/dev/null 2>&1 || return 0
-
-htpasswd_encrypt_file(){
-  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
-
-  age --encrypt --armor \
-    -R authorized_keys \
-    -o "$(basename "${HTPASSWD_FILE}")".age \
-    "${HTPASSWD_FILE}"
-}
-
-htpasswd_decrypt_file(){
-  HTPASSWD_FILE=${1:-${DEFAULT_HTPASSWD}}
-
-  age --decrypt \
-    -i ~/.ssh/id_ed25519 \
-    -i ~/.ssh/id_rsa \
-    -o "${HTPASSWD_FILE}" \
-    "$(basename "${HTPASSWD_FILE}")".age
-}
