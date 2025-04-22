@@ -18,36 +18,6 @@ BASIC_INFO="${BASIC_INFO},DISPLAY_NAME:.status.channels[0].currentCSVDesc.displa
 BASIC_INFO="${BASIC_INFO},DEFAULT_CHANNEL:.status.defaultChannel"
 BASIC_INFO="${BASIC_INFO},CATALOG_SOURCE:.status.catalogSource"
 
-pkg_manifests_get_all(){
-  oc get packagemanifest \
-    -o custom-columns="${BASIC_INFO}" \
-    --sort-by='.status.catalogSource'
-}
-
-pkg_manifests_get_all_by_group(){
-  PKG_GROUP=${1:-Red Hat Operators}
-  pkg_manifests_get_all | grep "${PKG_GROUP}"
-}
-
-pkg_manifests_get_all_names_only(){
-  pkg_manifests_get_all | grep -v NAME | awk '{print $1}'
-}
-
-pkg_manifests_get_all_details(){
-  oc get packagemanifest \
-    --sort-by='.status.packageName' \
-    -o custom-columns="${MANIFEST_INFO}"
-}
-
-pkg_manifest_get_info(){
-  [ "${1}x" == "x" ] && return
-  NAME="${1}"
-  
-  oc get packagemanifest \
-    "${NAME}" \
-    -o=custom-columns="${MANIFEST_INFO}"
-}
-
 pkg_manifest_get_channels(){
   [ "${1}x" == "x" ] && return
   NAME="${1}"
@@ -66,6 +36,36 @@ pkg_manifest_get_description(){
   oc get packagemanifest \
     "${NAME}" \
     -o=jsonpath="{.status.channels[0].currentCSVDesc.description}"
+}
+
+pkg_manifest_get_info(){
+  [ "${1}x" == "x" ] && return
+  NAME="${1}"
+  
+  oc get packagemanifest \
+    "${NAME}" \
+    -o=custom-columns="${MANIFEST_INFO}"
+}
+
+pkg_manifests_get_all(){
+  oc get packagemanifest \
+    -o custom-columns="${BASIC_INFO}" \
+    --sort-by='.status.catalogSource'
+}
+
+pkg_manifests_get_all_by_group(){
+  PKG_GROUP=${1:-Red Hat Operators}
+  pkg_manifests_get_all | grep "${PKG_GROUP}"
+}
+
+pkg_manifests_get_all_details(){
+  oc get packagemanifest \
+    --sort-by='.status.packageName' \
+    -o custom-columns="${MANIFEST_INFO}"
+}
+
+pkg_manifests_get_all_names_only(){
+  pkg_manifests_get_all | grep -v NAME | awk '{print $1}'
 }
 
 pkg_manifests_save_all_details(){
