@@ -1,14 +1,30 @@
 #!/bin/bash
 
-rhdp_get_uuid(){
-  oc whoami || return 1
-  UUID=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@; s@api.*-@@; s@[.].*$@@')
-  export UUID
+rhdp_aws_all_ec2_stop(){
+  aws_check_cli || return 0
 
-  echo "OCP Cluster UUID: ${UUID}"
+  RUNNING_IDS=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
+  BASTION_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values=bastion --query 'Reservations[].Instances[].InstanceId' --output text)
+
+  echo "BASTION_ID: ${BASTION_ID}"
+  aws ec2 stop-instances \
+    --instance-ids \
+    "${RUNNING_IDS}" \
+    --output text >/dev/null
 }
 
-rhdp_fix_api_certs(){
+rhdp_aws_ocp_cluster_start(){
+  aws_check_cli || return 0
+
+  CLUSTER_IDS=$(aws ec2 describe-instances --filters Name=tag:env_type,Values=ocp4-cluster --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
+
+  aws ec2 start-instances \
+    --instance-ids \
+    "${CLUSTER_IDS}" \
+    --output text >/dev/null
+}
+
+rhdp_ocp_api_certs_fix(){
    echo "
   issue: RHDP can not start cluster due to ca.crt change
 
@@ -36,27 +52,10 @@ rhdp_fix_api_certs(){
   oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'  
 }
 
+rhdp_ocp_get_uuid(){
+  oc whoami || return 1
+  UUID=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@; s@api.*-@@; s@[.].*$@@')
+  export UUID
 
-rhdp_aws_stop_all_ec2(){
-  aws_check_cli || return 0
-
-  RUNNING_IDS=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
-  BASTION_ID=$(aws ec2 describe-instances --filters Name=tag:Name,Values=bastion --query 'Reservations[].Instances[].InstanceId' --output text)
-
-  echo "BASTION_ID: ${BASTION_ID}"
-  aws ec2 stop-instances \
-    --instance-ids \
-    "${RUNNING_IDS}" \
-    --output text >/dev/null
-}
-
-rhdp_aws_start_ocp4_cluster(){
-  aws_check_cli || return 0
-
-  CLUSTER_IDS=$(aws ec2 describe-instances --filters Name=tag:env_type,Values=ocp4-cluster --query 'Reservations[].Instances[].InstanceId' --output text | sed 's/\t/ /g')
-
-  aws ec2 start-instances \
-    --instance-ids \
-    "${CLUSTER_IDS}" \
-    --output text >/dev/null
+  echo "OCP Cluster UUID: ${UUID}"
 }
