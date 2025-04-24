@@ -3,7 +3,7 @@ kind: Kustomization
 
 components:
   - ../../components/nvidia-gpu-autoscale
-  - ../../components/devspaces
+  - ../../components/devspaces-gpu
   - ../../components/rhoai
   - ../../components/rhoai-intel
 
