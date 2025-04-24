@@ -5,7 +5,7 @@ commonAnnotations:
   argocd.argoproj.io/hook: PreSync
 
 resources:
-  - ../../../components/operators/authorino-operator/operator/overlays/tech-preview-v1
+  - ../../../components/operators/authorino-operator/operator/overlays/stable
   - ../../../components/operators/openshift-pipelines-operator-rh/operator/overlays/latest
   - ../../../components/operators/serverless-operator/operator/overlays/stable
   - ../../../components/operators/servicemeshoperator/operator/overlays/stable
