@@ -4,6 +4,7 @@ kind: Kustomization
 components:
   - ../../components/sno
   - ../../components/obj-store
+  - ../../components/operator-toleration-all
   - ../../components/sc-block
   - ../../components/sc-cephfs
   - ../../components/toolbox
