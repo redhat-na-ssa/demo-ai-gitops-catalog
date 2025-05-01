@@ -11,6 +11,15 @@ patches:
     - op: add
       path: /metadata/annotations/openshift.io~1display-name
       value: Rook - Ceph
+    - op: add
+      path: /metadata/labels
+      value: {}
+    - op: add
+      path: /metadata/labels/pod-security.kubernetes.io~1audit
+      value: privileged
+    - op: add
+      path: /metadata/labels/pod-security.kubernetes.io~1warn
+      value: privileged
   target:
     kind: Namespace
     name: rook-ceph
