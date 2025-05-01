@@ -6,6 +6,7 @@ resources:
   - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/common.yaml
 
 patches:
+- path: patch-role.yaml
 - patch: |-
     - op: add
       path: /metadata/annotations/openshift.io~1display-name
