@@ -2,6 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/csi/rbd/snapshotclass.yaml
-  # - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/csi/rbd/storageclass.yaml
+  - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.17/deploy/examples/csi/rbd/snapshotclass.yaml
+  # - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.17/deploy/examples/csi/rbd/storageclass.yaml
   - storage.yaml

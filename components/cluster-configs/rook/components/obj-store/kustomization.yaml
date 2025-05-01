@@ -2,5 +2,5 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.16/deploy/examples/object-openshift.yaml
+  - https://raw.githubusercontent.com/rook/rook/refs/heads/release-1.17/deploy/examples/object-openshift.yaml
   - route.yaml
