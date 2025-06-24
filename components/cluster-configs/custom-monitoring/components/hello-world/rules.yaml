@@ -1,0 +1,60 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: hello-world
+spec:
+  groups:
+    - name: hello-critical-alerts
+      rules:
+        - alert: HelloCritical
+          annotations:
+            description: 'The Kueue pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is not ready.'
+            # runbook_url: 'https://url/usage.md'
+            summary: 'Kueue pod is down ({{ $labels.pod }})'
+          expr: 'kube_pod_status_ready{pod=~"kueue-.*", condition="true"} == 0'
+          for: 5m
+          labels:
+            severity: critical
+    - name: hello-warn-alerts
+      rules:
+        - expr: max(federate_samples - federate_filtered_samples)
+          record: 'cluster:telemetry_selected_series:count'
+        - alert: HelloWarn
+          annotations:
+            description: |-
+              The telemeter client in namespace {{ $labels.namespace }} fails {{ $value | humanize }} of the requests to the telemeter service.
+              Check the logs of the telemeter-client pod with the following command:
+              oc logs -n openshift-monitoring deployment.apps/telemeter-client -c telemeter-client
+              If the telemeter client fails to authenticate with the telemeter service, make sure that the global pull secret is up to date, see https://docs.openshift.com/container-platform/latest/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets for more details.
+            runbook_url: 'https://github.com/openshift/runbooks/blob/master/alerts/cluster-monitoring-operator/TelemeterClientFailures.md'
+            summary: Telemeter client fails to send metrics
+          expr: |
+            sum by (namespace) (
+              rate(federate_requests_failed_total{job="telemeter-client"}[15m])
+            ) /
+            sum by (namespace) (
+              rate(federate_requests_total{job="telemeter-client"}[15m])
+            ) > 0.2
+          for: 1h
+          labels:
+            severity: warning
+    - name: hello-info-alerts
+      rules:
+        - alert: HelloInfo
+          annotations:
+            description: 'The {{ $labels.resource }} resource usage in cluster queue {{ $labels.cluster_queue }} is below 20% of its nominal quota for more than 1 day.'
+            # runbook_url: 'https://url/usage.md'
+            summary: 'Low {{ $labels.resource }} resource usage in cluster queue {{ $labels.cluster_queue }}'
+          expr: 'sum(kueue_cluster_queue_resource_usage) by (cluster_queue, resource) / sum(kueue_cluster_queue_nominal_quota) by (cluster_queue, resource) < 0.2'
+          for: 10m
+          labels:
+            severity: info
+        - alert: HelloInfoAgain
+          annotations:
+            description: 'Resource {{ $labels.resource }} reservation is 10 times the available quota in cluster queue {{ $labels.cluster_queue}}'
+            # runbook_url: 'https://url/usage.md'
+            summary: 'Resource {{ $labels.resource }} reservation far exceeds the available quota in cluster queue {{ $labels.cluster_queue}}'
+          expr: '(sum(kueue_cluster_queue_resource_reservation) by (resource, cluster_queue)) / 10 > (sum(kueue_cluster_queue_nominal_quota) by (resource, cluster_queue))'
+          for: 1d
+          labels:
+            severity: info
