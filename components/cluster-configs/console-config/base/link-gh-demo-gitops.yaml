@@ -5,7 +5,7 @@ metadata:
 spec:
   href: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog'
   location: ApplicationMenu
-  text: GitHub - AI GitOps Catalog
+  text: GitHub - Demo GitOps Catalog
   applicationMenu:
     section: Git Repos
     imageURL: /static/assets/public/imgs/logos/github.svg
