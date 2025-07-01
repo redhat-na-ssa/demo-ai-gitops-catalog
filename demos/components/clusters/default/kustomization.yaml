@@ -4,9 +4,8 @@ kind: Kustomization
 resources:
 # - ../../../../components/app-configs/ubi-images/overlays/cluster
 
-# - ../../../../components/cluster-configs/autoscale/overlays/default
 - ../../../../components/cluster-configs/console-config/overlays/default
-# - ../../../../components/cluster-configs/console-samples
+- ../../../../components/cluster-configs/console-samples
 
 # - ../../../../components/cluster-configs/etcd-backup/overlays/default
 # - ../../../../components/cluster-configs/namespace-cleanup/overlays/sandbox
