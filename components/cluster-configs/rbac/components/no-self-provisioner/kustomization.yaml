@@ -5,3 +5,4 @@ patches:
   - path: patch-self-provisioner.yaml
     target:
       kind: ClusterRoleBinding
+      name: self-provisioners
