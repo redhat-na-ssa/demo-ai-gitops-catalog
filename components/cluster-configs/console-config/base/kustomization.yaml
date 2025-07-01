@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
   - banner-cluster.yaml
-  - link-gh-ai-gitops.yaml
+  - link-gh-demo-gitops.yaml
   - link-gh-ssa.yaml
   - link-help.yaml

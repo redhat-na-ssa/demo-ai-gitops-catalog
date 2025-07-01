@@ -1,7 +1,7 @@
 apiVersion: console.openshift.io/v1
 kind: ConsoleLink
 metadata:
-  name: github-ai-gitops
+  name: github-demo-gitops
 spec:
   href: 'https://github.com/redhat-na-ssa/demo-ai-gitops-catalog'
   location: ApplicationMenu
