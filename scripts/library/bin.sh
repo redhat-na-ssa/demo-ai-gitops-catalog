@@ -31,7 +31,7 @@ bin_check(){
       ${name} version --client 2>&1
       [ "$name" == "oc" ] && kubectl completion bash > "${BASH_COMP}/kubectl.sh"
       ;;
-    hcp|helm|kit|tkn|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane)
+    hcp|helm|kit|tkn|k9s|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version 2>&1 || ${name} --version
       [ -e .oc-mirror.log ] && rm .oc-mirror.log
@@ -98,6 +98,14 @@ download_helm(){
   DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}"/ helm-linux-amd64
   mv "${BIN_PATH}/helm-linux-amd64" "${BIN_PATH}/helm"
+}
+
+download_k9s(){
+  BIN_VERSION=v0.50.6
+  K9S="k9s_${OS}_${ARCH}"
+  DOWNLOAD_URL="https://github.com/derailed/k9s/releases/download/v0.50.6/k9s_Linux_amd64.tar.gz"
+  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
+  chmod +x "${BIN_PATH}/k9s"
 }
 
 download_kit(){
