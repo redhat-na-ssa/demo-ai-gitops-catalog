@@ -81,13 +81,13 @@ download_busybox(){
 }
 
 download_crane(){
-  BIN_VERSION=0.20.2
+  BIN_VERSION=0.20.6
   DOWNLOAD_URL=https://github.com/google/go-containerregistry/releases/download/v${BIN_VERSION}/go-containerregistry_Linux_x86_64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" {crane,gcrane}
 }
 
 download_hcp(){
-  BIN_VERSION=2.7.3-7
+  BIN_VERSION=2.8.2-8
   # https://developers.redhat.com/content-gateway/rest/browse/pub/mce/clients/hcp-cli/
   DOWNLOAD_URL=https://developers.redhat.com/content-gateway/file/pub/mce/clients/hcp-cli/${BIN_VERSION}/hcp-cli-${BIN_VERSION}-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
@@ -109,8 +109,6 @@ download_k9s(){
 }
 
 download_kit(){
-  # BIN_VERSION=v1.2.2
-  # DOWNLOAD_URL=https://github.com/jozu-ai/kitops/releases/download/${BIN_VERSION}/kitops-linux-x86_64.tar.gz
   DOWNLOAD_URL=https://github.com/jozu-ai/kitops/releases/latest/download/kitops-linux-x86_64.tar.gz
   echo $DOWNLOAD_URL
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kit
@@ -142,13 +140,13 @@ download_kubectl-operator(){
 }
 
 download_kustomize(){
-  BIN_VERSION=5.5.0
+  BIN_VERSION=5.7.0
   DOWNLOAD_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${BIN_VERSION}/kustomize_v${BIN_VERSION}_linux_amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kustomize
 }
 
 download_oc(){
-  BIN_VERSION=stable-4.16
+  BIN_VERSION=stable-4.18
   DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/ocp/${BIN_VERSION}/openshift-client-${OS:-linux}.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" oc kubectl
 }
@@ -173,7 +171,7 @@ download_opm(){
 }
 
 download_oras(){
-  BIN_VERSION=1.2.2
+  BIN_VERSION=1.2.3
   DOWNLOAD_URL=https://github.com/oras-project/oras/releases/download/v${BIN_VERSION}/oras_${BIN_VERSION}_linux_amd64.tar.gz
   echo $DOWNLOAD_URL
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" oras
@@ -192,7 +190,7 @@ download_rclone(){
 }
 
 download_restic(){
-  BIN_VERSION=0.17.1
+  BIN_VERSION=0.18.0
   DOWNLOAD_URL=https://github.com/restic/restic/releases/download/v${BIN_VERSION}/restic_${BIN_VERSION}_linux_amd64.bz2
   curl "${DOWNLOAD_URL}" -sL | bzcat > "${BIN_PATH}/restic"
   chmod +x "${BIN_PATH}/restic"
@@ -206,19 +204,19 @@ download_rhoas(){
 
 download_s2i(){
   # BIN_VERSION=
-  DOWNLOAD_URL=https://github.com/openshift/source-to-image/releases/download/v1.4.0/source-to-image-v1.4.0-d3544c7e-linux-amd64.tar.gz
+  DOWNLOAD_URL=https://github.com/openshift/source-to-image/releases/download/v1.5.1/source-to-image-v1.5.1-c301811d-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
 }
 
 download_sops(){
-  BIN_VERSION=3.9.1
+  BIN_VERSION=3.10.2
   DOWNLOAD_URL=https://github.com/getsops/sops/releases/download/v${BIN_VERSION}/sops-v${BIN_VERSION}.linux.amd64
   curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/sops"
   chmod +x "${BIN_PATH}/sops"
 }
 
 download_subctl(){
-  BIN_VERSION=0.17.3
+  BIN_VERSION=0.20.1
   DOWNLOAD_URL=https://github.com/submariner-io/releases/releases/download/v${BIN_VERSION}/subctl-v${BIN_VERSION}-linux-amd64.tar.xz
   curl "${DOWNLOAD_URL}" -sL | tar Jx --strip-components=1 -C "${BIN_PATH}/"
 }
@@ -230,14 +228,14 @@ download_tkn(){
 }
 
 download_virtctl(){
-  BIN_VERSION=1.3.1
+  BIN_VERSION=1.5.2
   DOWNLOAD_URL=https://github.com/kubevirt/kubevirt/releases/download/v${BIN_VERSION}/virtctl-v${BIN_VERSION}-linux-amd64
   curl "${DOWNLOAD_URL}" -sL -o "${BIN_PATH}/virtctl"
   chmod +x "${BIN_PATH}/virtctl"
 }
 
 download_yq(){
-  BIN_VERSION=4.44.3
+  BIN_VERSION=4.45.4
   DOWNLOAD_URL=https://github.com/mikefarah/yq/releases/download/v${BIN_VERSION}/yq_linux_amd64
   curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/yq"
   chmod +x "${BIN_PATH}/yq"
