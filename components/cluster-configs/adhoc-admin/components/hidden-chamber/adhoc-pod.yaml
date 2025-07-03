@@ -56,8 +56,8 @@ spec:
       labels:
         app.kubernetes.io/name: adhoc-admin
     spec:
-      serviceAccount: cluster-admin-adhoc-helper
-      serviceAccountName: cluster-admin-adhoc-helper
+      serviceAccount: adhoc-admin-helper
+      serviceAccountName: adhoc-admin-helper
       containers:
         - env:
           - name: TIMEOUT
@@ -68,9 +68,9 @@ spec:
           - |
             #!/bin/bash
             echo "
-            You have found the hidden chamber! Now what?
-
             TIMEOUT: ${TIMEOUT}s
+
+            You have found the hidden chamber! Now what?
             "
 
             sleep "${TIMEOUT}"

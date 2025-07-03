@@ -7,7 +7,7 @@ OCP_DEFAULTS=ocp-defaults-${OCP_VER}.txt
 
 cd "$(dirname "$0")" && pwd
 
-self_distruct(){
+self_destruct(){
   NAMESPACE=${1:-adhoc-admin}
   [ -z "${NAMESPACE}" ] && return
   echo "
@@ -162,4 +162,4 @@ get_ocp_defaults(){
 
 # get_ocp_defaults
 uninstall_demo
-# self_distruct
+# self_destruct

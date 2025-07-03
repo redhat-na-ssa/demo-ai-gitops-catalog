@@ -38,5 +38,5 @@ spec:
               delete_object "${NS}" "${OBJECT}"
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
-      serviceAccount: cluster-admin-adhoc-helper
-      serviceAccountName: cluster-admin-adhoc-helper
+      serviceAccount: adhoc-admin-helper
+      serviceAccountName: adhoc-admin-helper
