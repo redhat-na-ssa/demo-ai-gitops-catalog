@@ -6,7 +6,7 @@ usage(){
 
     oc -n adhoc-admin \
       create cm demo-adhoc \
-      --from-file=scratch/
+      --from-file=scripts/
   "
 }
 
