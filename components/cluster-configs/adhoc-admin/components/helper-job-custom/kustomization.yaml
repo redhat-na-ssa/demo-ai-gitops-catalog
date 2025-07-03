@@ -10,7 +10,7 @@ generatorOptions:
 configMapGenerator:
   - name: demo-adhoc
     files:
-      - adhoc.sh
+      - 00-init.sh
 
 patches:
   - path: patch-job.yaml

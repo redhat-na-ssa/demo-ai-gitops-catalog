@@ -33,12 +33,6 @@ run_adhoc(){
     done
 
   else
-
-    echo "You are likely using this wrong...
-
-      But you are brave, because you are trying new things!
-    "
-
     echo "usage:
 
       set \${ADHOC_SCRIPT} for an individual script
