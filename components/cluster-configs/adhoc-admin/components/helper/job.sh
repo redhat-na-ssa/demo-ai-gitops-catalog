@@ -7,6 +7,7 @@ TIMEOUT=60
 
 self_destruct(){
   [ -z "${NAMESPACE}" ] && return
+  [ -z "${DEBUG}" ] || return
   
   echo "
     engaging self cleaning...

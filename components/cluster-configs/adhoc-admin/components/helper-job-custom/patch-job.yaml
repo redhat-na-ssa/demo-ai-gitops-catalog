@@ -16,5 +16,5 @@ spec:
       volumes:
         - name: custom
           configMap:
-            name: demo-adhoc
+            name: adhoc-custom
             defaultMode: 0755

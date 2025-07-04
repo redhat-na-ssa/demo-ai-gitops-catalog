@@ -8,9 +8,9 @@ generatorOptions:
   disableNameSuffixHash: true
 
 configMapGenerator:
-  - name: demo-adhoc
+  - name: adhoc-custom
     files:
-      - 00-init.sh
+      - 00-usage.sh
 
 patches:
   - path: patch-job.yaml
