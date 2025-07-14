@@ -8,6 +8,13 @@ usage(){
   "
 }
 
+failed(){
+  echo "
+    failed: ${1:-lint}
+  "
+  return 1
+}
+
 py_setup_venv(){
   python3 -m venv venv
   source venv/bin/activate
@@ -65,9 +72,9 @@ lint_helm(){
 py_check_venv
 py_bin_checks
 
-lint_spelling     || exit 1
-lint_scripts      || exit 1
-lint_dockerfiles  || exit 1
-lint_yaml         || exit 1
-lint_kustomize    || exit 1
-lint_helm         || exit 1
+lint_spelling     || failed spelling
+lint_scripts      || failed scripts
+lint_dockerfiles  || failed containers
+lint_yaml         || failed yaml
+lint_kustomize    || failed kustomize
+lint_helm         || failed helm
