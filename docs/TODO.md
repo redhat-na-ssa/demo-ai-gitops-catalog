@@ -14,7 +14,6 @@
 
 - Most people try to use the local shell (mac users) - zsh
 - Users not clear what options are available for bootstrap
-- Add image of what web term icon looks like in top right
 - The quick start is not easy to read
 - The automation is too easy for users
   - need to be able to explain to a customer
