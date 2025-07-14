@@ -6,7 +6,7 @@ Before you set up PriorityClasses, there are a few things to consider.
 - Use a consistent naming convention for all PriorityClasses.
 - Make sure that the pods for your workloads are running with the right `PriorityClass`.
 
-```
+```sh
 oc get priorityclass
 oc describe priorityclass
 ```
@@ -15,6 +15,7 @@ oc describe priorityclass
 
 - https://kubernetes.io/blog/2023/01/12/protect-mission-critical-pods-priorityclass
 - https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler
+- https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption
 - [Scheduling Policies (pre k8s v1.23)](https://kubernetes.io/docs/reference/scheduling/policies)
 - https://kubernetes.io/docs/reference/scheduling/config
 - https://docs.openshift.com/container-platform/4.11/nodes/scheduling/nodes-scheduler-about.html
