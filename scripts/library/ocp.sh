@@ -300,6 +300,34 @@ ocp_setup_namespace(){
     oc project "${NAMESPACE}"
 }
 
+ocp_update_pull_secret(){
+  echo "see https://access.redhat.com/solutions/4902871"
+
+  PULL_SECRET_FILE=${1:-${GIT_ROOT}/scratch/pull-secret}
+
+  oc extract secret/pull-secret \
+    -n openshift-config \
+    --keys .dockerconfigjson \
+    --to=- > "${PULL_SECRET_FILE}"
+  
+  oc get secret/pull-secret \
+    -n openshift-config \
+    -o yaml > "${PULL_SECRET_FILE}.yaml"
+
+  [ -e "${PULL_SECRET_FILE}" ] || return 0
+
+  if oc get secret/pull-secret -n openshift-config -o name; then
+    oc set data secret/pull-secret \
+      -n openshift-config \
+      --from-file=.dockerconfigjson="${PULL_SECRET_FILE}"
+  else
+    oc create secret generic pull-secret \
+      -n openshift-config \
+      --type=kubernetes.io/dockerconfigjson \
+      --from-file=.dockerconfigjson="${PULL_SECRET_FILE}"
+  fi  
+}
+
 ocp_upgrade_ack_4.13(){
   oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.12-kube-1.26-api-removals-in-4.13":"true"}}' --type=merge
 }
