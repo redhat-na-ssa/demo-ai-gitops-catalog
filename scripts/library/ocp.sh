@@ -279,10 +279,10 @@ ocp_save_money(){
   ocp_machineset_scale 0
 
   # place as many pods on as few nodes as possible
-  ocp_set_scheduler_profile HighNodeUtilization
+  ocp_scheduler_set_profile HighNodeUtilization
 }
 
-ocp_set_scheduler_profile(){
+ocp_scheduler_set_profile(){
   SCHED_PROFILE=${1:-LowNodeUtilization}
 
   # LowNodeUtilization, HighNodeUtilization, NoScoring
