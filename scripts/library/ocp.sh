@@ -88,6 +88,19 @@ ocp_expose_image_registry(){
   echo "OCP image registry is available at: ${SHORTER_HOST}"
 }
 
+ocp_fix_duplicate_operator_groups(){
+  for ns in $(oc get og -A | awk '{print $1}' | uniq -d)
+  do
+    oc -n "${ns}" \
+      get og -o name | \
+        tail -n+2 | \
+        xargs oc -n "${ns}" delete
+    
+    # oc -n "${ns}" \
+    #   delete pod --all
+  done
+}
+
 ocp_get_apps_domain(){
   oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
 }
