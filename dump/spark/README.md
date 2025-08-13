@@ -1,6 +1,7 @@
 # Spark on OpenShift Notes
 
 - https://github.com/bkoz/spark
+- https://github.com/kubeflow/spark-operator
 
 Deploy Helm
 
