@@ -10,3 +10,8 @@ controller:
   podSecurityContext: {}
 webhook:
   podSecurityContext: {}
+spark:
+  jobNamespaces:
+  - sandbox
+  - spark-jobs
+
