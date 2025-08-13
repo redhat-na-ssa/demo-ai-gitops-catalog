@@ -80,6 +80,8 @@ kustomization_process(){
 
   for LINT in $(find "${KUSTOMIZE_DIRS}" -name "kustomization.yaml" -exec dirname {} \;)
   do
+    echo "${LINT}" | grep -E 'dump|scratch' && continue
+
     echo "${LINT}"
     kustomization_build "${LINT}"
     # kustomization_auto_fix "${LINT}"
