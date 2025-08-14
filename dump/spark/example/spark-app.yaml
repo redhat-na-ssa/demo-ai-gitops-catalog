@@ -2,6 +2,7 @@ apiVersion: sparkoperator.k8s.io/v1beta2
 kind: SparkApplication
 metadata:
   name: spark-pi
+  namespace: spark-jobs
 spec:
   arguments:
   - "5000"

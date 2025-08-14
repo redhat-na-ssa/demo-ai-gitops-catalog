@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: |
+      This namespace contains the kubeflow spark operator
+    openshift.io/display-name: Spark Operator (Kubeflow)
+  name: spark-operator

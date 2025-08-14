@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: |
+      This namespace contains spark jobs
+    openshift.io/display-name: Spark Jobs
+  name: spark-jobs
