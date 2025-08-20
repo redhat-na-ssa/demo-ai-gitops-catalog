@@ -6,7 +6,7 @@ site_description: >-
   Applications, Patterns, and Demos - Oh my!
 
 docs_dir: docs
-site_dir: docs/site
+site_dir: site
 
 ## Repository
 repo_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
