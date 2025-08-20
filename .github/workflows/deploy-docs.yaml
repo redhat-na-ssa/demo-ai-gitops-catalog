@@ -1,0 +1,32 @@
+name: Manually Deploy Documentation
+
+env:
+  gh-pages-url: https://redhat-na-ssa.github.io/lab-notes
+  pages-deployment: https://github.com/redhat-na-ssa/lab-notes/actions/workflows/pages/pages-build-deployment
+
+# only one GitHub Pages Deploy workflow at a time
+concurrency:
+  group: GitHub-Pages-Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Deploy Docs Manually'
+
+jobs:
+  deploy:
+    # permissions:
+    #   contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build MkDocs
+        run: |
+          mkdocs gh-deploy
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./

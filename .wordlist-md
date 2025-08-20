@@ -12,6 +12,7 @@ adm
 AdoptedResource
 ai
 aiservices
+alertmanager
 alongsecret
 AmazonS
 AmazonSageMakerFullAccess
@@ -48,6 +49,7 @@ belyakov
 bitnami
 Bitnami
 bkoz
+builtins
 canada
 cd
 cea
@@ -120,6 +122,7 @@ dotnet
 DotNET
 dsci
 DSCInitialization
+dttl
 ec
 eks
 EKS
@@ -153,6 +156,7 @@ guifreelife
 Hashicorp
 hcp
 heartexlabs
+helmchartinflationgenerator
 homelab
 html
 htpass
@@ -198,10 +202,12 @@ KieApp
 knative
 Koku
 KokuMetricsConfig
+krew
 KServe
 kube
 kubeadmin
 kubectl
+kubeflow
 kubernetes
 Kubernetes
 kubeseal
@@ -212,8 +218,10 @@ kustomized
 kyverno
 Kyverno
 labeler
+labguides
 ldap
 LDAP
+ldapsync
 letsencrypt
 libvirt
 lifecycle
@@ -229,6 +237,7 @@ MachineSet
 managementState
 mariadb
 mastersSchedulable
+md
 memberof
 microsoft
 mig
@@ -298,6 +307,7 @@ podman
 PolicyReport
 popd
 postgres
+powershell
 pre
 prem
 prereqs
@@ -321,6 +331,7 @@ rc
 rcd
 rclone
 README
+readthedocs
 redhat
 redhat-na-ssa
 redistributions
@@ -410,6 +421,7 @@ untar
 untardir
 useable
 VER
+virt
 vllm
 VolSync
 vscode
@@ -428,4 +440,3 @@ XDG
 xlarge
 yaml
 YOLO
-kubeflow

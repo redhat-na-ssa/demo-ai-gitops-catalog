@@ -114,6 +114,7 @@ gb
 gcp
 gcrane
 genpass
+getenforce
 gitconfig
 groupdel
 gz
@@ -182,6 +183,7 @@ md
 mikefarah
 minReplicas
 mirroredmanagedclusters
+mkdocs
 multiclusterengines
 multiclusterhub
 multiclusterhubs
@@ -266,6 +268,7 @@ SCRIPTPATH
 sdn
 searchcustomizations
 searchoperators
+SELINUX
 ServerAliveInterval
 servicemeshcontrolplanes
 servicemeshmembers
@@ -281,6 +284,7 @@ sl
 sL
 sLfO
 sLo
+squidfunk
 sS
 StrictHostKeyChecking
 su

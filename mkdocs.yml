@@ -1,0 +1,89 @@
+## Project information
+site_name: Demo Lab Notes
+site_url: http://localhost:8000
+site_description: >-
+  Demos on OpenShift!
+  Applications, Patterns, and Demos - Oh my!
+
+docs_dir: docs
+site_dir: docs/site
+
+## Repository
+repo_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
+# edit_uri: ''  #disables edit button
+
+## Plugins
+plugins:
+  - search
+
+## Theme
+theme:
+  icon:
+    # repo: fontawesome/brands/github
+    # logo: assets/logo.svg
+    # favicon: assets/logo.ico
+  language: en
+  name: material
+
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+      primary: black
+      accent: red
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+      primary: black
+      accent: red
+  features:
+    - content.code.copy
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
+
+## Social
+extra:
+  # analytics:
+  #   provider: google
+  #   property: G-UUID
+  consent:
+    title: Cookie consent
+    description: >-
+      If you like cookies, come join us on the dark side.
+
+## MD Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - def_list
+  - pymdownx.tasklist
+  - pymdownx.details
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - footnotes
+  - codehilite:
+      use_pygments: false
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+## Site layout
+nav:
+  - Home: index.md
+  - To Do: todo.md
+  - Practices: practices.md
+  - Unsorted:
+    - unsorted.md
+    # - argocd.md
+  - links.md

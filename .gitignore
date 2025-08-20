@@ -15,6 +15,9 @@ dictionary.dic
 *.swo
 tmp
 
+# cache
+.cache
+
 # bfg - because we never commit large data or passwords to git
 ..bfg-report/
 
