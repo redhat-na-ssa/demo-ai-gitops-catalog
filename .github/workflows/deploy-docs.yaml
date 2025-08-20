@@ -10,9 +10,9 @@ concurrency:
 
 on:
   workflow_dispatch:
-    inputs:
-      reason:
-        description: 'Deploy Docs Manually'
+  push:
+    branches:
+      - "main"
 
 jobs:
   deploy:
@@ -30,7 +30,7 @@ jobs:
           pip install -r docs/requirements.txt
       - name: Build MkDocs
         run: |
-          mkdocs gh-deploy
+          mkdocs build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
