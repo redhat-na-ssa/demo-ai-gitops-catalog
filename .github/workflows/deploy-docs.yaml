@@ -1,5 +1,4 @@
-# Simple workflow for deploying mkdocs site
-name: Deploy Documentation to GitHub Pages
+name: Manually Deploy Documentation
 
 env:
   gh-pages-url: https://redhat-na-ssa.github.io/lab-notes
@@ -17,8 +16,8 @@ on:
 
 jobs:
   deploy:
-    permissions:
-      contents: write
+    # permissions:
+    #   contents: write
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout
