@@ -16,8 +16,8 @@ on:
 
 jobs:
   deploy:
-    # permissions:
-    #   contents: write
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,4 +35,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./lab-notes
+          publish_dir: ./site
