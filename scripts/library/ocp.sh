@@ -140,6 +140,62 @@ ocp_gpu_untaint_nodes(){
   oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }
 
+ocp_infra_label_control(){
+  echo "see https://docs.redhat.com/en/documentation/openshift_container_platform/4.8/html/machine_management/creating-infrastructure-machinesets#moving-resources-to-infrastructure-machinesets"
+
+  oc label node -l node-role.kubernetes.io/control-plane node-role.kubernetes.io/infra=""
+
+  oc patch \
+    scheduler cluster \
+    --type=merge --patch '{"spec":{"defaultNodeSelector":"node-role.kubernetes.io/infra=\"\""}}'
+
+}
+
+ocp_infra_move_registry_to_control(){
+
+cat <<YAML > /tmp/patch.yaml
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+  - effect: NoExecute
+    key: node-role.kubernetes.io/master
+    operator: Exists
+YAML
+
+ oc patch \
+    configs.imageregistry.operator.openshift.io/cluster \
+    --type=merge --patch-file /tmp/patch.yaml
+
+}
+
+ocp_infra_move_router_to_control(){
+
+cat <<YAML > /tmp/patch.yaml
+spec:
+  nodePlacement:
+    nodeSelector:
+      matchLabels:
+        node-role.kubernetes.io/infra: ""
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoExecute
+      key: node-role.kubernetes.io/master
+      operator: Exists
+YAML
+
+  oc -n openshift-ingress-operator \
+    patch \
+    ingresscontroller default \
+    --type=merge --patch-file /tmp/patch.yaml
+
+}
+
 ocp_kubeadmin_create(){
   PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
