@@ -196,7 +196,7 @@ YAML
 
 }
 
-ocp_infra_move_logs_to_control(){
+ocp_infra_move_logging_to_control(){
 
 cat <<YAML > /tmp/patch.yaml
 spec:
@@ -225,8 +225,9 @@ spec:
         operator: Exists
 YAML
 
-  oc patch \
-    ClusterLogging instance \
+  oc -n openshift-logging \
+    patch \
+    clusterlogging instance \
     --type=merge --patch-file /tmp/patch.yaml
 
 }
