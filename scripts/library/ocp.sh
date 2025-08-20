@@ -196,6 +196,41 @@ YAML
 
 }
 
+ocp_infra_move_logs_to_control(){
+
+cat <<YAML > /tmp/patch.yaml
+spec:
+  logStore:
+    elasticsearch:
+      nodeCount: 3
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      - effect: NoExecute
+        key: node-role.kubernetes.io/master
+        operator: Exists
+  visualization:
+    kibana:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      - effect: NoExecute
+        key: node-role.kubernetes.io/master
+        operator: Exists
+YAML
+
+  oc patch \
+    ClusterLogging instance \
+    --type=merge --patch-file /tmp/patch.yaml
+
+}
+
 ocp_kubeadmin_create(){
   PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
