@@ -1,4 +1,4 @@
-name: Manually Deploy Documentation
+name: Deploy Docs Site
 
 env:
   gh-pages-url: https://redhat-na-ssa.github.io/lab-notes
