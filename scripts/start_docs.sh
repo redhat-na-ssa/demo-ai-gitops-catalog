@@ -1,8 +1,6 @@
 #!/bin/sh
 
 container_start(){
-  CMD=${1:-podman}
-
   which podman > /dev/null 2>&1 && alias podman=docker
 
   docker run \
