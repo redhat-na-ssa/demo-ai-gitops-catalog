@@ -1,27 +1,32 @@
 name: Deploy Docs Site
 
-env:
-  gh-pages-url: https://redhat-na-ssa.github.io/lab-notes
-  pages-deployment: https://github.com/redhat-na-ssa/lab-notes/actions/workflows/pages/pages-build-deployment
-
-# only one GitHub Pages Deploy workflow at a time
-concurrency:
-  group: GitHub-Pages-Deploy
-
 on:
   workflow_dispatch:
   push:
     branches:
       - "main"
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# only one GitHub Pages Deploy workflow at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   deploy:
-    permissions:
-      contents: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -31,8 +36,10 @@ jobs:
       - name: Build MkDocs
         run: |
           mkdocs build
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          path: './site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
