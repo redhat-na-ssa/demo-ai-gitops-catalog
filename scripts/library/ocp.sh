@@ -196,7 +196,7 @@ YAML
 
 }
 
-ocp_infra_move_logging_to_control(){
+ocp_infra_move_monitoring_to_control(){
 
 cat <<YAML > /tmp/patch.yaml
 spec:
