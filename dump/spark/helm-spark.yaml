@@ -10,3 +10,7 @@ controller:
   podSecurityContext: {}
 webhook:
   podSecurityContext: {}
+spark:
+  jobNamespaces:
+  - spark-jobs
+

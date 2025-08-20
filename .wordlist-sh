@@ -43,6 +43,7 @@ chgrp
 chmod
 chown
 chroot
+clusterlogging
 clustermanagementaddons
 clustermanagers
 CN
@@ -69,6 +70,7 @@ dcgm
 decrypt
 defaultCertificate
 defaultChannel
+defaultNodeSelector
 deployables
 deviceName
 df
@@ -142,6 +144,7 @@ kam
 keygen
 keyout
 keyset
+kibana
 kitops
 klusterlet
 KLUSTERLET
@@ -157,6 +160,7 @@ KUBECONFIG
 kubeconfigs
 kubeval
 ln
+logStore
 LowNodeUtilization
 LsO
 MachineAutoscaler
@@ -177,6 +181,7 @@ managedclusterviews
 manifestworks
 manifestworkvalidators
 masterPublicURL
+matchLabels
 maxReplicas
 mce
 md
@@ -199,6 +204,10 @@ ne
 newkey
 NGC
 nN
+nodeCount
+nodePlacement
+nodeSelector
+NoExecute
 noncore
 NorthCarolina
 NoSchedule
@@ -301,6 +310,7 @@ tcp
 tgz
 tkn
 tls
+tolerations
 toPort
 tpm
 Typha
