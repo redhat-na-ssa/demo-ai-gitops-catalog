@@ -104,8 +104,10 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Demos:
-      - _example.md
+      - demos/_example.md
   - OpenShift:
       - ocp.md
-  - Practices: practices.md
+  - Practices: 
+      - practices/index.md
+      - practices/data-sci.md
   - links.md
