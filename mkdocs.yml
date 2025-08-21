@@ -10,7 +10,7 @@ site_dir: site
 
 ## Repository
 repo_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
-# edit_url: ''  #disables edit button
+# edit_uri: ''  #disables edit button
 
 ## Plugins
 plugins:
@@ -18,13 +18,12 @@ plugins:
 
 ## Theme
 theme:
-  icon:
-    # repo: fontawesome/brands/github
-    # logo: assets/logo.svg
-    # favicon: assets/logo.ico
-  language: en
   name: material
-
+  # icon:
+  #   repo: fontawesome/brands/github
+  #   logo: assets/logo.svg
+  #   favicon: assets/logo.ico
+  language: en
   palette:
     - scheme: default
       toggle:
@@ -39,6 +38,10 @@ theme:
       primary: black
       accent: red
   features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
     - content.code.copy
     - navigation.instant
     - navigation.tracking
