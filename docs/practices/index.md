@@ -19,7 +19,7 @@ Below are recommended practices or references.
     - Example
         - Title: Weather Toaster
         - Body: I want to build a toaster that controls the weather
-    - ALWAYS commit to `git` - *execpt when it comes to secrets*
+    - ALWAYS commit to `git` - *except when it comes to secrets*
     - Use a public `git` location - We can always rewrite (git) history to make it look perfect
 - One click solutions
     - `scripts/bootstrap.sh`
