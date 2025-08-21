@@ -243,6 +243,7 @@ microsoft
 mig
 minio
 mkdir
+mkdocs
 MLOps
 ModelMesh
 MTA
@@ -360,6 +361,8 @@ Sagemaker
 sandboxed
 SAR
 sc
+scc
+SCC
 sealedsecret
 sealedsecrets
 SecretManager

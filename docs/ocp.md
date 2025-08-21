@@ -5,11 +5,11 @@
 By default all pods in OpenShift run unprivileged (not `root`). Thoughtfully allows root privileges on a per project and a case by case basis.
 
 !!! WARNING
-    For security reasons it’s recommended to run as nonroot (default) and update your container to work in this security context.
+    For security reasons it’s recommended to run as non-root (default) and update your container to work in this security context.
 
 ### Option 1
 
-Use the “scc-subject-review” subcommand to list all the security context constraints that can overcome the limitations that hinder the container.
+Use the “scc-subject-review” sub-command to list all the security context constraints that can overcome the limitations that hinder the container.
 
 ```sh
 oc -n <namespace> get deployment <deployment-name> -o yaml | \
