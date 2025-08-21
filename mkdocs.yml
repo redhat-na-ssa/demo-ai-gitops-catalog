@@ -105,8 +105,8 @@ nav:
   - Home: index.md
   - Demos:
       - demos/_example.md
-  - OpenShift:
-      - ocp.md
+  - Notes:
+      - notes/ocp.md
   - Practices: 
       - practices/index.md
       - practices/data-sci.md
