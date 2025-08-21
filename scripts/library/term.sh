@@ -35,8 +35,8 @@ __git_branch(){
 
 PS1='\e]\s\a\n\e[33m\w \e[36m\$(__git_branch)\e[m$ '
 
-if [ -e ~/ai_ops ]; then
-  cd ~/ai_ops
+if [ -d ~/${GIT_DEMO_NAME:-demo_ops} ]; then
+  cd ~/${GIT_DEMO_NAME:-demo_ops}
   . scripts/functions.sh
 fi
 
@@ -45,7 +45,7 @@ fi
 PATH=\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH
 PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 
-[ -e ~/ai_ops ] || term_git_setup
+[ -d ~/${GIT_DEMO_NAME:-demo_ops} ] || term_git_setup
 
 [ -d \"\${GIT_ROOT}/scratch/bash\" ] && . <(cat \${GIT_ROOT}/scratch/bash/*.sh)
 " >> "${BASHRC}"
@@ -61,7 +61,7 @@ term_bin_setup(){
 
   term_git_setup
 
-  cd ~/ai_ops || return 0
+  cd ~/${GIT_DEMO_NAME:-demo_ops} || return 0
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
