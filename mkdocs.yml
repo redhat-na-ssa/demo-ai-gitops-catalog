@@ -10,7 +10,7 @@ site_dir: site
 
 ## Repository
 repo_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
-# edit_uri: ''  #disables edit button
+# edit_url: ''  #disables edit button
 
 ## Plugins
 plugins:
@@ -76,14 +76,12 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          format: "!!python/name:pymdownx.superfences.fence_code_format"
 
 ## Site layout
 nav:
   - Home: index.md
-  - To Do: todo.md
+  - Demos:
+      - _example.md
   - Practices: practices.md
-  - Unsorted:
-    - unsorted.md
-    # - argocd.md
   - links.md

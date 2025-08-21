@@ -1,5 +1,18 @@
 # Unsorted Notes
 
+## Notes Dump
+
+- Most people try to use the local shell
+    - Mac - `zsh`
+    - Win - `ps` *(who are we kidding, enterprise customers don't use powershell*)
+- Users not clear what options are available for bootstrap
+- The quick start is not easy to read
+- The automation is too easy for users
+    - need to be able to explain to a customer
+    - need to be able to understand how it works on a basic level
+- Explain what it means to setup a default cluster
+- Tree defining the repo dir structure could help navigation
+
 ## Policy on k8s
 
 - https://github.com/open-policy-agent/gatekeeper
@@ -132,15 +145,19 @@ oc mirror list operators --catalog ${INDEX} --package rhods-operator
 
 ### triggerer
 
+```sh
 oc patch statefulset/airflow-triggerer --patch '{"spec":{"template":{"spec":{"initContainers":[{"name":"git-sync-init","securityContext":null}]}}}}'
 
 oc patch statefulset/airflow-triggerer --patch '{"spec":{"template":{"spec":{"containers":[{"name":"git-sync","securityContext":null}]}}}}'
+```
 
 ### worker
 
+```sh
 oc patch statefulset/airflow-worker --patch '{"spec":{"template":{"spec":{"initContainers":[{"name":"git-sync-init","securityContext":null}]}}}}'
 
 oc patch statefulset/airflow-worker --patch '{"spec":{"template":{"spec":{"containers":[{"name":"git-sync","securityContext":null}]}}}}'
+```
 
 ## Resolve ingress / auth cert issues
 
