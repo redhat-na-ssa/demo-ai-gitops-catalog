@@ -1,20 +1,24 @@
 ## Project information
-site_name: Demo Lab Notes
-site_url: http://localhost:8000
+site_name: OpenShift Demo Catalog
 site_description: >-
   Demos on OpenShift!
-  Applications, Patterns, and Demos - Oh my!
+  Tools, Patterns, and Demos - Oh My!
+site_author: 'Red Hat SSAs'
+# site_url: http://localhost:8000
 
 docs_dir: docs
 site_dir: site
 
 ## Repository
 repo_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
+edit_uri: blob/main/docs/
 # edit_uri: ''  #disables edit button
 
 ## Plugins
 plugins:
+  - offline
   - search
+  - tags
 
 ## Theme
 theme:
