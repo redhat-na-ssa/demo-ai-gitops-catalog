@@ -145,9 +145,9 @@ ocp_infra_label_control(){
 
   oc label node -l node-role.kubernetes.io/control-plane node-role.kubernetes.io/infra=""
 
-  oc patch \
-    scheduler cluster \
-    --type=merge --patch '{"spec":{"defaultNodeSelector":"node-role.kubernetes.io/infra=\"\""}}'
+  # oc patch \
+  #   scheduler cluster \
+  #   --type=merge --patch '{"spec":{"defaultNodeSelector":"node-role.kubernetes.io/infra=\"\""}}'
 
 }
 
