@@ -1,6 +1,11 @@
-name: Deploy Docs Site
+name: Deploy Docs
 
 on:
+  workflow_run:
+    workflows:
+      - "Check Spelling"
+    types:
+      - completed
   workflow_dispatch:
   push:
     branches:
