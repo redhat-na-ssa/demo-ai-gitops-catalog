@@ -3,7 +3,7 @@ name: Deploy Docs
 on:
   workflow_run:
     workflows:
-      - "Check Spelling"
+      - "Spelling"
     types:
       - completed
   workflow_dispatch:
