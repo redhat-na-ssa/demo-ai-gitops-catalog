@@ -321,6 +321,7 @@ uniq
 untaint
 uptime
 urandom
+url
 useradd
 userdel
 usermod
