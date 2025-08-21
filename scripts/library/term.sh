@@ -1,13 +1,8 @@
 #!/bin/bash
 
-DEFAULT_GIT_DEMO_REPO=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
-
-git remote get-url origin | grep -q https && GIT_DEMO_REPO=$(git remote get-url origin | grep https)
-
-GIT_DEMO_REPO=${GIT_DEMO_REPO:-${DEFAULT_GIT_DEMO_REPO}}
+GIT_DEMO_REPO=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
 GIT_DEMO_NAME=demo_ops
-
-GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
+GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog
 GIT_OPS_NAME=git_ops
 
 # shellcheck disable=SC2120
