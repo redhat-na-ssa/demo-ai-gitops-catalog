@@ -1,7 +1,9 @@
 #!/bin/bash
 
-GIT_AI_REPO=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git
+GIT_DEMO_REPO=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog.git
+GIT_DEMO_NAME=demo_ops
 GIT_OPS_REPO=https://github.com/redhat-cop/gitops-catalog.git
+GIT_OPS_NAME=git_ops
 
 # shellcheck disable=SC2120
 term_bashrc(){
@@ -15,16 +17,16 @@ grep -q 'Enhanced' "${BASHRC}" && return
 
 # shellcheck disable=SC2028
 echo "
-GIT_AI_REPO=${GIT_AI_REPO}
+GIT_DEMO_REPO=${GIT_DEMO_REPO}
 GIT_OPS_REPO=${GIT_OPS_REPO}
 
 printf 'This terminal has been \e[0;32m~Enhanced~\e[0m\n'
-printf 'See \033[34;1;1m'${GIT_AI_REPO}'\e[0m\n\n'
+printf 'See \033[34;1;1m'${GIT_DEMO_REPO}'\e[0m\n\n'
 
 term_git_setup(){
-  [ -z \"\${GIT_AI_REPO}\" ] && return
-  git clone \"\${GIT_AI_REPO}\" ai_ops
-  git clone \"\${GIT_OPS_REPO}\" git_ops
+  [ -z \"\${GIT_DEMO_REPO}\" ] && return
+  git clone \"\${GIT_DEMO_REPO}\" ~/${GIT_DEMO_NAME:-demo_ops}
+  git clone \"\${GIT_OPS_REPO}\" ~/${GIT_OPS_NAME:-git_ops}
 }
 
 __git_branch(){
@@ -50,9 +52,9 @@ PATH=\${GIT_ROOT}/scratch/bin:\$PATH
 }
 
 term_git_setup(){
-  [ -z "${GIT_AI_REPO}" ] && return
-  git clone "${GIT_AI_REPO}" ai_ops || echo "[OK]"
-  git clone "${GIT_OPS_REPO}" git_ops || echo "[OK]"
+  [ -z "${GIT_DEMO_REPO}" ] && return
+  git clone "${GIT_DEMO_REPO}" ~/"${GIT_DEMO_NAME:-demo_ops}" || echo "[OK]"
+  git clone "${GIT_OPS_REPO}" ~/"${GIT_OPS_NAME:-git_ops}" || echo "[OK]"
 }
 
 term_bin_setup(){
