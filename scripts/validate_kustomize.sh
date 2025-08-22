@@ -11,7 +11,12 @@ Where:
   -sl | --schema-location      Location containing schemas"
 }
 
-which kustomize && KUSTOMIZE_CMD="kustomize build"
+if which kustomize; then
+  KUSTOMIZE_CMD="kustomize build"
+else
+  which oc || exit 0
+fi
+
 which helm && GOT_HELM="--enable-helm"
 
 # DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"

@@ -3,7 +3,7 @@
 
 HELM_DIRS="."
 
-which helm || return
+which helm || exit 0
 
 helm_lint_path(){
   LINT=${1}
