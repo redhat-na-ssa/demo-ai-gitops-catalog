@@ -10,8 +10,8 @@ spec:
     spec:
       containers:
         - name: minion
-          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
-          # image: registry.redhat.io/openshift4/cli
+          # image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+          image: registry.redhat.io/openshift4/ose-cli
           command:
             - /bin/bash
             - -c
