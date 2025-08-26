@@ -13,6 +13,16 @@ REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME:-localhost}
 REGISTRY_USERNAME=${REGISTRY_USERNAME:-registry}
 REGISTRY_PASSWORD=${REGISTRY_PASSWORD:-$(genpass 16)}
 
+if [ ! -e registry/registry-info.txt ]; then
+  echo "
+    REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME}
+    REGISTRY_USERNAME=${REGISTRY_USERNAME}
+    REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
+  " > registry/registry-info.txt
+else
+  . registry/registry-info.txt
+fi
+
 mkdir -p registry/{config,data}
 
 if [ ! -e registry/config/${REGISTRY_HOSTNAME}.key ]; then
@@ -23,7 +33,7 @@ if [ ! -e registry/config/${REGISTRY_HOSTNAME}.key ]; then
     -keyout registry/config/${REGISTRY_HOSTNAME}.key \
     -out registry/config/${REGISTRY_HOSTNAME}.crt \
     -subj "/C=US/ST=NorthCarolina/L=Raleigh/O=Red Hat/OU=Sales/CN=${REGISTRY_HOSTNAME}" \
-    -addext "subjectAltName = DNS:${REGISTRY_HOSTNAME} DNS:${REGISTRY_HOSTNAME%%.*}"
+    -addext "subjectAltName = DNS:${REGISTRY_HOSTNAME}, DNS:${REGISTRY_HOSTNAME%%.*}"
 fi
 
 echo "copying ${REGISTRY_HOSTNAME}.crt to /etc/pki/ca-trust/source/anchors/"
@@ -78,16 +88,6 @@ cat << FILE > registry/registry-secret.json
    "auth": "$(echo -n "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" | base64 -w0)"
 }
 FILE
-
-if [ ! -e registry-info.txt ]; then
-  echo "
-    REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME}
-    REGISTRY_USERNAME=${REGISTRY_USERNAME}
-    REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
-  " > registry/registry-info.txt
-else
-  return
-fi
 
 cat registry/config/${REGISTRY_HOSTNAME}.crt
 cat registry/registry-info.txt
