@@ -4,8 +4,8 @@ mirror:
   platform:
     channels:
     - name: stable-4.18
-      minVersion: 4.18.20
-      maxVersion: 4.18.20
+      minVersion: 4.18.22
+      maxVersion: 4.18.22
     graph: true
   operators:
     - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.18
