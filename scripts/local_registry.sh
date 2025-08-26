@@ -9,8 +9,8 @@ genpass(){
   < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
 }
 
-REGISTRY_HOSTNAME=localhost
-REGISTRY_USERNAME=registry
+REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME:-localhost}
+REGISTRY_USERNAME=${REGISTRY_USERNAME:-registry}
 REGISTRY_PASSWORD=${REGISTRY_PASSWORD:-$(genpass 16)}
 
 mkdir -p registry/{config,data}
@@ -23,9 +23,10 @@ if [ ! -e registry/config/${REGISTRY_HOSTNAME}.key ]; then
     -keyout registry/config/${REGISTRY_HOSTNAME}.key \
     -out registry/config/${REGISTRY_HOSTNAME}.crt \
     -subj "/C=US/ST=NorthCarolina/L=Raleigh/O=Red Hat/OU=Sales/CN=${REGISTRY_HOSTNAME}" \
-    -addext "subjectAltName = DNS:${REGISTRY_HOSTNAME}"
+    -addext "subjectAltName = DNS:${REGISTRY_HOSTNAME} DNS:${REGISTRY_HOSTNAME%%.*}"
 fi
 
+echo "copying ${REGISTRY_HOSTNAME}.crt to /etc/pki/ca-trust/source/anchors/"
 cp registry/config/${REGISTRY_HOSTNAME}.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust
 
@@ -87,9 +88,18 @@ if [ ! -e registry-info.txt ]; then
 else
   return
 fi
+
 cat registry/config/${REGISTRY_HOSTNAME}.crt
 cat registry/registry-info.txt
 cat registry/registry-secret.json
+
+echo "
+# \$HOME/.config/containers/registries.conf
+
+[[registry]]
+location="${REGISTRY_HOSTNAME}:5000"
+insecure=true
+"
 }
 
 mirror_registry_local

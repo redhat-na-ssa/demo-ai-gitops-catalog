@@ -1,0 +1,25 @@
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  platform:
+    channels:
+    - name: stable-4.18
+      minVersion: 4.18.20
+      maxVersion: 4.18.20
+    graph: true
+  operators:
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.18
+      packages:
+       - name: local-storage-operator
+       - name: web-terminal
+  additionalImages: 
+   - name: ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+  helm:
+    repositories:
+      - name: cosigned
+        url: https://sigstore.github.io/helm-charts
+        charts:
+          - name: cosigned
+            version: 0.1.23
+
+# oc-mirror -c ./isc.yaml --workspace file:///${PWD}/scratch/oc-mirror docker://registry:5000 --v2
