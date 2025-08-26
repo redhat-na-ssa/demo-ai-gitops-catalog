@@ -19,24 +19,37 @@ The current *overlays* available are for the following channels:
 * [strimzi-0.32.x](operator/overlays/strimzi-0.32.x)
 * [strimzi-0.33.x](operator/overlays/strimzi-0.33.x)
 * [strimzi-0.34.x](operator/overlays/strimzi-0.34.x)
+* [strimzi-0.35.x](operator/overlays/strimzi-0.35.x)
+* [strimzi-0.36.x](operator/overlays/strimzi-0.36.x)
+* [strimzi-0.37.x](operator/overlays/strimzi-0.37.x)
+* [strimzi-0.38.x](operator/overlays/strimzi-0.38.x)
+* [strimzi-0.39.x](operator/overlays/strimzi-0.39.x)
+* [strimzi-0.40.x](operator/overlays/strimzi-0.40.x)
+* [strimzi-0.41.x](operator/overlays/strimzi-0.41.x)
+* [strimzi-0.42.x](operator/overlays/strimzi-0.42.x)
+* [strimzi-0.43.x](operator/overlays/strimzi-0.43.x)
+* [strimzi-0.44.x](operator/overlays/strimzi-0.44.x)
+* [strimzi-0.45.x](operator/overlays/strimzi-0.45.x)
+* [strimzi-0.46.x](operator/overlays/strimzi-0.46.x)
+* [strimzi-0.47.x](operator/overlays/strimzi-0.47.x)
 
 ## Usage
 
 If you have cloned the `gitops-catalog` repository, you can install Strimzi based on the overlay of your choice by running from the root (`gitops-catalog`) directory.
 
-```
+```sh
 oc apply -k strimzi-kafka-operator/operator/overlays/<channel>
 ```
 
 Or, without cloning:
 
-```
+```sh
 oc apply -k https://github.com/redhat-cop/gitops-catalog/strimzi-kafka-operator/operator/overlays/<channel>
 ```
 
 As part of a different overlay in your own GitOps repo:
 
-```
+```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:

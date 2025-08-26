@@ -3,3 +3,4 @@ kind: OperatorGroup
 metadata:
   name: strimzi-kafka-operator
   namespace: strimzi-kafka-operator
+
