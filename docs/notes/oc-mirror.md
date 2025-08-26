@@ -34,12 +34,16 @@ Stage 2
 oc-mirror delete --delete-yaml-file ${PWD}/scratch/oc-mirror/working-dir/delete/delete-images-delete1.yaml docker://registry:5000 --v2
 ```
 
-### Hacks
+## Hacks
 
-`oc-mirror` (BuildDate:"2025-08-13T02:09:59Z")
+`oc-mirror` (2025-08-13T02:09:59Z)
 
 Pulling images times out at 10 minutes.
 The following can create a `mapping.txt` file that can be used with `skopeo` to copy the images
+
+`oc-mirror --image-timeout 60m`
+
+### Alternative
 
 Create `mapping.txt`
 

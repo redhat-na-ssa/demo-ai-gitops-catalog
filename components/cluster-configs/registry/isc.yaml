@@ -22,4 +22,4 @@ mirror:
           - name: cosigned
             version: 0.1.23
 
-# oc-mirror -c ./isc.yaml --workspace file:///${PWD}/scratch/oc-mirror docker://registry:5000 --v2
+# oc-mirror -c ./isc.yaml --workspace file:///${PWD}/scratch/oc-mirror docker://registry:5000 --v2 --image-timeout 60m
