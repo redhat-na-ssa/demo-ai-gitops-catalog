@@ -21,26 +21,27 @@ if [ ! -e registry/registry-info.txt ]; then
     REGISTRY_USERNAME=${REGISTRY_USERNAME}
     REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
   " > registry/registry-info.txt
-else
+
+  # shellcheck source=/dev/null
   . registry/registry-info.txt
 fi
 
 mkdir -p registry/{config,data}
 
-if [ ! -e registry/config/${REGISTRY_HOSTNAME}.key ]; then
+if [ ! -e "registry/config/${REGISTRY_HOSTNAME}.key" ]; then
   openssl req \
     -x509 -days 3650 \
     -newkey rsa:4096 \
     -nodes -sha256 \
-    -keyout registry/config/${REGISTRY_HOSTNAME}.key \
-    -out registry/config/${REGISTRY_HOSTNAME}.crt \
+    -keyout "registry/config/${REGISTRY_HOSTNAME}.key" \
+    -out "registry/config/${REGISTRY_HOSTNAME}.crt" \
     -subj "/C=US/ST=NorthCarolina/L=Raleigh/O=Red Hat/OU=Sales/CN=${REGISTRY_HOSTNAME}" \
     -addext "subjectAltName = DNS:${REGISTRY_HOSTNAME}, DNS:${REGISTRY_HOSTNAME%%.*}"
 fi
 
 if [ -d /etc/pki/ca-trust/source/anchors/ ]; then
   echo "copying ${REGISTRY_HOSTNAME}.crt to /etc/pki/ca-trust/source/anchors/"
-  cp registry/config/${REGISTRY_HOSTNAME}.crt /etc/pki/ca-trust/source/anchors/
+  cp "registry/config/${REGISTRY_HOSTNAME}.crt" /etc/pki/ca-trust/source/anchors/
   update-ca-trust
 else
   echo ""
@@ -62,8 +63,8 @@ podman run -d \
   -e REGISTRY_AUTH_HTPASSWD_PATH=/config/htpasswd \
   -e REGISTRY_AUTH_HTPASSWD_REALM=Registry \
   -e REGISTRY_HTTP_SECRET=1559d180c2ce1acc3c41ef745535d5 \
-  -e REGISTRY_HTTP_TLS_CERTIFICATE=/config/${REGISTRY_HOSTNAME}.crt \
-  -e REGISTRY_HTTP_TLS_KEY=/config/${REGISTRY_HOSTNAME}.key \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE="/config/${REGISTRY_HOSTNAME}.crt" \
+  -e REGISTRY_HTTP_TLS_KEY="/config/${REGISTRY_HOSTNAME}.key" \
     docker.io/library/registry:2
 
 cat << FILE > /etc/systemd/system/mirror-registry.service
@@ -89,7 +90,7 @@ if which firewall-cmd; then
 fi
 
 sleep 6
-curl -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" https://${REGISTRY_HOSTNAME}:5000/v2/_catalog
+curl -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" "https://${REGISTRY_HOSTNAME}:5000/v2/_catalog"
 
 cat << FILE > registry/registry-secret.json
 "${REGISTRY_HOSTNAME}:5000": {
@@ -97,7 +98,7 @@ cat << FILE > registry/registry-secret.json
 }
 FILE
 
-cat registry/config/${REGISTRY_HOSTNAME}.crt
+cat registry/config/"${REGISTRY_HOSTNAME}".crt
 cat registry/registry-info.txt
 cat registry/registry-secret.json
 
@@ -105,7 +106,7 @@ echo "
 # \$HOME/.config/containers/registries.conf
 
 [[registry]]
-location="${REGISTRY_HOSTNAME}:5000"
+location=\"${REGISTRY_HOSTNAME}\":5000
 insecure=true
 "
 }

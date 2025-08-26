@@ -49,6 +49,7 @@ belyakov
 bitnami
 Bitnami
 bkoz
+BuildDate
 builtins
 canada
 cd
@@ -377,6 +378,7 @@ servicemesh
 ServiceMesh
 sfdc
 sigs
+skopeo
 Skupper
 SNO
 SonarQube
