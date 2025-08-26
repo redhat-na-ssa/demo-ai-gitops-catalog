@@ -107,6 +107,7 @@ nav:
       - demos/_example.md
   - Notes:
       - notes/ocp.md
+      - notes/oc-mirror.md
   - Practices:
       - practices/index.md
       - practices/data-sci.md

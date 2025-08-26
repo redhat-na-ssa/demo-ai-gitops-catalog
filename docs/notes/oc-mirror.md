@@ -1,0 +1,77 @@
+# `oc-mirror`
+
+See https://github.com/openshift/oc-mirror
+
+Mirror to Disk
+
+```sh
+oc-mirror -c ./isc.yaml file:///${PWD}/scratch/ocp4 --v2
+```
+
+Disk to Mirror
+
+```sh
+oc-mirror -c ./isc.yaml --from file:///${PWD}/scratch/ocp4 docker://registry:5000 --v2
+```
+
+Mirror to Mirror (`registry:5000`)
+
+```sh
+oc-mirror -c ./isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 docker://registry:5000 --v2
+```
+
+### Delete / Prune images
+
+Stage 1
+
+```sh
+oc-mirror delete -c ./isc-delete.yaml --generate --workspace file:///${PWD}/scratch/oc-mirror/delete1 --delete-id delete1 docker://registry:5000 --v2
+```
+
+Stage 2
+
+```sh
+oc-mirror delete --delete-yaml-file ${PWD}/scratch/oc-mirror/working-dir/delete/delete-images-delete1.yaml docker://registry:5000 --v2
+```
+
+### Hacks
+
+`oc-mirror` (BuildDate:"2025-08-13T02:09:59Z")
+
+Pulling images times out at 10 minutes.
+The following can create a `mapping.txt` file that can be used with `skopeo` to copy the images
+
+Create `mapping.txt`
+
+```sh
+oc-mirror \
+  -c components/cluster-configs/registry/isc.yaml \
+  --workspace file:///${PWD}/scratch/oc-mirror \
+  docker://registry:5000 \
+  --v2 \
+  --dry-run
+```
+
+Create `images.txt` - a list of images to copy
+
+```sh
+sed '
+  s@^docker://@@g
+  s@=docker://registry:5000.*@@g
+  /localhost/d' \
+    scratch/oc-mirror/working-dir/dry-run/mapping.txt \
+    > scratch/images.txt
+```
+
+Loop through `images.txt` - do stupid shell things
+
+```sh
+while read -r line
+do
+  skopeo copy docker://"${line}" \
+    docker://registry:5000/openshift \
+    --authfile /run/user/1000/containers/auth.json
+
+  sed -i "/${line##*/}/d" scratch/images.txt
+done < scratch/images.txt
+```

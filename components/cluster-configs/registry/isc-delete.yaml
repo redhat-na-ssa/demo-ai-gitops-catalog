@@ -1,0 +1,12 @@
+kind: DeleteImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+delete:
+  platform:
+    channels:
+    - name: stable-4.18
+      minVersion: 4.18.1
+      maxVersion: 4.18.21
+    graph: true
+
+# oc-mirror delete -c ./isc-delete.yaml --generate --workspace file:///${PWD}/scratch/oc-mirror/delete1 --delete-id delete1-test docker://registry:5000 --v2
+# oc-mirror delete --delete-yaml-file ${PWD}/scratch/oc-mirror/working-dir/delete/delete-images-delete1-test.yaml docker://registry:5000 --v2
