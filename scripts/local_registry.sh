@@ -13,6 +13,8 @@ REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME:-localhost}
 REGISTRY_USERNAME=${REGISTRY_USERNAME:-registry}
 REGISTRY_PASSWORD=${REGISTRY_PASSWORD:-$(genpass 16)}
 
+[ -d registry ] || mkdir -p registry
+
 if [ ! -e registry/registry-info.txt ]; then
   echo "
     REGISTRY_HOSTNAME=${REGISTRY_HOSTNAME}
@@ -36,12 +38,16 @@ if [ ! -e registry/config/${REGISTRY_HOSTNAME}.key ]; then
     -addext "subjectAltName = DNS:${REGISTRY_HOSTNAME}, DNS:${REGISTRY_HOSTNAME%%.*}"
 fi
 
-echo "copying ${REGISTRY_HOSTNAME}.crt to /etc/pki/ca-trust/source/anchors/"
-cp registry/config/${REGISTRY_HOSTNAME}.crt /etc/pki/ca-trust/source/anchors/
-update-ca-trust
+if [ -d /etc/pki/ca-trust/source/anchors/ ]; then
+  echo "copying ${REGISTRY_HOSTNAME}.crt to /etc/pki/ca-trust/source/anchors/"
+  cp registry/config/${REGISTRY_HOSTNAME}.crt /etc/pki/ca-trust/source/anchors/
+  update-ca-trust
+else
+  echo ""
+fi
 
 if [ ! -e registry/config/htpasswd ]; then
-  dnf -y install httpd-tools
+  which htpasswd || dnf -y install httpd-tools
   touch registry/config/htpasswd
   htpasswd -bB registry/config/htpasswd "${REGISTRY_USERNAME}" "${REGISTRY_PASSWORD}"
 fi
@@ -77,8 +83,10 @@ systemctl daemon-reload
 systemctl enable --now mirror-registry.service
 systemctl restart mirror-registry.service
 
-firewall-cmd --permanent --add-port=5000/tcp
-firewall-cmd --reload
+if which firewall-cmd; then
+  firewall-cmd --permanent --add-port=5000/tcp
+  firewall-cmd --reload
+fi
 
 sleep 6
 curl -u "${REGISTRY_USERNAME}:${REGISTRY_PASSWORD}" https://${REGISTRY_HOSTNAME}:5000/v2/_catalog
