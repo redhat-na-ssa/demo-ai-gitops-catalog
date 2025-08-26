@@ -29,7 +29,8 @@ NOTE: The node sizes below are the **recommended minimum** to select for provisi
   - 0 x Workers - `m6a.2xlarge`
 - <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.ocp4-single-node.prod&utm_source=webapp&utm_medium=share-link" target="_blank">One Node OpenShift</a>
   - 1 x Control Plane - `m6a.2xlarge`
-- <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/community-content.com-mlops-wksp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">MLOps Demo: Data Science & Edge Practice</a>
+- <a href="https://catalog.demo.redhat.com/catalog?item=babylon-catalog-prod/openshift-cnv.ocp4-cnv-gitops.prod&utm_source=webapp&utm_medium=share-link" target="_blank">OpenShift GitOps Blank Environment</a>
+  - 1 x Control Plane - `16 cores`, `64Gi`
 
 ## Getting Started
 
