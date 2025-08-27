@@ -169,10 +169,15 @@ https
 iam
 IAM
 ide
+idms
 idp
 IgnoreExtraneous
 igor
+imageDigestMirrors
+ImageDigestMirrorSet
 imageregistry
+imageTagMirrors
+ImageTagMirrorSet
 inB
 ingresscontroller
 init
@@ -182,6 +187,7 @@ installPlanApproval
 installplans
 io
 IOV
+itms
 iximiuz
 jaeger
 Jaeger
@@ -243,6 +249,7 @@ memberof
 microsoft
 mig
 minio
+MirrorSet
 mkdir
 mkdocs
 MLOps
