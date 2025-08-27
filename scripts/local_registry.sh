@@ -53,18 +53,25 @@ if [ ! -e registry/config/htpasswd ]; then
   htpasswd -bB registry/config/htpasswd "${REGISTRY_USERNAME}" "${REGISTRY_PASSWORD}"
 fi
 
+if [ -n "${AUTH_ON}" ]; then
+  REGISTRY_AUTH_INFO="
+  -e REGISTRY_AUTH=htpasswd \
+  -e REGISTRY_AUTH_HTPASSWD_PATH=/config/htpasswd \
+  -e REGISTRY_AUTH_HTPASSWD_REALM=Registry"
+fi
+
 podman rm mirror-registry --force
+
+# shellcheck disable=SC2086
 podman run -d \
   --name mirror-registry \
   -p 5000:5000 \
   -v ./registry/data:/var/lib/registry:z \
   -v ./registry/config:/config:z \
-  -e REGISTRY_AUTH=htpasswd \
-  -e REGISTRY_AUTH_HTPASSWD_PATH=/config/htpasswd \
-  -e REGISTRY_AUTH_HTPASSWD_REALM=Registry \
   -e REGISTRY_HTTP_SECRET=1559d180c2ce1acc3c41ef745535d5 \
   -e REGISTRY_HTTP_TLS_CERTIFICATE="/config/${REGISTRY_HOSTNAME}.crt" \
   -e REGISTRY_HTTP_TLS_KEY="/config/${REGISTRY_HOSTNAME}.key" \
+  ${REGISTRY_AUTH_INFO} \
     docker.io/library/registry:2
 
 cat << FILE > /etc/systemd/system/mirror-registry.service
@@ -110,5 +117,7 @@ location=\"${REGISTRY_HOSTNAME}\":5000
 insecure=true
 "
 }
+
+AUTH_ON=${1}
 
 mirror_registry_local
