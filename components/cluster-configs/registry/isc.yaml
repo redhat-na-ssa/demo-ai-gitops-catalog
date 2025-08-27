@@ -12,6 +12,7 @@ mirror:
       packages:
         - name: local-storage-operator
         - name: web-terminal
+        - name: devworkspace-operator-fast-redhat-operators-openshift-marketplace
   additionalImages:
     - name: ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
   helm:

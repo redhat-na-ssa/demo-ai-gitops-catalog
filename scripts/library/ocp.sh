@@ -156,7 +156,7 @@ ocp_infra_move_registry_to_control(){
 cat <<YAML > /tmp/patch.yaml
 spec:
   nodeSelector:
-    node-role.kubernetes.io/infra: ""
+    node-role.kubernetes.io/master: ""
   tolerations:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
@@ -179,7 +179,7 @@ spec:
   nodePlacement:
     nodeSelector:
       matchLabels:
-        node-role.kubernetes.io/infra: ""
+        node-role.kubernetes.io/master: ""
     tolerations:
     - effect: NoSchedule
       key: node-role.kubernetes.io/master
@@ -204,7 +204,7 @@ spec:
     elasticsearch:
       nodeCount: 3
       nodeSelector:
-        node-role.kubernetes.io/infra: ""
+        node-role.kubernetes.io/master: ""
       tolerations:
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
