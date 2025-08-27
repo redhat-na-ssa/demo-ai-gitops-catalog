@@ -81,7 +81,7 @@ do
 done < scratch/images.txt
 ```
 
-Example MirrorSet
+## Example MirrorSet
 
 ```yaml
 ---
