@@ -240,7 +240,7 @@ data:
         node-role.kubernetes.io/infra: ""
 YAML
 
-oc create -f /tmp/patch.yaml
+oc apply -f /tmp/patch.yaml
 
 cat <<YAML > /tmp/patch.yaml
 spec:
