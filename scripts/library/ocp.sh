@@ -244,6 +244,7 @@ YAML
 ocp_infra_move_to_control(){
   ocp_annotate_default_tolerations openshift-terminal
   ocp_annotate_default_tolerations openshift-operators
+  ocp_annotate_default_tolerations openshift-operator-lifecycle-manager
 
   ocp_infra_move_registry_to_control
   ocp_infra_move_router_to_control
