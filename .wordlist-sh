@@ -71,6 +71,7 @@ decrypt
 defaultCertificate
 defaultChannel
 defaultNodeSelector
+defaultTolerations
 deployables
 deviceName
 df

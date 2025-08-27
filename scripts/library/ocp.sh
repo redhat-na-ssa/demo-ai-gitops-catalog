@@ -196,6 +196,12 @@ YAML
 
 }
 
+ocp_infra_move_web_term_to_control(){
+  # oc annotate ns openshift-terminal openshift.io/node-selector="node-role.kubernetes.io/master"
+  # oc annotate ns openshift-terminal scheduler.alpha.kubernetes.io/node-selector='node-role.kubernetes.io/master='  # poorly documented: format has to be of "selector-label=label-val"
+  oc annotate ns openshift-terminal scheduler.alpha.kubernetes.io/defaultTolerations='[{"effect":"NoSchedule","key":"node-role.kubernetes.io/master","operator":"Exists"},{"effect":"NoExecute","key":"node-role.kubernetes.io/master","operator":"Exists"}]'
+}
+
 ocp_infra_move_monitoring_to_control(){
 
 cat <<YAML > /tmp/patch.yaml
@@ -230,6 +236,12 @@ YAML
     clusterlogging instance \
     --type=merge --patch-file /tmp/patch.yaml
 
+}
+
+ocp_infra_move_to_control(){
+  ocp_infra_move_registry_to_control
+  ocp_infra_move_router_to_control
+  ocp_infra_move_registry_to_control
 }
 
 ocp_kubeadmin_create(){
