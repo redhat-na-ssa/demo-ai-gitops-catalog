@@ -242,6 +242,7 @@ ocp_infra_move_to_control(){
   ocp_infra_move_registry_to_control
   ocp_infra_move_router_to_control
   ocp_infra_move_registry_to_control
+  ocp_infra_move_web_term_to_control
 }
 
 ocp_kubeadmin_create(){
