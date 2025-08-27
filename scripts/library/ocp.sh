@@ -223,9 +223,9 @@ data:
     prometheusOperator:
       nodeSelector:
         node-role.kubernetes.io/infra: ""
-    grafana:
-      nodeSelector:
-        node-role.kubernetes.io/infra: ""
+    # grafana:
+    #   nodeSelector:
+    #     node-role.kubernetes.io/infra: ""
     k8sPrometheusAdapter:
       nodeSelector:
         node-role.kubernetes.io/infra: ""
