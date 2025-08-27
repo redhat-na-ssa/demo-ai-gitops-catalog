@@ -13,3 +13,4 @@
 - https://github.com/rh-dttl-edge-virt-demo/edge-virt/blob/main/encrypt-chart-secrets.sh
 - https://krew.sigs.k8s.io/docs/user-guide/setup/install/#bash
 - https://labguides.readthedocs.io/en/latest/ocp/ocp.html
+- https://schmaustech.blogspot.com/2025/01/mellanox-firmware-updates-via-openshift.html
