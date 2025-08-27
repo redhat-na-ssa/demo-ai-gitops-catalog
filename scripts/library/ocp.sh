@@ -283,6 +283,7 @@ ocp_infra_move_to_control(){
   ocp_annotate_default_tolerations openshift-operators
   ocp_annotate_default_tolerations openshift-operator-lifecycle-manager
   ocp_annotate_default_tolerations openshift-ingress-canary
+  ocp_annotate_default_tolerations openshift-monitoring
 
   ocp_infra_move_monitoring_to_control
   ocp_infra_move_registry_to_control
