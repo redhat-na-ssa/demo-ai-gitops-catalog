@@ -8,6 +8,7 @@ addon
 adp
 adrezni
 af
+alertmanagerMain
 AllNamespaces
 amd
 apis
@@ -159,6 +160,7 @@ ksh
 kubeconfig
 KUBECONFIG
 kubeconfigs
+kubeStateMetrics
 kubeval
 ln
 logStore
@@ -225,6 +227,7 @@ og
 onmicrosoft
 oO
 OpenShiftSDN
+openshiftStateMetrics
 openssl
 operatorframework
 opm
@@ -249,6 +252,8 @@ preferredVersion
 PREROUTING
 printf
 projectcalico
+prometheusK
+prometheusOperator
 providerSpec
 PublicDnsName
 publickey
@@ -294,6 +299,7 @@ sl
 sL
 sLfO
 sLo
+sPrometheusAdapter
 squidfunk
 sS
 StrictHostKeyChecking
@@ -308,6 +314,7 @@ systemctl
 systemd
 targetNamespaces
 tcp
+telemeterClient
 tgz
 tkn
 tls

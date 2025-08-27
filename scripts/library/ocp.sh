@@ -148,7 +148,6 @@ ocp_infra_label_control(){
   # oc patch \
   #   scheduler cluster \
   #   --type=merge --patch '{"spec":{"defaultNodeSelector":"node-role.kubernetes.io/infra=\"\""}}'
-
 }
 
 ocp_infra_move_registry_to_control(){
@@ -156,7 +155,7 @@ ocp_infra_move_registry_to_control(){
 cat <<YAML > /tmp/patch.yaml
 spec:
   nodeSelector:
-    node-role.kubernetes.io/master: ""
+    node-role.kubernetes.io/infra: ""
   tolerations:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
@@ -179,7 +178,7 @@ spec:
   nodePlacement:
     nodeSelector:
       matchLabels:
-        node-role.kubernetes.io/master: ""
+        node-role.kubernetes.io/infra: ""
     tolerations:
     - effect: NoSchedule
       key: node-role.kubernetes.io/master
@@ -208,12 +207,48 @@ ocp_annotate_default_tolerations(){
 ocp_infra_move_monitoring_to_control(){
 
 cat <<YAML > /tmp/patch.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |+
+    alertmanagerMain:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+    prometheusK8s:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+    prometheusOperator:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+    grafana:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+    k8sPrometheusAdapter:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+    kubeStateMetrics:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+    telemeterClient:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+    openshiftStateMetrics:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+YAML
+
+oc create -f /tmp/patch.yaml
+
+cat <<YAML > /tmp/patch.yaml
 spec:
   logStore:
     elasticsearch:
       nodeCount: 3
       nodeSelector:
-        node-role.kubernetes.io/master: ""
+        node-role.kubernetes.io/infra: ""
       tolerations:
       - effect: NoSchedule
         key: node-role.kubernetes.io/master
@@ -242,10 +277,14 @@ YAML
 }
 
 ocp_infra_move_to_control(){
+  ocp_infra_label_control
+
   ocp_annotate_default_tolerations openshift-terminal
   ocp_annotate_default_tolerations openshift-operators
   ocp_annotate_default_tolerations openshift-operator-lifecycle-manager
+  ocp_annotate_default_tolerations openshift-ingress-canary
 
+  ocp_infra_move_monitoring_to_control
   ocp_infra_move_registry_to_control
   ocp_infra_move_router_to_control
   ocp_infra_move_registry_to_control
