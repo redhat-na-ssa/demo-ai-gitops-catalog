@@ -196,10 +196,13 @@ YAML
 
 }
 
-ocp_infra_move_web_term_to_control(){
+ocp_annotate_default_tolerations(){
+  NAMESPACE=${1}
+
+  [ -z ${NAMESPACE+x} ] && return
   # oc annotate ns openshift-terminal openshift.io/node-selector="node-role.kubernetes.io/master"
   # oc annotate ns openshift-terminal scheduler.alpha.kubernetes.io/node-selector='node-role.kubernetes.io/master='  # poorly documented: format has to be of "selector-label=label-val"
-  oc annotate ns openshift-terminal scheduler.alpha.kubernetes.io/defaultTolerations='[{"effect":"NoSchedule","key":"node-role.kubernetes.io/master","operator":"Exists"},{"effect":"NoExecute","key":"node-role.kubernetes.io/master","operator":"Exists"}]'
+  oc annotate ns "${NAMESPACE}" scheduler.alpha.kubernetes.io/defaultTolerations='[{"effect":"NoSchedule","key":"node-role.kubernetes.io/master","operator":"Exists"},{"effect":"NoExecute","key":"node-role.kubernetes.io/master","operator":"Exists"}]'
 }
 
 ocp_infra_move_monitoring_to_control(){
@@ -239,10 +242,12 @@ YAML
 }
 
 ocp_infra_move_to_control(){
+  ocp_annotate_default_tolerations openshift-terminal
+  ocp_annotate_default_tolerations openshift-operators
+
   ocp_infra_move_registry_to_control
   ocp_infra_move_router_to_control
   ocp_infra_move_registry_to_control
-  ocp_infra_move_web_term_to_control
 }
 
 ocp_kubeadmin_create(){
