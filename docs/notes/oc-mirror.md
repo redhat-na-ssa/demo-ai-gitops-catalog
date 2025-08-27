@@ -39,11 +39,12 @@ oc-mirror delete --delete-yaml-file ${PWD}/scratch/oc-mirror/working-dir/delete/
 `oc-mirror` (2025-08-13T02:09:59Z)
 
 Pulling images times out at 10 minutes.
-The following can create a `mapping.txt` file that can be used with `skopeo` to copy the images
 
 `oc-mirror --image-timeout 60m`
 
 ### Alternative
+
+The following can create a `mapping.txt` file that can be used with `skopeo` to copy the images. This is **not** recommended - just notes of an insane mind.
 
 Create `mapping.txt`
 
