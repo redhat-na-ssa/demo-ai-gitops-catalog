@@ -47,9 +47,12 @@ spec:
               machine.openshift.io/zone: us-east-1a
 ```
 
-## Using `HostSelectorRequirement`
+## Using `matchExpressions`
 
-More detailed selection should be possible using common [operators](https://pkg.go.dev/k8s.io/apimachinery/pkg/selection#Operator). It's not clear how this can be used (update required).
+!!! WARNING
+    This does not appear to work. YMMV.
+
+More detailed `label` selection should be possible using common [operators](https://pkg.go.dev/k8s.io/apimachinery/pkg/selection#Operator).
 
 See [HostSelectorRequirement](https://pkg.go.dev/github.com/openshift/cluster-api-provider-baremetal/pkg/apis/baremetal/v1alpha1#HostSelectorRequirement)
 
@@ -64,7 +67,7 @@ metadata:
 spec:
 ```
 
-```yaml hl_lines="18-20"
+```yaml hl_lines="18-23"
 apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
@@ -84,7 +87,7 @@ spec:
         value:
           hostSelector:
             matchExpressions:
-              - key: "machine.openshift.io/zone"
+              - key: machine.openshift.io/zone
                 operator: Equals
                 values:
                   - us-east-1a
