@@ -1,6 +1,11 @@
 # Bare Metal Hosts (BMH)
 
+[OCP 4.19 - Creating a compute machine set on bare metal](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/machine_management/managing-compute-machines-with-the-machine-api#machineset-yaml-vsphere_creating-machineset-bare-metal)
+
 ## Associating `BMH` with `MachineSets`
+
+!!! NOTE
+    There is no good example or documentation of this feature. Have fun! :smile:
 
 ### Using `matchLabels`
 
