@@ -45,11 +45,13 @@ autoscalers
 autoscaling
 aws
 backplane
+BareMetalHosts
 belyakov
 bitnami
 Bitnami
 bkoz
 blogspot
+BMH
 BuildDate
 builtins
 canada
@@ -160,6 +162,8 @@ hcp
 heartexlabs
 helmchartinflationgenerator
 homelab
+HostSelector
+HostSelectorRequirement
 html
 htpass
 htpasswd

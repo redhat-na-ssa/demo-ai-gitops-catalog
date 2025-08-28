@@ -1,4 +1,4 @@
-# OpenShift Notes
+# OpenShift General
 
 ## Privileged Deployment - `root`
 
