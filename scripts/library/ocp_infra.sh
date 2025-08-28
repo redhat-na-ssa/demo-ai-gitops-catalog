@@ -197,4 +197,6 @@ ocp_infra_move_from_control(){
   ocp_annotate_ns_tolerations_master_remove openshift-operator-lifecycle-manager
   ocp_annotate_ns_tolerations_master_remove openshift-ingress-canary
   ocp_annotate_ns_tolerations_master_remove openshift-monitoring
+
+  oc -n openshift-machine-api scale --replicas 2 machineset --all
 }
