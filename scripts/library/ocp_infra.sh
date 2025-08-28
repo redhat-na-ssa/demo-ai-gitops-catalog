@@ -183,7 +183,7 @@ ocp_infra_move_to_control(){
   ocp_annotate_ns_tolerations_master openshift-ingress-canary
   ocp_annotate_ns_tolerations_master openshift-monitoring
 
-  ocp_infra_move_monitoring_to_control
+  # ocp_infra_move_monitoring_to_control
   ocp_infra_move_registry_to_control
   ocp_infra_move_router_to_control
   ocp_infra_move_registry_to_control
