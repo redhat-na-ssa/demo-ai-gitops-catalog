@@ -4,12 +4,12 @@
 
 ## Associating `BMH` with `MachineSets`
 
+The [HostSelector specifies matching criteria for labels on BareMetalHosts.](https://pkg.go.dev/github.com/openshift/cluster-api-provider-baremetal/pkg/apis/baremetal/v1alpha1#HostSelectorRequirement)
+
 !!! NOTE
     There is no good example or documentation of this feature. Have fun! :smile:
 
 ### Using `matchLabels`
-
-The [HostSelector specifies matching criteria for labels on BareMetalHosts.](https://pkg.go.dev/github.com/openshift/cluster-api-provider-baremetal/pkg/apis/baremetal/v1alpha1#HostSelectorRequirement)
 
 Below is an example of using `hostSelector` in combination with `matchLabels` to allow a specific `BMH` to be targeted for use in provisioning a `MachineSet`.
 
@@ -59,7 +59,7 @@ spec:
 
 More detailed `label` selection should be possible using common [operators](https://pkg.go.dev/k8s.io/apimachinery/pkg/selection#Operator).
 
-See [HostSelectorRequirement](https://pkg.go.dev/github.com/openshift/cluster-api-provider-baremetal/pkg/apis/baremetal/v1alpha1#HostSelectorRequirement)
+See [HostSelector](https://pkg.go.dev/github.com/openshift/cluster-api-provider-baremetal/pkg/apis/baremetal/v1alpha1#HostSelector)
 
 ```yaml hl_lines="7"
 apiVersion: metal3.io/v1alpha1
