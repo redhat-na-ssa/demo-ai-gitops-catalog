@@ -1,0 +1,40 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: operatorhubio-operators
+  namespace: openshift-marketplace
+spec:
+  displayName: OperatorHub
+  grpcPodConfig:
+    extractContent:
+      cacheDir: /tmp/cache
+      catalogDir: /configs
+    memoryTarget: 20Mi
+    nodeSelector:
+      kubernetes.io/os: linux
+      node-role.kubernetes.io/master: ''
+    priorityClassName: system-cluster-critical
+    securityContextConfig: restricted
+    tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      - effect: NoExecute
+        key: node.kubernetes.io/unreachable
+        operator: Exists
+        tolerationSeconds: 120
+      - effect: NoExecute
+        key: node.kubernetes.io/not-ready
+        operator: Exists
+        tolerationSeconds: 120
+  icon:
+    base64data: ''
+    mediatype: ''
+  # image: 'quay.io/operator-framework/upstream-community-operators:latest'
+  image: 'quay.io/operatorhubio/catalog:latest'
+  priority: 100
+  publisher: OperatorHub.io
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 10m
