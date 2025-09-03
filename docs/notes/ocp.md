@@ -93,3 +93,7 @@ spec:
         - containerPort: 8080
           protocol: TCP
 ```
+
+## Community Operators
+
+- [Community Operators Index](https://github.com/redhat-openshift-ecosystem/community-operators-prod)
