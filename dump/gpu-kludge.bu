@@ -1,0 +1,53 @@
+
+---
+variant: openshift
+version: 4.18.0
+metadata:
+  name: 01-gpu-418-22-kludge
+  labels:
+    machineconfiguration.openshift.io/role: worker
+    nvidia.com/gpu.present: 'true'
+storage:
+  files:
+    - path: /var/usrlocal/nvidia/toolkit/.config/nvidia-container-runtime/config.toml
+      mode: 0644
+      overwrite: true
+      contents:
+        inline: |
+            accept-nvidia-visible-devices-as-volume-mounts = false
+            accept-nvidia-visible-devices-envvar-when-unprivileged = true
+            disable-require = false
+            supported-driver-capabilities = "compat32,compute,display,graphics,ngx,utility,video"
+
+            [nvidia-container-cli]
+            environment = []
+            ldconfig = "@/run/nvidia/driver/sbin/ldconfig"
+            load-kmods = true
+            path = "/usr/local/nvidia/toolkit/nvidia-container-cli"
+            root = "/run/nvidia/driver"
+            no-cgroups = true
+
+            [nvidia-container-runtime]
+            log-level = "info"
+            mode = "auto"
+            runtimes = ["/usr/bin/crun", "/usr/bin/runc", "docker-runc", "runc", "crun"]
+
+            [nvidia-container-runtime.modes]
+
+                [nvidia-container-runtime.modes.cdi]
+                annotation-prefixes = ["cdi.k8s.io/"]
+                default-kind = "management.nvidia.com/gpu"
+                spec-dirs = ["/etc/cdi", "/var/run/cdi"]
+
+                [nvidia-container-runtime.modes.csv]
+                mount-spec-path = "/etc/nvidia-container-runtime/host-files-for-container.d"
+
+                [nvidia-container-runtime.modes.legacy]
+                cuda-compat-mode = "ldconfig"
+
+            [nvidia-container-runtime-hook]
+            path = "/usr/local/nvidia/toolkit/nvidia-container-runtime-hook"
+            skip-mode-detection = true
+
+            [nvidia-ctk]
+            path = "/usr/local/nvidia/toolkit/nvidia-ctk"
