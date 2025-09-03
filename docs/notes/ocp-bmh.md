@@ -6,8 +6,8 @@
 
 The [HostSelector specifies matching criteria for labels on BareMetalHosts.](https://pkg.go.dev/github.com/openshift/cluster-api-provider-baremetal/pkg/apis/baremetal/v1alpha1#HostSelectorRequirement)
 
-!!! NOTE
-    There is no good example or documentation of this feature. Have fun! :smile:
+??? Warning "There be dragons here..."
+    As of OpenShift docs 4.19, there is no usable example or official documentation of this feature. Have fun! :smile:
 
 ### Using `matchLabels`
 

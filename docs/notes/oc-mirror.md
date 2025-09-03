@@ -2,6 +2,8 @@
 
 See https://github.com/openshift/oc-mirror
 
+## `oc-mirror` options
+
 Mirror to Disk
 
 ```sh
@@ -17,7 +19,11 @@ oc-mirror -c ./isc.yaml --from file:///${PWD}/scratch/ocp4 docker://registry:500
 Mirror to Mirror (`registry:5000`)
 
 ```sh
-oc-mirror -c ./isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 docker://registry:5000 --v2
+oc-mirror -c components/cluster-configs/registry/isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 docker://registry:5000 --v2
+```
+
+```sh
+oc-mirror -c scratch/isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 docker://registry:5000 --v2
 ```
 
 ### Delete / Prune images
@@ -25,7 +31,11 @@ oc-mirror -c ./isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 docker
 Stage 1
 
 ```sh
-oc-mirror delete -c ./isc-delete.yaml --generate --workspace file:///${PWD}/scratch/oc-mirror/delete1 --delete-id delete1 docker://registry:5000 --v2
+oc-mirror delete -c components/cluster-configs/registry/isc-delete.yaml --generate --workspace file:///${PWD}/scratch/oc-mirror/delete1 --delete-id delete1 docker://registry:5000 --v2
+```
+
+```sh
+oc-mirror delete -c scratch/isc-delete.yaml --generate --workspace file:///${PWD}/scratch/oc-mirror/delete1 --delete-id delete1 docker://registry:5000 --v2
 ```
 
 Stage 2
