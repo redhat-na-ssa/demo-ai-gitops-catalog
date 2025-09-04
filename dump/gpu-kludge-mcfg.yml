@@ -2,8 +2,6 @@
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
-  annontations:
-    kludge: https://github.com/NVIDIA/gpu-operator/issues/1598
   labels:
     machineconfiguration.openshift.io/role: worker
     nvidia.com/gpu.present: "true"
@@ -16,7 +14,24 @@ spec:
       files:
         - contents:
             compression: gzip
-            source: data:;base64,H4sIAAAAAAAC/5xTy47dLAze8xQR6xCk/990M1LfY5QFA06OFWJTMHTm7SuSc+ZUmkunXSWg72ZsO+8hiaGGAZ1pWPApggnQ0EMxrpjGse5gdq4kZXgYFhcLqM9pQK25bH5egEyllLFhhBXC8DBIrqACFtfxGX5UzPCqWmpKnAWCCRkbZONdck8YURC6t/a8Jyf//zf2nyowBiwpupdxzS5d0JeR1uexSqe8jA0DsFbq8RrTM4lD6roRZwXUMDPtQDI8DI+zisEzLbh2p+82V7In0Z5pbHlCsjeQVpFdMNvOodzqSk4unWxryTayd/GmIMxxQ7HvJdEqM8vBe+OpFbHxa+aaXl3eqSdXEtxhVpFXE6FB7HJIC2u1c+gvrF0V1uqK7GKPZ85elM+V9DjcL3Il3y8C++3UP46374GfP0kyddcyKzUMw/AH1OQDzgfQEbE4QSaTMiz4fM3pA07btzIhW30iAyyuRjEbUp8qvTtyK/RWTqfZ5Hm3a6r6gJcE3gTM17JBvPUBj4qby8ez9/NX85Z2pjiWwhzir63v2h/x7YWLmAUjFLNwvgOmoL9mHWF1/uV09zV0YN8Ic2vyfTo/7o25MG/zvwzr7wJalQ3TYWwCCPjetrcjKn/lJJtWvwIAAP//ReH5apIEAAA=
-          mode: 420
+            source: data:;base64,H4sIAAAAAAAC/5xUTU/kRhC996+oOBxAmrajcIkiJoqUAEJB2dOeRtaqp7vGU3K7q7c/DAj476u2ZwDxsbB7mnH5Vb1X9ar86y/NmlyzVnErRG+z6fDw6FYA/Hf5+d/z0y9nF5eny2ZUockxWNbKNm4kQ6pJzLan1NSa3Ya6XVhqdkmRwyBDdokGbOb3deLBCoChNxRAejg4NBScGhAObp+Q3R8JsQL5PAot3N1BwJSDE0KrBCcn/3z6/+ziHP56BhVKa/RJ7gSNFGltURocSWOUKsqRbR5QDpxdirCEjbIR30lDN44qyKstOpmdDzSSxQ4NLCGFjMJQVAUf8GumgA9VY/aeQ0IjTaARg9TKqzVZSoSFu9I8eJWOf1+UPznhwlD0Vt0suqD8lnRcuO56kVNJuVmMZJArIVYvxq0ttQLdSIHdgC7BElatsGYef2H6uwnZ7e2b1TSxuL8HVcKyMrIf2MR9X16lbUku/jevLsBrSioRmNOU94KzEo6l7gJn/8DySj+79WmF5U5aHNGWcuQ2XImBTZlwpXLiSuyQpdhq1lma0iG7agGPgZCdLgHDup/rT4/73wnffkdJXVhjKwQAwDuoWhtqJ6ByjpNKxE76gBu63unUhur+j1gTN9WMNLhR2SbZkytbVQ3KqQ6LlfVMVmsems7naoJHj1oaCru2MelGG5o6Ludaxl6eP6o3jrOK6SjkVPzB+lL7zfPeckxyQxaj3HB4BNSm+hi1xU7pm5ldZ1OA5SLk3uTH7XzbG7ll7tufWdanBSoRe/ITsTSYUBfbXq5o+iGm1Fdi/lKJeyGutmQR/hQAhmH+3gqAaBE9HP8mDDsU3wIAAP//wXvAHpQFAAA=
+          mode: 493
           overwrite: true
-          path: /var/usrlocal/nvidia/toolkit/.config/nvidia-container-runtime/config.toml
+          path: /usr/local/bin/nvidia-kludge.sh
+    systemd:
+      units:
+        - name: nvidia-operator-kludge.service
+          enabled: true  
+          contents: |
+            [Unit]
+            Description=Nvidia Operator Kludge for 4.18.22
+            After=ostree-finalize-staged.service
+
+            [Service]
+            Type=notify
+            ExecStart=/usr/local/bin/nvidia-kludge.sh \
+            Restart=always
+            RestartSec=10
+
+            [Install]
+            WantedBy=multi-user.target
