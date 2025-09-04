@@ -67,3 +67,19 @@ storage:
             do kludge
             sleep 30
           done
+systemd:
+  units:
+    - name: nvidia-operator-kludge.service
+      enabled: true  
+      contents: |
+        [Unit]
+        Description=Nvidia Operator Kludge for 4.18.22
+
+        [Service]
+        Type=simple
+        ExecStart=/usr/local/bin/nvidia-kludge.sh \
+        Restart=always
+        RestartSec=10
+
+        [Install]
+        WantedBy=multi-user.target
