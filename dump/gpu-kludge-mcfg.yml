@@ -2,6 +2,8 @@
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
+  annotations:
+    bug: https://github.com/NVIDIA/gpu-operator/issues/1598
   labels:
     machineconfiguration.openshift.io/role: worker
     nvidia.com/gpu.present: "true"
