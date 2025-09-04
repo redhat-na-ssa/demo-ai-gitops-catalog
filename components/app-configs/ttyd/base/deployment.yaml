@@ -36,8 +36,9 @@ spec:
             - /bin/bash
             - -c
             - |
+              export USER=user
               . .bashrc
-              /app/ttyd -W -m5 -p 8080 /bin/bash
+              /app/ttyd -W -m3 -p 8080 /bin/bash
             # - |
             #   #!/bin/sh
             #   /app/ttyd -W -m5 -p 8080 /bin/bash
