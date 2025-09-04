@@ -28,7 +28,7 @@ spec:
             After=ostree-finalize-staged.service
 
             [Service]
-            Type=notify
+            Type=simple
             ExecStart=/usr/local/bin/nvidia-kludge.sh \
             Restart=always
             RestartSec=10
