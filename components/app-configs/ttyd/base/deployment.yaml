@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ttyd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: ttyd
+  template:
+    metadata:
+      labels:
+        deployment: ttyd
+    spec:
+      initContainers:
+        - name: extract
+          image: docker.io/tsl0922/ttyd:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/bin/sh
+              cp -a $(which ttyd) /app
+              chmod +x /app/ttyd
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+          - mountPath: /app
+            name: empty
+      containers:
+        - name: spawner
+          image: ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              . .bashrc
+              /app/ttyd -W -m5 -p 8080 /bin/bash
+            # - |
+            #   #!/bin/sh
+            #   /app/ttyd -W -m5 -p 8080 /bin/bash
+
+            #   IMAGE=ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+            #   # /app/ttyd \
+            #     oc run \
+            #     -it \
+            #     --image "${IMAGE}" \
+            #       /bin/bash
+
+            #   sleep infinity
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /app
+            name: empty
+      volumes:
+      - name: empty
+        emptyDir: {}
