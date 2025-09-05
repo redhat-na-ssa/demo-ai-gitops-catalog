@@ -1,0 +1,17 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: registry-ui
+data:
+  SINGLE_REGISTRY: "false"
+  REGISTRY_TITLE: Docker Registry UI
+  DELETE_IMAGES: "true"
+  SHOW_CONTENT_DIGEST: "true"
+  NGINX_PROXY_PASS_URL: http://registry.svc:5000
+  SHOW_CATALOG_NB_TAGS: "true"
+  CATALOG_MIN_BRANCHES: "1"
+  CATALOG_MAX_BRANCHES: "1"
+  TAGLIST_PAGE_SIZE: "100"
+  REGISTRY_SECURED: "false"
+  CATALOG_ELEMENTS_LIMIT: "1000"

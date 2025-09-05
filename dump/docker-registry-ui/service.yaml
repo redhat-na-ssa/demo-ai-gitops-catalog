@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry-ui
+spec:
+  ports:
+  - name: 5000-tcp
+    port: 5000
+    targetPort: 5000
+  selector:
+    deployment: registry-ui
+  sessionAffinity: None
+  type: ClusterIP
