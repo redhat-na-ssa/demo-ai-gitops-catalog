@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck source=/dev/null
 [ -e htpasswd.sh ] && . htpasswd.sh
 
 ocp_auth_add_admin_user(){
