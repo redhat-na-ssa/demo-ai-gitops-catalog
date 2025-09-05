@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ttyd
+spec:
+  template:
+    spec:
+      containers:
+        - name: spawner
+          image: ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/bin/bash
+
+              # kludge: cleanup old pods
+              oc delete pod -l ttyd=child --wait=0
+
+              export USER=user
+
+              # . .bashrc
+
+              cat << EOF > spawn.sh
+              IMAGE=ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+              oc run \
+                -it --rm \
+                -l ttyd=child \
+                --image "\${IMAGE}" \
+                tty-\$(date +%s) \
+                  -- /bin/bash
+              EOF
+              chmod +x spawn.sh
+
+              TTYD_ARGS="-t cursorStyle=bar"
+              TTYD_ARGS="${TTYD_ARGS} -t lineHeight=1.5"
+
+              /app/ttyd ${TTYD_ARGS} \
+                -W -m3 -p 8080 bash spawn.sh
+      serviceAccount: ttyd-spawner

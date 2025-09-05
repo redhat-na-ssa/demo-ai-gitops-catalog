@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ttyd-spawner
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ttyd-spawner
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - list
+  - get
+  - create
+  - delete
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods/log
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - pods/attach
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ttyd-spawner
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ttyd-spawner
+subjects:
+- kind: ServiceAccount
+  name: ttyd-spawner
+  # namespace: ttyd

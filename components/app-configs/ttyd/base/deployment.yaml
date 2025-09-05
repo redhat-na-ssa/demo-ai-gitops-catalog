@@ -44,7 +44,7 @@ spec:
             #   /app/ttyd -W -m5 -p 8080 /bin/bash
 
             #   IMAGE=ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
-            #   # /app/ttyd \
+            #   /app/ttyd \
             #     oc run \
             #     -it \
             #     --image "${IMAGE}" \
