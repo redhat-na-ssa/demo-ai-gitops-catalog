@@ -29,7 +29,6 @@ select_folder(){
 }
 
 
-
 lint_wordlist_reset(){
   which pyspelling >/dev/null 2>&1 || return 0
   pyspelling | sort -u | grep -Ev ' |---|/|^$' > .wordlist-md
