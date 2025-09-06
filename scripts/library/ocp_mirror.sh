@@ -1,9 +1,7 @@
 #!/bin/bash
 
 ocp_mirror_dry_run(){
-  DOC_URL=https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-installation-images.html
-
-  echo "See: ${DOC_URL}"
+  echo "See: https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-installation-images.html"
 
   # TIME_STAMP=$(date +%s)
   TIME_STAMP=$(date +%Y.%m.%d)
