@@ -4,26 +4,35 @@ See https://github.com/openshift/oc-mirror
 
 ## `oc-mirror` options
 
+Setup config files
+
+```sh
+[ -d scratch ] || mkdir scratch
+cp components/cluster-configs/registry/isc*.yaml scratch
+
+REGISTRY=registry:5000
+```
+
 Mirror to Disk
 
 ```sh
-oc-mirror -c ./isc.yaml file:///${PWD}/scratch/ocp4 --v2
+oc-mirror -c scratch/isc.yaml file:///${PWD}/scratch/ocp4 --v2
 ```
 
 Disk to Mirror
 
 ```sh
-oc-mirror -c ./isc.yaml --from file:///${PWD}/scratch/ocp4 docker://registry:5000 --v2
+oc-mirror -c scratch/isc.yaml \
+  --from file:///${PWD}/scratch/ocp4 \
+  docker://"${REGISTRY}" --v2
 ```
 
 Mirror to Mirror (`registry:5000`)
 
 ```sh
-oc-mirror -c components/cluster-configs/registry/isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 docker://registry:5000 --v2
-```
-
-```sh
-oc-mirror -c scratch/isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 docker://registry:5000 --v2
+oc-mirror -c scratch/isc.yaml \
+  --workspace file:///${PWD}/scratch/oc-mirror/ocp4 \
+  docker://"${REGISTRY}" --v2
 ```
 
 ### Delete / Prune images
@@ -31,17 +40,20 @@ oc-mirror -c scratch/isc.yaml --workspace file:///${PWD}/scratch/oc-mirror/ocp4 
 Stage 1
 
 ```sh
-oc-mirror delete -c components/cluster-configs/registry/isc-delete.yaml --generate --workspace file:///${PWD}/scratch/oc-mirror/delete1 --delete-id delete1 docker://registry:5000 --v2
-```
-
-```sh
-oc-mirror delete -c scratch/isc-delete.yaml --generate --workspace file:///${PWD}/scratch/oc-mirror/delete1 --delete-id delete1 docker://registry:5000 --v2
+oc-mirror delete \
+  -c scratch/isc-delete.yaml \
+  --generate \
+  --workspace file:///${PWD}/scratch/oc-mirror/delete1 \
+  --delete-id delete1 \
+  docker://"${REGISTRY}" --v2
 ```
 
 Stage 2
 
 ```sh
-oc-mirror delete --delete-yaml-file ${PWD}/scratch/oc-mirror/working-dir/delete/delete-images-delete1.yaml docker://registry:5000 --v2
+oc-mirror delete \
+  --delete-yaml-file ${PWD}/scratch/oc-mirror/working-dir/delete/delete-images-delete1.yaml \
+  docker://"${REGISTRY}" --v2
 ```
 
 ## Hacks
@@ -60,9 +72,9 @@ Create `mapping.txt`
 
 ```sh
 oc-mirror \
-  -c components/cluster-configs/registry/isc.yaml \
+  -c scratch/isc.yaml \
   --workspace file:///${PWD}/scratch/oc-mirror \
-  docker://registry:5000 \
+  docker://"${REGISTRY}" \
   --v2 \
   --dry-run
 ```
@@ -72,7 +84,7 @@ Create `images.txt` - a list of images to copy
 ```sh
 sed '
   s@^docker://@@g
-  s@=docker://registry:5000.*@@g
+  s@=docker://'"${REGISTRY}"'.*@@g
   /localhost/d' \
     scratch/oc-mirror/working-dir/dry-run/mapping.txt \
     > scratch/images.txt
