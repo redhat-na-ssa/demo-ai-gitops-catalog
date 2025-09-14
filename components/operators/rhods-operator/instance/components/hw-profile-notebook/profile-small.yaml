@@ -3,7 +3,7 @@ kind: HardwareProfile
 metadata:
   annotations:
     opendatahub.io/dashboard-feature-visibility: '["workbench"]'
-  name: notebooks-demo-workshop
+  name: notebooks-small
   namespace: redhat-ods-applications
 spec:
   displayName: Small
