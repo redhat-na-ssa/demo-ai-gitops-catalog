@@ -26,6 +26,7 @@ ocp_mirror_dry_run(){
     --from="quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE}" \
     --to="${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}" \
     --to-release-image="${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE}" \
+    --print-mirror-instructions=idms \
     --dry-run | \
       tee "${REMOVABLE_MEDIA_PATH}/cmd.${TIME_STAMP}" | \
       bash 2>&1 | tee "${REMOVABLE_MEDIA_PATH}/dryrun.${TIME_STAMP}"
