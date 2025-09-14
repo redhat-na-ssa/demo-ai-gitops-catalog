@@ -1,6 +1,7 @@
 # custom excludes
 data/
 scratch/
+logs/
 files.txt
 bootstrap/sealed-secrets-secret.yaml
 components/operators/**/charts/
