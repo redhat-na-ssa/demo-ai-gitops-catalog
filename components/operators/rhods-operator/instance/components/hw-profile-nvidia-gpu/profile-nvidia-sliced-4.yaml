@@ -9,6 +9,7 @@ spec:
   enabled: true
   nodeSelector:
     node-role.kubernetes.io/worker: ''
+    node.kubernetes.io/instance-type: g4dn.4xlarge
   tolerations:
     - effect: NoSchedule
       key: nvidia.com/gpu
