@@ -65,6 +65,7 @@ podman rm mirror-registry --force
 # shellcheck disable=SC2086
 podman run -d \
   --name mirror-registry \
+  --replace \
   -p 5000:5000 \
   -v ./registry/data:/var/lib/registry:z \
   -v ./registry/config:/config:z \
@@ -116,6 +117,20 @@ echo "
 location=\"${REGISTRY_HOSTNAME}\":5000
 insecure=true
 "
+}
+
+registry_browser(){
+  # https://github.com/klausmeyer/docker-registry-browser
+
+  podman run -d \
+    --name registry-browser \
+    --replace \
+    -e SECRET_KEY_BASE="$(openssl rand -hex 48)" \
+    -e DOCKER_REGISTRY_URL=https://registry:5000 \
+    -e NO_SSL_VERIFICATION=true \
+    -e ENABLE_DELETE_IMAGES=true \
+    -p 8080:8080 \
+      docker.io/klausmeyer/docker-registry-browser
 }
 
 AUTH_ON=${1}

@@ -84,3 +84,15 @@ ocp_mirror_setup_pull_secret(){
 
   # cat scratch/pull-secret | jq .
 }
+
+ocp_mirror_2_mirror(){
+  REGISTRY=${1:-registry:5000}
+
+  cp -n "${GIT_ROOT}"/components/cluster-configs/registry/isc*.yaml "${GIT_ROOT}"/scratch
+
+  ocp_mirror_setup_pull_secret
+
+  oc-mirror -c scratch/isc.yaml \
+    --workspace file:///${PWD}/scratch/oc-mirror/ocp4 \
+    docker://"${REGISTRY}" --v2 --image-timeout 60m
+}
