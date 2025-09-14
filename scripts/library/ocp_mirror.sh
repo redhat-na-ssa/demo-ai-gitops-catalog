@@ -55,7 +55,10 @@ ocp_mirror_operator_catalog_list(){
 }
 
 ocp_mirror_operator_catalog_list_all(){
-  VERSION=4.16
+  VERSION=${1:-4.18}
+
+  echo "VERSION: ${VERSION}"
+  
   # redhat-operators
   INDEX_LIST="registry.redhat.io/redhat/redhat-operator-index:v${VERSION}"
   # certified-operators
@@ -67,7 +70,7 @@ ocp_mirror_operator_catalog_list_all(){
 
   for index in ${INDEX_LIST}
   do
-    ocp_mirror_operator_list "${index}"
+    ocp_mirror_operator_catalog_list "${VERSION}" "${index}"
   done
 }
 
