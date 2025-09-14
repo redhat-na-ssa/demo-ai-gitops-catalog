@@ -8,7 +8,7 @@ spec:
   displayName: Nvidia GPU
   enabled: true
   nodeSelector:
-    nvidia.com/gpu.present: true
+    nvidia.com/gpu.present: "true"
     # node.kubernetes.io/instance-type: g4dn.4xlarge
   tolerations:
     - effect: NoSchedule
