@@ -1,7 +1,7 @@
 apiVersion: dashboard.opendatahub.io/v1alpha1
 kind: HardwareProfile
 metadata:
-  name: nvidia
+  name: all-nvidia
   namespace: redhat-ods-applications
 spec:
   description: Default Nvidia GPU Profile
