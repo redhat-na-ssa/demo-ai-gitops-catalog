@@ -8,8 +8,11 @@ components:
   - ../../components/additional-namespaces
   - ../../components/auth-with-authorino
   - ../../components/components-distributed-compute
+  - ../../components/components-feast
+  - ../../components/components-llama-stack
   - ../../components/components-serving
   - ../../components/components-training
+  - ../../components/components-trustyai
   - ../../components/config-access-everyone
   # - ../../components/config-access-group
   - ../../components/default-notebook-pvc-size
