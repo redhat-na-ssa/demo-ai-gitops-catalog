@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ocp_mirror_dry_run(){
-  echo "See: https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-installation-images.html"
+  echo "See: https://docs.openshift.com/container-platform/4.18/installing/disconnected_install/installing-mirroring-installation-images.html"
 
   # TIME_STAMP=$(date +%s)
   TIME_STAMP=$(date +%Y.%m.%d)
@@ -9,7 +9,7 @@ ocp_mirror_dry_run(){
   LOCAL_SECRET_JSON=${1:-scratch/pull-secret}
   PRODUCT_REPO=${2:-openshift-release-dev}
   RELEASE_NAME=${3:-ocp-release}
-  OCP_RELEASE=${4:-4.14.20}
+  OCP_RELEASE=${4:-4.18.22}
   ARCHITECTURE=${5:-x86_64}
 
   LOCAL_REGISTRY=${6:-localhost:5000}
@@ -38,7 +38,7 @@ ocp_mirror_dry_run(){
 }
 
 ocp_mirror_operator_catalog_list(){
-  VERSION=${1:-4.14}
+  VERSION=${1:-4.18}
   INDEX=${2:-registry.redhat.io/redhat/redhat-operator-index:v${VERSION}}
 
   which oc-mirror >/dev/null 1>&2 || return
@@ -46,10 +46,10 @@ ocp_mirror_operator_catalog_list(){
   [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_setup_pull_secret
 
   echo "Please be patient. This process is slow..." 1>&2
-  echo "oc mirror --v2 list operators --catalog ${INDEX}" 1>&2
+  echo "oc mirror list operators --catalog ${INDEX}" 1>&2
   echo "INDEX: ${INDEX}"
 
-  oc mirror --v2 list operators --catalog "${INDEX}"
+  oc mirror list operators --catalog "${INDEX}"
 
   echo ""
 }
