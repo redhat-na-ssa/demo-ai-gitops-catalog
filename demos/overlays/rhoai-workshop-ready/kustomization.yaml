@@ -6,7 +6,7 @@ components:
 
 resources:
   - ../rhoai-nvidia-gpu-autoscale
-  - ../../../components/operators/rhods-operator/instance/overlays/all
+  - ../../../components/operators/rhods-operator/instance/overlays/workshop
 
 patches:
   - target:
