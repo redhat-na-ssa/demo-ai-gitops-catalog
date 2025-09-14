@@ -4,7 +4,7 @@ metadata:
   name: all-nvidia
   namespace: redhat-ods-applications
 spec:
-  description: Default Nvidia GPU Profile
+  description: Nvidia GPU - 
   displayName: Nvidia GPU
   enabled: true
   nodeSelector:
@@ -14,6 +14,12 @@ spec:
       key: nvidia.com/gpu
       operator: Exists
   identifiers:
+    - defaultCount: '1'
+      displayName: GPU
+      identifier: nvidia.com/gpu
+      maxCount: '4'
+      minCount: '1'
+      resourceType: Accelerator
     - defaultCount: '1'
       displayName: CPU
       identifier: cpu
