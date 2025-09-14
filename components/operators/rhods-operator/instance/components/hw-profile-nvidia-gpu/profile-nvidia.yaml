@@ -1,8 +1,6 @@
 apiVersion: dashboard.opendatahub.io/v1alpha1
 kind: HardwareProfile
 metadata:
-  annotations:
-    # opendatahub.io/modified-date: '2024-02-14T00:57:22.878Z'
   name: nvidia
   namespace: redhat-ods-applications
 spec:
@@ -15,3 +13,16 @@ spec:
     - effect: NoSchedule
       key: nvidia.com/gpu
       operator: Exists
+  identifiers:
+    - defaultCount: '1'
+      displayName: CPU
+      identifier: cpu
+      # maxCount: '6'
+      # minCount: '3'
+      resourceType: CPU
+    - defaultCount: 4Gi
+      displayName: Memory
+      identifier: memory
+      # maxCount: 24Gi
+      minCount: 4Gi
+      resourceType: Memory
