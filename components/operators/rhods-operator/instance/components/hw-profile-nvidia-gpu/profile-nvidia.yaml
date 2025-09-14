@@ -18,7 +18,7 @@ spec:
       displayName: CPU
       identifier: cpu
       # maxCount: '6'
-      # minCount: '3'
+      minCount: '1'
       resourceType: CPU
     - defaultCount: 4Gi
       displayName: Memory
