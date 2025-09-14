@@ -4,8 +4,8 @@ metadata:
   name: all-nvidia-mig
   namespace: redhat-ods-applications
 spec:
-  description: Nvidia GPU - MIG 
-  displayName: Nvidia GPU - Type / MIG / Profile
+  description: Nvidia GPU - GPU Type / MIG / Profile
+  displayName: Nvidia GPU - MIG Profile
   enabled: true
   nodeSelector:
     node-role.kubernetes.io/worker: ''
