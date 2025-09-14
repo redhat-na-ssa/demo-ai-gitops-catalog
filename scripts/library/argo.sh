@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# shellcheck disable=SC2086,SC2317
+
 # LANG=C
 SLEEP_SECONDS="${SLEEP_SECONDS:-8}"
 
@@ -24,7 +26,7 @@ argo_wait_for_operator(){
   done
 
   echo "Waiting for OpenShift GitOps deployments to start"
-  until oc get deployment cluster -n ${ARGO_NS} >/dev/null 2>&1
+  until oc get deployment cluster -n "${ARGO_NS}" >/dev/null 2>&1
   do
     sleep 1
   done
