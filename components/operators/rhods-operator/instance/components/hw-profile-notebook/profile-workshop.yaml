@@ -1,0 +1,23 @@
+apiVersion: dashboard.opendatahub.io/v1alpha1
+kind: HardwareProfile
+metadata:
+  annotations:
+    opendatahub.io/dashboard-feature-visibility: '["workbench"]'
+  name: notebooks-demo-workshop
+  namespace: redhat-ods-applications
+spec:
+  displayName: Demo / Workshop
+  enabled: true
+  identifiers:
+    - defaultCount: '3'
+      displayName: CPU
+      identifier: cpu
+      maxCount: '6'
+      minCount: '3'
+      resourceType: CPU
+    - defaultCount: 24Gi
+      displayName: Memory
+      identifier: memory
+      maxCount: 24Gi
+      minCount: 24Gi
+      resourceType: Memory
