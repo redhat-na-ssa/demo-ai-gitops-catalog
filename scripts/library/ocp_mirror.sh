@@ -46,10 +46,10 @@ ocp_mirror_operator_catalog_list(){
   [ -e "${DOCKER_CONFIG}/config.json" ] || ocp_mirror_setup_pull_secret
 
   echo "Please be patient. This process is slow..." 1>&2
-  echo "oc mirror list operators --catalog ${INDEX}" 1>&2
+  echo "oc mirror --v2 list operators --catalog ${INDEX}" 1>&2
   echo "INDEX: ${INDEX}"
 
-  oc mirror list operators --catalog "${INDEX}"
+  oc mirror --v2 list operators --catalog "${INDEX}"
 
   echo ""
 }
@@ -57,8 +57,6 @@ ocp_mirror_operator_catalog_list(){
 ocp_mirror_operator_catalog_list_all(){
   VERSION=${1:-4.18}
 
-  echo "VERSION: ${VERSION}"
-  
   # redhat-operators
   INDEX_LIST="registry.redhat.io/redhat/redhat-operator-index:v${VERSION}"
   # certified-operators
