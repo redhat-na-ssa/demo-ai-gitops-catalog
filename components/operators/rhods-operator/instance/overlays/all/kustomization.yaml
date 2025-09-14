@@ -15,6 +15,7 @@ components:
   - ../../components/components-trustyai
   - ../../components/config-access-everyone
   # - ../../components/config-access-group
+  - ../../components/config-hw-profile
   - ../../components/default-notebook-pvc-size
   - ../../components/disable-telemetry
   - ../../components/fix-dashboard-magic
@@ -22,5 +23,6 @@ components:
   - ../../components/idle-notebook-culling
   - ../../components/model-server-pod-sizes
   - ../../components/notebook-pod-sizes
-  - ../../components/nvidia-gpu-accelerator-profile
+  # - ../../components/nvidia-gpu-accelerator-profile
+  - ../../components/nvidia-gpu-hw-profile
   - ../../components/runtime-template-triton

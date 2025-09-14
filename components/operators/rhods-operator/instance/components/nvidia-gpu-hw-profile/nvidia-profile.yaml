@@ -1,0 +1,17 @@
+apiVersion: dashboard.opendatahub.io/v1alpha1
+kind: HardwareProfile
+metadata:
+  annotations:
+    # opendatahub.io/modified-date: '2024-02-14T00:57:22.878Z'
+  name: nvidia
+  namespace: redhat-ods-applications
+spec:
+  description: Default Nvidia GPU Profile
+  displayName: Nvidia GPU
+  enabled: true
+  nodeSelector:
+    node-role.kubernetes.io/worker: ''
+  tolerations:
+    - effect: NoSchedule
+      key: nvidia.com/gpu
+      operator: Exists
