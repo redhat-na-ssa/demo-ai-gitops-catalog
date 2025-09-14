@@ -8,7 +8,8 @@ spec:
   displayName: Nvidia GPU - MIG Profile
   enabled: true
   nodeSelector:
-    node-role.kubernetes.io/worker: ''
+    nvidia.com/gpu.present: true
+    # node.kubernetes.io/instance-type: g4dn.4xlarge
   tolerations:
     - effect: NoSchedule
       key: nvidia.com/gpu
