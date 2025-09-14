@@ -43,7 +43,7 @@ Stage 1
 oc-mirror delete \
   -c scratch/isc-delete.yaml \
   --generate \
-  --workspace file:///${PWD}/scratch/oc-mirror/delete1 \
+  --workspace file:///${PWD}/scratch/oc-mirror/ocp4 \
   --delete-id delete1 \
   docker://"${REGISTRY}" --v2
 ```
@@ -52,7 +52,7 @@ Stage 2
 
 ```sh
 oc-mirror delete \
-  --delete-yaml-file ${PWD}/scratch/oc-mirror/working-dir/delete/delete-images-delete1.yaml \
+  --delete-yaml-file ${PWD}/scratch/oc-mirror/ocp4/working-dir/delete/delete-images-delete1.yaml \
   docker://"${REGISTRY}" --v2
 ```
 
@@ -71,9 +71,14 @@ The following can create a `mapping.txt` file that can be used with `skopeo` to 
 Create `mapping.txt`
 
 ```sh
+[ -d scratch ] || mkdir scratch
+cp components/cluster-configs/registry/isc*.yaml scratch
+
+REGISTRY=registry:5000
+
 oc-mirror \
   -c scratch/isc.yaml \
-  --workspace file:///${PWD}/scratch/oc-mirror \
+  --workspace file:///${PWD}/scratch/oc-mirror/ocp4 \
   docker://"${REGISTRY}" \
   --v2 \
   --dry-run
@@ -86,8 +91,8 @@ sed '
   s@^docker://@@g
   s@=docker://'"${REGISTRY}"'.*@@g
   /localhost/d' \
-    scratch/oc-mirror/working-dir/dry-run/mapping.txt \
-    > scratch/images.txt
+    scratch/oc-mirror/ocp4/working-dir/dry-run/mapping.txt | \
+    sort -u > scratch/images.txt
 ```
 
 Loop through `images.txt` - do stupid shell things
@@ -96,7 +101,7 @@ Loop through `images.txt` - do stupid shell things
 while read -r line
 do
   skopeo copy docker://"${line}" \
-    docker://registry:5000/openshift \
+    docker://"${REGISTRY}"/openshift \
     --authfile /run/user/1000/containers/auth.json
 
   sed -i "/${line##*/}/d" scratch/images.txt
