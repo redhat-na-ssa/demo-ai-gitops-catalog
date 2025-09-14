@@ -94,5 +94,7 @@ ocp_mirror_2_mirror(){
 
   oc-mirror -c scratch/isc.yaml \
     --workspace file:///${PWD}/scratch/oc-mirror/ocp4 \
-    docker://"${REGISTRY}" --v2 --image-timeout 60m
+    --v2 \
+    --image-timeout 60m \
+    docker://"${REGISTRY}"
 }

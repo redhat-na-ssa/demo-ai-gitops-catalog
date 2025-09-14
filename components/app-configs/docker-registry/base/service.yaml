@@ -3,8 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: registry-v2
-  labels:
-    app: registry-v2
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -13,6 +11,6 @@ spec:
     port: 5000
     targetPort: 5000
   selector:
-    app: registry-v2
+    deploy: registry-v2
   sessionAffinity: None
   type: ClusterIP

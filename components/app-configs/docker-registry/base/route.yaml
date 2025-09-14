@@ -2,9 +2,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: registry-v2
-  labels:
-    app: registry-v2
+  name: docker
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:

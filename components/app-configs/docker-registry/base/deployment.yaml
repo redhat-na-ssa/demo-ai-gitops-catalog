@@ -3,21 +3,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: registry-v2
-  labels:
-    app: registry-v2
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: registry-v2
+      deploy: registry-v2
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: registry-v2
+        deploy: registry-v2
     spec:
       containers:
       - name: registry-v2
