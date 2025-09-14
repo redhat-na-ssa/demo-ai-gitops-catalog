@@ -4,7 +4,7 @@ metadata:
   name: all-nvidia-sliced-4
   namespace: redhat-ods-applications
 spec:
-  description: Nvidia GPU - 1/4 (Time Sliced) 
+  description: Nvidia GPU - 1/4 (Time Sliced)
   displayName: Nvidia GPU - 1/4
   enabled: true
   nodeSelector:
