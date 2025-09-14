@@ -1,5 +1,19 @@
 #!/bin/bash
 
+ocp_mirror_2_mirror(){
+  REGISTRY=${1:-registry:5000}
+
+  cp -n "${GIT_ROOT}"/components/cluster-configs/registry/isc*.yaml "${GIT_ROOT}"/scratch
+
+  ocp_mirror_setup_pull_secret
+
+  oc-mirror -c scratch/isc.yaml \
+    --workspace file:///"${PWD}"/scratch/oc-mirror/ocp4 \
+    --v2 \
+    --image-timeout 90m \
+    docker://"${REGISTRY}"
+}
+
 ocp_mirror_dry_run(){
   echo "See: https://docs.openshift.com/container-platform/4.18/installing/disconnected_install/installing-mirroring-installation-images.html"
 
@@ -83,18 +97,4 @@ ocp_mirror_setup_pull_secret(){
     --to=- | tee "${GIT_ROOT}/scratch/pull-secret" > "${DOCKER_CONFIG}/config.json"
 
   # cat scratch/pull-secret | jq .
-}
-
-ocp_mirror_2_mirror(){
-  REGISTRY=${1:-registry:5000}
-
-  cp -n "${GIT_ROOT}"/components/cluster-configs/registry/isc*.yaml "${GIT_ROOT}"/scratch
-
-  ocp_mirror_setup_pull_secret
-
-  oc-mirror -c scratch/isc.yaml \
-    --workspace file:///${PWD}/scratch/oc-mirror/ocp4 \
-    --v2 \
-    --image-timeout 90m \
-    docker://"${REGISTRY}"
 }
