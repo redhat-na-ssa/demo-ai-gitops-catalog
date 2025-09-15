@@ -16,16 +16,28 @@ slow_restart_pods(){
 
 scale_down_operator_madness(){
 
-  echo -n 'Waiting for RHOAI operator.'
-  until oc get -n redhat-ods-operator deployment/rhods-operator -o name 2>/dev/null
+  echo -n 'Waiting for RHOAI csv.'
+  until oc get -n redhat-ods-operator -l olm.copiedFrom=redhat-ods-operator csv -o name 2>/dev/null
   do
     echo -n .
     sleep 5
   done; echo
 
+cat << YAML > /tmp/patch.yaml
+spec:
+  install:
+    spec:
+      deployments:
+        - name: rhods-operator
+          spec:
+            replicas: 1
+YAML
+
   oc -n redhat-ods-operator \
-    scale deployment/rhods-operator \
-    --replicas=1
+    patch csv \
+    -l olm.copiedFrom=redhat-ods-operator \
+    --type=merge --patch "$(cat /tmp/patch.yaml)"
+
 }
 
 scale_down_operator_madness
