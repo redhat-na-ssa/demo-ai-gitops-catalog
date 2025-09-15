@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-set -ex
+set -e
 
 TIMEOUT_SECONDS=60
 
@@ -22,33 +22,13 @@ scale_down_operator_madness(){
     echo -n .
     sleep 5
   done; echo
+  
+oc get csv \
+  -n redhat-ods-operator \
+  -l operators.coreos.com/rhods-operator.redhat-ods-operator \
+  -o yaml | sed 's@replicas: 3@replicas: 1@' > /tmp/replace.yaml
 
-exit 0
-
-cat << YAML > /tmp/patch.yaml
-spec:
-  install:
-    spec:
-      deployments:
-        - name: rhods-operator
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                name: rhods-operator
-            template:
-              metadata:
-                annotations:
-                  kubectl.kubernetes.io/default-container: rhods-operator
-                labels:
-                  name: rhods-operator
-YAML
-
-CSV=$(oc get -n redhat-ods-operator -l operators.coreos.com/rhods-operator.redhat-ods-operator csv -o name | head -n1)
-
-  oc -n redhat-ods-operator \
-    patch "${CSV}" \
-    --type=merge --patch "$(cat /tmp/patch.yaml)"
+oc replace -f /tmp/replace.yaml
 
 }
 
