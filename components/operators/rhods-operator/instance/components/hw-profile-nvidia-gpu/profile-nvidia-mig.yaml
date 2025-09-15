@@ -9,6 +9,7 @@ spec:
   enabled: true
   nodeSelector:
     nvidia.com/gpu.present: "true"
+    nvidia.com/mig.config: all-1g.5gb
     # node.kubernetes.io/instance-type: g4dn.4xlarge
   tolerations:
     - effect: NoSchedule
