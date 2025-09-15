@@ -1,8 +1,8 @@
-# fix-dashboard-magic
+# fix-operator-scale
 
 ## Purpose
 
-This component is designed restart the RHOAI dashboard to avoid issues with features note being detected.
+This component is designed set the RHOAI operator to a sane number of `1` (not `3`) to avoid wasted resources and issues with leader election.
 
 ## Usage
 
@@ -16,5 +16,5 @@ resources:
   - ../../base
 
 components:
-  - ../../components/fix-dashboard-magic
+  - ../../components/fix-operator-scale
 ```
