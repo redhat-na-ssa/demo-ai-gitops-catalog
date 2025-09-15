@@ -20,6 +20,7 @@ components:
   - ../../components/disable-telemetry
   - ../../components/fix-dashboard-magic
   - ../../components/fix-kubeadmin-cluster-admin
+  - ../../components/fix-operator-scale
   - ../../components/hw-profile-notebook
   - ../../components/hw-profile-nvidia-gpu
   - ../../components/hw-profile-serving

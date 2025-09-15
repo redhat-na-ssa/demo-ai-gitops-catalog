@@ -1,0 +1,83 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fix-dashboard-magic
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: fix-dashboard-magic
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - deployments/scale
+    verbs:
+      - get
+      - list
+      - patch
+    resourceNames:
+      - rhods-dashboard
+  - apiGroups:
+      - ''
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - delete
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fix-dashboard-magic
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+subjects:
+  - kind: ServiceAccount
+    name: fix-dashboard-magic
+    namespace: redhat-ods-applications
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: fix-dashboard-magic
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fix-dashboard-magic
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "11"
+spec:
+  template:
+    spec:
+      containers:
+        - name: minion
+          image: registry.redhat.io/openshift4/ose-cli
+          command:
+            - /bin/bash
+            - -c
+            - /scripts/job.sh
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: scripts
+          configMap:
+            name: fix-dashboard-magic
+            defaultMode: 0755
+      restartPolicy: Never
+      serviceAccount: fix-dashboard-magic
+      serviceAccountName: fix-dashboard-magic
+  backoffLimit: 4
