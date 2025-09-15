@@ -28,5 +28,5 @@ scale_down_operator_madness(){
     --replicas=1
 }
 
-scale_down_dashboard_madness
+scale_down_operator_madness
 fix_dashboard_bugs
