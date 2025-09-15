@@ -20,9 +20,10 @@ rules:
     resources:
       - clusterserviceversion
     verbs:
-      - get
-      - list
-      - patch
+      - '*'
+      # - get
+      # - list
+      # - patch
   - apiGroups:
       - ''
     resources:
