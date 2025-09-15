@@ -2,7 +2,7 @@
 # shellcheck disable=SC2119,SC2120
 set -e
 
-TIMEOUT_SECONDS=60
+TIMEOUT_SECONDS=120
 
 self_destruct(){
 
