@@ -1,19 +1,6 @@
 #!/usr/bin/bash
 set -e
 
-TIMEOUT_SECONDS=60
-
-restart_pods(){
-  oc -n redhat-ods-operator \
-    delete pods \
-    -l name=rhods-operator
-}
-
-slow_restart_pods(){
-  sleep "${TIMEOUT_SECONDS}"
-  restart_pods
-}
-
 scale_down_operator_madness(){
 
   echo -n 'Waiting for RHOAI csv.'
@@ -33,4 +20,3 @@ oc replace -f /tmp/replace.yaml
 }
 
 scale_down_operator_madness
-slow_restart_pods
