@@ -31,6 +31,15 @@ spec:
         - name: rhods-operator
           spec:
             replicas: 1
+            selector:
+              matchLabels:
+                name: rhods-operator
+            template:
+              metadata:
+                annotations:
+                  kubectl.kubernetes.io/default-container: rhods-operator
+                labels:
+                  name: rhods-operator
 YAML
 
 CSV=$(oc get -n redhat-ods-operator -l operators.coreos.com/rhods-operator.redhat-ods-operator csv -o name | head -n1)
