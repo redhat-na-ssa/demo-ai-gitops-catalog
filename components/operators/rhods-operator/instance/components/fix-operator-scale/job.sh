@@ -9,7 +9,7 @@ restart_pods(){
     -l name=rhods-operator
 }
 
-fix_dashboard_bugs(){
+slow_restart_pods(){
   sleep "${TIMEOUT_SECONDS}"
   restart_pods
 }
@@ -29,4 +29,4 @@ scale_down_operator_madness(){
 }
 
 scale_down_operator_madness
-fix_dashboard_bugs
+slow_restart_pods
