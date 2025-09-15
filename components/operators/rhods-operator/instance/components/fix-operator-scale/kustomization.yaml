@@ -10,7 +10,7 @@ generatorOptions:
     argocd.argoproj.io/hook: PreSync
 
 configMapGenerator:
-  - name: fix-dashboard-magic
-    namespace: redhat-ods-applications
+  - name: fix-operator-scale
+    namespace: redhat-ods-operator
     files:
       - job.sh
