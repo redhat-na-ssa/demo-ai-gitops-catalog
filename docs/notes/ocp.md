@@ -9,7 +9,15 @@ By default all pods in OpenShift run unprivileged (not `root`). Thoughtfully all
 
 ### Option 1
 
-Use the “scc-subject-review” sub-command to list all the security context constraints that can overcome the limitations that hinder the container.
+Update the container to run as a non-root user at the bottom of your `Dockerfile`
+
+```sh
+USER 1001
+```
+
+### Option 2
+
+Use the `oc adm policy` `scc-subject-review` sub-command to list all the security context constraints that can overcome the limitations that hinder the container.
 
 ```sh
 oc -n <namespace> get deployment <deployment-name> -o yaml | \
@@ -37,7 +45,7 @@ oc set serviceaccount deployment/<deployment-name> \
   <service-account-name> -n <project>
 ```
 
-### Option 2
+### Option 3 (Not Recommended)
 
 Update the `privileged` Security Context Constraints by adding the projects `default` service account.
 
