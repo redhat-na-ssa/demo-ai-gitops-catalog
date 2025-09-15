@@ -23,8 +23,6 @@ rules:
       - get
       - list
       - patch
-    resourceNames:
-      - rhods-operator
   - apiGroups:
       - ''
     resources:
