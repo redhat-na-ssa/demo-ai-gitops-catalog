@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nvidia_console_plugin_activate(){
+ocp_nvidia_console_plugin_activate(){
   if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
     oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
   else
@@ -12,7 +12,7 @@ nvidia_console_plugin_activate(){
   oc -n nvidia-gpu-operator get deploy -l app.kubernetes.io/name=console-plugin-nvidia-gpu
 }
 
-nvidia_console_plugin_dump_helm_install(){
+ocp_nvidia_console_plugin_dump_helm_install(){
   # alternative: if no helm
   OUTPUT_PATH=components/operators/gpu-operator-certified/operator/components/console-plugin
   DUMP_PATH="${GIT_ROOT}/scratch/console-plugin-nvidia-gpu/console-plugin-nvidia-gpu/templates"
@@ -41,7 +41,7 @@ nvidia_console_plugin_dump_helm_install(){
   
 }
 
-nvidia_console_plugin_install(){
+ocp_nvidia_console_plugin_install(){
   GIT_URL=https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
 
   if which helm; then
@@ -53,7 +53,7 @@ nvidia_console_plugin_install(){
   fi
 }
 
-nvidia_dashboard_monitor_setup(){
+ocp_nvidia_dashboard_monitor_setup(){
   curl -sLfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
   oc -n openshift-config-managed create configmap nvidia-dcgm-exporter-dashboard --from-file=dcgm-exporter-dashboard.json || true
   oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/dashboard=true" --overwrite
@@ -62,7 +62,7 @@ nvidia_dashboard_monitor_setup(){
   rm dcgm-exporter-dashboard.json
 }
 
-nvidia_mig_config_setup(){
+ocp_nvidia_mig_config_setup(){
   MIG_MODE=${1:-single}
   MIG_CONFIG=${2:-all-1g.5gb}
   INSTANCE_TYPE=p4d.24xlarge
@@ -79,7 +79,7 @@ nvidia_mig_config_setup(){
 
 }
 
-nvidia_setup_console_plugin(){
-  nvidia_console_plugin_install || return
-  nvidia_console_plugin_activate || return
+ocp_nvidia_setup_console_plugin(){
+  ocp_nvidia_console_plugin_install || return
+  ocp_nvidia_console_plugin_activate || return
 }
