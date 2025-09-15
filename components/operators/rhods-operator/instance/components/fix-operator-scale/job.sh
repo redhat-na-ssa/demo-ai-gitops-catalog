@@ -17,7 +17,7 @@ slow_restart_pods(){
 scale_down_operator_madness(){
 
   echo -n 'Waiting for RHOAI csv.'
-  until oc get -n redhat-ods-operator -l operators.coreos.com/rhods-operator.redhat-ods-operator csv -o name #2>/dev/null
+  until oc get -n redhat-ods-operator -l operators.coreos.com/rhods-operator.redhat-ods-operator csv -o name 2>/dev/null
   do
     echo -n .
     sleep 5
@@ -33,9 +33,10 @@ spec:
             replicas: 1
 YAML
 
+CSV=$(oc get -n redhat-ods-operator -l operators.coreos.com/rhods-operator.redhat-ods-operator csv -o name | head -n1)
+
   oc -n redhat-ods-operator \
-    patch csv \
-    -l olm.copiedFrom=redhat-ods-operator \
+    patch "${CSV}" \
     --type=merge --patch "$(cat /tmp/patch.yaml)"
 
 }
