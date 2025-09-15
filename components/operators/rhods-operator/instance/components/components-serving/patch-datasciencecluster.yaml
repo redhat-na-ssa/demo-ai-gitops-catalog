@@ -13,4 +13,4 @@ spec:
         managementState: Managed
         name: knative-serving
     modelmeshserving:
-      managementState: Managed
+      managementState: Removed
