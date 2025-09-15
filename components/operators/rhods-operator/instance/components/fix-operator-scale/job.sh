@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-set -e
+set -ex
 
 TIMEOUT_SECONDS=60
 

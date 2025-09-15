@@ -16,10 +16,9 @@ metadata:
     argocd.argoproj.io/hook: PreSync
 rules:
   - apiGroups:
-      - apps
+      - operators.coreos.com
     resources:
-      - deployments
-      - deployments/scale
+      - clusterserviceversion
     verbs:
       - get
       - list
