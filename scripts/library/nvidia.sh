@@ -1,5 +1,5 @@
 #!/bin/bash
-  
+
 nvidia_console_plugin_activate(){
   if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
     oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge

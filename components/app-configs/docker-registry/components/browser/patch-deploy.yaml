@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-v2
+spec:
+  template:
+    spec:
+      containers:
+      - name: browser
+        image: docker.io/klausmeyer/docker-registry-browser
+        env:
+          - name: SECRET_KEY_BASE
+            value: deadbeef
+          - name: ENABLE_DELETE_IMAGES
+            value: 'true'
+        # envFrom:
+        # - configMapRef:
+        #     name: browser
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+          name: 8080-tcp
+        resources:
+          requests:
+            cpu: 200m
+            memory: 32Mi
+          limits:
+            cpu: '1'
+            memory: 1Gi

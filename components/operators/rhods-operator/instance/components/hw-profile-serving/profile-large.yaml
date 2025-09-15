@@ -1,0 +1,23 @@
+apiVersion: dashboard.opendatahub.io/v1alpha1
+kind: HardwareProfile
+metadata:
+  annotations:
+    opendatahub.io/dashboard-feature-visibility: '["model-serving"]'
+  name: serving-large
+  namespace: redhat-ods-applications
+spec:
+  displayName: Large
+  enabled: true
+  identifiers:
+    - defaultCount: '6'
+      displayName: CPU
+      identifier: cpu
+      maxCount: '10'
+      minCount: '6'
+      resourceType: CPU
+    - defaultCount: 16Gi
+      displayName: Memory
+      identifier: memory
+      maxCount: 20Gi
+      minCount: 16Gi
+      resourceType: Memory

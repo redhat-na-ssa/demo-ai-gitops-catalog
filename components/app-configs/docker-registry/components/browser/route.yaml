@@ -2,12 +2,10 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: docker
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
+  name: browser
 spec:
   port:
-    targetPort: 5000
+    targetPort: 8080
   tls:
     insecureEdgeTerminationPolicy: Allow
     termination: edge

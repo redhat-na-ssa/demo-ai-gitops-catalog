@@ -51,7 +51,7 @@ sealed_secret_create(){
       echo
       echo "!!NOTICE!!: Cluster automation MAY NOT WORK w/o a valid sealed secret"
       echo "Choosing NO may have unintended results - see docs for more info"
-      echo "Contact a repo MAINTINAER to get a current sealed secrets key"
+      echo "Contact a repo MAINTAINER to get a current sealed secrets key"
       echo
       echo 'You must choose yes or no to continue'
       echo      

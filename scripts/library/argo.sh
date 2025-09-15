@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# shellcheck disable=SC2086,SC2317
+
 # LANG=C
 SLEEP_SECONDS="${SLEEP_SECONDS:-8}"
 
@@ -7,16 +9,6 @@ ARGO_NS="openshift-gitops"
 ARGO_CHANNEL="latest"
 ARGO_KUSTOMIZE_OPERATOR="${GIT_ROOT}/components/operators/openshift-gitops-operator/operator/overlays/${ARGO_CHANNEL}"
 ARGO_KUSTOMIZE_INSTANCE="${GIT_ROOT}/components/operators/openshift-gitops-operator/instance/overlays/default"
-
-argo_print_info(){
-  route=$(oc get route openshift-gitops-server -o jsonpath='{.spec.host}' -n ${ARGO_NS} 2>/dev/null)
-
-  [ -z ${route+x} ] || return 1
-  echo
-  echo "Access ArgoCD here:"
-  echo "https://${route}"
-  echo
-}
 
 argo_wait_for_operator(){
   ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
@@ -34,7 +26,7 @@ argo_wait_for_operator(){
   done
 
   echo "Waiting for OpenShift GitOps deployments to start"
-  until oc get deployment cluster -n ${ARGO_NS} >/dev/null 2>&1
+  until oc get deployment cluster -n "${ARGO_NS}" >/dev/null 2>&1
   do
     sleep 1
   done
@@ -70,6 +62,16 @@ argo_install(){
 
 }
 
+argo_print_info(){
+  route=$(oc get route openshift-gitops-server -o jsonpath='{.spec.host}' -n ${ARGO_NS} 2>/dev/null)
+
+  [ -z ${route+x} ] || return 1
+  echo
+  echo "Access ArgoCD here:"
+  echo "https://${route}"
+  echo
+}
+
 argo_uninstall(){
   ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
 
@@ -97,3 +99,35 @@ argo_uninstall(){
   oc delete project "${ARGO_NS}"-operator
   oc delete project "${ARGO_NS}"
 }
+
+argo_wait_for_operator(){
+  ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
+
+  echo "Waiting for OpenShift GitOps operator to start"
+  until oc get deployment openshift-gitops-operator-controller-manager -n openshift-gitops-operator >/dev/null 2>&1
+  do
+    sleep 1
+  done
+
+  echo "Waiting for openshift-gitops namespace to be created"
+  until oc get ns ${ARGO_NS} >/dev/null 2>&1
+  do
+    sleep 1
+  done
+
+  echo "Waiting for OpenShift GitOps deployments to start"
+  until oc get deployment cluster -n ${ARGO_NS} >/dev/null 2>&1
+  do
+    sleep 1
+  done
+
+  echo "Waiting for all pods to be created"
+  for i in "${ARGO_DEPLOY_STABLE[@]}"
+  do
+    echo "Waiting for deployment $i"
+    oc rollout status deployment "$i" -n "${ARGO_NS}" >/dev/null 2>&1
+  done
+
+  echo
+}
+

@@ -37,19 +37,6 @@ metadata:
 
 }
 
-ocp_auth_setup_user(){
-  USER=${1:-admin}
-  PASS=${2:-$(genpass)}
-  OCP_GROUP=${3:-${DEFAULT_OCP_GROUP}}
-
-  htpasswd_add_user "${USER}" "${PASS}"
-  ocp_auth_add_to_group "${USER}" "${OCP_GROUP}"
-
-  echo "
-    run: htpasswd_ocp_set_file
-  "
-}
-
 ocp_auth_kubeadmin_create(){
   PASS=${1:-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )-$(genpass 5 )}
 
@@ -98,4 +85,17 @@ ocp_auth_kubeadmin_remove(){
     ${NC}"
     return
   fi
+}
+
+ocp_auth_setup_user(){
+  USER=${1:-admin}
+  PASS=${2:-$(genpass)}
+  OCP_GROUP=${3:-${DEFAULT_OCP_GROUP}}
+
+  htpasswd_add_user "${USER}" "${PASS}"
+  ocp_auth_add_to_group "${USER}" "${OCP_GROUP}"
+
+  echo "
+    run: htpasswd_ocp_set_file
+  "
 }

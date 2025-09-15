@@ -1,11 +1,16 @@
 name: Spelling
 on:  # yamllint disable-line rule:truthy
-  push:
-    branches:
-      - "main"
   pull_request:
     branches:
       - "main"
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+concurrency:
+  group: "spelling"
+  cancel-in-progress: true
 
 jobs:
   lint-spelling:

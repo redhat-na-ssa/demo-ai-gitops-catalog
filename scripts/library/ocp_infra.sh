@@ -28,75 +28,20 @@ ocp_infra_label_control_as_infra_remove(){
   oc label node -l node-role.kubernetes.io/control-plane node-role.kubernetes.io/infra-
 }
 
-ocp_infra_move_registry_to_control(){
+ocp_infra_move_from_control(){
+  ocp_infra_label_control_as_infra_remove
 
-cat <<YAML > /tmp/patch.yaml
-spec:
-  nodeSelector:
-    node-role.kubernetes.io/infra: ""
-  tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
-  - effect: NoExecute
-    key: node-role.kubernetes.io/master
-    operator: Exists
-YAML
+  ocp_annotate_ns_tolerations_master_remove openshift-terminal
+  ocp_annotate_ns_tolerations_master_remove openshift-operators
+  ocp_annotate_ns_tolerations_master_remove openshift-operator-lifecycle-manager
+  ocp_annotate_ns_tolerations_master_remove openshift-ingress-canary
+  ocp_annotate_ns_tolerations_master_remove openshift-monitoring
 
- oc patch \
-    configs.imageregistry.operator.openshift.io/cluster \
-    --type=merge --patch-file /tmp/patch.yaml
+  oc -n openshift-machine-api scale --replicas 2 machineset --all
 }
 
-ocp_infra_move_registry_from_control(){
-
-cat <<YAML > /tmp/patch.yaml
-spec:
-  nodeSelector: {}
-  tolerations: []
-YAML
-
- oc patch \
-    configs.imageregistry.operator.openshift.io/cluster \
-    --type=merge --patch-file /tmp/patch.yaml
-}
-
-ocp_infra_move_router_to_control(){
-
-cat <<YAML > /tmp/patch.yaml
-spec:
-  nodePlacement:
-    nodeSelector:
-      matchLabels:
-        node-role.kubernetes.io/infra: ""
-    tolerations:
-    - effect: NoSchedule
-      key: node-role.kubernetes.io/master
-      operator: Exists
-    - effect: NoExecute
-      key: node-role.kubernetes.io/master
-      operator: Exists
-YAML
-
-  oc -n openshift-ingress-operator \
-    patch \
-    ingresscontroller default \
-    --type=merge --patch-file /tmp/patch.yaml
-}
-
-ocp_infra_move_router_from_control(){
-
-cat <<YAML > /tmp/patch.yaml
-spec:
-  nodePlacement:
-    nodeSelector: {}
-    tolerations: []
-YAML
-
-  oc -n openshift-ingress-operator \
-    patch \
-    ingresscontroller default \
-    --type=merge --patch-file /tmp/patch.yaml
+ocp_infra_move_monitoring_from_control(){
+  oc -n openshift-monitoring delete cm cluster-monitoring-config
 }
 
 ocp_infra_move_monitoring_to_control(){
@@ -170,8 +115,75 @@ oc apply -f /tmp/patch.yaml
 #     --type=merge --patch-file /tmp/patch.yaml
 }
 
-ocp_infra_move_monitoring_from_control(){
-  oc -n openshift-monitoring delete cm cluster-monitoring-config
+ocp_infra_move_registry_from_control(){
+
+cat <<YAML > /tmp/patch.yaml
+spec:
+  nodeSelector: {}
+  tolerations: []
+YAML
+
+ oc patch \
+    configs.imageregistry.operator.openshift.io/cluster \
+    --type=merge --patch-file /tmp/patch.yaml
+}
+
+ocp_infra_move_registry_to_control(){
+
+cat <<YAML > /tmp/patch.yaml
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+  - effect: NoExecute
+    key: node-role.kubernetes.io/master
+    operator: Exists
+YAML
+
+ oc patch \
+    configs.imageregistry.operator.openshift.io/cluster \
+    --type=merge --patch-file /tmp/patch.yaml
+}
+
+ocp_infra_move_router_from_control(){
+
+cat <<YAML > /tmp/patch.yaml
+spec:
+  nodePlacement:
+    nodeSelector: {}
+    tolerations: []
+YAML
+
+  oc -n openshift-ingress-operator \
+    patch \
+    ingresscontroller default \
+    --type=merge --patch-file /tmp/patch.yaml
+}
+
+ocp_infra_move_router_to_control(){
+
+cat <<YAML > /tmp/patch.yaml
+spec:
+  nodePlacement:
+    nodeSelector:
+      matchLabels:
+        node-role.kubernetes.io/infra: ""
+    tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
+    - effect: NoExecute
+      key: node-role.kubernetes.io/master
+      operator: Exists
+YAML
+
+  oc -n openshift-ingress-operator \
+    patch \
+    ingresscontroller default \
+    --type=merge --patch-file /tmp/patch.yaml
 }
 
 ocp_infra_move_to_control(){
@@ -187,16 +199,4 @@ ocp_infra_move_to_control(){
   ocp_infra_move_registry_to_control
   ocp_infra_move_router_to_control
   ocp_infra_move_registry_to_control
-}
-
-ocp_infra_move_from_control(){
-  ocp_infra_label_control_as_infra_remove
-
-  ocp_annotate_ns_tolerations_master_remove openshift-terminal
-  ocp_annotate_ns_tolerations_master_remove openshift-operators
-  ocp_annotate_ns_tolerations_master_remove openshift-operator-lifecycle-manager
-  ocp_annotate_ns_tolerations_master_remove openshift-ingress-canary
-  ocp_annotate_ns_tolerations_master_remove openshift-monitoring
-
-  oc -n openshift-machine-api scale --replicas 2 machineset --all
 }

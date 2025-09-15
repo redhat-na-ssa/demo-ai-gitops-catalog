@@ -1,0 +1,29 @@
+apiVersion: dashboard.opendatahub.io/v1alpha1
+kind: HardwareProfile
+metadata:
+  name: all-nvidia-sliced-4
+  namespace: redhat-ods-applications
+spec:
+  description: Nvidia GPU - 1/4 (Time Sliced)
+  displayName: Nvidia GPU - 1/4
+  enabled: true
+  nodeSelector:
+    nvidia.com/gpu.present: "true"
+    # node.kubernetes.io/instance-type: g4dn.4xlarge
+  tolerations:
+    - effect: NoSchedule
+      key: nvidia.com/gpu
+      operator: Exists
+  identifiers:
+    - defaultCount: '1'
+      displayName: CPU
+      identifier: cpu
+      # maxCount: '6'
+      minCount: '1'
+      resourceType: CPU
+    - defaultCount: 4Gi
+      displayName: Memory
+      identifier: memory
+      # maxCount: 24Gi
+      minCount: 4Gi
+      resourceType: Memory

@@ -1,0 +1,35 @@
+apiVersion: dashboard.opendatahub.io/v1alpha1
+kind: HardwareProfile
+metadata:
+  name: all-nvidia
+  namespace: redhat-ods-applications
+spec:
+  description: Nvidia GPU - Full Core
+  displayName: Nvidia GPU
+  enabled: true
+  nodeSelector:
+    nvidia.com/gpu.present: "true"
+    # node.kubernetes.io/instance-type: g4dn.4xlarge
+  tolerations:
+    - effect: NoSchedule
+      key: nvidia.com/gpu
+      operator: Exists
+  identifiers:
+    - defaultCount: '1'
+      displayName: GPU
+      identifier: nvidia.com/gpu
+      maxCount: '4'
+      minCount: '1'
+      resourceType: Accelerator
+    - defaultCount: '1'
+      displayName: CPU
+      identifier: cpu
+      # maxCount: '6'
+      minCount: '1'
+      resourceType: CPU
+    - defaultCount: 4Gi
+      displayName: Memory
+      identifier: memory
+      # maxCount: 24Gi
+      minCount: 4Gi
+      resourceType: Memory

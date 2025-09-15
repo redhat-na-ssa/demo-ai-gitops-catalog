@@ -5,7 +5,7 @@ if [ ! -d "${HOME}" ]; then
   mkdir -p "${HOME}"
 fi
 
-# kludge: initalize home
+# kludge: initialize home
 cp -an /etc/skel/.{bash,profile,gitconfig}* "${HOME}" 2>/dev/null || true
 
 # Add current (arbitrary) user to /etc/passwd and /etc/group
