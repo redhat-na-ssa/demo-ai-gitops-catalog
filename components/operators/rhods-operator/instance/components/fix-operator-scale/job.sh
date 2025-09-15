@@ -23,6 +23,8 @@ scale_down_operator_madness(){
     sleep 5
   done; echo
 
+exit 0
+
 cat << YAML > /tmp/patch.yaml
 spec:
   install:
