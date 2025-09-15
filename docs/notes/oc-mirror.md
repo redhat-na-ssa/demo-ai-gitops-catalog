@@ -2,6 +2,9 @@
 
 See https://github.com/openshift/oc-mirror
 
+`oc mirror` is used to aid in disconnected installs. It aids in mirroring container images and configuring
+OpenShift to use a private registry.
+
 ## `oc-mirror` options
 
 Setup config files
