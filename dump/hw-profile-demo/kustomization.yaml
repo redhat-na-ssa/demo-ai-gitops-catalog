@@ -4,7 +4,6 @@ kind: Component
 resources:
   - hw-profile-nvidia-25-percent.yaml
   - hw-profile-nvidia-100-percent.yaml
-  - link-docs.yaml
   - namespace.yaml
 
   - nb-wb-1-gpu-25percent.yaml
