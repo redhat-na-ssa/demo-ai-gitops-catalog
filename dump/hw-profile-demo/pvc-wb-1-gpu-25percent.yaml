@@ -1,0 +1,17 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    openshift.io/description: Workbench Persistent Storage
+    openshift.io/display-name: wb-1-gpu-25percent-storage
+  name: wb-1-gpu-25percent-storage
+  namespace: demo-rhoai-hw-profiles
+  labels:
+    opendatahub.io/dashboard: 'true'
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  volumeMode: Filesystem

@@ -6,21 +6,19 @@ metadata:
     notebooks.opendatahub.io/last-image-selection: tensorflow:2025.1
     notebooks.opendatahub.io/last-image-version-git-commit-selection: 1d7de4c
     notebooks.opendatahub.io/last-size-selection: ""
-    # notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-wb-1-gpu-100percent
+    # notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-1-gpu-25percent
     opendatahub.io/accelerator-name: ""
-    opendatahub.io/hardware-profile-name: nvidia-100-percent
-    opendatahub.io/hardware-profile-namespace: ""
+    opendatahub.io/hardware-profile-name: nvidia-25-percent
     opendatahub.io/image-display-name: TensorFlow
     opendatahub.io/username: admin
-    opendatahub.io/workbench-image-namespace: ""
     openshift.io/description: ""
-    openshift.io/display-name: wb-1-gpu-100percent
+    openshift.io/display-name: 25-percent-gpu-wb-1
   labels:
-    app: wb-wb-1-gpu-100percent
+    app: wb-1-gpu-25percent
     opendatahub.io/dashboard: "true"
     opendatahub.io/odh-managed: "true"
     opendatahub.io/user: admin
-  name: wb-wb-1-gpu-100percent
+  name: wb-1-gpu-25percent
   namespace: demo-rhoai-hw-profiles
 spec:
   template:
@@ -32,34 +30,34 @@ spec:
             --ServerApp.port=8888
                               --ServerApp.token=''
                               --ServerApp.password=''
-                              --ServerApp.base_url=/notebook/demo-rhoai-hw-profiles/wb-wb-1-gpu-100percent
+                              --ServerApp.base_url=/notebook/demo-rhoai-hw-profiles/wb-1-gpu-25percent
                               --ServerApp.quit_button=False
                               --ServerApp.tornado_settings={"user":"admin","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com","hub_prefix":"/projects/demo-rhoai-hw-profiles"}
         - name: JUPYTER_IMAGE
           value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2025.1
-        - name: PIPELINES_SSL_SA_CERTS
-          value: /etc/pki/tls/custom-certs/ca-bundle.crt
-        - name: GIT_SSL_CAINFO
-          value: /etc/pki/tls/custom-certs/ca-bundle.crt
         - name: PIP_CERT
           value: /etc/pki/tls/custom-certs/ca-bundle.crt
         - name: REQUESTS_CA_BUNDLE
           value: /etc/pki/tls/custom-certs/ca-bundle.crt
         - name: SSL_CERT_FILE
           value: /etc/pki/tls/custom-certs/ca-bundle.crt
+        - name: PIPELINES_SSL_SA_CERTS
+          value: /etc/pki/tls/custom-certs/ca-bundle.crt
+        - name: GIT_SSL_CAINFO
+          value: /etc/pki/tls/custom-certs/ca-bundle.crt
         image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2025.1
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/demo-rhoai-hw-profiles/wb-wb-1-gpu-100percent/api
+            path: /notebook/demo-rhoai-hw-profiles/wb-1-gpu-25percent/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 1
-        name: wb-wb-1-gpu-100percent
+        name: wb-1-gpu-25percent
         ports:
         - containerPort: 8888
           name: notebook-port
@@ -67,7 +65,7 @@ spec:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/demo-rhoai-hw-profiles/wb-wb-1-gpu-100percent/api
+            path: /notebook/demo-rhoai-hw-profiles/wb-1-gpu-25percent/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -85,7 +83,7 @@ spec:
             nvidia.com/gpu: "1"
         volumeMounts:
         - mountPath: /opt/app-root/src/
-          name: wb-1-gpu-100percent
+          name: wb-1-gpu-25percent-storage
         - mountPath: /dev/shm
           name: shm
         - mountPath: /etc/pki/tls/custom-certs/ca-bundle.crt
@@ -99,7 +97,7 @@ spec:
         - --provider=openshift
         - --https-address=:8443
         - --http-address=
-        - --openshift-service-account=wb-wb-1-gpu-100percent
+        - --openshift-service-account=wb-1-gpu-25percent
         - --cookie-secret-file=/etc/oauth/config/cookie_secret
         - --cookie-expire=24h0m0s
         - --tls-cert=/etc/tls/private/tls.crt
@@ -108,11 +106,11 @@ spec:
         - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         - --email-domain=*
         - --skip-provider-button
-        - --client-id=wb-wb-1-gpu-100percent-demo-rhoai-hw-profiles-oauth-client
+        - --client-id=wb-1-gpu-25percent-demo-rhoai-hw-profiles-oauth-client
         - --client-secret-file=/etc/oauth/client/secret
         - --scope=user:info user:check-access
-        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"wb-wb-1-gpu-100percent","namespace":"$(NAMESPACE)"}
-        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-wb-1-gpu-100percent
+        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"wb-1-gpu-25percent","namespace":"$(NAMESPACE)"}
+        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-1-gpu-25percent
         env:
         - name: NAMESPACE
           valueFrom:
@@ -162,16 +160,16 @@ spec:
       enableServiceLinks: false
       nodeSelector:
         node.kubernetes.io/instance-type: g6e.4xlarge
-      serviceAccountName: wb-wb-1-gpu-100percent
+      serviceAccountName: wb-1-gpu-25percent
       tolerations:
       - effect: NoSchedule
         key: nvidia.com/gpu
         operator: Equal
-        value: "100"
+        value: "25"
       volumes:
-      - name: wb-1-gpu-100percent
+      - name: wb-1-gpu-25percent-storage
         persistentVolumeClaim:
-          claimName: wb-1-gpu-100percent
+          claimName: wb-1-gpu-25percent-storage
       - emptyDir:
           medium: Memory
         name: shm
@@ -189,12 +187,12 @@ spec:
       - name: oauth-config
         secret:
           defaultMode: 420
-          secretName: wb-wb-1-gpu-100percent-oauth-config
+          secretName: wb-1-gpu-25percent-oauth-config
       - name: oauth-client
         secret:
           defaultMode: 420
-          secretName: wb-wb-1-gpu-100percent-oauth-client
+          secretName: wb-1-gpu-25percent-oauth-client
       - name: tls-certificates
         secret:
           defaultMode: 420
-          secretName: wb-wb-1-gpu-100percent-tls
+          secretName: wb-1-gpu-25percent-tls

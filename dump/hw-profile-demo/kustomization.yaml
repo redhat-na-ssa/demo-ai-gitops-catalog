@@ -9,3 +9,6 @@ resources:
 
   - nb-wb-1-gpu-25percent.yaml
   - nb-wb-1-gpu-100percent.yaml
+
+  - pvc-wb-1-gpu-25percent.yaml
+  - pvc-wb-1-gpu-100percent.yaml
