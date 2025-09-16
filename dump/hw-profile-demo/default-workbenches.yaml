@@ -1,0 +1,10 @@
+apiVersion: components.platform.opendatahub.io/v1alpha1
+kind: Workbenches
+metadata:
+  annotations:
+    component.opendatahub.io/management-state: Managed
+  labels:
+    platform.opendatahub.io/part-of: datasciencecluster
+  name: default-workbenches
+spec:
+  workbenchNamespace: rhods-notebooks
