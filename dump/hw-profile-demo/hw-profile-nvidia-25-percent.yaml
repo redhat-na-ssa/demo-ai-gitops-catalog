@@ -31,6 +31,7 @@ spec:
     resourceType: Accelerator
   nodeSelector:
     node.kubernetes.io/instance-type: g6e.4xlarge
+    cluster-api/accelerator: nvidia-gpu
   tolerations:
   - effect: NoSchedule
     key: nvidia.com/gpu
