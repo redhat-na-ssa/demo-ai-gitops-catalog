@@ -162,7 +162,7 @@ spec:
       enableServiceLinks: false
       nodeSelector:
         node.kubernetes.io/instance-type: g6e.4xlarge
-      serviceAccountName: wb-wb-1-gpu-100percent
+      serviceAccountName: wb-1-gpu-100percent
       tolerations:
       - effect: NoSchedule
         key: nvidia.com/gpu

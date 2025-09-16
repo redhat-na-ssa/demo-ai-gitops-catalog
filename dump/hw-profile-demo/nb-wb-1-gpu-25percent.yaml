@@ -12,7 +12,7 @@ metadata:
     opendatahub.io/image-display-name: TensorFlow
     opendatahub.io/username: admin
     openshift.io/description: ""
-    openshift.io/display-name: 25-percent-gpu-wb-1
+    openshift.io/display-name: wb-1-gpu-25percent
   labels:
     app: wb-1-gpu-25percent
     opendatahub.io/dashboard: "true"
