@@ -3,4 +3,4 @@ kind: Component
 
 resources:
   - namespace.yaml
-  - links-docs.yaml
+  - link-docs.yaml
