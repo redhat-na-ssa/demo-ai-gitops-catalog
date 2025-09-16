@@ -21,9 +21,9 @@ components:
   - ../../components/fix-dashboard-magic
   - ../../components/fix-kubeadmin-cluster-admin
   - ../../components/fix-operator-scale
-  - ../../components/hw-profile-notebook
-  - ../../components/hw-profile-nvidia-gpu
-  - ../../components/hw-profile-serving
+  # - ../../components/hw-profile-notebook
+  # - ../../components/hw-profile-nvidia-gpu
+  # - ../../components/hw-profile-serving
   - ../../components/idle-notebook-culling
   # - ../../components/model-server-pod-sizes
   # - ../../components/notebook-pod-sizes

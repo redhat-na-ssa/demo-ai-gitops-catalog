@@ -5,7 +5,8 @@ metadata:
     opendatahub.io/dashboard-feature-visibility: '[]'
     # opendatahub.io/modified-date: "2025-09-14T22:30:38.458Z"
   name: nvidia-25-percent
-  namespace: redhat-ods-applications
+  # namespace: redhat-ods-applications
+  namespace: demo-rhoai-hw-profiles
 spec:
   description: ""
   displayName: NVIDIA 25 Percent
