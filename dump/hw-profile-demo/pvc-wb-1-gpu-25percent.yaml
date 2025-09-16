@@ -3,8 +3,8 @@ apiVersion: v1
 metadata:
   annotations:
     openshift.io/description: Workbench Persistent Storage
-    openshift.io/display-name: wb-1-gpu-25percent-storage
-  name: wb-1-gpu-25percent-storage
+    openshift.io/display-name: wb-1-gpu-25percent
+  name: wb-1-gpu-25percent
   namespace: demo-rhoai-hw-profiles
   labels:
     opendatahub.io/dashboard: 'true'

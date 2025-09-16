@@ -171,7 +171,7 @@ spec:
       volumes:
       - name: wb-1-gpu-100percent
         persistentVolumeClaim:
-          claimName: wb-1-gpu-100percent-storage
+          claimName: wb-1-gpu-100percent
       - emptyDir:
           medium: Memory
         name: shm
