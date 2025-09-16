@@ -3,8 +3,8 @@ kind: Namespace
 metadata:
   annotations:
     openshift.io/description: |
-      Here we show the configuration of Nvidia GPUs on OpenShift
-      with OpenShift AI to leverage hardware profiles.
+      Demo RHOAI hardware profiles on
+      on OpenShift
     openshift.io/display-name: Demo - RHOAI GPU Management
   labels:
     opendatahub.io/dashboard: "true"
