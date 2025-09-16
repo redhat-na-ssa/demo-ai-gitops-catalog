@@ -11,3 +11,5 @@ spec:
     disableBiasMetrics: true
     disableKServe: false
     disableModelMesh: false
+modelServerSizes: []
+notebookSizes: []
