@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   annotations:
     openshift.io/description: |
-      Demo RHOAI hardware profiles on
+      RHOAI Hardware Profiles on
       on OpenShift
     openshift.io/display-name: Demo - RHOAI GPU Management
   labels:
