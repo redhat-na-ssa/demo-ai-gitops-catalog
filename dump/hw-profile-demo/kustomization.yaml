@@ -13,4 +13,3 @@ resources:
   - pvc-wb-1-gpu-25percent.yaml
   - pvc-wb-1-gpu-100percent.yaml
 
-  - kludge-gpu-mcfg.yaml
