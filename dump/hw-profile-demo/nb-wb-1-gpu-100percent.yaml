@@ -1,0 +1,203 @@
+apiVersion: kubeflow.org/v1
+kind: Notebook
+metadata:
+  annotations:
+    notebooks.opendatahub.io/inject-oauth: "true"
+    notebooks.opendatahub.io/last-image-selection: tensorflow:2025.1
+    notebooks.opendatahub.io/last-image-version-git-commit-selection: 1d7de4c
+    notebooks.opendatahub.io/last-size-selection: ""
+    # notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-1-gpu-100percent
+    opendatahub.io/accelerator-name: ""
+    # opendatahub.io/hardware-profile-namespace: demo-rhoai-hw-profiles
+    opendatahub.io/hardware-profile-name: nvidia-100-percent
+    opendatahub.io/image-display-name: TensorFlow
+    opendatahub.io/username: admin
+    openshift.io/description: ""
+    openshift.io/display-name: wb-1-gpu-100percent
+  labels:
+    app: wb-1-gpu-100percent
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/odh-managed: "true"
+    opendatahub.io/user: admin
+  name: wb-1-gpu-100percent
+  namespace: demo-rhoai-hw-profiles
+spec:
+  template:
+    spec:
+      containers:
+      - env:
+        - name: NOTEBOOK_ARGS
+          value: |-
+            --ServerApp.port=8888
+                              --ServerApp.token=''
+                              --ServerApp.password=''
+                              --ServerApp.base_url=/notebook/demo-rhoai-hw-profiles/wb-1-gpu-100percent
+                              --ServerApp.quit_button=False
+                              --ServerApp.tornado_settings={"user":"admin","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com","hub_prefix":"/projects/demo-rhoai-hw-profiles"}
+        - name: JUPYTER_IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2025.1
+        - name: PIP_CERT
+          value: /etc/pki/tls/custom-certs/ca-bundle.crt
+        - name: REQUESTS_CA_BUNDLE
+          value: /etc/pki/tls/custom-certs/ca-bundle.crt
+        - name: SSL_CERT_FILE
+          value: /etc/pki/tls/custom-certs/ca-bundle.crt
+        - name: PIPELINES_SSL_SA_CERTS
+          value: /etc/pki/tls/custom-certs/ca-bundle.crt
+        - name: GIT_SSL_CAINFO
+          value: /etc/pki/tls/custom-certs/ca-bundle.crt
+        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2025.1
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /notebook/demo-rhoai-hw-profiles/wb-1-gpu-100percent/api
+            port: notebook-port
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: wb-1-gpu-100percent
+        ports:
+        - containerPort: 8888
+          name: notebook-port
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /notebook/demo-rhoai-hw-profiles/wb-1-gpu-100percent/api
+            port: notebook-port
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
+            nvidia.com/gpu: "1"
+          requests:
+            cpu: "2"
+            memory: 4Gi
+            nvidia.com/gpu: "1"
+        volumeMounts:
+        # - mountPath: /opt/app-root/src/
+        #   name: wb-1-gpu-100percent
+        - mountPath: /dev/shm
+          name: shm
+        - mountPath: /etc/pki/tls/custom-certs/ca-bundle.crt
+          name: trusted-ca
+          readOnly: true
+          subPath: ca-bundle.crt
+        - mountPath: /opt/app-root/pipeline-runtimes/
+          name: runtime-images
+        workingDir: /opt/app-root/src
+      - args:
+        - --provider=openshift
+        - --https-address=:8443
+        - --http-address=
+        - --openshift-service-account=wb-1-gpu-100percent
+        - --cookie-secret-file=/etc/oauth/config/cookie_secret
+        - --cookie-expire=24h0m0s
+        - --tls-cert=/etc/tls/private/tls.crt
+        - --tls-key=/etc/tls/private/tls.key
+        - --upstream=http://localhost:8888
+        - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        - --email-domain=*
+        - --skip-provider-button
+        - --client-id=wb-1-gpu-100percent-demo-rhoai-hw-profiles-oauth-client
+        - --client-secret-file=/etc/oauth/client/secret
+        - --scope=user:info user:check-access
+        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"wb-1-gpu-100percent","namespace":"$(NAMESPACE)"}
+        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-1-gpu-100percent
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4f8d66597feeb32bb18699326029f9a71a5aca4a57679d636b876377c2e95695
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /oauth/healthz
+            port: oauth-proxy
+            scheme: HTTPS
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: oauth-proxy
+        ports:
+        - containerPort: 8443
+          name: oauth-proxy
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /oauth/healthz
+            port: oauth-proxy
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - mountPath: /etc/oauth/client
+          name: oauth-client
+        - mountPath: /etc/oauth/config
+          name: oauth-config
+        - mountPath: /etc/tls/private
+          name: tls-certificates
+      enableServiceLinks: false
+      nodeSelector:
+        # cluster-api/accelerator: nvidia-gpu
+        # node.kubernetes.io/instance-type: g4dn.4xlarge
+        # nvidia.com/gpu.present: "true"
+        nvidia.com/gpu.sharing-strategy: time-slicing
+      serviceAccountName: wb-1-gpu-100percent
+      tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
+        # operator: Equal
+        # value: "25"
+      volumes:
+      # - name: wb-1-gpu-100percent
+      #   persistentVolumeClaim:
+      #     claimName: wb-1-gpu-100percent
+      - emptyDir:
+          medium: Memory
+        name: shm
+      - configMap:
+          items:
+          - key: ca-bundle.crt
+            path: ca-bundle.crt
+          name: workbench-trusted-ca-bundle
+          optional: true
+        name: trusted-ca
+      - configMap:
+          name: pipeline-runtime-images
+          optional: true
+        name: runtime-images
+      - name: oauth-config
+        secret:
+          defaultMode: 420
+          secretName: wb-1-gpu-100percent-oauth-config
+      - name: oauth-client
+        secret:
+          defaultMode: 420
+          secretName: wb-1-gpu-100percent-oauth-client
+      - name: tls-certificates
+        secret:
+          defaultMode: 420
+          secretName: wb-1-gpu-100percent-tls

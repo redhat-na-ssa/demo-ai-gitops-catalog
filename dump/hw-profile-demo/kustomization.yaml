@@ -6,6 +6,7 @@ resources:
   - hw-profile-nvidia-100-percent.yaml
   - namespace.yaml
 
+  - nb-wb-1-gpu-100percent.yaml
   - nb-wb-1-gpu-25percent.yaml
   - nb-wb-2-gpu-25percent.yaml
   - nb-wb-3-gpu-25percent.yaml
