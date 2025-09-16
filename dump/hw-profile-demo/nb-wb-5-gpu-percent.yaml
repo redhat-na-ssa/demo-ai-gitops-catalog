@@ -6,7 +6,7 @@ metadata:
     notebooks.opendatahub.io/last-image-selection: tensorflow:2025.1
     notebooks.opendatahub.io/last-image-version-git-commit-selection: 1d7de4c
     notebooks.opendatahub.io/last-size-selection: ""
-    notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/gpu-util-demo?notebookLogout=wb-5-gpu-percent
+    # notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-5-gpu-percent
     opendatahub.io/accelerator-name: ""
     opendatahub.io/hardware-profile-name: nvidia-25-percent
     opendatahub.io/image-display-name: TensorFlow
@@ -19,7 +19,7 @@ metadata:
     opendatahub.io/odh-managed: "true"
     opendatahub.io/user: admin
   name: wb-5-gpu-percent
-  namespace: gpu-util-demo
+  namespace: demo-rhoai-hw-profiles
 spec:
   template:
     spec:
@@ -30,9 +30,9 @@ spec:
             --ServerApp.port=8888
                               --ServerApp.token=''
                               --ServerApp.password=''
-                              --ServerApp.base_url=/notebook/gpu-util-demo/wb-5-gpu-percent
+                              --ServerApp.base_url=/notebook/demo-rhoai-hw-profiles/wb-5-gpu-percent
                               --ServerApp.quit_button=False
-                              --ServerApp.tornado_settings={"user":"admin","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com","hub_prefix":"/projects/gpu-util-demo"}
+                              --ServerApp.tornado_settings={"user":"admin","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com","hub_prefix":"/projects/demo-rhoai-hw-profiles"}
         - name: JUPYTER_IMAGE
           value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/tensorflow:2025.1
         - name: GIT_SSL_CAINFO
@@ -50,7 +50,7 @@ spec:
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/gpu-util-demo/wb-5-gpu-percent/api
+            path: /notebook/demo-rhoai-hw-profiles/wb-5-gpu-percent/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -65,7 +65,7 @@ spec:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/gpu-util-demo/wb-5-gpu-percent/api
+            path: /notebook/demo-rhoai-hw-profiles/wb-5-gpu-percent/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -106,11 +106,11 @@ spec:
         - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         - --email-domain=*
         - --skip-provider-button
-        - --client-id=wb-5-gpu-percent-gpu-util-demo-oauth-client
+        - --client-id=wb-5-gpu-percent-demo-rhoai-hw-profiles-oauth-client
         - --client-secret-file=/etc/oauth/client/secret
         - --scope=user:info user:check-access
         - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"wb-5-gpu-percent","namespace":"$(NAMESPACE)"}
-        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/gpu-util-demo?notebookLogout=wb-5-gpu-percent
+        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-5-gpu-percent
         env:
         - name: NAMESPACE
           valueFrom:
