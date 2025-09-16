@@ -30,7 +30,7 @@ spec:
     minCount: 1
     resourceType: Accelerator
   nodeSelector:
-    node.kubernetes.io/instance-type: g6e.4xlarge
+    node.kubernetes.io/instance-type: g4dn.4xlarge
     cluster-api/accelerator: nvidia-gpu
   tolerations:
   - effect: NoSchedule
