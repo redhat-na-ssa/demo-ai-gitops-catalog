@@ -105,7 +105,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Demos:
-      - demos/_example.md
+      - demos/ocp-gpu.md
   - Notes:
       - notes/ocp.md
       - notes/ocp-bmh.md
