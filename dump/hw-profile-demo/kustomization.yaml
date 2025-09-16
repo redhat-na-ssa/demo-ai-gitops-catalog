@@ -11,6 +11,7 @@ resources:
   - nb-wb-2-gpu-25percent.yaml
   - nb-wb-3-gpu-25percent.yaml
   - nb-wb-4-gpu-25percent.yaml
+  - nb-wb-5-gpu-25percent.yaml
 
   # - nb-wb-1-gpu-100percent.yaml
 
