@@ -9,7 +9,7 @@ metadata:
   # namespace: demo-rhoai-hw-profiles
 spec:
   description: Full GPU (100%)
-  displayName: NVIDIA 100 Percent
+  displayName: NVIDIA - 100%
   enabled: true
   identifiers:
   - defaultCount: 2

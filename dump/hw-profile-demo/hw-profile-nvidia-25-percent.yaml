@@ -9,7 +9,7 @@ metadata:
   # namespace: demo-rhoai-hw-profiles
 spec:
   description: GPU Sliced into 1/4 (25%)
-  displayName: NVIDIA 25 Percent
+  displayName: NVIDIA - 25%
   enabled: true
   identifiers:
   - defaultCount: 2
