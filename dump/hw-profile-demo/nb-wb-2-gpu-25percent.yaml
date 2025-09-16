@@ -82,6 +82,8 @@ spec:
             memory: 4Gi
             nvidia.com/gpu: "1"
         volumeMounts:
+        # - mountPath: /opt/app-root/src/
+        #   name: wb-2-gpu-25percent
         - mountPath: /dev/shm
           name: shm
         - mountPath: /etc/pki/tls/custom-certs/ca-bundle.crt
@@ -162,9 +164,13 @@ spec:
       tolerations:
       - effect: NoSchedule
         key: nvidia.com/gpu
-        operator: Equal
-        value: "25"
+        operator: Exists
+        # operator: Equal
+        # value: "25"
       volumes:
+      # - name: wb-2-gpu-25percent
+      #   persistentVolumeClaim:
+      #     claimName: wb-2-gpu-25percent
       - emptyDir:
           medium: Memory
         name: shm
