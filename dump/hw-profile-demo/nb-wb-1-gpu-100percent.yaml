@@ -6,7 +6,7 @@ metadata:
     notebooks.opendatahub.io/last-image-selection: tensorflow:2025.1
     notebooks.opendatahub.io/last-image-version-git-commit-selection: 1d7de4c
     notebooks.opendatahub.io/last-size-selection: ""
-    # notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-wb-1-gpu-100percent
+    # notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-1-gpu-100percent
     opendatahub.io/accelerator-name: ""
     opendatahub.io/hardware-profile-name: nvidia-100-percent
     opendatahub.io/hardware-profile-namespace: ""
@@ -16,11 +16,11 @@ metadata:
     openshift.io/description: ""
     openshift.io/display-name: wb-1-gpu-100percent
   labels:
-    app: wb-wb-1-gpu-100percent
+    app: wb-1-gpu-100percent
     opendatahub.io/dashboard: "true"
     opendatahub.io/odh-managed: "true"
     opendatahub.io/user: admin
-  name: wb-wb-1-gpu-100percent
+  name: wb-1-gpu-100percent
   namespace: demo-rhoai-hw-profiles
 spec:
   template:
@@ -32,7 +32,7 @@ spec:
             --ServerApp.port=8888
                               --ServerApp.token=''
                               --ServerApp.password=''
-                              --ServerApp.base_url=/notebook/demo-rhoai-hw-profiles/wb-wb-1-gpu-100percent
+                              --ServerApp.base_url=/notebook/demo-rhoai-hw-profiles/wb-1-gpu-100percent
                               --ServerApp.quit_button=False
                               --ServerApp.tornado_settings={"user":"admin","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com","hub_prefix":"/projects/demo-rhoai-hw-profiles"}
         - name: JUPYTER_IMAGE
@@ -52,14 +52,14 @@ spec:
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/demo-rhoai-hw-profiles/wb-wb-1-gpu-100percent/api
+            path: /notebook/demo-rhoai-hw-profiles/wb-1-gpu-100percent/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 1
-        name: wb-wb-1-gpu-100percent
+        name: wb-1-gpu-100percent
         ports:
         - containerPort: 8888
           name: notebook-port
@@ -67,7 +67,7 @@ spec:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /notebook/demo-rhoai-hw-profiles/wb-wb-1-gpu-100percent/api
+            path: /notebook/demo-rhoai-hw-profiles/wb-1-gpu-100percent/api
             port: notebook-port
             scheme: HTTP
           initialDelaySeconds: 10
@@ -99,7 +99,7 @@ spec:
         - --provider=openshift
         - --https-address=:8443
         - --http-address=
-        - --openshift-service-account=wb-wb-1-gpu-100percent
+        - --openshift-service-account=wb-1-gpu-100percent
         - --cookie-secret-file=/etc/oauth/config/cookie_secret
         - --cookie-expire=24h0m0s
         - --tls-cert=/etc/tls/private/tls.crt
@@ -108,11 +108,11 @@ spec:
         - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         - --email-domain=*
         - --skip-provider-button
-        - --client-id=wb-wb-1-gpu-100percent-demo-rhoai-hw-profiles-oauth-client
+        - --client-id=wb-1-gpu-100percent-demo-rhoai-hw-profiles-oauth-client
         - --client-secret-file=/etc/oauth/client/secret
         - --scope=user:info user:check-access
-        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"wb-wb-1-gpu-100percent","namespace":"$(NAMESPACE)"}
-        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-wb-1-gpu-100percent
+        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"wb-1-gpu-100percent","namespace":"$(NAMESPACE)"}
+        - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-1-gpu-100percent
         env:
         - name: NAMESPACE
           valueFrom:
@@ -189,12 +189,12 @@ spec:
       - name: oauth-config
         secret:
           defaultMode: 420
-          secretName: wb-wb-1-gpu-100percent-oauth-config
+          secretName: wb-1-gpu-100percent-oauth-config
       - name: oauth-client
         secret:
           defaultMode: 420
-          secretName: wb-wb-1-gpu-100percent-oauth-client
+          secretName: wb-1-gpu-100percent-oauth-client
       - name: tls-certificates
         secret:
           defaultMode: 420
-          secretName: wb-wb-1-gpu-100percent-tls
+          secretName: wb-1-gpu-100percent-tls
