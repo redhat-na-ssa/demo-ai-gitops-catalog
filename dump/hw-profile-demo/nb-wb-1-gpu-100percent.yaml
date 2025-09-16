@@ -161,7 +161,6 @@ spec:
           name: tls-certificates
       enableServiceLinks: false
       nodeSelector:
-        # node.kubernetes.io/instance-type: g6e.4xlarge
         node.kubernetes.io/instance-type: g4dn.4xlarge
       serviceAccountName: wb-1-gpu-100percent
       tolerations:
