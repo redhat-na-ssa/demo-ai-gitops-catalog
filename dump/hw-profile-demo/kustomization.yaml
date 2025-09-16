@@ -2,5 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - namespace.yaml
+  - hw-profile-nvidia-25-percent.yaml
+  - hw-profile-nvidia-100-percent.yaml
   - link-docs.yaml
+  - namespace.yaml
+
+  - nb-wb-1-gpu-25percent.yaml
+  - nb-wb-1-gpu-100percent.yaml
