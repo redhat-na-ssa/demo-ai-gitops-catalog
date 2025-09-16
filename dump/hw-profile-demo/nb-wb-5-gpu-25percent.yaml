@@ -8,6 +8,7 @@ metadata:
     notebooks.opendatahub.io/last-size-selection: ""
     # notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-kkm72.kkm72.sandbox2934.opentlc.com/projects/demo-rhoai-hw-profiles?notebookLogout=wb-5-gpu-25percent
     opendatahub.io/accelerator-name: ""
+    opendatahub.io/hardware-profile-namespace: demo-rhoai-hw-profiles
     opendatahub.io/hardware-profile-name: nvidia-25-percent
     opendatahub.io/image-display-name: TensorFlow
     opendatahub.io/username: admin
