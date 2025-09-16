@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: gpu-util-demo
+    openshift.io/requester: admin
+    openshift.io/sa.scc.mcs: s0:c30,c25
+    openshift.io/sa.scc.supplemental-groups: 1000920000/10000
+    openshift.io/sa.scc.uid-range: 1000920000/10000
+  creationTimestamp: "2025-09-13T19:57:37Z"
+  labels:
+    kubernetes.io/metadata.name: gpu-util-demo
+    opendatahub.io/dashboard: "true"
+    openshift-pipelines.tekton.dev/namespace-reconcile-version: 1.17.1
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/audit-version: latest
+    pod-security.kubernetes.io/warn: baseline
+    pod-security.kubernetes.io/warn-version: latest
+  name: gpu-util-demo
+  resourceVersion: "1243028"
+  uid: a34e860e-3905-426a-a90a-6fdc9e193ff0
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
