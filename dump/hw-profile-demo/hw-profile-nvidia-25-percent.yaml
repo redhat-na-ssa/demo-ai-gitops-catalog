@@ -8,7 +8,7 @@ metadata:
   namespace: redhat-ods-applications
   # namespace: demo-rhoai-hw-profiles
 spec:
-  description: ""
+  description: GPU Sliced into 1/4 (25%)
   displayName: NVIDIA 25 Percent
   enabled: true
   identifiers:

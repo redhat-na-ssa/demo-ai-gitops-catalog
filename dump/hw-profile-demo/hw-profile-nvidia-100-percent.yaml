@@ -8,7 +8,7 @@ metadata:
   namespace: redhat-ods-applications
   # namespace: demo-rhoai-hw-profiles
 spec:
-  description: ""
+  description: Full GPU (100%)
   displayName: NVIDIA 100 Percent
   enabled: true
   identifiers:
