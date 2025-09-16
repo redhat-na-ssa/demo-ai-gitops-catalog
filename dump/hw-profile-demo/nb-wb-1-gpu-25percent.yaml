@@ -158,8 +158,8 @@ spec:
         - mountPath: /etc/tls/private
           name: tls-certificates
       enableServiceLinks: false
-      # nodeSelector:
-      #   node.kubernetes.io/instance-type: g6e.4xlarge
+      nodeSelector:
+        node.kubernetes.io/instance-type: g4dn.4xlarge
       serviceAccountName: wb-1-gpu-25percent
       tolerations:
       - effect: NoSchedule
