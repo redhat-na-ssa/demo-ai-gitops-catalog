@@ -3,4 +3,3 @@ kind: Component
 
 resources:
   - ../../../components/operators/rhods-operator/operator/overlays/stable
-  - link-docs.yaml
