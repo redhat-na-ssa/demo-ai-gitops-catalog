@@ -10,7 +10,7 @@
 
 ## Nvidia Multi Instance GPU (MIG) configuration on OpenShift
 
-[Red Hat Demo Platform](https://demo.redhat.com) Options
+[Red Hat Demo Platform (RHDP)](https://demo.redhat.com) Options
 
 !!! NOTE
     The node sizes below are the **recommended minimum** to select for provisioning
