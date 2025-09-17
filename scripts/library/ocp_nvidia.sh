@@ -63,7 +63,7 @@ ocp_nvidia_dashboard_monitor_setup(){
 }
 
 ocp_nvidia_label_node_device_plugin_config(){
-  DEVICE_CONFIG=${1:-time-sliced-2}
+  DEVICE_CONFIG=${1:-default}
 
   oc describe cm device-plugin-config \
     -n nvidia-gpu-operator
