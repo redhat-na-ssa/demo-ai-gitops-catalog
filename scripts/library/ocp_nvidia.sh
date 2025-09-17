@@ -65,6 +65,9 @@ ocp_nvidia_dashboard_monitor_setup(){
 ocp_nvidia_label_machineset_device_plugin_config(){
   MACHINE_SET_NAME=${1:-machineset.machine.openshift.io/g4dn-4xlarge}
   DEVICE_CONFIG=${2:-default}
+
+  echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
+
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
