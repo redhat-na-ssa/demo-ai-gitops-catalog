@@ -62,14 +62,15 @@ ocp_aws_get_key(){
 }
 
 ocp_aws_machineset_clone_worker(){
+  INSTANCE_TYPE=${1:-g4dn.4xlarge}
+
   [ -z "${1}" ] && \
   echo "
-    usage: ocp_aws_machineset_clone_worker < instance type, default g4dn.4xlarge > < machine set name >
+    usage: ocp_aws_machineset_clone_worker < instance type, default ${INSTANCE_TYPE} > < machine set name >
   "
 
   ocp_aws_cluster || return
 
-  INSTANCE_TYPE=${1:-g4dn.4xlarge}
   SHORT_NAME=${2:-${INSTANCE_TYPE//./-}}
 
   MACHINE_SET_NAME=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
@@ -99,9 +100,9 @@ ocp_aws_machineset_clone_worker(){
   ocp_aws_machineset_fix_storage "${MACHINE_SET_NAME}"
 
   # cosmetic pretty
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_NAME}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${SHORT_NAME}"'":""}}}}}}'
+  # oc -n openshift-machine-api \
+  #   patch "${MACHINE_SET_NAME}" \
+  #   --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${SHORT_NAME}"'":""}}}}}}'
 }
 
 ocp_aws_machineset_create_gpu(){
