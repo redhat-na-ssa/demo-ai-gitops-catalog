@@ -108,8 +108,10 @@ nav:
       - demos/ocp-gpu.md
   - Notes:
       - notes/ocp.md
-      - notes/ocp-bmh.md
       - notes/oc-mirror.md
+      - notes/ocp-bmh.md
+      - notes/ocp-gpu.md
+      - notes/ocp-kludges.md
   - Practices:
       - practices/index.md
       - practices/data-sci.md
