@@ -82,6 +82,7 @@ ocp_nvidia_label_node_device_plugin_config(){
   echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
 
   oc label node -l nvidia.com/gpu.present="true" \
+    --overwrite=true \
     nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
 
 }
