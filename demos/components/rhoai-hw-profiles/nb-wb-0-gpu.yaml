@@ -163,7 +163,7 @@ spec:
         # cluster-api/accelerator: nvidia-gpu
         # node.kubernetes.io/instance-type: g4dn.4xlarge
         # nvidia.com/gpu.present: "true"
-        nvidia.com/gpu.sharing-strategy: time-slicing
+        # nvidia.com/gpu.sharing-strategy: time-slicing
       serviceAccountName: wb-0-gpu
       tolerations:
       - effect: NoSchedule
