@@ -62,6 +62,40 @@ ocp_nvidia_dashboard_monitor_setup(){
   rm dcgm-exporter-dashboard.json
 }
 
+ocp_nvidia_label_machineset_device_plugin_config(){
+  MACHINE_SET_NAME=${1:-machineset.machine.openshift.io/g4dn-4xlarge}
+  DEVICE_CONFIG=${2:-default}
+
+  echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
+
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
+}
+
+ocp_nvidia_label_node_device_plugin_config(){
+  DEVICE_CONFIG=${1:-default}
+
+  oc describe cm device-plugin-config \
+    -n nvidia-gpu-operator
+
+  echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
+
+  oc label node -l nvidia.com/gpu.present="true" \
+    --overwrite \
+    nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
+
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
+
+
+}
+
+ocp_nvidia_label_node_gpu(){
+  oc label node -l nvidia.com/gpu.present="true" node-role.kubernetes.io/gpu=''
+}
+
 ocp_nvidia_mig_config_setup(){
   MIG_MODE=${1:-single}
   MIG_CONFIG=${2:-all-1g.5gb}
@@ -82,4 +116,14 @@ ocp_nvidia_mig_config_setup(){
 ocp_nvidia_setup_console_plugin(){
   ocp_nvidia_console_plugin_install || return
   ocp_nvidia_console_plugin_activate || return
+}
+
+ocp_nvidia_taint_gpu_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
+  oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
+  oc adm uncordon -l node-role.kubernetes.io/gpu
+}
+
+ocp_nvidia_untaint_gpu_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }

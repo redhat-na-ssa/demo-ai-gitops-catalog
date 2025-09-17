@@ -81,20 +81,6 @@ ocp_get_pull_secret(){
     --template='{{index .data ".dockerconfigjson" | base64decode}}'
 }
 
-ocp_gpu_pretty_label(){
-  oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
-}
-
-ocp_gpu_taint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
-  oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
-  oc adm uncordon -l node-role.kubernetes.io/gpu
-}
-
-ocp_gpu_untaint_nodes(){
-  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
-}
-
 ocp_machineset_create_autoscale(){
   MACHINE_MIN=${1:-0}
   MACHINE_MAX=${2:-4}

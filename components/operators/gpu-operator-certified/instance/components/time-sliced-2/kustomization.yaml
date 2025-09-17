@@ -5,7 +5,3 @@ patches:
   - path: patch-gpu-cluster-policy.yaml
     target:
       kind: ClusterPolicy
-  - path: patch-device-plugin-config.yaml
-    target:
-      kind: ConfigMap
-      name: device-plugin-config

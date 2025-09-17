@@ -1,0 +1,11 @@
+apiVersion: console.openshift.io/v1
+kind: ConsoleLink
+metadata:
+  name: rhoai-docs
+spec:
+  applicationMenu:
+    imageURL: /static/assets/public/imgs/logos/redhat.svg
+    section: Documentation
+  href: https://docs.redhat.com/en/documentation/red_hat_openshift_ai_self-managed/2-latest/
+  location: ApplicationMenu
+  text: Red Hat OpenShift AI Documentation

@@ -1,0 +1,43 @@
+apiVersion: dashboard.opendatahub.io/v1alpha1
+kind: HardwareProfile
+metadata:
+  annotations:
+    opendatahub.io/dashboard-feature-visibility: '[]'
+    # opendatahub.io/modified-date: "2025-09-14T22:30:53.621Z"
+  name: nvidia-mig-single
+  namespace: redhat-ods-applications
+  # namespace: demo-rhoai-hw-profiles
+spec:
+  description: MIG - single profile x
+  displayName: NVIDIA MIG - x
+  enabled: true
+  identifiers:
+  - defaultCount: 2
+    displayName: CPU
+    identifier: cpu
+    maxCount: 4
+    minCount: 1
+    resourceType: CPU
+  - defaultCount: 4Gi
+    displayName: Memory
+    identifier: memory
+    maxCount: 8Gi
+    minCount: 2Gi
+    resourceType: Memory
+  - defaultCount: 1
+    displayName: GPU
+    identifier: nvidia.com/gpu
+    maxCount: 4
+    minCount: 1
+    resourceType: Accelerator
+  nodeSelector:
+    # cluster-api/accelerator: nvidia-gpu
+    # node.kubernetes.io/instance-type: g6e.4xlarge
+    # nvidia.com/gpu.present: "true"
+    nvidia.com/mig.capable: "true"
+  tolerations:
+  - effect: NoSchedule
+    key: nvidia.com/gpu
+    operator: Exists
+    # operator: Equal
+    # value: "100"

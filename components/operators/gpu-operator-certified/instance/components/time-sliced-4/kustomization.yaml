@@ -2,10 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 components:
-  - ../time-sliced
+  - ../time-sliced-2
 
 patches:
-  - path: patch-device-plugin-config.yaml
+  - path: patch-gpu-cluster-policy.yaml
     target:
-      kind: ConfigMap
-      name: device-plugin-config
+      kind: ClusterPolicy

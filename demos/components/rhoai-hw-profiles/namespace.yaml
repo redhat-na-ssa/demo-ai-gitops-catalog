@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: |
+      RHOAI Hardware Profiles on
+      on OpenShift
+    openshift.io/display-name: Demo - RHOAI GPU Management
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: demo-rhoai-hw-profiles
