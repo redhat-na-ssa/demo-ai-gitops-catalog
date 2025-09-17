@@ -1,4 +1,4 @@
-# OpenShift Kludges
+# OpenShift - Kludges
 
 !!! Danger "Danger"
     The following solutions are **NOT intended for production**

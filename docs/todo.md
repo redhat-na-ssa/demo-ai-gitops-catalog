@@ -1,4 +1,4 @@
-# TODO Items
+# TODO List
 
 - [ ] Update GPU Demo to use accelerator labels
     - https://access.redhat.com/solutions/6055181

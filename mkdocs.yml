@@ -108,9 +108,9 @@ nav:
       - demos/ocp-gpu.md
   - Notes:
       - notes/ocp.md
+      - notes/ocp-kludges.md
       - notes/oc-mirror.md
       - notes/ocp-bmh.md
-      - notes/ocp-kludges.md
       - todo.md
   - Practices:
       - practices/index.md
