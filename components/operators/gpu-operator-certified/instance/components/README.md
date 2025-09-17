@@ -5,6 +5,7 @@ The included components are intended to be common patching patterns used on top 
 This repo currently contains the following components:
 
 * [aws-gpu-machineset](aws-gpu-machineset)
+* [aro-gpu-machineset](aro-gpu-machineset)
 * [mig-mixed](mig-mixed)
 * [mig-single](mig-single)
 * [monitoring-dashboard](monitoring-dashboard)
