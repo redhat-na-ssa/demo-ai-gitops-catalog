@@ -63,7 +63,7 @@ ocp_nvidia_dashboard_monitor_setup(){
 }
 
 ocp_nvidia_label_machineset_device_plugin_config(){
-  MACHINE_SET_NAME=${1:-g4dn-4xlarge}
+  MACHINE_SET_NAME=${1:-machineset.machine.openshift.io/g4dn-4xlarge}
   DEVICE_CONFIG=${2:-default}
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_NAME}" \
