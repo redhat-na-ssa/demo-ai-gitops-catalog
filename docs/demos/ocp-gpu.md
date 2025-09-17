@@ -2,7 +2,7 @@
 
 ## AWS GPU Notes
 
-!!! NOTE
+!!! BUG "Availability Zones"
     AWS type `p4d.24xlarge` is currently only in availability zone `us-east-2b` and has 96 vCPU.
 
     If your cluster does not have a machine set in `us-east-2b` you
@@ -10,9 +10,14 @@
 
 ## Nvidia Multi Instance GPU (MIG) configuration on OpenShift
 
-Red Hat Demo Platform Catalog (RHDP) option:
+[Red Hat Demo Platform](https://demo.redhat.com) Options
 
-- `TBD`
+!!! NOTE
+    The node sizes below are the **recommended minimum** to select for provisioning
+
+- <a href="https://demo.redhat.com/catalog?item=babylon-catalog-prod/sandboxes-gpte.sandbox-ocp.prod&utm_source=webapp&utm_medium=share-link" target="_blank">AWS with OpenShift Open Environment</a>
+    - 1 x Control Plane - `m6a.2xlarge`
+    - 0 x Workers - `m6a.2xlarge`
 
 !!! WARNING
     MIG demo is currently a WIP for RHDP and will likely NOT work
