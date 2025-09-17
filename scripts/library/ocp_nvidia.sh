@@ -1,5 +1,5 @@
 #!/bin/bash
-  
+
 ocp_nvidia_console_plugin_activate(){
   if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
     oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
@@ -62,6 +62,14 @@ ocp_nvidia_dashboard_monitor_setup(){
   rm dcgm-exporter-dashboard.json
 }
 
+ocp_nvidia_label_machineset_device_plugin_config(){
+  MACHINE_SET_NAME=${1:-g4dn-4xlarge}
+  DEVICE_CONFIG=${2:-default}
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
+}
+
 ocp_nvidia_label_node_device_plugin_config(){
   DEVICE_CONFIG=${1:-default}
 
@@ -72,6 +80,7 @@ ocp_nvidia_label_node_device_plugin_config(){
 
   oc label node -l nvidia.com/gpu.present="true" \
     nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
+
 }
 
 ocp_nvidia_label_node_gpu(){
@@ -109,4 +118,3 @@ ocp_nvidia_taint_gpu_nodes(){
 ocp_nvidia_untaint_gpu_nodes(){
   oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }
-
