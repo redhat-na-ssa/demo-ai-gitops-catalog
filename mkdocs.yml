@@ -110,8 +110,8 @@ nav:
       - notes/ocp.md
       - notes/oc-mirror.md
       - notes/ocp-bmh.md
-      - notes/ocp-gpu.md
       - notes/ocp-kludges.md
+      - todo.md
   - Practices:
       - practices/index.md
       - practices/data-sci.md
