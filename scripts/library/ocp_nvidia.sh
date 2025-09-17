@@ -70,12 +70,12 @@ ocp_nvidia_label_node_device_plugin_config(){
 
   echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
 
-  oc label node -l nvidia.com/gpu.machine \
+  oc label node -l nvidia.com/gpu.present="true" \
     nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
 }
 
 ocp_nvidia_label_node_gpu(){
-  oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
+  oc label node -l nvidia.com/gpu.present="true" node-role.kubernetes.io/gpu=''
 }
 
 ocp_nvidia_mig_config_setup(){
