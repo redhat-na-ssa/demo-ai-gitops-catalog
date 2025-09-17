@@ -9,8 +9,9 @@ lint_wordlist_reset(){
 }
 
 lint_wordlist_sort(){
-  LC_COLLATE=C sort -u < .wordlist-md > tmp
-  mv tmp .wordlist-md
+  WORDLIST=${1:-.wordlist-md}
+  LC_COLLATE=C sort -u < "${WORDLIST}" > tmp
+  mv tmp "${WORDLIST}"
 }
 
 select_folder(){

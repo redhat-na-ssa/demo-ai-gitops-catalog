@@ -32,6 +32,7 @@ ClusterTask
 CodeFlare
 CodeReady
 ConfigMap
+CreateContainerError
 DCGM
 DNS
 DSCInitialization
@@ -447,8 +448,10 @@ udi
 untar
 untardir
 useable
+usr
 vCPU
 vSphere
+validator
 virt
 vllm
 vscode
