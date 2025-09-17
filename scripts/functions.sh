@@ -73,7 +73,7 @@ source_library
 setup_bin_path
 
 usage(){
-  echo "USAGE: get_functions"
+  echo "USAGE:      get_functions"
 }
 
 is_sourced && usage
