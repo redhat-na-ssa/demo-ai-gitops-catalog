@@ -1,5 +1,5 @@
 #!/bin/bash
-
+  
 ocp_nvidia_console_plugin_activate(){
   if oc get consoles.operator.openshift.io cluster --output=jsonpath="{.spec.plugins}" >/dev/null; then
     oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["console-plugin-nvidia-gpu"] } }' --type=merge
@@ -60,6 +60,15 @@ ocp_nvidia_dashboard_monitor_setup(){
   oc -n openshift-config-managed label configmap nvidia-dcgm-exporter-dashboard "console.openshift.io/odc-dashboard=true" --overwrite
   oc -n openshift-config-managed get cm nvidia-dcgm-exporter-dashboard --show-labels
   rm dcgm-exporter-dashboard.json
+}
+
+ocp_nvidia_label_node_device_plugin_config(){
+  DEVICE_CONFIG=${1:-time-sliced-2}
+
+  echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
+
+  oc label node -l nvidia.com/gpu.machine \
+    nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
 }
 
 ocp_nvidia_label_node_gpu(){
