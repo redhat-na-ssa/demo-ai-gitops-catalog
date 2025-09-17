@@ -2,7 +2,7 @@
 
 ## AWS GPU Notes
 
-!!! BUG "Availability Zones"
+!!! BUG "Availability Zones / Instance Types"
     AWS type `p4d.24xlarge` is currently only in availability zone `us-east-2b` and has 96 vCPU.
 
     If your cluster does not have a machine set in `us-east-2b` you
