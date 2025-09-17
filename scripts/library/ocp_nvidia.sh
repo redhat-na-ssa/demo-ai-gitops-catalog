@@ -85,6 +85,11 @@ ocp_nvidia_label_node_device_plugin_config(){
     --overwrite \
     nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
 
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
+
+
 }
 
 ocp_nvidia_label_node_gpu(){
