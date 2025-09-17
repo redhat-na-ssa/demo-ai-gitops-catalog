@@ -62,6 +62,10 @@ ocp_nvidia_dashboard_monitor_setup(){
   rm dcgm-exporter-dashboard.json
 }
 
+ocp_nvidia_label_node_gpu(){
+  oc label node -l nvidia.com/gpu.machine node-role.kubernetes.io/gpu=''
+}
+
 ocp_nvidia_mig_config_setup(){
   MIG_MODE=${1:-single}
   MIG_CONFIG=${2:-all-1g.5gb}
@@ -83,3 +87,14 @@ ocp_nvidia_setup_console_plugin(){
   ocp_nvidia_console_plugin_install || return
   ocp_nvidia_console_plugin_activate || return
 }
+
+ocp_nvidia_taint_gpu_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule --overwrite
+  oc adm drain -l node-role.kubernetes.io/gpu --ignore-daemonsets --delete-emptydir-data
+  oc adm uncordon -l node-role.kubernetes.io/gpu
+}
+
+ocp_nvidia_untaint_gpu_nodes(){
+  oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
+}
+
