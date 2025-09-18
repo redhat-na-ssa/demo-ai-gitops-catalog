@@ -64,7 +64,7 @@ jobs:
       - name: Install Kustomize
         run: |
           set -x
-          LATEST=$( curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name | sed 's#kustomize/##; s#"##g')
+          LATEST=$(curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name | sed 's#kustomize/##; s#"##g')
           BIN_VERSION=${KUSTOMIZE_VERSION:-${LATEST}}
           DOWNLOAD_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${BIN_VERSION}/kustomize_${BIN_VERSION}_linux_amd64.tar.gz
 
@@ -74,6 +74,6 @@ jobs:
         uses: actions/checkout@v5
       - name: Validate Manifests
         run: |
-          [ -d ./bootstrap/base ] && touch bootstrap/base/sealed-secrets-secret.yaml
+          # [ -d ./bootstrap/base ] && touch bootstrap/base/sealed-secrets-secret.yaml
           ./scripts/validate_kustomize.sh
           ./scripts/validate_helm.sh
