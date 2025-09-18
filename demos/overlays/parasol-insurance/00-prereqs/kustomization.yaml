@@ -19,13 +19,13 @@ patches:
     patch: |-
       - op: replace
         path: /spec/channel
-        value: stable
+        value: stable-2.19
       # - op: replace
       #   path: /spec/installPlanApproval
       #   value: Manual
       - op: add
         path: /spec/startingCSV
-        value: rhods-operator.2.22.1
+        value: rhods-operator.2.19.2
   - target:
       kind: Job
       name: job-aws-gpu-machineset
