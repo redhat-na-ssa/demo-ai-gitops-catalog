@@ -10,7 +10,7 @@ metadata:
     opendatahub.io/accelerator-name: ''
     openshift.io/description: ''
     openshift.io/display-name: My Workbench
-    notebooks.opendatahub.io/last-image-selection: 'ic-workbench:2.1.2'
+    notebooks.opendatahub.io/last-image-selection: 'ic-workbench:3.0.4'
     notebooks.opendatahub.io/last-size-selection: Standard
     opendatahub.io/username: user0
   name: my-workbench
@@ -63,8 +63,7 @@ spec:
                                   --ServerApp.quit_button=False
                                   --ServerApp.tornado_settings={"user":"user0","hub_host":"$DASHBOARD_ROUTE","hub_prefix":"/projects/user0"}
             - name: JUPYTER_IMAGE
-              value: >-
-                image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench:2.1.2
+              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench:3.0.4'
           ports:
             - containerPort: 8888
               name: notebook-port
@@ -78,7 +77,7 @@ spec:
             - mountPath: /dev/shm
               name: shm
           image: >-
-            image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench:2.1.2
+            image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/ic-workbench:3.0.4
           workingDir: /opt/app-root/src
         - resources:
             limits:
@@ -123,8 +122,7 @@ spec:
               name: oauth-config
             - mountPath: /etc/tls/private
               name: tls-certificates
-          image: >-
-            registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46
+          image: 'registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4f8d66597feeb32bb18699326029f9a71a5aca4a57679d636b876377c2e95695'
           args:
             - '--provider=openshift'
             - '--https-address=:8443'
@@ -139,9 +137,9 @@ spec:
             - '--email-domain=*'
             - '--skip-provider-button'
             - >-
-              --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"ic-workbench:2.1.2","namespace":"user0"}
+              --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"ic-workbench:3.0.4","namespace":"user0"}
             - >-
-              --logout-url=$DASHBOARD_ROUTE/projects/user0?notebookLogout=ic-workbench:2.1.2
+              --logout-url=$DASHBOARD_ROUTE/projects/user0?notebookLogout=ic-workbench:3.0.4
       enableServiceLinks: false
       serviceAccountName: my-workbench
       tolerations:

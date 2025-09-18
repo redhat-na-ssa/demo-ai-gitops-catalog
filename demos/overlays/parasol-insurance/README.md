@@ -20,14 +20,14 @@ This demo is:
 
 ```sh
 # setup base cluster
-apply_firmly clusters/default
+apply_firmly demos/overlays/default
 # setup base rhoai
-apply_firmly workshop/wip/parasol-insurance/00-prereqs
+apply_firmly demos/overlays/parasol-insurance/00-prereqs
 # setup demo
-apply_firmly workshop/wip/parasol-insurance/01-setup
+apply_firmly demos/overlays/parasol-insurance/01-setup
 
 # setup a single user for testing
-oc apply -k workshop/wip/parasol-insurance/instance
+oc apply -k demos/overlays/parasol-insurance/instance
 ```
 
 ## Links
