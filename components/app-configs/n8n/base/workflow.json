@@ -1,0 +1,178 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ocp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "17ed79e0-9637-4fdc-befe-0c00ea509bd4",
+      "name": "Webhook",
+      "webhookId": "9e1f15a6-9be5-4519-bc21-0fe8485b7fa1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "65e25002-87e8-4259-986a-dd2832a5a93a",
+              "leftValue": "={{ $json.webhookUrl }}",
+              "rightValue": "/webhook-test",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "b3d9b691-de95-4f13-a8c2-52fcecae4047",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -96
+      ],
+      "id": "61afdcdc-3df5-421e-ab68-1744b6e3b0a8",
+      "name": "True"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        448,
+        96
+      ],
+      "id": "927d8c59-54f4-4831-9927-70ae2357031c",
+      "name": "False"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.admin.svc.cluster.local:5678",
+            "user-agent": "Alertmanager/0.28.1",
+            "content-length": "1912",
+            "content-type": "application/json"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "receiver": "Watchdog",
+            "status": "firing",
+            "alerts": [
+              {
+                "status": "firing",
+                "labels": {
+                  "alertname": "Watchdog",
+                  "namespace": "openshift-monitoring",
+                  "openshift_io_alert_source": "platform",
+                  "prometheus": "openshift-monitoring/k8s",
+                  "severity": "none"
+                },
+                "annotations": {
+                  "description": "This is an alert meant to ensure that the entire alerting pipeline is functional.\nThis alert is always firing, therefore it should always be firing in Alertmanager\nand always fire against a receiver. There are integrations with various notification\nmechanisms that send a notification when this alert is not firing. For example the\n\"DeadMansSnitch\" integration in PagerDuty.\n",
+                  "summary": "An alert that should always be firing to certify that Alertmanager is working properly."
+                },
+                "startsAt": "2025-09-18T18:33:22.087Z",
+                "endsAt": "0001-01-01T00:00:00Z",
+                "generatorURL": "https://console-openshift-console.apps.ocp.kow.lab/monitoring/graph?g0.expr=vector%281%29&g0.tab=1",
+                "fingerprint": "6934731368443c07"
+              }
+            ],
+            "groupLabels": {
+              "namespace": "openshift-monitoring"
+            },
+            "commonLabels": {
+              "alertname": "Watchdog",
+              "namespace": "openshift-monitoring",
+              "openshift_io_alert_source": "platform",
+              "prometheus": "openshift-monitoring/k8s",
+              "severity": "none"
+            },
+            "commonAnnotations": {
+              "description": "This is an alert meant to ensure that the entire alerting pipeline is functional.\nThis alert is always firing, therefore it should always be firing in Alertmanager\nand always fire against a receiver. There are integrations with various notification\nmechanisms that send a notification when this alert is not firing. For example the\n\"DeadMansSnitch\" integration in PagerDuty.\n",
+              "summary": "An alert that should always be firing to certify that Alertmanager is working properly."
+            },
+            "externalURL": "https://console-openshift-console.apps.ocp.kow.lab/monitoring",
+            "version": "4",
+            "groupKey": "{}/{alertname=\"Watchdog\"}:{namespace=\"openshift-monitoring\"}",
+            "truncatedAlerts": 0
+          },
+          "webhookUrl": "http://n8n.admin.svc.cluster.local:5678/webhook/ocp",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "True",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "False",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "62439676-cdc8-4925-975d-787c76043d21",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "10be4fdea3761b15e3e5583056fe3c7754b5659fe06f24e884abb518716a1912"
+  },
+  "id": "3xlYNfSvVby0SCJ5",
+  "tags": []
+}

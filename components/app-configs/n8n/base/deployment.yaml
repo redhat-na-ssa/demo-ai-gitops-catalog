@@ -15,23 +15,9 @@ spec:
     spec:
       containers:
       - name: n8n
-        env:
-        - name: N8N_PORT
-          value: "5678"
-        - name: N8N_PROTOCOL
-          value: "http"
-        - name: NODE_ENV
-          value: "production"
-        - name: GENERIC_TIMEZONE
-          value: "America/New_York"
-        - name: N8N_ENCRYPTION_KEY
-          value: "CHANGE_ME_GENERATE_WITH_OPENSSL_RAND_HEX_32"
-        - name: N8N_USER_FOLDER
-          value: "/home/node/.n8n"
-        - name: N8N_BASIC_AUTH_ACTIVE
-          value: "false"
-        - name: N8N_METRICS
-          value: "false"
+        envFrom:
+        - configMapRef:
+            name: n8n-env
         image: docker.io/n8nio/n8n:latest
         ports:
         - containerPort: 5678
