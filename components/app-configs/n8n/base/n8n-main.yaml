@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deploy: n8n
+  template:
+    metadata:
+      labels:
+        deploy: n8n
+    spec:
+      containers:
+      - name: n8n-main
+        envFrom:
+        - configMapRef:
+            name: n8n-env
+        - secretRef:
+            name: n8n-env
+        image: docker.io/n8nio/n8n:1.111.0
+        ports:
+        - containerPort: 5678
+          name: editor
+        - containerPort: 5679
+          name: broker
+        volumeMounts:
+        - name: empty
+          mountPath: /home/user
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5678
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5678
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      volumes:
+      - name: empty
+        emptyDir: {}
+      # - name: n8n
+      #   persistentVolumeClaim:
+      #     claimName: n8n

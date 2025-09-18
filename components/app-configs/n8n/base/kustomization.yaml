@@ -5,10 +5,14 @@ labels:
   - includeSelectors: true
     pairs:
       app: n8n
+  - includeSelectors: false
+    pairs:
+      app.kubernetes.io/part-of: n8n
 
 resources:
   - config.yaml
-  - deployment.yaml
+  - n8n-main.yaml
+  - n8n-runners.yaml
   # - pvc.yaml
   - route.yaml
   - service.yaml

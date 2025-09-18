@@ -2,29 +2,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: n8n
+  name: n8n-runners
 spec:
   replicas: 1
   selector:
     matchLabels:
-      deploy: n8n
+      deploy: n8n-runners
   template:
     metadata:
       labels:
-        deploy: n8n
+        deploy: n8n-runners
     spec:
       containers:
-      - name: n8n
+      - name: n8n-runners
         envFrom:
         - configMapRef:
             name: n8n-env
-        image: docker.io/n8nio/n8n:latest
-        ports:
-        - containerPort: 5678
-          name: http
+        - secretRef:
+            name: n8n-env
+        image: docker.io/n8nio/runners:1.111.0
         volumeMounts:
         - name: empty
-          mountPath: /home/node/.n8n
+          mountPath: /home/user
         resources:
           requests:
             memory: "512Mi"
@@ -35,18 +34,18 @@ spec:
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 5678
+            port: 5680
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 5678
+            port: 5680
           initialDelaySeconds: 5
           periodSeconds: 10
       volumes:
       - name: empty
         emptyDir: {}
-      # - name: n8n
+      # - name: n8n-runners
       #   persistentVolumeClaim:
-      #     claimName: n8n
+      #     claimName: n8n-runners

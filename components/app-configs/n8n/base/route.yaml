@@ -13,6 +13,6 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: n8n
+    name: n8n-main
     weight: 100
   wildcardPolicy: None

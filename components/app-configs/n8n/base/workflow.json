@@ -3,16 +3,17 @@
   "nodes": [
     {
       "parameters": {
+        "httpMethod": "POST",
         "path": "ocp",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        0,
-        0
+        -448,
+        96
       ],
-      "id": "17ed79e0-9637-4fdc-befe-0c00ea509bd4",
+      "id": "e6d0ae32-32ce-4c37-938d-a688fa647755",
       "name": "Webhook",
       "webhookId": "9e1f15a6-9be5-4519-bc21-0fe8485b7fa1"
     },
@@ -43,10 +44,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        224,
-        0
+        -224,
+        96
       ],
-      "id": "b3d9b691-de95-4f13-a8c2-52fcecae4047",
+      "id": "032260d7-6398-41c9-869a-698c3ba35847",
       "name": "If"
     },
     {
@@ -54,10 +55,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        448,
-        -96
+        0,
+        0
       ],
-      "id": "61afdcdc-3df5-421e-ab68-1744b6e3b0a8",
+      "id": "30a6fecb-48d9-4790-a182-becdec16c458",
       "name": "True"
     },
     {
@@ -65,10 +66,10 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        448,
-        96
+        0,
+        192
       ],
-      "id": "927d8c59-54f4-4831-9927-70ae2357031c",
+      "id": "7b02fb7d-7236-4f96-b9d4-569750f3f166",
       "name": "False"
     }
   ],
@@ -165,14 +166,12 @@
   },
   "active": true,
   "settings": {
-    "executionOrder": "v1",
-    "callerPolicy": "workflowsFromSameOwner"
+    "executionOrder": "v1"
   },
-  "versionId": "62439676-cdc8-4925-975d-787c76043d21",
+  "versionId": "dae9c65a-7eb2-4017-a339-5c851482ecd6",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "10be4fdea3761b15e3e5583056fe3c7754b5659fe06f24e884abb518716a1912"
+    "instanceId": "880e59dc60bf4b1d9d7e46f131ffd1749164a6aa18601590bed05834abe0d6bb"
   },
-  "id": "3xlYNfSvVby0SCJ5",
+  "id": "K2fmurQcoxYXEROO",
   "tags": []
 }
