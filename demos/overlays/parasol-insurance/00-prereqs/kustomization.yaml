@@ -5,6 +5,7 @@ resources:
   - ../../../../demos/overlays/rhoai-workshop-ready
 
 patches:
+  - path: patch-dsc.yaml
   - target:
       kind: ConsoleNotification
       name: banner-demo
