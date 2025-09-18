@@ -1,5 +1,5 @@
 {
-  "name": "My workflow",
+  "name": "Alert Manager - Workflow",
   "nodes": [
     {
       "parameters": {
@@ -13,7 +13,7 @@
         -448,
         96
       ],
-      "id": "e6d0ae32-32ce-4c37-938d-a688fa647755",
+      "id": "6df89205-2e19-4752-a34c-d02f41ba9cae",
       "name": "Webhook",
       "webhookId": "9e1f15a6-9be5-4519-bc21-0fe8485b7fa1"
     },
@@ -29,11 +29,11 @@
           "conditions": [
             {
               "id": "65e25002-87e8-4259-986a-dd2832a5a93a",
-              "leftValue": "={{ $json.webhookUrl }}",
-              "rightValue": "/webhook-test",
+              "leftValue": "={{ $json.executionMode }}",
+              "rightValue": "production",
               "operator": {
                 "type": "string",
-                "operation": "notContains"
+                "operation": "equals"
               }
             }
           ],
@@ -47,7 +47,7 @@
         -224,
         96
       ],
-      "id": "032260d7-6398-41c9-869a-698c3ba35847",
+      "id": "99fe8757-7d30-48f3-8883-2b5850fe7535",
       "name": "If"
     },
     {
@@ -58,7 +58,7 @@
         0,
         0
       ],
-      "id": "30a6fecb-48d9-4790-a182-becdec16c458",
+      "id": "ae35dc1b-f5bc-48f0-8360-91cfae1ab36b",
       "name": "True"
     },
     {
@@ -69,7 +69,7 @@
         0,
         192
       ],
-      "id": "7b02fb7d-7236-4f96-b9d4-569750f3f166",
+      "id": "9f4a9e10-0ca0-47a4-9bdd-390361b66be4",
       "name": "False"
     }
   ],
@@ -168,10 +168,10 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "dae9c65a-7eb2-4017-a339-5c851482ecd6",
+  "versionId": "a2bebd18-e13f-4071-8948-a8dfae49bf73",
   "meta": {
-    "instanceId": "880e59dc60bf4b1d9d7e46f131ffd1749164a6aa18601590bed05834abe0d6bb"
+    "instanceId": "6d56e352b95482ac4df7d9f0ea54b0b5d787b769dcef370ce630f3f854b45efe"
   },
-  "id": "K2fmurQcoxYXEROO",
+  "id": "MHGimgiWFl7JHaNV",
   "tags": []
 }
