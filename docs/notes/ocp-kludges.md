@@ -22,5 +22,5 @@ This is a workaround for the following issue:
 Command Example
 
 ```sh
-oc apply -k https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/b042ba4c827a90b638625a4d017fe067745f64d2/dump/gpu-kludge-mcfg.yaml
+oc apply -f https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/b042ba4c827a90b638625a4d017fe067745f64d2/dump/gpu-kludge-mcfg.yaml
 ```
