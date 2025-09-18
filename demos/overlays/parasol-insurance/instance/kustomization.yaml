@@ -9,10 +9,10 @@ labels:
 namespace: user0
 
 resources:
-- dspa.yaml
-- job-data-connector.yaml
-- job-pipeline.yaml
-- job-rbac.yaml
+# - dspa.yaml
+# - job-data-connector.yaml
+# - job-pipeline.yaml
+# - job-rbac.yaml
 - job-repo.yaml
 - notebook.yaml
 - ns-rb-admin.yaml

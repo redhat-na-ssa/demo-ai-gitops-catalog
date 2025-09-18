@@ -72,8 +72,8 @@ spec:
           volumeMounts:
             - mountPath: /opt/app-root/src
               name: my-workbench
-            - mountPath: /opt/app-root/runtimes
-              name: elyra-dsp-details
+            # - mountPath: /opt/app-root/runtimes
+            #   name: elyra-dsp-details
             - mountPath: /dev/shm
               name: shm
           image: >-
@@ -150,9 +150,9 @@ spec:
         - name: my-workbench
           persistentVolumeClaim:
             claimName: my-workbench
-        - name: elyra-dsp-details
-          secret:
-            secretName: ds-pipeline-config
+        # - name: elyra-dsp-details
+        #   secret:
+        #     secretName: ds-pipeline-config
         - emptyDir:
             medium: Memory
           name: shm
