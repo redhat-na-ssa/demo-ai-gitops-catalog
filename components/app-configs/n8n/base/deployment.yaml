@@ -36,9 +36,9 @@ spec:
         ports:
         - containerPort: 5678
           name: http
-        # volumeMounts:
-        # - name: n8n
-        #   mountPath: /home/node/.n8n
+        volumeMounts:
+        - name: empty
+          mountPath: /home/node/.n8n
         resources:
           requests:
             memory: "512Mi"
@@ -58,7 +58,9 @@ spec:
             port: 5678
           initialDelaySeconds: 5
           periodSeconds: 10
-      # volumes:
+      volumes:
+      - name: empty
+        emptyDir: {}
       # - name: n8n
       #   persistentVolumeClaim:
       #     claimName: n8n
