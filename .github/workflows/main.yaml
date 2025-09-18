@@ -1,0 +1,133 @@
+name: CI/CD Pipeline
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  pages: write
+  id-token: write
+
+# Only one GitHub Pages Deploy workflow at a time
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # PARALLEL CHECKS
+  lint-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v5
+      - name: Validate YAML
+        uses: ibiqlik/action-yamllint@v3
+
+  lint-bash:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v5
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          version: v0.8.0
+          severity: warning
+
+  lint-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v5
+      - name: Run hadolint (Containerfile)
+        uses: hadolint/hadolint-action@v3.2.0
+        with:
+          dockerfile: Containerfile
+          recursive: true
+      - name: Run hadolint (Dockerfile)
+        uses: hadolint/hadolint-action@v3.2.0
+        with:
+          dockerfile: Dockerfile
+          recursive: true
+
+  lint-manifests:
+    runs-on: ubuntu-latest
+    env:
+      BIN_PATH: /usr/bin
+    steps:
+      - name: Install Kustomize
+        run: |
+          set -x
+          LATEST=$( curl -s https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest | jq .name | sed 's#kustomize/##; s#"##g')
+          BIN_VERSION=${KUSTOMIZE_VERSION:-${LATEST}}
+          DOWNLOAD_URL=https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${BIN_VERSION}/kustomize_${BIN_VERSION}_linux_amd64.tar.gz
+
+          curl "${DOWNLOAD_URL}" -sL | sudo tar zx -C "${BIN_PATH}/" kustomize
+          sudo chmod +x "${BIN_PATH}"/kustomize
+      - name: Code Checkout
+        uses: actions/checkout@v5
+      - name: Validate Manifests
+        run: |
+          [ -d ./bootstrap/base ] && touch bootstrap/base/sealed-secrets-secret.yaml
+          ./scripts/validate_kustomize.sh
+          ./scripts/validate_helm.sh
+
+  lint-spelling:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v5
+      - name: Spellcheck
+        uses: rojopolis/spellcheck-github-actions@0.52.0
+
+  # DEPENDABOT AUTO-MERGE
+  dependabot:
+    runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2.4.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Enable auto-merge for Dependabot PRs
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  # DEPLOYMENT JOB - Runs only after all checks pass
+  deploy:
+    needs: [lint-yaml, lint-bash, lint-container, lint-manifests, lint-spelling]
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+      - run: |
+          pip install -r docs/requirements.txt
+      - name: Build MkDocs
+        run: |
+          mkdocs build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: './site'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

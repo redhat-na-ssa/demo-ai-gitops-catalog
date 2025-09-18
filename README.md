@@ -1,7 +1,6 @@
 # OpenShift Demo GitOps Catalog
 
-[![Spelling](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml/badge.svg)](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/spellcheck.yaml)
-[![Linting](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/linting.yaml/badge.svg)](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/linting.yaml)
+[![CI/CD Pipeline](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/main.yaml/badge.svg)](https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/actions/workflows/main.yaml)
 
 This project is a catalog of configurations used to provision infrastructure, on
 OpenShift, that supports machine learning (ML) and artificial intelligence (AI) workloads.
@@ -164,7 +163,7 @@ get_functions
 
 <!-- ### Sealed Secrets Bootstrap
 
-`bootstrap.sh` will attempt to deploy sealed-secrets and requires a sealed secret master key to manage existing deployments.  
+`bootstrap.sh` will attempt to deploy sealed-secrets and requires a sealed secret master key to manage existing deployments.
 
 If managing an already bootstrapped cluster, the sealed-secrets key must be obtained from the initial bootstrap (ask the person who initially setup the cluster).
 
