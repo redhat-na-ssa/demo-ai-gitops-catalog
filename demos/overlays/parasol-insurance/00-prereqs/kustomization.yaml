@@ -24,7 +24,7 @@ patches:
       #   value: Manual
       - op: add
         path: /spec/startingCSV
-        value: rhods-operator.2.8.1
+        value: rhods-operator.2.22.1
   - target:
       kind: Job
       name: job-aws-gpu-machineset
