@@ -1,0 +1,215 @@
+{
+  "name": "Alert Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ocp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -448,
+        96
+      ],
+      "id": "af381d92-6df3-4a0a-ba8e-a3950527e147",
+      "name": "Webhook",
+      "webhookId": "9e1f15a6-9be5-4519-bc21-0fe8485b7fa1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "65e25002-87e8-4259-986a-dd2832a5a93a",
+              "leftValue": "={{ $json.body.commonLabels.alertname }}",
+              "rightValue": "UpdateAvailable",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "95b25aa1-f79b-4815-b15d-e07ccdd3ee67",
+              "leftValue": "={{ $json.body.commonLabels.namespace }}",
+              "rightValue": "openshift-cluster-version",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        96
+      ],
+      "id": "b0288196-4b41-493c-8b4d-2cdad07978d6",
+      "name": "OCP Upgrade Available"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        192
+      ],
+      "id": "ecd24bca-0bcc-45aa-bdab-9a4173c0e546",
+      "name": "Ignore"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "57dd39b5-8592-48df-81fd-bd82af9dc3ef",
+      "name": "Start Upgrade"
+    },
+    {
+      "parameters": {
+        "command": "echo oc adm upgrade"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d6d817ae-e0f2-4a4e-b342-2ec41a86fe5b",
+      "name": "Execute Command"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.admin.svc.cluster.local:5678",
+            "user-agent": "Alertmanager/0.28.1",
+            "content-length": "1570",
+            "content-type": "application/json"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "receiver": "Default",
+            "status": "firing",
+            "alerts": [
+              {
+                "status": "firing",
+                "labels": {
+                  "alertname": "UpdateAvailable",
+                  "channel": "stable-4.19",
+                  "namespace": "openshift-cluster-version",
+                  "openshift_io_alert_source": "platform",
+                  "prometheus": "openshift-monitoring/k8s",
+                  "severity": "info",
+                  "upstream": "<default>"
+                },
+                "annotations": {
+                  "description": "For more information refer to 'oc adm upgrade' or https://console-openshift-console.apps.ocp.kow.lab/settings/cluster/.",
+                  "summary": "Your upstream update recommendation service recommends you update your cluster."
+                },
+                "startsAt": "2025-09-19T00:49:29.507Z",
+                "endsAt": "0001-01-01T00:00:00Z",
+                "generatorURL": "https://console-openshift-console.apps.ocp.kow.lab/monitoring/graph?g0.expr=sum+by+%28channel%2C+namespace%2C+upstream%29+%28cluster_version_available_updates%29+%3E+0&g0.tab=1",
+                "fingerprint": "8ea5f8a9299ecd30"
+              }
+            ],
+            "groupLabels": {
+              "namespace": "openshift-cluster-version"
+            },
+            "commonLabels": {
+              "alertname": "UpdateAvailable",
+              "channel": "stable-4.19",
+              "namespace": "openshift-cluster-version",
+              "openshift_io_alert_source": "platform",
+              "prometheus": "openshift-monitoring/k8s",
+              "severity": "info",
+              "upstream": "<default>"
+            },
+            "commonAnnotations": {
+              "description": "For more information refer to 'oc adm upgrade' or https://console-openshift-console.apps.ocp.kow.lab/settings/cluster/.",
+              "summary": "Your upstream update recommendation service recommends you update your cluster."
+            },
+            "externalURL": "https://console-openshift-console.apps.ocp.kow.lab/monitoring",
+            "version": "4",
+            "groupKey": "{}:{namespace=\"openshift-cluster-version\"}",
+            "truncatedAlerts": 0
+          },
+          "webhookUrl": "http://n8n.admin.svc.cluster.local:5678/webhook/ocp",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "OCP Upgrade Available",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OCP Upgrade Available": {
+      "main": [
+        [
+          {
+            "node": "Start Upgrade",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ignore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Upgrade": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "47d0f562-68fa-49e8-8a3d-5ba036467a56",
+  "meta": {
+    "instanceId": "1f0a96cb3a65ad39967be8e253609718ab2c4d4abaf73c14d2ea5bb40ba0f239"
+  },
+  "id": "POEFpBSosGkLnUXE",
+  "tags": []
+}

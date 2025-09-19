@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug-receiver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deploy: debug-receiver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        deploy: debug-receiver
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - |
+          pip install pyserv
+          serv 8080
+        image: registry.access.redhat.com/ubi8/python-311:latest
+        name: python
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+          name: 8080-tcp
+      restartPolicy: Always
