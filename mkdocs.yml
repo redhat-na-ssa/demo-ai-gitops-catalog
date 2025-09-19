@@ -109,7 +109,7 @@ nav:
   - Notes:
       - notes/ocp.md
       - notes/ocp-kludges.md
-      - notes/oc-mirror.md
+      - notes/ocp-mirror.md
       - notes/ocp-bmh.md
       - todo.md
   - Practices:
