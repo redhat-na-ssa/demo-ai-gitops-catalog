@@ -12,6 +12,7 @@ data:
   N8N_EDITOR_BASE_URL: "http://n8n.admin.svc.cluster.local:5678/"
   N8N_PORT: "5678"
   # N8N_PROTOCOL: "http"
+  HOME: "/home/user"
   N8N_USER_FOLDER: "/home/user"
   N8N_DIAGNOSTICS_ENABLED: "false"
   N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"

@@ -1,49 +1,57 @@
-global:
-  http_config:
-    proxy_from_environment: true
-inhibit_rules:
-  - equal:
-      - namespace
-      - alertname
-    source_matchers:
-      - severity = critical
-    target_matchers:
-      - severity =~ warning|info
-  - equal:
-      - namespace
-      - alertname
-    source_matchers:
-      - severity = warning
-    target_matchers:
-      - severity = info
-receivers:
-  - name: Critical
-    webhook_configs:
-      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
-  - name: Default
-    webhook_configs:
-      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
-      - url: 'http://debug-receiver.admin.svc.cluster.local:8080/v1/receiver'
-  - name: Watchdog
-    webhook_configs:
-      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
-  - name: n8n
-    webhook_configs:
-      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
-route:
-  group_by:
-    - namespace
-  group_interval: 5m
-  group_wait: 30s
-  receiver: Default
-  repeat_interval: 12h
-  routes:
-    - receiver: Watchdog
-      matchers:
-        - alertname = Watchdog
-    - receiver: Critical
-      matchers:
-        - severity = critical
-    - receiver: n8n
-      matchers:
-        - alertname = Watchdog
+kind: Secret
+apiVersion: v1
+metadata:
+  name: alertmanager-main
+  namespace: openshift-monitoring
+type: Opaque
+stringData:
+  alertmanager.yaml: |
+    global:
+      http_config:
+        proxy_from_environment: true
+    inhibit_rules:
+      - equal:
+          - namespace
+          - alertname
+        source_matchers:
+          - severity = critical
+        target_matchers:
+          - severity =~ warning|info
+      - equal:
+          - namespace
+          - alertname
+        source_matchers:
+          - severity = warning
+        target_matchers:
+          - severity = info
+    receivers:
+      - name: Critical
+        webhook_configs:
+          - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
+      - name: Default
+        webhook_configs:
+          - url: 'http://debug-receiver.admin.svc.cluster.local:8080/v1/receiver'
+          - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
+      - name: n8n
+        webhook_configs:
+          - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
+      - name: Watchdog
+        webhook_configs:
+          - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
+    route:
+      group_by:
+        - namespace
+      group_interval: 5m
+      group_wait: 30s
+      receiver: Default
+      repeat_interval: 1m
+      routes:
+        - receiver: Watchdog
+          matchers:
+            - alertname = Watchdog
+        - receiver: Critical
+          matchers:
+            - severity = critical
+        - receiver: n8n
+          matchers:
+            - alertname = Watchdog
