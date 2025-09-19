@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: n8n-main
+  name: n8n
 spec:
   selector:
     deploy: n8n
   ports:
-  - name: editor
+  - name: main
     port: 5678
     targetPort: 5678
   - name: broker

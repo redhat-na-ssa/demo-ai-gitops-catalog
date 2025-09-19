@@ -23,7 +23,7 @@ spec:
         image: docker.io/n8nio/n8n:1.111.0
         ports:
         - containerPort: 5678
-          name: editor
+          name: main
         - containerPort: 5679
           name: broker
         volumeMounts:
