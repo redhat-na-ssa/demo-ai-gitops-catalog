@@ -22,6 +22,7 @@ receivers:
       - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
   - name: Default
     webhook_configs:
+      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
       - url: 'http://debug-receiver.admin.svc.cluster.local:8080/v1/receiver'
   - name: Watchdog
     webhook_configs:

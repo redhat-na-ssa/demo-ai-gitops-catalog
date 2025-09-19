@@ -1,5 +1,5 @@
 {
-  "name": "Alert Manager - Workflow",
+  "name": "Alert Manager",
   "nodes": [
     {
       "parameters": {
@@ -13,7 +13,7 @@
         -448,
         96
       ],
-      "id": "6df89205-2e19-4752-a34c-d02f41ba9cae",
+      "id": "af381d92-6df3-4a0a-ba8e-a3950527e147",
       "name": "Webhook",
       "webhookId": "9e1f15a6-9be5-4519-bc21-0fe8485b7fa1"
     },
@@ -29,11 +29,21 @@
           "conditions": [
             {
               "id": "65e25002-87e8-4259-986a-dd2832a5a93a",
-              "leftValue": "={{ $json.executionMode }}",
-              "rightValue": "production",
+              "leftValue": "={{ $json.body.commonLabels.alertname }}",
+              "rightValue": "UpdateAvailable",
               "operator": {
                 "type": "string",
                 "operation": "equals"
+              }
+            },
+            {
+              "id": "95b25aa1-f79b-4815-b15d-e07ccdd3ee67",
+              "leftValue": "={{ $json.body.commonLabels.namespace }}",
+              "rightValue": "openshift-cluster-version",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
               }
             }
           ],
@@ -47,19 +57,8 @@
         -224,
         96
       ],
-      "id": "99fe8757-7d30-48f3-8883-2b5850fe7535",
-      "name": "If"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "ae35dc1b-f5bc-48f0-8360-91cfae1ab36b",
-      "name": "True"
+      "id": "b0288196-4b41-493c-8b4d-2cdad07978d6",
+      "name": "OCP Upgrade Available"
     },
     {
       "parameters": {},
@@ -69,8 +68,32 @@
         0,
         192
       ],
-      "id": "9f4a9e10-0ca0-47a4-9bdd-390361b66be4",
-      "name": "False"
+      "id": "ecd24bca-0bcc-45aa-bdab-9a4173c0e546",
+      "name": "Ignore"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "57dd39b5-8592-48df-81fd-bd82af9dc3ef",
+      "name": "Start Upgrade"
+    },
+    {
+      "parameters": {
+        "command": "echo oc adm upgrade"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d6d817ae-e0f2-4a4e-b342-2ec41a86fe5b",
+      "name": "Execute Command"
     }
   ],
   "pinData": {
@@ -80,55 +103,59 @@
           "headers": {
             "host": "n8n.admin.svc.cluster.local:5678",
             "user-agent": "Alertmanager/0.28.1",
-            "content-length": "1912",
+            "content-length": "1570",
             "content-type": "application/json"
           },
           "params": {},
           "query": {},
           "body": {
-            "receiver": "Watchdog",
+            "receiver": "Default",
             "status": "firing",
             "alerts": [
               {
                 "status": "firing",
                 "labels": {
-                  "alertname": "Watchdog",
-                  "namespace": "openshift-monitoring",
+                  "alertname": "UpdateAvailable",
+                  "channel": "stable-4.19",
+                  "namespace": "openshift-cluster-version",
                   "openshift_io_alert_source": "platform",
                   "prometheus": "openshift-monitoring/k8s",
-                  "severity": "none"
+                  "severity": "info",
+                  "upstream": "<default>"
                 },
                 "annotations": {
-                  "description": "This is an alert meant to ensure that the entire alerting pipeline is functional.\nThis alert is always firing, therefore it should always be firing in Alertmanager\nand always fire against a receiver. There are integrations with various notification\nmechanisms that send a notification when this alert is not firing. For example the\n\"DeadMansSnitch\" integration in PagerDuty.\n",
-                  "summary": "An alert that should always be firing to certify that Alertmanager is working properly."
+                  "description": "For more information refer to 'oc adm upgrade' or https://console-openshift-console.apps.ocp.kow.lab/settings/cluster/.",
+                  "summary": "Your upstream update recommendation service recommends you update your cluster."
                 },
-                "startsAt": "2025-09-18T18:33:22.087Z",
+                "startsAt": "2025-09-19T00:49:29.507Z",
                 "endsAt": "0001-01-01T00:00:00Z",
-                "generatorURL": "https://console-openshift-console.apps.ocp.kow.lab/monitoring/graph?g0.expr=vector%281%29&g0.tab=1",
-                "fingerprint": "6934731368443c07"
+                "generatorURL": "https://console-openshift-console.apps.ocp.kow.lab/monitoring/graph?g0.expr=sum+by+%28channel%2C+namespace%2C+upstream%29+%28cluster_version_available_updates%29+%3E+0&g0.tab=1",
+                "fingerprint": "8ea5f8a9299ecd30"
               }
             ],
             "groupLabels": {
-              "namespace": "openshift-monitoring"
+              "namespace": "openshift-cluster-version"
             },
             "commonLabels": {
-              "alertname": "Watchdog",
-              "namespace": "openshift-monitoring",
+              "alertname": "UpdateAvailable",
+              "channel": "stable-4.19",
+              "namespace": "openshift-cluster-version",
               "openshift_io_alert_source": "platform",
               "prometheus": "openshift-monitoring/k8s",
-              "severity": "none"
+              "severity": "info",
+              "upstream": "<default>"
             },
             "commonAnnotations": {
-              "description": "This is an alert meant to ensure that the entire alerting pipeline is functional.\nThis alert is always firing, therefore it should always be firing in Alertmanager\nand always fire against a receiver. There are integrations with various notification\nmechanisms that send a notification when this alert is not firing. For example the\n\"DeadMansSnitch\" integration in PagerDuty.\n",
-              "summary": "An alert that should always be firing to certify that Alertmanager is working properly."
+              "description": "For more information refer to 'oc adm upgrade' or https://console-openshift-console.apps.ocp.kow.lab/settings/cluster/.",
+              "summary": "Your upstream update recommendation service recommends you update your cluster."
             },
             "externalURL": "https://console-openshift-console.apps.ocp.kow.lab/monitoring",
             "version": "4",
-            "groupKey": "{}/{alertname=\"Watchdog\"}:{namespace=\"openshift-monitoring\"}",
+            "groupKey": "{}:{namespace=\"openshift-cluster-version\"}",
             "truncatedAlerts": 0
           },
           "webhookUrl": "http://n8n.admin.svc.cluster.local:5678/webhook/ocp",
-          "executionMode": "test"
+          "executionMode": "production"
         }
       }
     ]
@@ -138,25 +165,36 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "OCP Upgrade Available",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "OCP Upgrade Available": {
       "main": [
         [
           {
-            "node": "True",
+            "node": "Start Upgrade",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "False",
+            "node": "Ignore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start Upgrade": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
             "type": "main",
             "index": 0
           }
@@ -168,10 +206,10 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "a2bebd18-e13f-4071-8948-a8dfae49bf73",
+  "versionId": "47d0f562-68fa-49e8-8a3d-5ba036467a56",
   "meta": {
-    "instanceId": "6d56e352b95482ac4df7d9f0ea54b0b5d787b769dcef370ce630f3f854b45efe"
+    "instanceId": "1f0a96cb3a65ad39967be8e253609718ab2c4d4abaf73c14d2ea5bb40ba0f239"
   },
-  "id": "MHGimgiWFl7JHaNV",
+  "id": "POEFpBSosGkLnUXE",
   "tags": []
 }
