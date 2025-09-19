@@ -18,13 +18,17 @@ inhibit_rules:
       - severity = info
 receivers:
   - name: Critical
+    webhook_configs:
+      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
   - name: Default
     webhook_configs:
       - url: 'http://debug-receiver.admin.svc.cluster.local:8080/v1/receiver'
   - name: Watchdog
+    webhook_configs:
+      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
   - name: n8n
     webhook_configs:
-      - url: 'http://n8n-main.admin.svc.cluster.local:5678/webhook/ocp'
+      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook/ocp'
 route:
   group_by:
     - namespace
