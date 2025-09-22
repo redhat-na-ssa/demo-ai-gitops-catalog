@@ -1,3 +1,4 @@
 mkdocs-material
 mkdocs-material-components
 pymdown-extensions
+mkdocs-kustomize @ git+https://github.com/redhat-na-ssa/mkdocs-kustomize.git
