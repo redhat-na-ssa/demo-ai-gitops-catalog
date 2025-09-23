@@ -45,7 +45,7 @@ set_cluster_cert_names(){
   OCP_DOMAIN="${OCP_APPS#apps.}"
   OCP_API="api.${OCP_DOMAIN}"
   OCP_APPS="*.apps.${OCP_DOMAIN}"
-  
+
   echo "
     OCP_DOMAIN: ${OCP_DOMAIN}
     OCP_API:    ${OCP_API}

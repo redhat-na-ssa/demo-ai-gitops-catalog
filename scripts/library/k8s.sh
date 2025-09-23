@@ -61,7 +61,7 @@ k8s_delete_extended_resource_on_all_nodes(){
       --request PATCH \
       --data '[{"op": "remove", "path": "/status/capacity/'"${RESOURCE_NAME}"'"}]' \
       --no-fail
-      
+
   done
 
   echo "k8s api proxy: stopping..."

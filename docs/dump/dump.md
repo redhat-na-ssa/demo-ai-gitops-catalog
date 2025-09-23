@@ -89,7 +89,7 @@ oc -n openshift-config \
       -o yaml \
       --controller-namespace sealed-secrets
 ```
-  
+
 Add the following annotations to the sealed secret
 
 ```sh
@@ -163,7 +163,7 @@ oc patch statefulset/airflow-worker --patch '{"spec":{"template":{"spec":{"conta
 
 ```sh
 oc -n openshift-config delete cm openshift-service-ca.crt
-oc -n openshift-ingress delete cm service-ca-bundle 
+oc -n openshift-ingress delete cm service-ca-bundle
 oc -n openshift-authentication delete cm v4-0-config-system-service-ca
 oc -n openshift-authentication delete cm v4-0-config-system-trusted-ca-bundle
 ```
@@ -209,7 +209,7 @@ helm template rh-ecosystem-edge/console-plugin-nvidia-gpu
 helm template --output-dir './yaml' rh-ecosystem-edge/console-plugin-nvidia-gpu
 
 # helm < v3
-helm fetch --untar --untardir . 'rh-ecosystem-edge/console-plugin-nvidia-gpu' 
+helm fetch --untar --untardir . 'rh-ecosystem-edge/console-plugin-nvidia-gpu'
 helm template --output-dir './yaml' './console-plugin-nvidia-gpu'
 ```
 

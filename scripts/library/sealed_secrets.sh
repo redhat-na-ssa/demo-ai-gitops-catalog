@@ -54,7 +54,7 @@ sealed_secret_create(){
       echo "Contact a repo MAINTAINER to get a current sealed secrets key"
       echo
       echo 'You must choose yes or no to continue'
-      echo      
+      echo
       sealed_secret_create
       ;;
   esac

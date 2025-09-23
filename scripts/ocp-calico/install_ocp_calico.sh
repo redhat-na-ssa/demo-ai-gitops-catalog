@@ -44,7 +44,7 @@ calico_init_install(){
     cd ${TMP_DIR} || exit
     [ ! -d ${INSTALL_DIR} ] && mkdir ${INSTALL_DIR}
     cd ${INSTALL_DIR} || exit
-    
+
     [ -e install-config.yaml ] || openshift-install create install-config
 
     [ -e install-config.yaml ] || exit
@@ -86,7 +86,7 @@ YAML
 
   sed '/cniIngressRules/r insert.yaml' \
     -i.orig cluster-api/02_infra-cluster.yaml
-  
+
   rm insert.yaml
 }
 

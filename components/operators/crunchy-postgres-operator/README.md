@@ -1,4 +1,4 @@
-# 
+# Crunchy Postgres Operator
 
 Install .
 

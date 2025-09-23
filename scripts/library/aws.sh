@@ -33,14 +33,14 @@ aws_start_instance(){
   fi
 
   iid=$1
-  
+
   read -p -r "Start instance ${iid}? <y/N> " prompt
 
   if [[ $prompt =~ [yY](es)* ]]
   then
   echo "Starting instance ${iid}"
   aws ec2 start-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --instance-ids="${iid}"
-  fi 
+  fi
 }
 
 aws_stop_instance(){
@@ -53,11 +53,11 @@ aws_stop_instance(){
   fi
 
   iid=$1
-  
+
   read -r -p "Stop instance ${iid}? <y/N> " prompt
 
   if [[ $prompt =~ [yY](es)* ]]; then
     echo "Stopping instance ${iid}"
     aws ec2 stop-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --instance-ids="${iid}"
-  fi 
+  fi
 }

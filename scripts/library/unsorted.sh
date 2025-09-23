@@ -17,13 +17,13 @@ lint_wordlist_sort(){
 select_folder(){
   FOLDER="${1:-options}"
   PS3="Select by number: "
-  
+
   [ -d "${FOLDER}" ] || return
 
   echo "Options"
 
   pushd "${FOLDER}" >/dev/null || return
-  
+
   select selected_folder in */
   do
     [ -d "${selected_folder}" ] && break

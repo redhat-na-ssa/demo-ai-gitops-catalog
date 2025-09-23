@@ -21,7 +21,7 @@ BASIC_INFO="${BASIC_INFO},CATALOG_SOURCE:.status.catalogSource"
 pkg_manifest_get_channels(){
   [ "${1}x" == "x" ] && return
   NAME="${1}"
-  
+
   echo "NAME: ${NAME}"
   oc get packagemanifest \
     "${NAME}" \
@@ -41,7 +41,7 @@ pkg_manifest_get_description(){
 pkg_manifest_get_info(){
   [ "${1}x" == "x" ] && return
   NAME="${1}"
-  
+
   oc get packagemanifest \
     "${NAME}" \
     -o=custom-columns="${MANIFEST_INFO}"

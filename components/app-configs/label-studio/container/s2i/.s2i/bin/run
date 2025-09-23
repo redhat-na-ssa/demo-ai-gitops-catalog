@@ -21,7 +21,7 @@ It allows you to do the following:
 - Integrate Label Studio with machine learning models to
   supply predictions for labels (pre-labels), or perform continuous
   active learning.
-  
+
 USAGE
 
   # exec "${STI_SCRIPTS_PATH}/usage"
@@ -50,10 +50,10 @@ usage
 
 kludge_to_newest(){
   label-studio version
-  
+
   echo "kludging ahead to newest version..."
   pip install --no-cache -U label-studio -q
-  
+
   label-studio version
 }
 

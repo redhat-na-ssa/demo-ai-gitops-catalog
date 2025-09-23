@@ -8,7 +8,7 @@ container_start(){
     -p 8000:8000 \
     -v "${PWD}:/docs${SELINUX}" \
       docker.io/squidfunk/mkdocs-material
-  
+
 }
 
 init(){

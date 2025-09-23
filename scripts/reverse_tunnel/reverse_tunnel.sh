@@ -116,7 +116,7 @@ check_install(){
 
   kludge_install_user
   kludge_install_app && return
-  
+
   usage
 }
 
@@ -127,7 +127,7 @@ gen_key(){
   echo "
     Attempting to generate a ssh key in ${KEY_PATH}
   "
-  
+
   if [ ! -d "${KEY_PATH}" ]; then
     mkdir -p "${KEY_PATH}" || return
   fi

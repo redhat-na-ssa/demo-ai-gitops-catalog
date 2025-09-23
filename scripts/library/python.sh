@@ -3,7 +3,7 @@
 
 py_check_venv(){
   # activate python venv
-  [ -d venv ] || py_setup_venv 
+  [ -d venv ] || py_setup_venv
   . venv/bin/activate
   [ -e requirements.txt ] && pip install -q -r requirements.txt
 }

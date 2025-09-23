@@ -1,5 +1,5 @@
 #!/bin/bash
-  
+
 apply_config(){
   if [ ! -f "$1" ]; then
     echo "${1:-file} not found"

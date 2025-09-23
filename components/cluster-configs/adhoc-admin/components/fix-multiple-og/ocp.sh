@@ -19,7 +19,7 @@ ocp_fix_duplicate_operator_groups(){
       get og -o name | \
         tail -n+2 | \
         xargs oc -n "${ns}" delete
-    
+
     # oc -n "${ns}" \
     #   delete pod --all
   done

@@ -106,7 +106,7 @@ pkg_manifests_get_all_details(){
 pkg_manifest_get_info(){
   [ "${1}x" == "x" ] && return
   NAME="${1}"
-  
+
   oc get packagemanifest \
     "${NAME}" \
     -o=custom-columns="${MANIFEST_INFO}"
@@ -115,7 +115,7 @@ pkg_manifest_get_info(){
 pkg_manifest_get_channels(){
   [ "${1}x" == "x" ] && return
   NAME="${1}"
-  
+
   echo "NAME: ${NAME}"
   oc get packagemanifest \
     "${NAME}" \
@@ -170,7 +170,7 @@ create_operator_base(){
 create_operator_dir(){
   [ "${1}x" == "x" ] && return
   BASE_DIR="${1}"
-  
+
   echo "${BASE_DIR}"
 
   mkdir -p "${BASE_DIR}"/operator/{base,overlays}

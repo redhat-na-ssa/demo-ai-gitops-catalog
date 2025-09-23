@@ -238,7 +238,7 @@ workshop_create_user_htpasswd(){
     htpasswd -bB "${FILE}" "${WORKSHOP_USER}${i}" "${WORKSHOP_PASS}"
   done
 
-  echo "created: ${FILE}" 
+  echo "created: ${FILE}"
   oc -n openshift-config create secret generic htpasswd --from-file="${FILE}"
   oc -n openshift-config set data secret/htpasswd --from-file="${FILE}"
   oc apply -f gitops/02-components/oauth.yaml
@@ -247,7 +247,7 @@ workshop_create_user_htpasswd(){
 
 workshop_create_user_ns(){
   OBJ_DIR=${TMP_DIR}/users
-  
+
   [ -e ${OBJ_DIR} ] && rm -rf ${OBJ_DIR}
   [ ! -d ${OBJ_DIR} ] && mkdir -p ${OBJ_DIR}
 

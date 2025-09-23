@@ -9,7 +9,7 @@ scale_down_operator_madness(){
     echo -n .
     sleep 5
   done; echo
-  
+
 oc get csv \
   -n redhat-ods-operator \
   -l operators.coreos.com/rhods-operator.redhat-ods-operator \

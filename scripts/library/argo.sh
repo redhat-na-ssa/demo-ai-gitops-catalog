@@ -81,7 +81,7 @@ argo_uninstall(){
     oc scale --replicas=0 deployment "$i" -n "${ARGO_NS}"
   done
 
-  # shellcheck disable=SC2034 
+  # shellcheck disable=SC2034
   NAMESPACE="${ARGO_NS}"
 
   k8s_null_finalizers_for_all_resource_instances applicationsets.argoproj.io
@@ -95,7 +95,7 @@ argo_uninstall(){
 
   oc delete -k "${ARGO_KUSTOMIZE_OPERATOR}"
   oc delete -k "${ARGO_KUSTOMIZE_INSTANCE}"
-  
+
   oc delete project "${ARGO_NS}"-operator
   oc delete project "${ARGO_NS}"
 }

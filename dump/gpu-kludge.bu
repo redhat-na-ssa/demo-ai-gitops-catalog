@@ -70,7 +70,7 @@ storage:
 systemd:
   units:
     - name: nvidia-operator-kludge.service
-      enabled: true  
+      enabled: true
       contents: |
         [Unit]
         Description=Nvidia Operator Kludge for 4.18.22

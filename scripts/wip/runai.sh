@@ -48,13 +48,13 @@ runai_setup_control_plane(){
   which helm || return 1
   helm repo add runai-backend https://backend-charts.storage.googleapis.com
   helm repo update
-  
+
   CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
 
   if [ "${CERT_NAME}" == "<no value>" ]; then
-    
+
     HELM_OPTS="--set global.customCA.enabled=true"
-    
+
     oc -n openshift-ingress extract secrets/router-certs-default --keys=tls.crt --to=- > "${GIT_ROOT}"/scratch/runai-ca.pem
 
     oc -n runai create secret generic runai-ca-cert \
@@ -92,7 +92,7 @@ runai_create_cluster(){
       -H 'Content-Type: application/json' \
       --data-raw "${DATA}"
    )
-  
+
   RUNAI_CLUSTER_UUID=$(echo "${OUTPUT}" | jq -r .uuid)
 
   echo "${RUNAI_CLUSTER_UUID}"

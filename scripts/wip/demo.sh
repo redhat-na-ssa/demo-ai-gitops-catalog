@@ -4,7 +4,7 @@ demo_all(){
 
   echo "setup: enhanced web terminal"
   apply_firmly "${GIT_ROOT}/bootstrap/web-terminal"
-  
+
   echo "setup: argocd for a default cluster"
   apply_firmly "${GIT_ROOT}/bootstrap/argo-managed"
 

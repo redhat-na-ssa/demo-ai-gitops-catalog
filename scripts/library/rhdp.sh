@@ -49,7 +49,7 @@ rhdp_ocp_api_certs_fix(){
     sed 's/namespace: .*/namespace: openshift-config/' | \
     oc -n openshift-config apply -f-
 
-  oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'  
+  oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'
 }
 
 rhdp_ocp_get_uuid(){

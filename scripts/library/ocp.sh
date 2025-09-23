@@ -1,5 +1,5 @@
 #!/bin/bash
-  
+
 ocp_check_info(){
   echo "== OCP INFO =="
   ocp_check_login || return 1
@@ -50,7 +50,7 @@ ocp_fix_duplicate_operator_groups(){
       get og -o name | \
         tail -n+2 | \
         xargs oc -n "${ns}" delete
-    
+
     # oc -n "${ns}" \
     #   delete pod --all
   done
@@ -112,7 +112,7 @@ ocp_machineset_patch_accelerator(){
   oc -n openshift-machine-api \
     patch machineset "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"'"${LABEL}"'"}}}}}}'
-  
+
   oc -n openshift-machine-api \
     patch machineset "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
@@ -213,7 +213,7 @@ ocp_update_pull_secret(){
     -n openshift-config \
     --keys .dockerconfigjson \
     --to=- > "${PULL_SECRET_FILE}"
-  
+
   oc get secret/pull-secret \
     -n openshift-config \
     -o yaml > "${PULL_SECRET_FILE}.yaml"
@@ -229,7 +229,7 @@ ocp_update_pull_secret(){
       -n openshift-config \
       --type=kubernetes.io/dockerconfigjson \
       --from-file=.dockerconfigjson="${PULL_SECRET_FILE}"
-  fi  
+  fi
 }
 
 ocp_upgrade_ack_4.13(){

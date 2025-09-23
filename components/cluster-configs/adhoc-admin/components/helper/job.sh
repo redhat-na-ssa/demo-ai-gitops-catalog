@@ -8,12 +8,12 @@ TIMEOUT=60
 self_destruct(){
   [ -z "${NAMESPACE}" ] && return
   [ -z "${DEBUG}" ] || return
-  
+
   echo "
     engaging self cleaning...
     removing project: ${NAMESPACE} in ${TIMEOUT}s
   "
-  
+
   sleep "${TIMEOUT}"
   oc delete project "${NAMESPACE}"
 }
@@ -25,7 +25,7 @@ run_adhoc(){
 
   elif [ -d "${ADHOC_DIR}" ]; then
     echo "running: *.sh in ${ADHOC_DIR}/..."
-    
+
     for sh in "${ADHOC_DIR}/"*.sh
     do
       [ -e "${sh}" ] || return 0

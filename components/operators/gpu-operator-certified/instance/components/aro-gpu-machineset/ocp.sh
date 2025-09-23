@@ -69,7 +69,7 @@ ocp_aro_machineset_create_gpu(){
   SHORT_NAME=${SHORT_NAME,,}
 
   ocp_aro_machineset_clone_worker "${INSTANCE_TYPE}"
-  
+
   MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "/${SHORT_NAME}" | head -n1)
 
   echo "Patching: ${MACHINE_SET_TYPE}"
@@ -130,7 +130,7 @@ ocp_aro_machineset_clone_worker(){
           /creationTimestamp:/d
           s/replicas.*/replicas: 0/' | \
       oc apply -f -
-    
+
     MACHINE_SET_NAME="machinesets.machine.openshift.io/${SHORT_NAME}"
   fi
 

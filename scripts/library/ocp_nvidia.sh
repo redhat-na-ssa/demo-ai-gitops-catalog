@@ -38,7 +38,7 @@ ocp_nvidia_console_plugin_dump_helm_install(){
   sed -i '
     /^  name: console-plugin-nvidia-gpu/a \  namespace: nvidia-gpu-operator
     ' "${OUTPUT_PATH}/"*
-  
+
 }
 
 ocp_nvidia_console_plugin_install(){
@@ -101,7 +101,7 @@ ocp_nvidia_mig_config_setup(){
   MIG_CONFIG=${2:-all-1g.5gb}
   INSTANCE_TYPE=p4d.24xlarge
 
-  ocp_aws_machineset_create_gpu "${INSTANCE_TYPE}" 
+  ocp_aws_machineset_create_gpu "${INSTANCE_TYPE}"
 
   oc apply -k "${GIT_ROOT}"/components/operators/gpu-operator-certified/instance/overlays/mig-"${MIG_MODE}"
 

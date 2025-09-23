@@ -4,7 +4,7 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "AWS": "${ARN}" 
+                "AWS": "${ARN}"
             },
             "Action": "sts:AssumeRole"
         }

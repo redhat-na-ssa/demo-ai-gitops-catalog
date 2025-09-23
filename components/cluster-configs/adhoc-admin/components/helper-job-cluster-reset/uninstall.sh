@@ -14,7 +14,7 @@ self_destruct(){
     engaging self cleaning...
     removing project: ${NAMESPACE} in ${TIMEOUT}s
   "
-  
+
   sleep "${TIMEOUT}"
   oc delete project "${NAMESPACE}"
 }
@@ -94,7 +94,7 @@ reset_webhooks(){
 reset_misc(){
   k8s_null_finalizers knativeservings.operator.knative.dev/knative-serving knative-serving
   oc -n knative-serving delete knativeservings.operator.knative.dev knative-serving
-  
+
   oc -n openshift-operators delete deploy devworkspace-webhook-server
 
   oc delete consoleplugin console-plugin-nvidia-gpu

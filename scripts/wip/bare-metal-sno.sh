@@ -76,7 +76,7 @@ platform:
         bootMode: UEFI
 pullSecret: ''
 sshKey: ''
-bootstrapInPlace: 
+bootstrapInPlace:
   InstallationDisk: <boot-disk>
 YAML
 }

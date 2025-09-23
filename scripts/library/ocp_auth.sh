@@ -77,8 +77,8 @@ ocp_auth_kubeadmin_remove(){
     WARNING: you must run - ocp_kubeadmin_remove YES
 
     WARNING: you will lose access to your cluster if you do not
-      have a way to login to your cluster without kubeadmin. 
-      
+      have a way to login to your cluster without kubeadmin.
+
       Examples:
         - An identity provider with a cluster-admin user setup
         - A kubeconfig file

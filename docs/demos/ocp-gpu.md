@@ -27,7 +27,7 @@ Error message
 ```sh
 error launching instance: You have requested more vCPU capacity than your
 current vCPU limit of 64 allows for the instance bucket that the specified
-instance type belongs to. 
+instance type belongs to.
 ```
 
 ## Prerequisites
@@ -75,7 +75,7 @@ Manually Pick MIG profile
 MIG_CONFIG=all-1g.5gb
 MIG_CONFIG=all-2g.10gb
 
-# mode = mixed 
+# mode = mixed
 MIG_CONFIG=all-balanced
 ```
 
