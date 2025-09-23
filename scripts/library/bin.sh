@@ -1,7 +1,8 @@
 #!/bin/bash
 # shellcheck disable=SC2035
 
-OPENSHIFT_CLIENTS_URL=https://mirror.openshift.com/pub/openshift-v4/x86_64/clients
+OPENSHIFT_MIRROR_URL=https://mirror.openshift.com/pub
+OPENSHIFT_CLIENTS_URL=${OPENSHIFT_MIRROR_URL}/openshift-v4/x86_64/clients
 
 bin_check(){
   name=${1:-oc}
@@ -145,6 +146,13 @@ download_kustomize(){
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kustomize
 }
 
+download_mirror-registry(){
+  BIN_VERSION=latest
+  DOWNLOAD_URL=${OPENSHIFT_MIRROR_URL}/cgw/mirror-registry/${BIN_VERSION}/mirror-registry-amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
+  chmod +x "${BIN_PATH}/mirror-registry"
+}
+
 download_oc(){
   BIN_VERSION=stable-4.18
   DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/ocp/${BIN_VERSION}/openshift-client-${OS:-linux}.tar.gz
@@ -162,6 +170,13 @@ download_odo(){
   BIN_VERSION=latest
   DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/odo/${BIN_VERSION}/odo-linux-amd64.tar.gz
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
+}
+
+download_openshift-install(){
+  BIN_VERSION=4.18.22
+  DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/ocp/${BIN_VERSION}/openshift-install-linux.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" openshift-install
+  chmod +x "${BIN_PATH}/openshift-install"
 }
 
 download_opm(){
