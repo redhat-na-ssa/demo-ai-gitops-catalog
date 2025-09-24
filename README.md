@@ -90,6 +90,8 @@ apply_firmly demos/overlays/devspaces-nvidia-gpu-autoscale
 apply_firmly demos/overlays/rhoai-workshop-ready
 ```
 
+---
+
 ### ALTERNATIVE - Use a local environment / shell
 
 1. Verify you are logged into your cluster using `oc`.
