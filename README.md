@@ -51,8 +51,8 @@ oc apply -k https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/demos/compon
 # delete old web terminal
 $(wtoctl | grep 'oc delete')
 ```
-
-Enhance the terminal for one time use (ephemeral)
+<!-- 
+Enhance the terminal for **one time use** (ephemeral)
 
 ```sh
 # bootstrap the enhanced web terminal
@@ -63,9 +63,32 @@ YOLO_URL=https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/
 term_init
 ```
 
-NOTE: open a new terminal to full activate the new configuration
+NOTE: open a new terminal to full activate the new configuration -->
 
 ---
+
+## Apply Configurations / Demos
+
+Some basic cluster config
+
+```sh
+# scale your machinesets
+# this will set all machinesets to replica 2
+ocp_machineset_scale 2
+
+# isolate your control plane nodes to not run work
+ocp_control_nodes_not_schedulable
+```
+
+Setup a demo
+
+```sh
+# setup a dev spaces demo /w gpu
+apply_firmly demos/overlays/devspaces-nvidia-gpu-autoscale
+
+# setup a rhoai demo /w gpu
+apply_firmly demos/overlays/rhoai-workshop-ready
+```
 
 ### ALTERNATIVE - Use a local environment / shell
 
@@ -84,31 +107,6 @@ cd demo-ai-gitops-catalog
 
 # load functions into a bash shell
 . scripts/functions.sh
-```
-
-## Apply Configurations / Demos
-
-Setup basic cluster config
-
-```sh
-# load functions
-. scripts/functions.sh
-
-# setup a persistent enhanced web terminal on a default cluster
-apply_firmly demos/components/install-web-terminal
-
-# setup a default cluster w/o argocd managing it
-apply_firmly demos/overlays/default
-```
-
-Setup a demo
-
-```sh
-# setup a dev spaces demo /w gpu
-apply_firmly demos/devspaces-nvidia-gpu-autoscale
-
-# setup a rhoai demo /w gpu
-apply_firmly demos/rhoai-nvidia-gpu-autoscale
 ```
 
 ### Alternative - running `bootstrap.sh`

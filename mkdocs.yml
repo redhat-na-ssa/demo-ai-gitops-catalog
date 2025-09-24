@@ -25,7 +25,7 @@ plugins:
       # kustomize_path: kustomize # Path to the kustomize binary (default: "kustomize")
       # kustomize_dirs: # Optional list of base directories to look for kustomization directories
       #   - demos/overlays/all-the-things
-      enable_rendering: true # Whether to enable kustomize rendering (default: true)
+      enable_rendering: true  # Whether to enable kustomize rendering (default: true)
 
 ## Theme
 theme:

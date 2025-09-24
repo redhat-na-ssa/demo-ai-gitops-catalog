@@ -314,6 +314,7 @@ linux
 llm
 localhost
 machineset
+machinesets
 managementState
 mariadb
 mastersSchedulable
@@ -406,6 +407,7 @@ sagemaker
 sandboxed
 sc
 scc
+schedulable
 schmaustech
 sealedsecret
 sealedsecrets
