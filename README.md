@@ -83,12 +83,14 @@ ocp_machineset_scale 2
 ocp_control_nodes_not_schedulable
 ```
 
-Setup a demo
+Pick a demo you want to deploy:
 
 ```sh
 # setup a dev spaces demo /w gpu
 apply_firmly demos/overlays/devspaces-nvidia-gpu-autoscale
+```
 
+```sh
 # setup a rhoai demo /w gpu
 apply_firmly demos/overlays/rhoai-workshop-ready
 ```
