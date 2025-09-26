@@ -105,3 +105,9 @@ spec:
 ## Community Operators
 
 - [Community Operators Index](https://github.com/redhat-openshift-ecosystem/community-operators-prod)
+
+## Registry Caching
+
+- https://github.com/obeone/multi-registry-cache
+- https://zotregistry.dev/v2.1.8/articles/mirroring/?h=#basic-configuration-for-mirroring-with-sync
+- https://github.com/rpardini/docker-registry-proxy
