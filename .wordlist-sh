@@ -167,7 +167,10 @@ fromPort
 gaudi
 gb
 gc
+gcDelay
+gcInterval
 gcp
+gcr
 gcrane
 genpass
 getenforce
