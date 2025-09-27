@@ -32,7 +32,7 @@ bin_check(){
       ${name} version --client 2>&1
       [ "$name" == "oc" ] && kubectl completion bash > "${BASH_COMP}/kubectl.sh"
       ;;
-    hcp|helm|kit|tkn|k9s|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane)
+    hcp|helm|kit|tkn|k9s|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane|dive)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version 2>&1 || ${name} --version
       [ -e .oc-mirror.log ] && rm .oc-mirror.log
@@ -87,6 +87,13 @@ download_crane(){
   curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" {crane,gcrane}
 }
 
+download_dive(){
+  BIN_VERSION=0.13.1
+  DOWNLOAD_URL=https://github.com/wagoodman/dive/releases/download/v${BIN_VERSION}/dive_${BIN_VERSION}_linux_amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" dive
+  chmod +x "${BIN_PATH}/dive"
+}
+
 download_hcp(){
   BIN_VERSION=2.8.2-8
   # https://developers.redhat.com/content-gateway/rest/browse/pub/mce/clients/hcp-cli/
@@ -111,7 +118,6 @@ download_k9s(){
 
 download_kit(){
   DOWNLOAD_URL=https://github.com/jozu-ai/kitops/releases/latest/download/kitops-linux-x86_64.tar.gz
-  echo $DOWNLOAD_URL
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" kit
   chmod +x "${BIN_PATH}/kit"
 }

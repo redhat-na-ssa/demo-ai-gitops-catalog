@@ -63,3 +63,28 @@ YAML
     "$(basename ${VELERO_SECRET})" \
     --from-file cloud="${VELERO_SECRET}"
 }
+
+
+registry_get_catalog(){
+  REG_SRC=${1:-registry:5000}
+
+  which jq > /dev/null || return
+
+  curl -k -s -X GET https://"${REG_SRC}"/v2/_catalog \
+    | jq '.repositories[]' \
+    | sort -u
+
+}
+
+registry_mirror_repos(){
+  REG_SRC=${1:-registry:5000}
+  REG_DST=${2:-registry:5000}
+
+  which skopeo > /dev/null || return
+
+  registry_get_catalog "${REG_SRC}" \
+    | xargs -I _ skopeo sync \
+      --src docker --dest docker \
+      --dest-tls-verify=false \
+      "${REG_SRC}"/_ "${REG_DST}"/_
+}
