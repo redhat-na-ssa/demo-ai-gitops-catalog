@@ -170,6 +170,19 @@ cat << JSON >> registry/config/config.json
           "tlsVerify": true,
           "maxRetries": 5,
           "retryDelay": "30s"
+				},
+        {
+          "urls": ["https://ghcr.io"],
+          "content": [
+            {
+              "prefix": "**", 
+              "destination": "/ghcr-cache"
+            }
+          ],
+          "onDemand": true,
+          "tlsVerify": true,
+          "maxRetries": 5,
+          "retryDelay": "30s"
 				}
       ]
     },
