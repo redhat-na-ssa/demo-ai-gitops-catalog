@@ -275,11 +275,21 @@ location=\"${REGISTRY_HOSTNAME}\":5000
 
 [[registry]]
 prefix = "quay.io"
+location = "quay.io"
+[[registry.mirror]]
 location = "registry:5000/quay-cache"
 
 [[registry]]
 prefix = "k8s.gcr.io"
+location = "k8s.gcr.io"
+[[registry.mirror]]
 location = "registry:5000/k8s-cache"
+
+[[registry]]
+prefix = "ghcr.io"
+location = "ghcr.io"
+[[registry.mirror]]
+location = "registry:5000/ghcr-cache"
 
 [[registry]]
 prefix = "docker.io"
