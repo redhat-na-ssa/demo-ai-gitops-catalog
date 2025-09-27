@@ -258,7 +258,20 @@ echo "
 
 [[registry]]
 location=\"${REGISTRY_HOSTNAME}\":5000
-insecure=true
+# insecure=true
+
+[[registry]]
+prefix = "quay.io"
+location = "registry:5000/quay-cache"
+
+[[registry]]
+prefix = "k8s.gcr.io"
+location = "registry:5000/k8s-cache"
+
+[[registry]]
+prefix = "docker.io"
+location = "registry:5000"
+
 " > registry/registries.conf
 
 cat registry/config/"${REGISTRY_HOSTNAME}".crt
