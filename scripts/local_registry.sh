@@ -1,6 +1,8 @@
 #!/bin/bash
 # set -x
 
+# shellcheck disable=SC2140
+
 # https://www.redhat.com/en/blog/openshift-private-registry
 # https://distribution.github.io/distribution/about/deploying/
 
