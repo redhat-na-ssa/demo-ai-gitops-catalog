@@ -202,6 +202,8 @@ cr
 credentialsMode
 creds
 csi
+csr
+csrs
 cuda
 cudnn
 culler
@@ -253,6 +255,8 @@ heartexlabs
 helmchartinflationgenerator
 hl
 homelab
+hostname
+hostnamectl
 html
 htpass
 htpasswd
@@ -466,6 +470,7 @@ workspaces
 wtoctl
 wunderio
 www
+xargs
 xlarge
 yaml
 zotregistry

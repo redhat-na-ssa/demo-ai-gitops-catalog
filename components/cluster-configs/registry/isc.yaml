@@ -15,6 +15,7 @@ mirror:
         - name: devworkspace-operator-fast-redhat-operators-openshift-marketplace
   additionalImages:
     - name: ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+    - name: registry.redhat.io/rhel9/support-tools:latest
   helm:
     repositories:
       - name: cosigned

@@ -102,6 +102,56 @@ spec:
           protocol: TCP
 ```
 
+## Rename a node
+
+Evacuate the node:
+
+```sh
+oc adm drain < node > --ignore-daemonsets
+```
+
+Make the DNS / hostname change.
+If the hostname is not DNS name, you can use the following command on the node itself:
+
+```sh
+# vi /etc/hostname
+hostnamectl set-hostname < hostname >
+```
+
+Delete old certificates (which are valid only for the old hostname) on the node:
+
+```sh
+sudo rm /var/lib/kubelet/pki/*
+```
+
+Delete the node
+
+```sh
+oc delete node < node >
+```
+
+Reboot the server
+
+```sh
+sudo reboot
+```
+
+Approve csrs
+
+```sh
+# get csr
+oc get csr
+
+# approve all csr
+oc get csr -o name | xargs oc adm certificate approve
+```
+
+Now you should see the node with the new name:
+
+```sh
+oc get nodes
+```
+
 ## Community Operators
 
 - [Community Operators Index](https://github.com/redhat-openshift-ecosystem/community-operators-prod)
