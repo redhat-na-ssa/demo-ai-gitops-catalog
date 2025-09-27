@@ -268,6 +268,7 @@ FILE
 
 echo "
 # \$HOME/.config/containers/registries.conf
+# https://www.redhat.com/en/blog/manage-container-registries
 
 [[registry]]
 location=\"${REGISTRY_HOSTNAME}\":5000
