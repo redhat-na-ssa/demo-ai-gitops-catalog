@@ -102,6 +102,20 @@ spec:
           protocol: TCP
 ```
 
+## List containers
+
+List all images running in a cluster
+
+```sh
+oc get pods -A -o go-template --template='{{range .items}}{{range .spec.containers}}{{printf "%s\n" .image -}} {{end}}{{end}}' | sort -u | uniq
+```
+
+List all images stored on nodes
+
+```sh
+for node in $(oc get nodes -o name);do oc debug ${node} -- chroot /host sh -c 'crictl images -o json' 2>/dev/null | jq -r .images[].repoTags[]; done | sort -u
+```
+
 ## Rename a node
 
 Evacuate the node:
