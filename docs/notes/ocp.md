@@ -118,7 +118,7 @@ for node in $(oc get nodes -o name);do oc debug ${node} -- chroot /host sh -c 'c
 
 ## Rename a node
 
-Evacuate the node:
+Drain workloads from node
 
 ```sh
 oc adm drain < node > --ignore-daemonsets
@@ -138,19 +138,19 @@ Delete old certificates (which are valid only for the old hostname) on the node:
 sudo rm /var/lib/kubelet/pki/*
 ```
 
-Delete the node
-
-```sh
-oc delete node < node >
-```
-
 Reboot the server
 
 ```sh
 sudo reboot
 ```
 
-Approve csrs
+Delete the node
+
+```sh
+oc delete node < node >
+```
+
+Approve CSRs
 
 ```sh
 # get csr
