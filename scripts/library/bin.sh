@@ -104,7 +104,14 @@ download_hcp(){
 download_helm(){
   BIN_VERSION=latest
   DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/helm/${BIN_VERSION}/helm-linux-amd64.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}"/ helm-linux-amd64
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" helm-linux-amd64
+  mv "${BIN_PATH}/helm-linux-amd64" "${BIN_PATH}/helm"
+}
+
+download_helmfile(){
+  BIN_VERSION=1.1.7
+  DOWNLOAD_URL=https://github.com/helmfile/helmfile/releases/download/v${BIN_VERSION}/helmfile_${BIN_VERSION}_linux_amd64.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
   mv "${BIN_PATH}/helm-linux-amd64" "${BIN_PATH}/helm"
 }
 
@@ -112,7 +119,7 @@ download_k9s(){
   BIN_VERSION=v0.50.6
   K9S="k9s_${OS}_${ARCH}"
   DOWNLOAD_URL="https://github.com/derailed/k9s/releases/download/${BIN_VERSION}/${K9S}.tar.gz"
-  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/"
+  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" helmfile
   chmod +x "${BIN_PATH}/k9s"
 }
 
