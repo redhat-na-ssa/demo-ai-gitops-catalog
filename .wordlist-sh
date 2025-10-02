@@ -179,6 +179,7 @@ groupdel
 gz
 gzip
 hadolint
+helmfile
 helmreleases
 hou
 httpd
