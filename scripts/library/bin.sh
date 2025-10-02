@@ -27,7 +27,7 @@ bin_check(){
   "
 
   case ${name} in
-    oc|odo|virtctl)
+    kubectl|oc|odo|virtctl)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version --client 2>&1
       [ "$name" == "oc" ] && kubectl completion bash > "${BASH_COMP}/kubectl.sh"
