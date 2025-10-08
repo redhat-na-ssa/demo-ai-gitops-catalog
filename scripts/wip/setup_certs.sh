@@ -3,6 +3,14 @@
 
 # see https://ksingh7.medium.com/lets-automate-let-s-encrypt-tls-certs-for-openshift-4-211d6c081875
 
+export EMAIL=${EMAIL:-no-reply@github.com}
+
+SCRATCH=./scratch
+ACME_DIR=${SCRATCH}/acme
+CERT_DIR=${SCRATCH}/le-certs
+
+[ ! -d "${CERT_DIR}" ] && mkdir -p "${CERT_DIR}"
+
 check_git_root(){
   if [ -d .git ] && [ -d scripts ]; then
     GIT_ROOT=$(pwd)
@@ -22,15 +30,16 @@ if [ -z "${AWS_ACCESS_KEY_ID}" ]; then
   exit 1
 fi
 
-export EMAIL=${EMAIL:-no-reply@github.com}
+ocp_get_apps_domain(){
+  oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
+}
 
-SCRATCH=./scratch
-ACME_DIR=${SCRATCH}/acme
-CERT_DIR=${SCRATCH}/le-certs
+ocp_get_domain(){
+  OCP_APPS_DOMAIN=$(ocp_get_apps_domain)
+  echo "${OCP_APPS_DOMAIN#apps.}"
+}
 
-[ ! -d "${CERT_DIR}" ] && mkdir -p "${CERT_DIR}"
-
-setup_acme(){
+acme_setup(){
   [ ! -d "${ACME_DIR}" ] && git clone https://github.com/acmesh-official/acme.sh.git "${ACME_DIR}"
 
   # init acme
@@ -39,10 +48,8 @@ setup_acme(){
     -m "${EMAIL}"
 }
 
-set_cluster_cert_names(){
-  # LE_HOSTNAME=$(oc whoami --show-server | cut -f 2 -d ':' | cut -f 3 -d '/' | sed 's/-api././')
-  OCP_APPS="$(oc get ingresscontroller default -n openshift-ingress-operator -o jsonpath='{.status.domain}')"
-  OCP_DOMAIN="${OCP_APPS#apps.}"
+acme_ocp_get_domain(){
+  OCP_DOMAIN=$(ocp_get_domain)
   OCP_API="api.${OCP_DOMAIN}"
   OCP_APPS="*.apps.${OCP_DOMAIN}"
 
@@ -57,7 +64,7 @@ set_cluster_cert_names(){
   # sleep 8
 }
 
-request_le_cert(){
+acme_request_cert(){
   unset LE_DOMAINS
   DOMAINS=( "$@" )
 
@@ -79,10 +86,9 @@ request_le_cert(){
     --fullchain-file "${CERT_DIR}"/fullchain.pem \
     --ca-file "${CERT_DIR}"/ca.cer \
     ${LE_DOMAINS[@]}
-
 }
 
-config_openshift_apps_certs(){
+acme_ocp_setup_certs_apps(){
   [ -e "${CERT_DIR}"/key.pem ] || return
 
   oc -n openshift-ingress \
@@ -104,7 +110,7 @@ config_openshift_apps_certs(){
   fi
 }
 
-config_openshift_api_certs(){
+acme_ocp_setup_certs_api(){
   [ -e "${CERT_DIR}"/key.pem ] || return
 
   oc -n openshift-config \
@@ -124,21 +130,23 @@ config_openshift_api_certs(){
   fi
 }
 
-setup_openshift_certs(){
-  request_le_cert "${OCP_API}" "${OCP_APPS}"
-  config_openshift_apps_certs
-  config_openshift_api_certs
+acme_ocp_setup_certs(){
+  acme_request_cert "${OCP_API}" "${OCP_APPS}"
+  acme_ocp_setup_certs_apps
+  acme_ocp_setup_certs_api
 }
 
-setup_acs_cert(){
-  request_le_cert "central-stackrox.${OCP_APPS}"
-  config_acs_cert
+acme_ocp_setup_certs_acs(){
+  acme_request_cert "central-stackrox.${OCP_APPS}"
+  echo "Please import the following cert into ACS:"
+  echo "  ${CERT_DIR}/fullchain.pem"
+  echo "  ${CERT_DIR}/key.pem"
 }
 
 check_git_root
-setup_acme
-set_cluster_cert_names
-setup_openshift_certs
+acme_setup
+acme_ocp_get_domain
+acme_ocp_setup_certs
 
 sleep 6
 oc get po -n openshift-ingress
