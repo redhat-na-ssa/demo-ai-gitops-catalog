@@ -59,3 +59,4 @@ rhdp_ocp_get_uuid(){
 
   echo "OCP Cluster UUID: ${UUID}"
 }
+

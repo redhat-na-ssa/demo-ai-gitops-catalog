@@ -268,3 +268,4 @@ download_yq(){
   curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/yq"
   chmod +x "${BIN_PATH}/yq"
 }
+

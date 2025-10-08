@@ -127,3 +127,4 @@ ocp_nvidia_taint_gpu_nodes(){
 ocp_nvidia_untaint_gpu_nodes(){
   oc adm taint node -l node-role.kubernetes.io/gpu nvidia.com/gpu=:NoSchedule-
 }
+

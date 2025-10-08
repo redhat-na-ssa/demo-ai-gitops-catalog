@@ -61,3 +61,4 @@ aws_stop_instance(){
     aws ec2 stop-instances --profile="${AWS_PROFILE}" --region="${AWS_REGION}" --instance-ids="${iid}"
   fi
 }
+

@@ -98,3 +98,4 @@ ocp_mirror_setup_pull_secret(){
 
   # cat scratch/pull-secret | jq .
 }
+

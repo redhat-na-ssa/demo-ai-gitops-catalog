@@ -7,13 +7,13 @@ GIT_OPS_NAME=git_ops
 
 # shellcheck disable=SC2120
 term_bashrc(){
-BASHRC=${1:-/home/user/.bashrc}
+  BASHRC=${1:-/home/user/.bashrc}
 
-# avoid making everyone mad
-grep -q 'OpenShift Web Terminal' "${BASHRC}" || return
+  # avoid making everyone mad
+  grep -q 'OpenShift Web Terminal' "${BASHRC}" || return
 
-# avoid running more than once
-grep -q 'Enhanced' "${BASHRC}" && return
+  # avoid running more than once
+  grep -q 'Enhanced' "${BASHRC}" && return
 
 # shellcheck disable=SC2028
 echo "
@@ -62,6 +62,7 @@ term_bin_setup(){
   term_git_setup
 
   cd ~/${GIT_DEMO_NAME:-demo_ops} || return 0
+
   # shellcheck disable=SC1091
   . scripts/functions.sh
 
@@ -87,3 +88,4 @@ term_init(){
   term_bashrc
   term_bin_setup
 }
+

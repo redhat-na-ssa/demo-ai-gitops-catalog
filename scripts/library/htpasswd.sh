@@ -101,3 +101,4 @@ htpasswd_validate_user(){
   echo "Validated Login: ${USER}"
   echo ""
 }
+

@@ -83,3 +83,4 @@ pkg_manifests_save_all_installed_operator_info(){
     pkg_manifest_get_description "$op" > docs/operators/"$op".md
   done
 }
+

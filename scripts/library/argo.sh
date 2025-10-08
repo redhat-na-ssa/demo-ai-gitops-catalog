@@ -10,37 +10,6 @@ ARGO_CHANNEL="latest"
 ARGO_KUSTOMIZE_OPERATOR="${GIT_ROOT}/components/operators/openshift-gitops-operator/operator/overlays/${ARGO_CHANNEL}"
 ARGO_KUSTOMIZE_INSTANCE="${GIT_ROOT}/components/operators/openshift-gitops-operator/instance/overlays/default"
 
-argo_wait_for_operator(){
-  ARGO_DEPLOY_STABLE=(cluster kam openshift-gitops-applicationset-controller openshift-gitops-redis openshift-gitops-repo-server openshift-gitops-server)
-
-  echo "Waiting for OpenShift GitOps operator to start"
-  until oc get deployment openshift-gitops-operator-controller-manager -n openshift-gitops-operator >/dev/null 2>&1
-  do
-    sleep 1
-  done
-
-  echo "Waiting for openshift-gitops namespace to be created"
-  until oc get ns ${ARGO_NS} >/dev/null 2>&1
-  do
-    sleep 1
-  done
-
-  echo "Waiting for OpenShift GitOps deployments to start"
-  until oc get deployment cluster -n "${ARGO_NS}" >/dev/null 2>&1
-  do
-    sleep 1
-  done
-
-  echo "Waiting for all pods to be created"
-  for i in "${ARGO_DEPLOY_STABLE[@]}"
-  do
-    echo "Waiting for deployment $i"
-    oc rollout status deployment "$i" -n "${ARGO_NS}" >/dev/null 2>&1
-  done
-
-  echo
-}
-
 argo_install(){
   echo
   echo "Installing OpenShift GitOps Operator..."

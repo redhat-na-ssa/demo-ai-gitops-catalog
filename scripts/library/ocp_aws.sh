@@ -258,3 +258,4 @@ ocp_aws_machineset_fix_storage(){
       oc apply -f -
   done
 }
+
