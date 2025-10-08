@@ -3,8 +3,8 @@
 
 which oc >/dev/null && alias kubectl=oc
 
-# do core resources first, which are at a separate api location
 k8s_api_dump_core(){
+# do core resources first, which are at a separate api location
   SERVER=${1:-http://localhost:8001}
   api="core"
   curl -s "${SERVER}/api/v1" | \
@@ -178,3 +178,4 @@ k8s_wait_for_crd(){
     printf .
   done
 }
+

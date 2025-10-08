@@ -45,9 +45,7 @@ function_sort_file(){
   FILE=${1:-scripts/library/ocp.sh}
 
   # create new script
-  echo \
-  "#!/bin/bash
-  " > tmp
+  sed -n '1,/(){/ {/(){/d; p}' "${FILE}" > tmp
 
   for function in $(function_list "${FILE}")
   do

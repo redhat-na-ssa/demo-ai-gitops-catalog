@@ -12,6 +12,7 @@ CustomResourceDefinition
 DIRS
 DL
 ENTRYPOINT
+EUID
 EVAL
 Ev
 ExecStart
@@ -160,6 +161,7 @@ egrep
 elif
 emptydir
 entrypoint
+eq
 esac
 etcd
 euo

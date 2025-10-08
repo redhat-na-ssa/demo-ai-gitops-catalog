@@ -1,9 +1,9 @@
 #!/bin/bash
 # set -x
 
-# shellcheck disable=SC2140
+# shellcheck disable=SC2140,SC2086
 
-# BEGIN HELP
+# HELP BEGIN
 # local_registry.sh - Setup a local container registry with authentication and browser UI
 #
 # https://www.redhat.com/en/blog/openshift-private-registry
@@ -33,15 +33,14 @@
 #   - Output registry credentials and config info
 #
 # For more details, see the project README.
-# END HELP
+# HELP END
 
-
-print_help() {
-  sed -n '/^# BEGIN HELP/,/^# END HELP/ {/^# BEGIN HELP/d;/^# END HELP/d;s/^# *//p;}' "$0"
+help() {
+  sed -n '/^# HELP BEGIN/,/^# HELP END/ {/^# HELP BEGIN/d;/^# HELP END/d;s/^# *//p;}' "$0"
 }
 
 if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
-  print_help
+  help
   exit 0
 fi
 
@@ -89,7 +88,7 @@ registry_init(){
   fi
 }
 
-registry_create_cert(){
+registry_cert_create(){
   if [ ! -e "registry/config/${REGISTRY_HOSTNAME}.key" ]; then
     openssl req \
       -x509 -days 3650 \
@@ -100,7 +99,9 @@ registry_create_cert(){
       -subj "/C=US/ST=NorthCarolina/L=Raleigh/O=Red Hat/OU=Sales/CN=${REGISTRY_HOSTNAME}" \
       -addext "subjectAltName = DNS:localhost, DNS:${REGISTRY_HOSTNAME}, DNS:${REGISTRY_HOSTNAME%%.*}"
   fi
+}
 
+registry_cert_ca_trust(){
   if [ -d /etc/pki/ca-trust/source/anchors/ ]; then
     [ -e /etc/pki/ca-trust/source/anchors/"${REGISTRY_HOSTNAME}.crt" ] && return
     echo "copying ${REGISTRY_HOSTNAME}.crt to /etc/pki/ca-trust/source/anchors/"
@@ -111,7 +112,7 @@ registry_create_cert(){
   fi
 }
 
-registry_create_auth(){
+registry_auth_create(){
   if [ ! -e registry/config/htpasswd ]; then
     which htpasswd || dnf -y install httpd-tools
     touch registry/config/htpasswd
@@ -119,9 +120,15 @@ registry_create_auth(){
   fi
 }
 
-registry_create_systemd(){
+registry_firewall_setup(){
+  which firewall-cmd || return
+    firewall-cmd --permanent --add-port=5000/tcp
+    firewall-cmd --reload
+}
 
-cat << FILE > /etc/systemd/system/mirror-registry.service
+registry_systemd_create(){
+
+cat << FILE > registry/mirror-registry.service
 [Unit]
 Description="Container Registry"
 
@@ -133,16 +140,19 @@ ExecStop=/usr/bin/podman stop -t 10 mirror-registry
 [Install]
 WantedBy=network-online.target
 FILE
+}
 
-systemctl daemon-reload
-systemctl enable --now mirror-registry.service
-systemctl restart mirror-registry.service
+registry_systemd_setup(){
+  cp registry/mirror-registry.service /etc/systemd/system/mirror-registry.service
 
+  systemctl daemon-reload
+  systemctl enable --now mirror-registry.service
+  systemctl restart mirror-registry.service
 }
 
 registry_zot_config(){
 
-  # https://github.com/project-zot/zot
+# https://github.com/project-zot/zot
 
 cat << JSON > registry/config/config.json
 {
@@ -185,8 +195,6 @@ cat << JSON >> registry/config/config.json
   },
   "extensions": {
 JSON
-
-if true; then
 
 touch registry/config/sync-auth.json
 
@@ -244,7 +252,6 @@ cat << JSON >> registry/config/config.json
       ]
     },
 JSON
-fi
 
 cat << JSON >> registry/config/config.json
     "search": {
@@ -268,10 +275,12 @@ registry_zot_run(){
 
   registry_zot_config
 
+  [ $EUID -eq 0 ] && POD_USER="--user 1000"
+
   podman run -d \
     --replace \
     --name mirror-registry \
-    --user 1000 \
+    ${POD_USER} \
     -p 5000:5000 \
     -v ./registry/config:/etc/zot:z \
     -v ./registry/data/zot:/var/lib/registry:z \
@@ -304,18 +313,13 @@ registry_v2_run(){
 
 local_registry_mirror(){
 
-registry_create_cert
-registry_create_auth
-
-if which firewall-cmd; then
-  firewall-cmd --permanent --add-port=5000/tcp
-  firewall-cmd --reload
-fi
+registry_cert_create
+registry_auth_create
 
 # registry_v2_run
 registry_zot_run
 
-registry_create_systemd
+registry_systemd_create
 
 cat << FILE > registry/registry-secret.json
 "${REGISTRY_HOSTNAME}:5000": {
