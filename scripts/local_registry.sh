@@ -3,8 +3,63 @@
 
 # shellcheck disable=SC2140
 
+# BEGIN HELP
+# local_registry.sh - Setup a local container registry with authentication and browser UI
+#
 # https://www.redhat.com/en/blog/openshift-private-registry
 # https://distribution.github.io/distribution/about/deploying/
+#
+# Prerequisites:
+#   - podman
+#   - openssl
+#   - curl
+#   - htpasswd (httpd-tools)
+#   - sudo/root privileges for systemd and firewall changes
+#
+# Usage:
+#   ./local_registry.sh [--auth] [--help]
+#
+# Options:
+#   --auth      Enable authentication for the registry (default: off)
+#   --help, -h  Show this help message and exit
+#
+# Example:
+#   ./local_registry.sh --auth
+#
+# This script will:
+#   - Generate self-signed certs and htpasswd if needed
+#   - Start a local registry (zot) and browser UI with podman
+#   - Configure systemd service and firewall
+#   - Output registry credentials and config info
+#
+# For more details, see the project README.
+# END HELP
+
+
+print_help() {
+  sed -n '/^# BEGIN HELP/,/^# END HELP/ {/^# BEGIN HELP/d;/^# END HELP/d;s/^# *//p;}' "$0"
+}
+
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+  print_help
+  exit 0
+fi
+
+check_cmds() {
+  REQUIRED_CMDS="podman openssl curl htpasswd"
+
+  for dep in $REQUIRED_CMDS; do
+    if ! command -v "$dep" >/dev/null 2>&1; then
+      echo "[ERROR] Required command not found: $dep"
+      missing=1
+    fi
+  done
+
+  if [ -n "$missing" ]; then
+    echo "[FATAL] Please install the missing dependencies and re-run this script."
+    exit 1
+  fi
+}
 
 genpass(){
   < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
@@ -323,6 +378,7 @@ local_registry_browser_run(){
 
 AUTH_ON=${1}
 
+check_cmds
 registry_init
 local_registry_mirror
 local_registry_browser_run
