@@ -75,6 +75,7 @@ adp
 adrezni
 af
 alertmanagerMain
+amazonaws
 amd
 apis
 apiserver
@@ -84,6 +85,8 @@ argocds
 args
 aspell
 awk
+awscli
+awscliv
 az
 bB
 backupStorage
@@ -165,6 +168,7 @@ eq
 esac
 etcd
 euo
+exe
 failDelay
 fi
 finalizers

@@ -71,6 +71,13 @@ download_age(){
   chmod +x "${BIN_PATH}"/age*
 }
 
+download_aws(){
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -sLo "awscliv2.zip"
+  unzip -q awscliv2.zip
+  ./aws/install --bin-dir "${BIN_PATH}" --install-dir "${BIN_PATH}/aws-cli" --update
+  rm -rf awscliv2.zip aws
+}
+
 download_busybox(){
   DOWNLOAD_URL=https://www.busybox.net/downloads/binaries/1.35.0-x86_64-linux-musl/busybox
   curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/busybox"
