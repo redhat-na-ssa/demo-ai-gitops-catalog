@@ -253,7 +253,7 @@ ocp_aws_machineset_fix_storage(){
     echo "Patching aws storage for machineset: ${machine_set}"
     oc -n openshift-machine-api \
       get "${machine_set}" -o yaml | \
-        sed 's/volumeSize: 100/volumeSize: '"${HD_SIZE}"'/
+        sed 's/volumeSize: .*/volumeSize: '"${HD_SIZE}"'/
           s/volumeType: gp2/volumeType: gp3/' | \
       oc apply -f -
   done

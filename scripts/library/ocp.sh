@@ -141,6 +141,12 @@ ocp_machineset_taint_gpu(){
     --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
 }
 
+ocp_pods_delete_failed(){
+  oc delete pods \
+    --field-selector status.phase=Failed \
+    --all-namespaces
+}
+
 ocp_release_info(){
   VERSION=${1:-stable-4.12}
   echo "VERSION: ${VERSION}"
