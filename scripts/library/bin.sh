@@ -153,6 +153,13 @@ download_krew(){
   krew install krew
 }
 
+download_kubectl(){
+  BIN_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+  DOWNLOAD_URL=https://storage.googleapis.com/kubernetes-release/release/${BIN_VERSION}/bin/linux/amd64/kubectl
+  curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/kubectl"
+  chmod +x "${BIN_PATH}/kubectl"
+}
+
 download_kubectl-operator(){
   BIN_VERSION=0.5.1
   DOWNLOAD_URL=https://github.com/operator-framework/kubectl-operator/releases/download/v${BIN_VERSION}/kubectl-operator_v${BIN_VERSION}_linux_amd64.tar.gz
