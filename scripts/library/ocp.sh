@@ -65,6 +65,12 @@ ocp_get_domain(){
   echo "${OCP_APPS_DOMAIN#apps.}"
 }
 
+ocp_get_install_config(){
+  echo "https://access.redhat.com/solutions/5279451"
+  
+  oc -n kube-system extract cm/cluster-config-v1 --to=- > scratch/install-config.yaml
+}
+
 ocp_get_kubeconfigs(){
   # https://rcarrata.com/openshift/regenerate-kubeconfig/
   # https://gist.githubusercontent.com/rcarrata/016da295c1421cccbfbd66ed9a7922bc/raw/855486c363734892988cdf1b5d0d26ece5e0960a/regenerate-kubeconfig.sh
