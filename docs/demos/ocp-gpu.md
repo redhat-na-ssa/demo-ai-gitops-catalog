@@ -1,5 +1,35 @@
 # Nvidia GPU Demos
 
+## Set Device Plugin Config
+
+Set device plugin config per node
+
+```sh
+oc label node "${NODE_NAME}" \
+  --overwrite \
+  nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
+```
+
+Set device plugin config per machine set
+
+```sh
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
+```
+
+Set device plugin config per GPU cluster policy
+
+```sh
+# see device configs
+oc -n nvidia-gpu-operator \
+  describe cm device-plugin-config
+
+oc -n nvidia-gpu-operator \
+  patch "${GPU_CLUSTER_POLICY}" \
+    --type=merge --patch '{"spec":{"devicePlugin":{"config":{"default":"'"${DEVICE_CONFIG}"'"}}}}'
+```
+
 ## AWS GPU Notes
 
 !!! BUG "Availability Zones / Instance Types"

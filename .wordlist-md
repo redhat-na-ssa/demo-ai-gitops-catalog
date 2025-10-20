@@ -145,6 +145,7 @@ ack
 acm
 acs
 activedirectory
+addon
 addr
 adhoc
 adm
@@ -216,6 +217,7 @@ descheduler
 dev
 devel
 devfile
+devicePlugin
 devspaces
 devworkspace
 devworkspaces
@@ -234,10 +236,12 @@ env
 eus
 eventing
 finalizer
+flant
 gb
 generatorOptions
 getsops
 ghcr
+gitea
 github
 githubusercontent
 gitops
@@ -475,6 +479,3 @@ xargs
 xlarge
 yaml
 zotregistry
-addon
-flant
-gitea
