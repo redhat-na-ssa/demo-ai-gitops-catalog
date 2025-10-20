@@ -25,9 +25,15 @@ registry_get_catalog(){
 
 }
 
+registry_get_repo_tags(){
+  REPO=${1:-openshift/release}
+  curl -k -s -X GET https://"${REG_SRC}"/v2/"${REPO}"/tags/list \
+    | jq '.tags'
+}
+
 registry_mirror_repos(){
   REG_SRC=${1:-registry:5000}
-  REG_DST=${2:-registry:5000}
+  REG_DST=${2:-registry:5000/backup}
 
   which skopeo > /dev/null || return
 
