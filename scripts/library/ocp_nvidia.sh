@@ -62,24 +62,15 @@ ocp_nvidia_dashboard_monitor_setup(){
   rm dcgm-exporter-dashboard.json
 }
 
-ocp_nvidia_label_machineset_device_plugin_config(){
+ocp_nvidia_label_device_plugin_config_machineset(){
   MACHINE_SET_NAME=${1:-machineset.machine.openshift.io/g4dn-4xlarge}
   DEVICE_CONFIG=${2:-default}
-
-  echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
-
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET_NAME}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
-}
-
-ocp_nvidia_label_node_device_plugin_config(){
-  DEVICE_CONFIG=${1:-default}
 
   oc describe cm device-plugin-config \
     -n nvidia-gpu-operator
 
   echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
+  echo "MACHINE_SET_NAME: ${MACHINE_SET_NAME}"
 
   oc label node -l nvidia.com/gpu.present="true" \
     --overwrite \
@@ -88,7 +79,23 @@ ocp_nvidia_label_node_device_plugin_config(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET_NAME}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"nvidia.com/device-plugin.config":"'"${DEVICE_CONFIG}"'"}}}}}}'
+}
 
+ocp_nvidia_label_device_plugin_config_node(){
+  NODE_NAME=${1}
+  DEVICE_CONFIG=${2:-default}
+
+  [ -n "${NODE_NAME}" ] || { echo "USAGE: ocp_nvidia_label_device_plugin_config_node <hostname> [profile]" ; return 0; }
+
+  oc describe cm device-plugin-config \
+    -n nvidia-gpu-operator
+
+  echo "NODE_NAME: ${NODE_NAME}"
+  echo "DEVICE_CONFIG: ${DEVICE_CONFIG}"
+
+  oc label node "${NODE_NAME}" \
+    --overwrite \
+    nvidia.com/device-plugin.config="${DEVICE_CONFIG}"
 
 }
 
