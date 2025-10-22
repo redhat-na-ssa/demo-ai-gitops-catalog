@@ -14,6 +14,12 @@ ocp_check_login(){
   echo
 }
 
+ocp_clean_failed_pods(){
+  oc delete pods \
+    --field-selector status.phase=Failed \
+    --all-namespaces
+}
+
 ocp_clean_install_pods(){
   oc delete pod \
     -A \
@@ -145,12 +151,6 @@ ocp_machineset_taint_gpu(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
-}
-
-ocp_pods_delete_failed(){
-  oc delete pods \
-    --field-selector status.phase=Failed \
-    --all-namespaces
 }
 
 ocp_release_info(){
