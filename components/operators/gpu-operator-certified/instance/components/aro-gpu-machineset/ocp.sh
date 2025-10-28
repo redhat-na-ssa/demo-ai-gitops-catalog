@@ -2,56 +2,6 @@
 # shellcheck disable=SC2120
 
 # See https://github.com/redhat-na-ssa/demo-ai-gitops-catalog
-# FUNCTIONS='
-# ocp_aro_cluster
-# ocp_aro_machineset_create_gpu
-# ocp_aro_machineset_clone_worker
-# ocp_aro_machineset_fix_storage
-# ocp_machineset_create_autoscale
-# ocp_machineset_taint_gpu
-# '
-
-# for function in ${FUNCTIONS}
-# do
-#   function_extract $function scripts/library/ocp*.sh >> tmp
-#   echo >> tmp
-# done
-
-ocp_machineset_create_autoscale(){
-  MACHINE_MIN=${1:-0}
-  MACHINE_MAX=${2:-4}
-  MACHINE_SETS=${3:-$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | sed 's@.*/@@' )}
-
-  for machine_set in ${MACHINE_SETS}
-  do
-cat << YAML | oc apply -f -
-apiVersion: "autoscaling.openshift.io/v1beta1"
-kind: "MachineAutoscaler"
-metadata:
-  name: "${machine_set}"
-  namespace: "openshift-machine-api"
-spec:
-  minReplicas: ${MACHINE_MIN}
-  maxReplicas: ${MACHINE_MAX}
-  scaleTargetRef:
-    apiVersion: machine.openshift.io/v1beta1
-    kind: MachineSet
-    name: "${machine_set}"
-YAML
-  done
-}
-
-ocp_machineset_taint_gpu(){
-  SHORT_NAME=${1:-g4dn}
-  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
-
-  echo "Patching: ${MACHINE_SET}"
-
-  # taint nodes for gpu-only workloads
-  oc -n openshift-machine-api \
-    patch "${MACHINE_SET}" \
-    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
-}
 
 ocp_aro_cluster(){
   TARGET_NS=kube-system
@@ -62,9 +12,10 @@ ocp_aro_cluster(){
 }
 
 ocp_aro_machineset_create_gpu(){
-  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nv-family
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/nvv3-series?tabs=sizebasic#sizes-in-series
+  # https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/gpu-accelerated/ncast4v3-series?tabs=sizebasic#sizes-in-series
 
-  INSTANCE_TYPE=${1:-Standard_NC64as_T4_v3}
+  INSTANCE_TYPE=${1:-Standard_NC4as_T4_v3}
   SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
   SHORT_NAME=${SHORT_NAME,,}
 
@@ -104,6 +55,8 @@ ocp_aro_machineset_clone_worker(){
     usage: ocp_aro_machineset_clone_worker < instance type, default Standard_D4s_v3 > < machine set name >
   "
 
+  ocp_aro_cluster || return
+
   INSTANCE_TYPE=${1:-Standard_D4s_v3}
   SHORT_NAME=${2:-${INSTANCE_TYPE//_/-}}
   SHORT_NAME=${SHORT_NAME,,}
@@ -141,5 +94,52 @@ ocp_aro_machineset_clone_worker(){
 }
 
 
+ocp_machineset_create_autoscale(){
+  MACHINE_MIN=${1:-0}
+  MACHINE_MAX=${2:-4}
+  MACHINE_SETS=${3:-$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | sed 's@.*/@@' )}
 
+  for machine_set in ${MACHINE_SETS}
+  do
+cat << YAML | oc apply -f -
+apiVersion: "autoscaling.openshift.io/v1beta1"
+kind: "MachineAutoscaler"
+metadata:
+  name: "${machine_set}"
+  namespace: "openshift-machine-api"
+spec:
+  minReplicas: ${MACHINE_MIN}
+  maxReplicas: ${MACHINE_MAX}
+  scaleTargetRef:
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    name: "${machine_set}"
+YAML
+  done
+}
+
+ocp_machineset_patch_accelerator(){
+  MACHINE_SET_NAME=${1:-gpu}
+  LABEL=${2:-nvidia-gpu}
+
+  oc -n openshift-machine-api \
+    patch machineset "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"cluster-api/accelerator":"'"${LABEL}"'"}}}}}}'
+
+  oc -n openshift-machine-api \
+    patch machineset "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/gpu":""}}}}}}'
+}
+
+ocp_machineset_taint_gpu(){
+  SHORT_NAME=${1:-g4dn}
+  MACHINE_SET=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${SHORT_NAME}" | head -n1)
+
+  echo "Patching: ${MACHINE_SET}"
+
+  # taint nodes for gpu-only workloads
+  oc -n openshift-machine-api \
+    patch "${MACHINE_SET}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
+}
 
