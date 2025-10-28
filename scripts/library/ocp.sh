@@ -252,6 +252,10 @@ ocp_upgrade_ack_4.19(){
   oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.18-kube-1.32-api-removals-in-4.19":"true"}}' --type=merge
 }
 
+ocp_upgrade_ack_4.20(){
+  oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.19-admissionregistration-v1beta1-api-removals-in-4.20":"true"}}' --type=merge
+}
+
 ocp_upgrade_cluster(){
   OCP_VERSION="${1:-latest}"
 
