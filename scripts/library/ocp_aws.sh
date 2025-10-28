@@ -123,7 +123,7 @@ ocp_aws_machineset_create_gpu(){
 
   ocp_aws_machineset_clone_worker "${INSTANCE_TYPE}"
 
-  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE%.*}" | head -n1)
+  MACHINE_SET_TYPE=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep "${INSTANCE_TYPE//./-}" | head -n1)
 
   echo "Patching: ${MACHINE_SET_TYPE}"
 
