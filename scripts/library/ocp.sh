@@ -74,6 +74,7 @@ ocp_get_domain(){
 ocp_get_install_config(){
   echo "https://access.redhat.com/solutions/5279451"
   
+  [ -e scratch ] || mkdir scratch
   oc -n kube-system extract cm/cluster-config-v1 --to=- > scratch/install-config.yaml
 }
 
