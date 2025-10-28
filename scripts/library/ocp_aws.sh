@@ -75,7 +75,7 @@ ocp_aws_machineset_clone_worker(){
   MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
 
   # check for an existing instance machine set
-  if oc -n openshift-machine-api get "${MACHINE_SET_NAME}" > /dev/null ; then
+  if oc -n openshift-machine-api get machineset "${MACHINE_SET_NAME}" > /dev/null ; then
     echo "Exists: machineset - ${MACHINE_SET_NAME}"
   else
     echo "Creating: machineset - ${MACHINE_SET_NAME}"
