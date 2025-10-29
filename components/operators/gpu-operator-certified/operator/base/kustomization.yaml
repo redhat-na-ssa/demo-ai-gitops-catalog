@@ -6,5 +6,6 @@ resources:
   - operator-group.yaml
   - subscription.yaml
 
-components:
-  - ../components/console-plugin
+# bug: issues with ocp 4.19
+# components:
+#   - ../components/console-plugin
