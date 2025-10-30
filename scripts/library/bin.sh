@@ -269,6 +269,12 @@ download_tkn(){
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/"
 }
 
+download_uv(){
+  BIN_VERSION=0.9.6
+  DOWNLOAD_URL=https://github.com/astral-sh/uv/releases/download/${BIN_VERSION}/uv-x86_64-unknown-linux-gnu.tar.gz
+  curl "${DOWNLOAD_URL}" -sL | tar zx --strip-components=1 -C "${BIN_PATH}/"
+}
+
 download_virtctl(){
   BIN_VERSION=1.5.2
   DOWNLOAD_URL=https://github.com/kubevirt/kubevirt/releases/download/v${BIN_VERSION}/virtctl-v${BIN_VERSION}-linux-amd64
@@ -282,4 +288,3 @@ download_yq(){
   curl "${DOWNLOAD_URL}" -sLo "${BIN_PATH}/yq"
   chmod +x "${BIN_PATH}/yq"
 }
-
