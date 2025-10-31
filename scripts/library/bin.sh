@@ -231,8 +231,6 @@ download_rclone(){
   unzip rclone-current-linux-amd64.zip
 
   cp rclone-*-linux-amd64/rclone "${BIN_PATH}/rclone"
-  # kincl - disabling chgrp because we don't always run with root in our group list
-  #chgrp root "${BIN_PATH}/rclone"
   chmod +x "${BIN_PATH}/rclone"
 
   rm -rf rclone-*-linux-amd64*
