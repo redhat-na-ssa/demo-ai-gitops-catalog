@@ -35,7 +35,7 @@ bin_check(){
     hcp|helm|kit|tkn|k9s|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane|dive)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version 2>&1 || ${name} --version
-      [ -e .oc-mirror.log ] && rm .oc-mirror.log
+      rm -f .oc-mirror.log
       ;;
     rhoas)
       export RHOAS_TELEMETRY=false
