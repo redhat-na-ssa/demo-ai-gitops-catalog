@@ -58,6 +58,10 @@ bin_check(){
       ${name} shell-completion bash > "${BASH_COMP}/${name}.sh"
       ${name} --version
       ;;
+    krew)
+      echo
+      ${name} version
+      ;;
     *)
       echo
       ${name} --version
