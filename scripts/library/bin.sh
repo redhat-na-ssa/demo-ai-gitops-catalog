@@ -128,7 +128,7 @@ download_k9s(){
   BIN_VERSION=v0.50.6
   K9S="k9s_${OS}_${ARCH}"
   DOWNLOAD_URL="https://github.com/derailed/k9s/releases/download/${BIN_VERSION}/${K9S}.tar.gz"
-  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" helmfile
+  curl "${DOWNLOAD_URL}" -sL | tar vzx -C "${BIN_PATH}/" k9s
   chmod +x "${BIN_PATH}/k9s"
 }
 
