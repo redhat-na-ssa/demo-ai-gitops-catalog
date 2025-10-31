@@ -30,7 +30,9 @@ bin_check(){
     kubectl|oc|odo|virtctl)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
       ${name} version --client 2>&1
-      [ "$name" == "oc" ] && kubectl completion bash > "${BASH_COMP}/kubectl.sh"
+      if [ "$name" == "oc" ]; then
+          kubectl completion bash > "${BASH_COMP}/kubectl.sh"
+      fi
       ;;
     hcp|helm|kit|tkn|k9s|kn|krew|kustomize|oc-mirror|openshift-install|opm|oras|s2i|subctl|crane|dive)
       ${name} completion bash > "${BASH_COMP}/${name}.sh"
