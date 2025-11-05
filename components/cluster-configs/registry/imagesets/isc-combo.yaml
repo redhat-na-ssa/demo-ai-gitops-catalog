@@ -1,0 +1,55 @@
+# oc-mirror -c ./isc.yaml --workspace file:///${PWD}/scratch/oc-mirror docker://registry:5000 --v2 --image-timeout 60m
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v2alpha1
+mirror:
+  platform:
+    channels:
+    - name: stable-4.18
+      minVersion: 4.18.22
+      maxVersion: 4.18.22
+    graph: true
+  operators:
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.18
+      targetCatalog: redhat/redhat-operator-index
+      targetTag: v4.18
+      packages:
+        - name: cincinnati-operator
+        - name: devworkspace-operator
+        - name: nfd
+        - name: web-terminal
+    - catalog: registry.redhat.io/redhat/certified-operator-index:v4.18
+      targetCatalog: vendor/certified-operator-index
+      targetTag: v4.18
+      packages:
+        - name: gpu-operator-certified
+          defaultChannel: v25.3
+          channels:
+          - name: v25.3
+            minVersion: 25.3.4
+            maxVersion: 25.3.4
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.18
+      targetCatalog: rhoai/redhat-operator-index
+      targetTag: v4.18
+      packages:
+        - name: serverless-operator
+          defaultChannel: stable
+          channels:
+          - name: stable
+            minVersion: 1.36.1
+            maxVersion: 1.36.1
+        - name: servicemeshoperator
+          defaultChannel: stable
+          channels:
+          - name: stable
+            minVersion: 2.6.10-0
+            maxVersion: 2.6.10-0
+        - name: rhods-operator
+          defaultChannel: stable-2.22
+          channels:
+          - name: stable-2.22
+            minVersion: 2.22.1
+            maxVersion: 2.22.1
+  additionalImages:
+    - name: ghcr.io/redhat-na-ssa/web-terminal-tooling:latest
+    - name: registry.redhat.io/openshift4/ose-cli:latest
+    # https://github.com/red-hat-data-services/rhoai-disconnected-install-helper/blob/main/rhoai-2.22.1.md

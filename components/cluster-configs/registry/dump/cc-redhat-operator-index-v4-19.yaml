@@ -1,0 +1,10 @@
+apiVersion: olm.operatorframework.io/v1
+kind: ClusterCatalog
+metadata:
+  name: cc-redhat-operator-index-v4-19
+spec:
+  priority: 0
+  source:
+    image:
+      ref: registry:5000/redhat/redhat-operator-index:v4.19
+    type: Image
