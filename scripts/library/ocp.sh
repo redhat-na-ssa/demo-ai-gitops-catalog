@@ -88,12 +88,6 @@ ocp_get_kubeconfigs(){
   oc -n openshift-kube-apiserver extract secret/node-kubeconfigs
 }
 
-ocp_get_pull_secret(){
-  oc -n openshift-config \
-    get secret/pull-secret \
-    --template='{{index .data ".dockerconfigjson" | base64decode}}'
-}
-
 ocp_machineset_create_autoscale(){
   MACHINE_MIN=${1:-0}
   MACHINE_MAX=${2:-4}
@@ -152,6 +146,36 @@ ocp_machineset_taint_gpu(){
   oc -n openshift-machine-api \
     patch "${MACHINE_SET}" \
     --type=merge --patch '{"spec":{"template":{"spec":{"taints":[{"key":"nvidia.com/gpu","value":"","effect":"NoSchedule"}]}}}}'
+}
+
+ocp_pull_secret_get(){
+  FILE=${1:-scratch/pull-secret.txt}
+
+  mkdir -p "$(dirname "${FILE}")"
+
+  oc -n openshift-config \
+    get secret/pull-secret \
+    --template='{{index .data ".dockerconfigjson" | base64decode}}' > "${FILE}"
+}
+
+ocp_pull_secret_set(){
+  FILE=${1:-scratch/pull-secret.txt}
+
+  oc -n openshift-config \
+    set data secret/pull-secret \
+    --from-file=.dockerconfigjson="${FILE}"
+}
+
+ocp_pull_secret_update(){
+  FILE=${1:-scratch/pull-secret.txt}
+  REGISTRY=${2:-registry}
+  REG_USER=${3:-admin}
+  REG_PASS=${4:-admin}
+
+  oc registry login \
+    --registry="${REGISTRY}" \
+    --auth-basic="${REG_USER}:${REG_PASS}" \
+    --to="${FILE}"
 }
 
 ocp_release_info(){
