@@ -24,33 +24,33 @@ rhdp_aws_ocp_cluster_start(){
     --output text >/dev/null
 }
 
-rhdp_ocp_api_certs_fix(){
-   echo "
-  issue: RHDP can not start cluster due to ca.crt change
+# rhdp_ocp_api_certs_fix(){
+#    echo "
+#   issue: RHDP can not start cluster due to ca.crt change
 
-  NOTICE: ssh to the RHDP bastion host and run the following commands:
+#   NOTICE: ssh to the RHDP bastion host and run the following commands:
 
-    # user: lab-user
-    sed -i.bak '/certificate-authority-data/d' ~/.kube/config
+#     # user: lab-user
+#     sed -i.bak '/certificate-authority-data/d' ~/.kube/config
 
-    # user: ec2-user
-    sudo su ec2-user /bin/bash -c 'id; sed -i.bak '/certificate-authority-data/d' ~/.kube/config'
+#     # user: ec2-user
+#     sudo su ec2-user /bin/bash -c 'id; sed -i.bak '/certificate-authority-data/d' ~/.kube/config'
 
-    # user: root
-    sudo su root /bin/bash -c 'id; sed -i.bak '/certificate-authority-data/d' ~/.kube/config'
-  "
+#     # user: root
+#     sudo su root /bin/bash -c 'id; sed -i.bak '/certificate-authority-data/d' ~/.kube/config'
+#   "
 
-  CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
-  # API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
-  # API_HOST_NAME=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@')
-  API_HOST_NAME=api.$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')
+#   CERT_NAME=$(oc -n openshift-ingress-operator get ingresscontrollers default --template='{{.spec.defaultCertificate.name}}')
+#   # API_HOST_NAME=$(oc -n openshift-console extract cm/console-config --to=- | sed -n '/masterPublicURL/ s/.*:\/\///; s/:6443//p')
+#   # API_HOST_NAME=$(oc whoami --show-server | sed 's@https://@@; s@:.*@@')
+#   API_HOST_NAME=api.$(oc -n openshift-ingress-operator get dns cluster --template='{{.spec.baseDomain}}')
 
-  oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
-    sed 's/namespace: .*/namespace: openshift-config/' | \
-    oc -n openshift-config apply -f-
+#   oc -n openshift-ingress get secret "${CERT_NAME}" -o yaml | \
+#     sed 's/namespace: .*/namespace: openshift-config/' | \
+#     oc -n openshift-config apply -f-
 
-  oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'
-}
+#   oc patch apiserver cluster --type=merge -p '{"spec":{"servingCerts": {"namedCertificates": [{"names": ["'"${API_HOST_NAME}"'"], "servingCertificate": {"name": "'"${CERT_NAME}"'"}}]}}}'
+# }
 
 rhdp_ocp_get_uuid(){
   oc whoami || return 1
