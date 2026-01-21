@@ -2,5 +2,5 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - https://raw.githubusercontent.com/aws-controllers-k8s/runtime/main/config/crd/bases/services.k8s.aws_adoptedresources.yaml
+  - https://raw.githubusercontent.com/aws-controllers-k8s/runtime/fb8736c08b8552183210437648af1876dea81faf/config/crd/bases/services.k8s.aws_adoptedresources.yaml
   # - crd.yaml

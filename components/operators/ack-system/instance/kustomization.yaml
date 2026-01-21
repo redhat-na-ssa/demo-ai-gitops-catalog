@@ -8,5 +8,5 @@ resources:
   - operator-group.yaml
 
 components:
-  - ../components/crd-adopted-resource
+  # - ../components/crd-adopted-resource
   - ../components/crd-field-export
