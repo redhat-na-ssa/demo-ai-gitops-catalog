@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2068
 # shellcheck disable=SC2317
+# shellcheck disable=SC2329
 
 TMP_DIR=scratch
 
