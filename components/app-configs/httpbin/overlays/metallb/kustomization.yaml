@@ -3,6 +3,9 @@ kind: Kustomization
 
 namespace: httpbin
 
+components:
+- ../../components/namespace
+- ../../components/metallb
+
 resources:
-- ../default
-- svc.yaml
+- ../../base

@@ -3,6 +3,8 @@ kind: Kustomization
 
 namespace: httpbin
 
+components:
+- ../../components/namespace
+
 resources:
 - ../../base
-- namespace.yaml
