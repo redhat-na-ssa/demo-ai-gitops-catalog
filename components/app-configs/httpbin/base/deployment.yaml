@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: httpbin
+  template:
+    metadata:
+      labels:
+        deployment: httpbin
+    spec:
+      containers:
+        - name: minion
+          image: ghcr.io/mccutchen/go-httpbin:latest
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          ports:
+          - containerPort: 8080
+            protocol: TCP
