@@ -1,5 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
+labels:
+- includeSelectors: true
+  pairs:
+    app: httpbin
+
 resources:
 - svc.yaml

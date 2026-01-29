@@ -9,7 +9,6 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: httpbin
     deployment: httpbin
   sessionAffinity: None
   type: ClusterIP
