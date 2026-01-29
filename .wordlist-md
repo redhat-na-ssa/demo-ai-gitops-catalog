@@ -79,6 +79,7 @@ MLOps
 MTA
 MachineConfig
 MachineSet
+MetalLB
 MirrorSet
 ModelMesh
 MultiClusterHub
@@ -480,6 +481,3 @@ xargs
 xlarge
 yaml
 zotregistry
-addon
-flant
-gitea
