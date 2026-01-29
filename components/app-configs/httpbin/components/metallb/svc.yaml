@@ -9,4 +9,5 @@ spec:
       targetPort: 8080
   selector:
     app: httpbin
+    deployment: httpbin
   type: LoadBalancer
