@@ -4,4 +4,4 @@ kind: Namespace
 metadata:
   name: httpbin
   annotations:
-    openshift.io/display-name: "Diag - Ingress Testing"
+    openshift.io/display-name: "Diag - Ingress"
