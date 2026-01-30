@@ -202,6 +202,7 @@ configmap
 configs
 contrib
 cp
+cpopen
 cr
 credentialsMode
 creds
@@ -271,6 +272,8 @@ http
 httpErrorCodePages
 https
 iam
+ibm
+icr
 ide
 idms
 idp
@@ -447,6 +450,7 @@ stringsource
 sts
 subdir
 sublicense
+sw
 targetNamespace
 tekton
 templating
