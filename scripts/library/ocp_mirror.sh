@@ -99,3 +99,9 @@ ocp_mirror_setup_pull_secret(){
   # cat scratch/pull-secret | jq .
 }
 
+ocp_mirror_setup_pull_secret_for_podman(){
+  echo "see: ${XDG_RUNTIME_DIR}/containers/auth.json"
+  ocp_mirror_setup_pull_secret
+
+  [ -e "${XDG_RUNTIME_DIR}/containers/auth.json" ] || cp "${DOCKER_CONFIG}/config.json" "${XDG_RUNTIME_DIR}/containers/auth.json"
+}
