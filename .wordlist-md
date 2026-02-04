@@ -33,6 +33,7 @@ ClusterTask
 CodeFlare
 CodeReady
 ConfigMap
+Containerfile
 CreateContainerError
 DCGM
 DNS
@@ -70,6 +71,7 @@ Kafka
 KieApp
 Koku
 KokuMetricsConfig
+Kserve
 Kubernetes
 Kyverno
 LDAP
@@ -81,7 +83,9 @@ MachineConfig
 MachineSet
 MetalLB
 MirrorSet
+ModelCar
 ModelMesh
+Modelcar
 MultiClusterHub
 NCR
 NFD
@@ -93,7 +97,9 @@ Noobaa
 NuGet
 Nvidia's
 OADP
+OAI
 OAuth
+OCI
 OCSInitialization
 OLM
 Observability
@@ -359,6 +365,7 @@ nw
 oauth
 obeone
 oc
+oci
 ocp
 ocs
 odf
