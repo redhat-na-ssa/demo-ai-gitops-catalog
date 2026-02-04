@@ -38,15 +38,19 @@ ocp_control_nodes_schedulable(){
     --patch '{"spec":{"mastersSchedulable": true}}'
 }
 
-ocp_expose_image_registry(){
-  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"defaultRoute":true}}'
+ocp_image_registry_expose(){
+  REGISTRY_HOST=${1}
 
-  # remove 'default-route-openshift-image-' from route
-  HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
-  SHORTER_HOST=$(echo "${HOST}" | sed '/host/ s/default-route-openshift-image-//')
-  oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"host": "'"${SHORTER_HOST}"'"}}'
+  if [ -z "${REGISTRY_HOST}" ]; then
+    oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"defaultRoute":true}}'
+    REGISTRY_URL=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+  else
+    oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"routes":[{"name":"'"${REGISTRY_HOST}"'","hostname":"'"${REGISTRY_HOST}.$(ocp_get_apps_domain)"'"}]}}'
+    REGISTRY_URL=$(oc get route "${REGISTRY_HOST}" -n openshift-image-registry --template='{{ .spec.host }}')
+  fi
 
-  echo "OCP image registry is available at: ${SHORTER_HOST}"
+  echo "OCP image registry is available at:
+  ${REGISTRY_URL}"
 }
 
 ocp_fix_duplicate_operator_groups(){
