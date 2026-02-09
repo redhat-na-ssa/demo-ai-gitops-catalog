@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iperf3-endpoint
+spec:
+  # hostNetwork: true #<--------- UNCOMMENT THIS SETTING IF THE IPERF POD MUST RUN IN THE HOST NETWORK
+  # nodeName: iperf-client-node.example.net #<-------- REPLACE THIS WITH THE NODE WHERE IPERF CLIENT MUST RUN
+  containers:
+  - name: iperf3
+    image: quay.io/cloud-bulldozer/k8s-netperf:latest
+    command:
+      - /bin/sh
+      - '-c'
+      - |
+        trap : TERM INT
+        iperf3 -s & wait
