@@ -210,6 +210,8 @@ contrib
 cp
 cpopen
 cr
+crd
+crds
 credentialsMode
 creds
 csi
@@ -295,6 +297,7 @@ installPlanApproval
 installplan
 installplans
 io
+iperf
 isc
 itms
 iximiuz
@@ -353,6 +356,7 @@ na
 namespace
 namespaced
 namespaces
+netperf
 newman
 nfd
 nfs
