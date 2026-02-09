@@ -26,3 +26,28 @@ Command Example
 ```sh
 oc apply -f https://raw.githubusercontent.com/redhat-na-ssa/demo-ai-gitops-catalog/b042ba4c827a90b638625a4d017fe067745f64d2/dump/gpu-kludge-mcfg.yaml
 ```
+
+## Identify CRDS that get installed
+
+### Before
+
+```
+oc api-resources | sort > api-before.txt
+oc get crd | sort > crd-before.txt
+oc get sub -A | sort > sub-before.txt
+oc get csv -A | sort > csv-before.txt
+```
+
+### After
+
+```
+# see what crds got installed
+oc api-resources | sort > api-after.txt
+oc get crd | sort > crd-after.txt
+
+diff -u api-before.txt api-after.txt > api-diff.txt
+diff -u crd-before.txt crd-after.txt > crd-diff.txt
+
+grep '^+' api-diff.txt
+grep '^+' crd-diff.txt
+```
