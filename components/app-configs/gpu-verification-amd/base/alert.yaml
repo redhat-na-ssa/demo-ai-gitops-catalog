@@ -1,0 +1,21 @@
+---
+apiVersion: monitoring.openshift.io/v1
+kind: AlertingRule
+metadata:
+  name: gpu-amd
+  namespace: openshift-monitoring
+spec:
+  groups:
+  - name: gpu-amd
+    rules:
+    - alert: GpuPods
+      annotations:
+        description: A total of [{{ $value }}] 'amd.com/gpu' requested on the cluster.
+        runbook_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/tree/main/components/operators/gpu-operator-certified/instance/components/gpu-monitoring/gpu-amd.md
+        summary: Cloud costs may increase by requesting specialized resources.
+      expr: |
+        sum (kube_pod_resource_request{resource="amd.com/gpu"} >= 1 ) > 0
+        # sum by (namespace, pod,resource) (kube_pod_resource_request{resource="amd.com/gpu"} >= 1) > 0
+      # for: 1m
+      labels:
+        severity: info

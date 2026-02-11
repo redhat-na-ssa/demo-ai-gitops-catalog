@@ -7,5 +7,6 @@ labels:
     app: nvidia-gpu-verification
 
 resources:
+- alert.yaml
 - deployment.yaml
 - pod.yaml
