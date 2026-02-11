@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: amd-rocm-pytorch
+  name: amd-rocm-pytorch
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: minion
+      image: docker.io/rocm/pytorch:latest
+      command:
+        - /bin/bash
+        - -c
+        - |
+          #!/bin/bash
+
+          rocm-smi
+          while true
+          do
+            python -c "import torch; print('ROCm Available:', torch.cuda.is_available()); print('GPU Count:', torch.cuda.device_count())"
+          done
+      resources:
+        limits:
+          amd.com/gpu: 1

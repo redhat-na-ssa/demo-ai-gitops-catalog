@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amd-rocm-pytorch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amd-rocm-pytorch
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: amd-rocm-pytorch
+    spec:
+      containers:
+        - name: minion
+          image: docker.io/rocm/pytorch:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              #!/bin/bash
+
+              rocm-smi
+              while true
+              do
+                python -c "import torch; print('ROCm Available:', torch.cuda.is_available()); print('GPU Count:', torch.cuda.device_count())"
+              done
+          resources:
+            limits:
+              amd.com/gpu: 1

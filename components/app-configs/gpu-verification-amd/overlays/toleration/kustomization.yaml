@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../default
+
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/tolerations
+        value:
+          - effect: NoSchedule
+            key: amd.com/gpu
+            operator: Exists
+  - target:
+      version: v1
+      kind: Pod
+    patch: |-
+      - op: replace
+        path: /spec/tolerations
+        value:
+          - effect: NoSchedule
+            key: amd.com/gpu
+            operator: Exists

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: nvidia-gpu-verification
+  name: gpu-verification-amd
   annotations:
-    openshift.io/display-name: "NVIDIA GPU Verification"
+    openshift.io/display-name: "AMD GPU Verification"
     argocd.argoproj.io/sync-wave: "0"
