@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: amd-rocm-vllm
+  name: amd-rocm-vllm
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: minion
+      image: docker.io/rocm/vllm:rocm7.0.0_vllm_0.11.1_20251103
+      command:
+        - /bin/bash
+        - -c
+        - |
+          #!/bin/bash
+
+          model=Qwen/Qwen3-8B
+          tp=1
+          dtype=auto
+          kv_cache_dtype=auto
+          max_num_seqs=1024
+          max_num_batched_tokens=40960
+          max_model_len=8192
+
+          vllm serve $model \
+              -tp $tp \
+              --dtype $dtype \
+              --kv-cache-dtype $kv_cache_dtype \
+              --max-num-seqs $max_num_seqs \
+              --max-num-batched-tokens $max_num_batched_tokens \
+              --max-model-len $max_model_len \
+              --no-enable-prefix-caching \
+              --swap-space 16 \
+              --disable-log-requests
+      volumeMounts:
+        - name: shared
+          mountPath: /dev/shm
+      resources:
+        limits:
+          amd.com/gpu: 1
+  volumes:
+  - emptyDir:
+      medium: Memory
+      sizeLimit: 1Gi
+    name: shared

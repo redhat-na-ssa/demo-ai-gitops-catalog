@@ -22,8 +22,8 @@ spec:
             - -c
             - |
               #!/bin/bash
-
-              rocm-smi
+              amd-smi list
+              amd-smi
               while true
               do
                 python -c "import torch; print('ROCm Available:', torch.cuda.is_available()); print('GPU Count:', torch.cuda.device_count())"
