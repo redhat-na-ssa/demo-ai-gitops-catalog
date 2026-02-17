@@ -11,6 +11,6 @@ RUN yum install -y iperf3 && \
 
 EXPOSE 5201
 
-# hadolint ignore=DL3025
 # CMD trap : TERM INT; sleep infinity & wait
+# hadolint ignore=DL3025
 CMD iperf3 -s
