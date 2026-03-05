@@ -6,7 +6,7 @@ OPENSHIFT_CLIENTS_URL=${OPENSHIFT_MIRROR_URL}/openshift-v4/x86_64/clients
 
 bin_check(){
   name=${1:-oc}
-  version=${2:-latest}
+  version=${2}
 
   BIN_PATH=${BIN_PATH:-scratch/bin}
   BASH_COMP=${BASH_COMP:-scratch/bash}
