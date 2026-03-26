@@ -11,7 +11,7 @@ spec:
     - alert: GpuPods
       annotations:
         description: A total of [{{ $value }}] 'nvidia.com/gpu' requested on the cluster.
-        runbook_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/tree/main/components/operators/gpu-operator-certified/instance/components/gpu-monitoring/gpu-nvidia.md
+        runbook_url: https://github.com/redhat-na-ssa/demo-ai-gitops-catalog/tree/main/components/operators/gpu-operator-certified/instance/components/monitoring-dashboard
         summary: Cloud costs may increase by requesting specialized resources.
       expr: |
         sum (kube_pod_resource_request{resource="nvidia.com/gpu"} >= 1 ) > 0
