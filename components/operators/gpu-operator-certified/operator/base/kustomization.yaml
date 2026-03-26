@@ -7,5 +7,5 @@ resources:
   - subscription.yaml
 
 # bug: issues with ocp 4.19
-components:
-  - ../components/console-plugin
+# components:
+#   - ../components/console-plugin
