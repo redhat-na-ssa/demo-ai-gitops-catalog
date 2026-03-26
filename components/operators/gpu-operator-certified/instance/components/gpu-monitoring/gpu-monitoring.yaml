@@ -15,7 +15,7 @@ spec:
         summary: Cloud costs may increase by requesting specialized resources.
       expr: |
         # sum (kube_pod_resource_request{resource="nvidia.com/gpu"} >= 1 ) > 0
-        sum by (namespace, pod) (
+        sum by (namespace, node, pod) (
             kube_pod_resource_request{resource="nvidia.com/gpu"}
           or
             kube_pod_resource_limit{resource="nvidia.com/gpu"}
