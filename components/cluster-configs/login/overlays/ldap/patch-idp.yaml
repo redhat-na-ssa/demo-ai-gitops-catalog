@@ -1,0 +1,18 @@
+- op: add
+  path: /spec/identityProviders
+  value:
+    - ldap:
+        attributes:
+          email:
+            - email
+          id:
+            - dn
+          name:
+            - cn
+          preferredUsername:
+            - uid
+        insecure: false
+        url: 'ldap://auth.ldap.cluster.local:389'
+      mappingMethod: claim
+      name: ldap
+      type: LDAP
