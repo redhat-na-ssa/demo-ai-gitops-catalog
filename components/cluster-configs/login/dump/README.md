@@ -4,19 +4,19 @@
 
 Follow the docs
 
-```
+```sh
 oc adm create-login-template > login.html
 oc adm create-provider-selection-template > providers.html
 oc adm create-error-template > errors.html
 ```
 
-```
+```sh
 oc create secret generic login-template --from-file=login.html -n openshift-config
 oc create secret generic providers-template --from-file=providers.html -n openshift-config
 oc create secret generic error-template --from-file=errors.html -n openshift-config
 ```
 
-```
+```yaml
 spec:
   templates:
     value:
@@ -30,7 +30,7 @@ spec:
 
 Dump current configuration
 
-```
+```sh
 pushd components/cluster-configs/login/base
 oc exec deployment/oauth-openshift -- cat /var/config/system/secrets/v4-0-config-system-ocp-branding-template/login.html > login.html
 oc exec deployment/oauth-openshift -- cat /var/config/system/secrets/v4-0-config-system-ocp-branding-template/errors.html > errors.html
@@ -40,7 +40,7 @@ popd
 
 Apply custom login template
 
-```
+```sh
 pushd components/cluster-configs/login/base
 oc -n openshift-config \
   delete secret login-custom
@@ -53,7 +53,7 @@ oc -n openshift-config \
 popd
 ```
 
-```
+```yaml
 spec:
   templates:
     value:
