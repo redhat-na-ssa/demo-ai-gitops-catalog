@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openldap
+  namespace: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openldap
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      serviceAccountName: ldap-anyuid
+      containers:
+        - name: openldap
+          image: docker.io/osixia/openldap:1.5.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 389
+              name: ldap
+            - containerPort: 636
+              name: ldaps
+          env:
+            # - name: LDAP_ORGANIZATION
+            #   value: ""
+            # - name: LDAP_DOMAIN
+            #   value: ""
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: openldap-admin-secret
+                  key: LDAP_ADMIN_PASSWORD
+          volumeMounts:
+            - name: ldap-storage
+              mountPath: /var/lib/ldap
+            - name: ldap-storage
+              mountPath: /etc/ldap/slapd.d
+      volumes:
+        - name: ldap-storage
+          persistentVolumeClaim:
+            claimName: openldap-data
