@@ -21,9 +21,126 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: LDAP_BASE_DN
+              value: "dc=example,dc=org"
             - name: LDAP_URL
               value: "ldap://openldap.$(NAMESPACE).svc.cluster.local:389"
+            - name: LDAP_ADMIN_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: openldap-admin-secret
+                  key: LDAP_ADMIN_PASSWORD
           image: docker.io/mbentley/ldap-utils
           command:
-            - sleep
-            - infinity
+            - /bin/sh
+            - -c
+            - |
+              #/bin/sh
+              # set -x
+
+              bootstrap_ldif(){
+                ldapadd -x \
+                  -D "cn=admin,${LDAP_BASE_DN}" \
+                  -w "${LDAP_ADMIN_PASS}" \
+                  -H "${LDAP_URL}" \
+                  -f /tmp/bootstrap_ldif
+              }
+
+              create_ldif(){
+
+              cat <<LDIF > /tmp/bootstrap_ldif
+
+              # ======================================================================
+              # Example bootstrap LDIF
+              # Matches LDAP_DOMAIN=example.org, Base DN: dc=example,dc=org
+              #
+              # You can copy this file and adapt:
+              #   - company name
+              #   - users / groups
+              #   - domain (dc=...)   <-- MUST match your configured LDAP_DOMAIN
+              # ======================================================================
+
+              dn: ou=users,dc=example,dc=org
+              objectClass: top
+              objectClass: organizationalUnit
+              ou: users
+
+              dn: ou=groups,dc=example,dc=org
+              objectClass: top
+              objectClass: organizationalUnit
+              ou: groups
+
+              # -------------------------------------------------------------------
+              # LDAP bind user (service account)
+              # -------------------------------------------------------------------
+              dn: uid=ldapbind,ou=users,dc=example,dc=org
+              objectClass: inetOrgPerson
+              objectClass: organizationalPerson
+              objectClass: person
+              objectClass: top
+              cn: LDAP Bind User
+              sn: Bind
+              uid: ldapbind
+              userPassword: ldapbind123
+
+              # -------------------------------------------------------------------
+              # Admin user
+              # -------------------------------------------------------------------
+              dn: uid=adminuser,ou=users,dc=example,dc=org
+              objectClass: inetOrgPerson
+              objectClass: organizationalPerson
+              objectClass: person
+              objectClass: top
+              cn: Example Admin
+              sn: Admin
+              uid: adminuser
+              userPassword: admin123
+
+              # -------------------------------------------------------------------
+              # Regular test user
+              # -------------------------------------------------------------------
+              dn: uid=testuser,ou=users,dc=example,dc=org
+              objectClass: inetOrgPerson
+              objectClass: organizationalPerson
+              objectClass: person
+              objectClass: top
+              cn: Test User
+              sn: User
+              uid: testuser
+              userPassword: testuser123
+
+              # -------------------------------------------------------------------
+              # Admin group
+              # -------------------------------------------------------------------
+              dn: cn=example-admins,ou=groups,dc=example,dc=org
+              objectClass: top
+              objectClass: groupOfUniqueNames
+              cn: example-admins
+              uniqueMember: uid=adminuser,ou=users,dc=example,dc=org
+
+              # -------------------------------------------------------------------
+              # Users group
+              # -------------------------------------------------------------------
+              dn: cn=example-users,ou=groups,dc=example,dc=org
+              objectClass: top
+              objectClass: groupOfUniqueNames
+              cn: example-users
+              uniqueMember: uid=testuser,ou=users,dc=example,dc=org
+
+              LDIF
+              
+              }
+
+              whoami(){
+                ldapwhoami -x \
+                  -D "cn=admin,${LDAP_BASE_DN}" \
+                  -w "${LDAP_ADMIN_PASS}" \
+                  -H "${LDAP_URL}"
+              }
+
+              create_ldif
+              bootstrap_ldif
+
+              whoami && sleep infinity
+              
+              sleep 60
