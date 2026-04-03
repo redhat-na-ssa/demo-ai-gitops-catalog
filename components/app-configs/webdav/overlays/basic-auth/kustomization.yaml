@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ttyd
+
+resources:
+- ../default
+- rbac.yaml
+
+patches:
+  - path: patch-deploy.yaml
+  # - target:
+  #     kind: Deployment
+  #     name: webdav
+  #   patch: |-
+  #     - op: replace
+  #       path: /spec/template/spec/containers/0/command
+  #       value:
+  #         - /bin/sh
+  #         - -c
+  #         - |
+  #           rclone serve webdav --addr :8080 /data

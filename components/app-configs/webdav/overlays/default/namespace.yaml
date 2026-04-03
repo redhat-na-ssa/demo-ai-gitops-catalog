@@ -4,4 +4,4 @@ kind: Namespace
 metadata:
   name: files
   annotations:
-    openshift.io/display-name: "Shared Files"
+    openshift.io/display-name: "File Sharing"
