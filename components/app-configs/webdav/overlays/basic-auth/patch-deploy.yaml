@@ -32,3 +32,4 @@ spec:
                 /data
 
               sleep infinity
+          livenessProbe: null
