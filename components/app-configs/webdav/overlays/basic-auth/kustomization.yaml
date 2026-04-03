@@ -5,7 +5,6 @@ namespace: ttyd
 
 resources:
 - ../default
-- rbac.yaml
 
 patches:
   - path: patch-deploy.yaml
