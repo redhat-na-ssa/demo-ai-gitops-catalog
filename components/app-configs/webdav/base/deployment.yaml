@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdav
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: webdav
+  template:
+    metadata:
+      labels:
+        deployment: webdav
+    spec:
+      containers:
+        - name: server
+          image: docker.io/rclone/rclone:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              rclone serve webdav --addr :8080 /data
+
+              sleep infinity
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 2
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /data
+            name: empty
+      volumes:
+      - name: empty
+        emptyDir: {}
