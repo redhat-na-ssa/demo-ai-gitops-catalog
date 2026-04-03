@@ -24,7 +24,7 @@ spec:
                 USER:     ${USER}
                 PASSWORD: ${PASSWORD}
               "
-              
+
               rclone serve webdav \
                 --addr :8080 \
                 --user ${USER} \
