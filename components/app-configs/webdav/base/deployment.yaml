@@ -44,6 +44,7 @@ spec:
           volumeMounts:
           - mountPath: /data
             name: empty
+            subPath: files
       volumes:
       - name: empty
         emptyDir: {}
