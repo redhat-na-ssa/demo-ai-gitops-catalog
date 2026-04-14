@@ -81,6 +81,7 @@ Lifecycle
 MLOps
 MTA
 MachineConfig
+MachineConfigPool
 MachineSet
 MetalLB
 MirrorSet
@@ -337,11 +338,14 @@ linkedin
 linux
 llm
 localhost
+machineConfigSelector
+machineconfiguration
 machineset
 machinesets
 managementState
 mariadb
 mastersSchedulable
+matchExpressions
 md
 mellanox
 memberof

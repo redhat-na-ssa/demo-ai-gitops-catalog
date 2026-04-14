@@ -38,21 +38,6 @@ ocp_control_nodes_schedulable(){
     --patch '{"spec":{"mastersSchedulable": true}}'
 }
 
-ocp_image_registry_expose(){
-  REGISTRY_HOST=${1}
-
-  if [ -z "${REGISTRY_HOST}" ]; then
-    oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"defaultRoute":true}}'
-    REGISTRY_URL=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
-  else
-    oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"routes":[{"name":"'"${REGISTRY_HOST}"'","hostname":"'"${REGISTRY_HOST}.$(ocp_get_apps_domain)"'"}]}}'
-    REGISTRY_URL=$(oc get route "${REGISTRY_HOST}" -n openshift-image-registry --template='{{ .spec.host }}')
-  fi
-
-  echo "OCP image registry is available at:
-  ${REGISTRY_URL}"
-}
-
 ocp_fix_duplicate_operator_groups(){
   for ns in $(oc get og -A | awk '{print $1}' | uniq -d)
   do
@@ -90,6 +75,86 @@ ocp_get_kubeconfigs(){
   # https://access.redhat.com/solutions/6112601
 
   oc -n openshift-kube-apiserver extract secret/node-kubeconfigs
+}
+
+ocp_image_registry_expose(){
+  REGISTRY_HOST=${1}
+
+  if [ -z "${REGISTRY_HOST}" ]; then
+    oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"defaultRoute":true}}'
+    REGISTRY_URL=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+  else
+    oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"routes":[{"name":"'"${REGISTRY_HOST}"'","hostname":"'"${REGISTRY_HOST}.$(ocp_get_apps_domain)"'"}]}}'
+    REGISTRY_URL=$(oc get route "${REGISTRY_HOST}" -n openshift-image-registry --template='{{ .spec.host }}')
+  fi
+
+  echo "OCP image registry is available at:
+  ${REGISTRY_URL}"
+}
+
+ocp_machine_config_pool_create(){
+  POOL_NAME=${1:-infra}
+
+  [ -z "${1}" ] && \
+  echo "
+    usage: ocp_machine_config_pool_create < name >
+  "
+
+cat << YAML | oc apply -f-
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: ${POOL_NAME}
+spec:
+  machineConfigSelector:
+    matchExpressions:
+      - key: machineconfiguration.openshift.io/role
+        operator: In
+        values:
+          - worker
+          - ${POOL_NAME}
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/${POOL_NAME}: ""
+  paused: false
+YAML
+
+}
+
+ocp_machineset_clone_worker(){
+  MACHINE_SET_NAME=${1:-worker}
+
+  [ -z "${1}" ] && \
+  echo "
+    usage: ocp_machineset_clone_worker < machine set name >
+  "
+
+  MACHINE_SET_WORKER=$(oc -n openshift-machine-api get machinesets.machine.openshift.io -o name | grep worker | head -n1)
+
+  # check for an existing instance machine set
+  if oc -n openshift-machine-api get machineset "${MACHINE_SET_NAME}" > /dev/null ; then
+    echo "Exists: machineset - ${MACHINE_SET_NAME}"
+  else
+    echo "Creating: machineset - ${MACHINE_SET_NAME}"
+    oc -n openshift-machine-api \
+      get "${MACHINE_SET_WORKER}" -o yaml | \
+        sed '/machine/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${MACHINE_SET_NAME}"'/g
+          /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${MACHINE_SET_NAME}"'/g
+          /cluster-api-autoscaler/d
+          /uid:/d
+          /generation:/d
+          /resourceVersion:/d
+          /creationTimestamp:/d
+          s/node-role.kubernetes.io.*/node-role.kubernetes.io\/'"${MACHINE_SET_NAME}"': "''"/g
+          s/replicas.*/replicas: 0/' | \
+      oc apply -f -
+  fi
+
+  # /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${MACHINE_SET_NAME}"'/g
+
+  oc -n openshift-machine-api \
+    patch machineset "${MACHINE_SET_NAME}" \
+    --type=merge --patch '{"spec":{"template":{"spec":{"metadata":{"labels":{"node-role.kubernetes.io/'"${MACHINE_SET_NAME}"'":""}}}}}}'
 }
 
 ocp_machineset_create_autoscale(){
@@ -132,6 +197,12 @@ ocp_machineset_patch_accelerator(){
 ocp_machineset_scale(){
   REPLICAS=${1:-1}
   MACHINE_SETS=${2:-$(oc -n openshift-machine-api get machineset -o name)}
+
+  [ -z "${1}" ] && \
+  echo "
+    usage: ocp_machineset_scale < replicas > < machine set name >
+  "
+
 
   # scale workers
   echo "${MACHINE_SETS}" | \
