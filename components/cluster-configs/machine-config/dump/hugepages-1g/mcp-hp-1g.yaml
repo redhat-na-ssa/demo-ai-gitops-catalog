@@ -1,0 +1,16 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: hp-1g
+spec:
+  machineConfigSelector:
+    matchExpressions:
+      - key: machineconfiguration.openshift.io/role
+        operator: In
+        values:
+          - worker
+          - hp-1g
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/hp-1g: ""
+  paused: false

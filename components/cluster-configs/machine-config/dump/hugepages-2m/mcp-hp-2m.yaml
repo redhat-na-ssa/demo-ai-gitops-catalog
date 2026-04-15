@@ -1,0 +1,16 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: hp-2m
+spec:
+  machineConfigSelector:
+    matchExpressions:
+      - key: machineconfiguration.openshift.io/role
+        operator: In
+        values:
+          - worker
+          - hp-2m
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/hp-2m: ""
+  paused: false

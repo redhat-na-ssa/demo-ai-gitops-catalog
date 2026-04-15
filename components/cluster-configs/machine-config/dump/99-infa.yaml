@@ -1,0 +1,16 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: infra
+  name: 99-infra
+spec:
+  config:
+    ignition:
+      version: 3.5.0
+    storage:
+      files:
+        - contents:
+            source: 'data:text/plain;charset=utf-8;base64,X19fX19fX19fICAgICAgICAgICAgICAgICAgICAgICAgX18gICAgICBfXyAgICAgICAgICAgICAgICAgICBfX18gX19fICAgICAgICAgICAgICAgICAgICAgICAgClxfICAgX19fIFwgIF9fX19fX19fX19fIF9fXy5fXy4gLyAgXCAgICAvICBcX19fX18gICAgX19fX19fICAvICAgfCAgIFwgICBfX19fX19fX19fXyAgIF9fX18gIAovICAgIFwgIFwvIC8gIF8gXF8gIF9fIDwgICB8ICB8IFwgICBcL1wvICAgL1xfXyAgXCAgLyAgX19fLyAvICAgIH4gICAgXF8vIF9fIFxfICBfXyBcXy8gX18gXCAKXCAgICAgXF9fXyggIDxfPiApICB8IFwvXF9fXyAgfCAgXCAgICAgICAgLyAgLyBfXyBcX1xfX18gXCAgXCAgICBZICAgIC9cICBfX18vfCAgfCBcL1wgIF9fXy8gCiBcX19fX19fICAvXF9fX18vfF9ffCAgIC8gX19fX3wgICBcX18vXCAgLyAgKF9fX18gIC9fX19fICA+ICBcX19ffF8gIC8gIFxfX18gID5fX3wgICAgXF9fXyAgPgogICAgICAgIFwvICAgICAgICAgICAgICBcLyAgICAgICAgICAgICBcLyAgICAgICAgXC8gICAgIFwvICAgICAgICAgXC8gICAgICAgXC8gICAgICAgICAgICBcLyAK'
+          mode: 420
+          path: /etc/issue.d/10-banner

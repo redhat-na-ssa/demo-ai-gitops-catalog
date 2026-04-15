@@ -51,6 +51,20 @@ ocp_fix_duplicate_operator_groups(){
   done
 }
 
+ocp_fix_machine_config_stuck_node(){
+  NODE=${1:-$(oc get nodes -o name | head -n1)}
+
+  echo "https://access.redhat.com/solutions/5598401"
+
+  echo "
+    rm /etc/machine-config-daemon/currentconfig
+    touch /run/machine-config-daemon-force
+  " 
+  oc debug "${NODE}" -- chroot /host rm /etc/machine-config-daemon/currentconfig
+  oc debug "${NODE}" -- chroot /host touch /run/machine-config-daemon-force
+
+}
+
 ocp_get_apps_domain(){
   oc get ingresses.config.openshift.io cluster -o jsonpath='{.spec.domain}'
 }
