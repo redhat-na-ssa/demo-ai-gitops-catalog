@@ -11,7 +11,7 @@ spec:
       summary=Boot time configuration for hugepages-2M
       include=openshift-node
       [bootloader]
-      cmdline_openshift_node_hugepages=hugepagesz=2M hugepages=9600Mi
+      cmdline_openshift_node_hugepages=hugepagesz=2M hugepages=4096
   recommend:
   - machineConfigLabels:
       machineconfiguration.openshift.io/role: "hp-2m"

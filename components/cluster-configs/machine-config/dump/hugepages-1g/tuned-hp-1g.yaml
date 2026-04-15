@@ -1,7 +1,7 @@
 apiVersion: tuned.openshift.io/v1
 kind: Tuned
 metadata:
-  name: hp-1g
+  name: hugepages-1g
   namespace: openshift-cluster-node-tuning-operator
 spec:
   profile:
@@ -13,7 +13,7 @@ spec:
       [vm]
       transparent_hugepages=never
       [bootloader]
-      cmdline_openshift_node_hugepages=default_hugepagesz=1G hugepagesz=1G hugepages=2
+      cmdline_openshift_node_hugepages=default_hugepagesz=1G hugepagesz=1G hugepages=8
   recommend:
   - machineConfigLabels:
       machineconfiguration.openshift.io/role: "hp-1g"
