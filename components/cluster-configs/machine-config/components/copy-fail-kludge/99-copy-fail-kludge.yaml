@@ -8,20 +8,20 @@ metadata:
     machineconfiguration.openshift.io/role: master
   name: 99-copy-fail-master
 spec:
-  config:
-    ignition:
-      version: 3.2.0
-    storage:
-      files:
-        - contents:
-            inline: |
-              # See https://copy.fail
-              blacklist algif_aead
-          mode: 420
-          path: /etc/modprobe.d/blacklist-algif.conf
+  # config:
+  #   ignition:
+  #     version: 3.2.0
+  #   storage:
+  #     files:
+  #       - contents:
+  #           inline: |
+  #             # See https://copy.fail
+  #             blacklist algif_aead
+  #         mode: 420
+  #         path: /etc/modprobe.d/blacklist-algif.conf
   kernelArguments:
-  - module.blacklist=algif_aead
-  - modprobe.blacklist=algif_aead
+  # - module.blacklist=algif_aead
+  # - modprobe.blacklist=algif_aead
   - initcall_blacklist=algif_aead_init
 ---
 apiVersion: machineconfiguration.openshift.io/v1
@@ -33,18 +33,18 @@ metadata:
     machineconfiguration.openshift.io/role: worker
   name: 99-copy-fail-worker
 spec:
-  config:
-    ignition:
-      version: 3.2.0
-    storage:
-      files:
-        - contents:
-            inline: |
-              # See https://copy.fail
-              blacklist algif_aead
-          mode: 420
-          path: /etc/modprobe.d/blacklist-algif.conf
+  # config:
+  #   ignition:
+  #     version: 3.2.0
+  #   storage:
+  #     files:
+  #       - contents:
+  #           inline: |
+  #             # See https://copy.fail
+  #             blacklist algif_aead
+  #         mode: 420
+  #         path: /etc/modprobe.d/blacklist-algif.conf
   kernelArguments:
-  - module.blacklist=algif_aead
-  - modprobe.blacklist=algif_aead
+  # - module.blacklist=algif_aead
+  # - modprobe.blacklist=algif_aead
   - initcall_blacklist=algif_aead_init
