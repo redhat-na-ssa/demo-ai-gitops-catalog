@@ -1,10 +1,26 @@
-# copy.fail mitigation
+# OCP `copy.fail` mitigation
 
-Kernel arg
+CoreOS has the `algif_aead` kernel module built-in so the best workaround is to block system calls with a kernel
+parameter of `initcall_blacklist`. This method appears affective without any other modifications.
+
+Links
+
+- https://copy.fail
+- https://access.redhat.com/solutions/7141979
+
+## OCP kludge
+
+```sh
+oc apply -k .
+```
+
+## Additional Notes
 
 ```sh
 grep algif_aead /proc/kallsyms
 ```
+
+Kernel arg
 
 ```sh
 initcall_blacklist=algif_aead_init

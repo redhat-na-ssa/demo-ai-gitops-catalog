@@ -4,10 +4,15 @@ kind: MachineConfig
 metadata:
   annotations:
     site: https://copy.fail
+    solution: https://access.redhat.com/solutions/7141979
   labels:
     machineconfiguration.openshift.io/role: master
-  name: 99-copy-fail-master
+  name: 99-disable-algif-builtin-master
 spec:
+  kernelArguments:
+  # - module.blacklist=algif_aead
+  # - modprobe.blacklist=algif_aead
+  - initcall_blacklist=algif_aead_init
   # config:
   #   ignition:
   #     version: 3.2.0
@@ -19,20 +24,21 @@ spec:
   #             blacklist algif_aead
   #         mode: 420
   #         path: /etc/modprobe.d/blacklist-algif.conf
-  kernelArguments:
-  # - module.blacklist=algif_aead
-  # - modprobe.blacklist=algif_aead
-  - initcall_blacklist=algif_aead_init
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
   annotations:
     site: https://copy.fail
+    solution: https://access.redhat.com/solutions/7141979
   labels:
     machineconfiguration.openshift.io/role: worker
-  name: 99-copy-fail-worker
+  name: 99-disable-algif-builtin-worker
 spec:
+  kernelArguments:
+  # - module.blacklist=algif_aead
+  # - modprobe.blacklist=algif_aead
+  - initcall_blacklist=algif_aead_init
   # config:
   #   ignition:
   #     version: 3.2.0
@@ -44,7 +50,3 @@ spec:
   #             blacklist algif_aead
   #         mode: 420
   #         path: /etc/modprobe.d/blacklist-algif.conf
-  kernelArguments:
-  # - module.blacklist=algif_aead
-  # - modprobe.blacklist=algif_aead
-  - initcall_blacklist=algif_aead_init
