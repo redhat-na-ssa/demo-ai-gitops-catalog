@@ -39,3 +39,7 @@ Test with podman
 podman build -t copy-fail .
 podman run -it --rm --name copy-fail --replace copy-fail
 ```
+
+```sh
+echo 3 | sudo tee /proc/sys/vm/drop_caches
+```
