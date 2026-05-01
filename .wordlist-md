@@ -158,9 +158,11 @@ addon
 addr
 adhoc
 adm
+aead
 ai
 aiservices
 alertmanager
+algif
 alongsecret
 amd
 amq
@@ -354,6 +356,7 @@ mig
 minio
 mkdir
 mkdocs
+modprobe
 mufg
 multicluster
 mv
@@ -502,3 +505,4 @@ xargs
 xlarge
 yaml
 zotregistry
+CoreOS

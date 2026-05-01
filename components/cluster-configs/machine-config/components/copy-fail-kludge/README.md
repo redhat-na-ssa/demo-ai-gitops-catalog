@@ -1,7 +1,7 @@
 # OCP `copy.fail` mitigation
 
 CoreOS has the `algif_aead` kernel module built-in so the best workaround is to block system calls with a kernel
-parameter of `initcall_blacklist`. This method appears affective without any other modifications.
+parameter of `initcall_blacklist`. This method appears effective without any other modifications.
 
 Links
 
