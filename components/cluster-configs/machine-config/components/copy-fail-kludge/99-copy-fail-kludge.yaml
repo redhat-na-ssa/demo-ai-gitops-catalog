@@ -2,6 +2,8 @@
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
+  annotations:
+    site: https://copy.fail
   labels:
     machineconfiguration.openshift.io/role: master
   name: 99-copy-fail-master
@@ -19,6 +21,8 @@ spec:
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
+  annotations:
+    site: https://copy.fail
   labels:
     machineconfiguration.openshift.io/role: worker
   name: 99-copy-fail-worker
