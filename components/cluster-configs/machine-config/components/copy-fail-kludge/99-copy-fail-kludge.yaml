@@ -14,11 +14,15 @@ spec:
     storage:
       files:
         - contents:
-            source: data:text/plain;charset=utf-8;base64,aW5zdGFsbCBhbGdpZl9hZWFkIC9iaW4vZmFsc2UK
+            inline: |
+              # See https://copy.fail
+              blacklist algif_aead
           mode: 420
-          path: /etc/modprobe.d/disable-algif.conf
+          path: /etc/modprobe.d/blacklist-algif.conf
   kernelArguments:
+  - module.blacklist=algif_aead
   - modprobe.blacklist=algif_aead
+  - initcall_blacklist=algif_aead_init
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
@@ -35,8 +39,12 @@ spec:
     storage:
       files:
         - contents:
-            source: data:text/plain;charset=utf-8;base64,aW5zdGFsbCBhbGdpZl9hZWFkIC9iaW4vZmFsc2UK
+            inline: |
+              # See https://copy.fail
+              blacklist algif_aead
           mode: 420
-          path: /etc/modprobe.d/disable-algif.conf
+          path: /etc/modprobe.d/blacklist-algif.conf
   kernelArguments:
+  - module.blacklist=algif_aead
   - modprobe.blacklist=algif_aead
+  - initcall_blacklist=algif_aead_init
