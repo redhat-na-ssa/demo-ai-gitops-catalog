@@ -17,6 +17,8 @@ spec:
             source: data:text/plain;charset=utf-8;base64,aW5zdGFsbCBhbGdpZl9hZWFkIC9iaW4vZmFsc2UK
           mode: 420
           path: /etc/modprobe.d/disable-algif.conf
+  kernelArguments:
+  - modprobe.blacklist=algif_aead
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
@@ -36,3 +38,5 @@ spec:
             source: data:text/plain;charset=utf-8;base64,aW5zdGFsbCBhbGdpZl9hZWFkIC9iaW4vZmFsc2UK
           mode: 420
           path: /etc/modprobe.d/disable-algif.conf
+  kernelArguments:
+  - modprobe.blacklist=algif_aead
