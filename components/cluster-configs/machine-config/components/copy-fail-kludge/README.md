@@ -3,6 +3,10 @@
 Kernel arg
 
 ```sh
+grep algif_aead /proc/kallsyms
+```
+
+```sh
 initcall_blacklist=algif_aead_init
 ```
 
