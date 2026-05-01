@@ -1,0 +1,34 @@
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: master
+  name: 99-copy-fail-master
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: data:text/plain;charset=utf-8;base64,aW5zdGFsbCBhbGdpZl9hZWFkIC9iaW4vZmFsc2UK
+          mode: 420
+          path: /etc/modprobe.d/disable-algif.conf
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: 99-copy-fail-worker
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: data:text/plain;charset=utf-8;base64,aW5zdGFsbCBhbGdpZl9hZWFkIC9iaW4vZmFsc2UK
+          mode: 420
+          path: /etc/modprobe.d/disable-algif.conf
