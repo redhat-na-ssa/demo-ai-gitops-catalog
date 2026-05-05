@@ -12,7 +12,7 @@ labels:
 resources:
   - config.yaml
   - n8n-main.yaml
-  - n8n-runners.yaml
+  # - n8n-runners.yaml
   # - pvc.yaml
   - route.yaml
   - service.yaml

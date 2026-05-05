@@ -4,8 +4,9 @@ kind: Kustomization
 labels:
   - includeSelectors: true
     pairs:
-      app: debug-receiver
+      app: socat
 
 resources:
-  - deployment.yaml
-  - service.yaml
+  - build-config.yaml
+  - deploy.yaml
+  - svc.yaml

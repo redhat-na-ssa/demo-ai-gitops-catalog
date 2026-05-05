@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: debug-receiver
+  name: http-receiver
 spec:
   replicas: 1
   selector:
     matchLabels:
-      deploy: debug-receiver
+      deploy: http-receiver
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        deploy: debug-receiver
+        deploy: http-receiver
     spec:
       containers:
       - command:
