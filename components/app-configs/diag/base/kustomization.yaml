@@ -4,5 +4,8 @@ kind: Kustomization
 namespace: diag
 
 resources:
-  - ../../base
   - namespace.yaml
+
+components:
+  - ../components/http
+  - ../components/socat

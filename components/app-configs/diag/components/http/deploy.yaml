@@ -1,6 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app: http-receiver
+    app.kubernetes.io/component: http-receiver
+    app.kubernetes.io/instance: http-receiver
+    app.kubernetes.io/name: http-receiver
+    app.kubernetes.io/part-of: http-receiver
   name: http-receiver
 spec:
   replicas: 1
