@@ -1,0 +1,117 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+  namespace: k8s-otel
+spec:
+  serviceAccount: otel
+  mode: daemonset  
+  securityContext:
+    fsGroup: 0
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - FSETID
+      - KILL
+      - NET_BIND_SERVICE
+      - SETGID
+      - SETPCAP
+      - SETUID
+    readOnlyRootFilesystem: true
+    runAsUser: 0
+    runAsGroup: 0
+    seLinuxOptions:
+      type: spc_t
+    seccompProfile:
+      type: RuntimeDefault  
+  volumeMounts:
+    - name: cabundle-volume
+      mountPath: /etc/pki/ca-trust/source/service-ca
+      readOnly: true
+    - mountPath: /hostfs
+      name: host
+      readOnly: true      
+  volumes:
+    - name: cabundle-volume
+      configMap:
+        name: cabundle
+    - hostPath:
+        path: /
+      name: host     
+  config:
+    processors: 
+      batch:
+        send_batch_size: 512
+        send_batch_max_size: 1024
+        timeout: 1s
+      groupbyattrs:
+    receivers:
+      filelog:
+        include:
+        - /hostfs/var/log/pods/*/*/*.log
+        exclude:
+        - /hostfs/var/log/pods/*/otc-container/*.log
+        start_at: beginning
+        include_file_path: true
+        include_file_name: false
+        operators:
+        - id: container-parser
+          type: container
+        retry_on_failure:
+          enabled: true
+          initial_interval: 1s
+          max_interval: 30s
+          max_elapsed_time: 5m
+      k8sobjects:
+        auth_type: serviceAccount
+        objects:
+          - name: pods
+            mode: pull 
+            interval: 60s
+          - name: events
+            mode: watch
+      k8s_cluster:
+        distribution: openshift
+        collection_interval: 60s        
+      journald:
+        files: /hostfs/var/log/journal/*/*
+        priority: info 
+        units:
+          - kubelet
+          - crio
+          - init.scope
+          - dnsmasq
+        all: true
+        retry_on_failure:
+          enabled: true
+          initial_interval: 1s
+          max_interval: 60s
+          max_elapsed_time: 5m
+      k8s_events:
+        #namespaces: [project1, project2]
+    exporters:
+      debug:
+        verbosity: detailed
+      otlphttp/logs:
+        endpoint: 'http://10.1.1.100:3100/otlp'
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        logs:
+          exporters:
+            - debug
+            - otlphttp/logs
+          processors: 
+            - batch
+            - groupbyattrs
+          receivers:
+            - filelog
+  env:
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
