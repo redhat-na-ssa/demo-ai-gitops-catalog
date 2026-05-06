@@ -19,14 +19,14 @@ inhibit_rules:
 receivers:
   - name: Critical
     webhook_configs:
-      - url: 'http://debug-receiver.admin.svc.cluster.local:8080/v1/receiver'
+      - url: 'http://http-receiver.diag.svc.cluster.local:8080/v1/receiver'
   - name: Default
     webhook_configs:
-      - url: 'http://debug-receiver.admin.svc.cluster.local:8080/v1/receiver'
+      - url: 'http://http-receiver.diag.svc.cluster.local:8080/v1/receiver'
   - name: Watchdog
   - name: n8n
     webhook_configs:
-      - url: 'http://n8n.admin.svc.cluster.local:5678/webhook-test/ocp'
+      - url: 'http://n8n.diag.svc.cluster.local:5678/webhook-test/ocp'
 route:
   group_by:
     - namespace
