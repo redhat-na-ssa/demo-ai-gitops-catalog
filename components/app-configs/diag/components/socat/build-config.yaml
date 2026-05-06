@@ -2,8 +2,7 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: iperf3
-  namespace: diag
+  name: socat
 spec:
   tags:
   - name: latest
@@ -11,13 +10,12 @@ spec:
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
-  name: iperf3
-  namespace: diag
+  name: socat
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: 'iperf3:latest'
+      name: 'socat:latest'
   strategy:
     type: Docker
     dockerStrategy:
@@ -27,20 +25,23 @@ spec:
   source:
     type: Dockerfile
     dockerfile: |
-      # ARG BASE_IMAGE=registry.access.redhat.com/ubi9/ubi
-      # ARG BASE_IMAGE=quay.io/centos/centos:stream9
-      ARG BASE_IMAGE=quay.io/fedora/fedora-minimal:43
+      # ARG BASE_IMAGE=quay.io/fedora/fedora-minimal:43
+      ARG BASE_IMAGE=registry.access.redhat.com/ubi9/ubi
 
       # hadolint ignore=DL3006
       FROM ${BASE_IMAGE}
 
       # hadolint ignore=DL3033
-      RUN yum install -y iperf3 && \
+      RUN yum install -y socat && \
           yum clean all
 
-      EXPOSE 5201
+      EXPOSE 6666
 
       # hadolint ignore=DL3025
       # CMD trap : TERM INT; sleep infinity & wait
-      CMD iperf3 -s
-  runPolicy: Serial
+      CMD socat - TCP4-LISTEN:6666,fork
+  runPolicy: SerialLatestOnly
+  triggers:
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange

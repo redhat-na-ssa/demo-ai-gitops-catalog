@@ -1,3 +1,4 @@
+# hadolint ignore=DL3059
 FROM docker.io/heartexlabs/label-studio:ubi_latest
 
 ENV DEBUG=true

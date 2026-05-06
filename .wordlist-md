@@ -107,6 +107,7 @@ OLM
 Observability
 OpenDataHub
 OpenShift
+OpenTelemetry
 OpenVINO
 OperatorGroup
 PV
@@ -376,6 +377,7 @@ nvidia
 nw
 oauth
 obeone
+observability
 oc
 oci
 ocp
