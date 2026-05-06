@@ -7,5 +7,5 @@ resources:
 patches:
   - target:
       kind: Subscription
-      name: cluster-logging
+      name: cluster-observability-operator
     path: patch-channel.yaml
