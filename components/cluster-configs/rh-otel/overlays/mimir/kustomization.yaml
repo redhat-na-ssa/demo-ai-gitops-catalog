@@ -6,7 +6,7 @@ namespace: k8s-otel
 patches:
   - target:
       kind: SecurityContextConstraints
-      name: otel-scc 
+      name: otel-scc
     patch: |-
       - op: replace
         path: /users/0
@@ -15,4 +15,3 @@ patches:
 resources:
   - ../../base
   - opentelemetry-collector.yaml
-

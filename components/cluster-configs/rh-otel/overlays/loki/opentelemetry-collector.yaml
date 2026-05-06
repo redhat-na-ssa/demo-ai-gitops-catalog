@@ -5,7 +5,7 @@ metadata:
   namespace: k8s-otel
 spec:
   serviceAccount: otel
-  mode: daemonset  
+  mode: daemonset
   securityContext:
     fsGroup: 0
     allowPrivilegeEscalation: false
@@ -26,23 +26,23 @@ spec:
     seLinuxOptions:
       type: spc_t
     seccompProfile:
-      type: RuntimeDefault  
+      type: RuntimeDefault
   volumeMounts:
     - name: cabundle-volume
       mountPath: /etc/pki/ca-trust/source/service-ca
       readOnly: true
     - mountPath: /hostfs
       name: host
-      readOnly: true      
+      readOnly: true
   volumes:
     - name: cabundle-volume
       configMap:
         name: cabundle
     - hostPath:
         path: /
-      name: host     
+      name: host
   config:
-    processors: 
+    processors:
       batch:
         send_batch_size: 512
         send_batch_max_size: 1024
@@ -69,16 +69,16 @@ spec:
         auth_type: serviceAccount
         objects:
           - name: pods
-            mode: pull 
+            mode: pull
             interval: 60s
           - name: events
             mode: watch
       k8s_cluster:
         distribution: openshift
-        collection_interval: 60s        
+        collection_interval: 60s
       journald:
         files: /hostfs/var/log/journal/*/*
-        priority: info 
+        priority: info
         units:
           - kubelet
           - crio
@@ -90,8 +90,8 @@ spec:
           initial_interval: 1s
           max_interval: 60s
           max_elapsed_time: 5m
-      k8s_events:
-        #namespaces: [project1, project2]
+      k8s_events: {}
+      # namespaces: [project1, project2]
     exporters:
       debug:
         verbosity: detailed
@@ -105,7 +105,7 @@ spec:
           exporters:
             - debug
             - otlphttp/logs
-          processors: 
+          processors:
             - batch
             - groupbyattrs
           receivers:

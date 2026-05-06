@@ -77,12 +77,12 @@ rules:
     - get
     - list
     - watch
-- apiGroups: 
+- apiGroups:
     - config.openshift.io
-  resources: 
+  resources:
     - infrastructures
     - infrastructures/status
-  verbs: 
+  verbs:
     - get
     - watch
     - list

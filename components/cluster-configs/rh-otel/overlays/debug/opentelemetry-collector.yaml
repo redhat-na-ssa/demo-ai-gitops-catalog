@@ -5,7 +5,7 @@ metadata:
   namespace: k8s-otel
 spec:
   serviceAccount: otel
-  mode: daemonset  
+  mode: daemonset
   securityContext:
     allowPrivilegeEscalation: false
     capabilities:
@@ -23,27 +23,27 @@ spec:
     seLinuxOptions:
       type: spc_t
     seccompProfile:
-      type: RuntimeDefault  
+      type: RuntimeDefault
   volumeMounts:
     - name: cabundle-volume
       mountPath: /etc/pki/ca-trust/source/service-ca
       readOnly: true
     - mountPath: /hostfs
       name: host
-      readOnly: true      
+      readOnly: true
     - name: journal-logs
       mountPath: /var/log/journal/
-      readOnly: true      
+      readOnly: true
   volumes:
     - name: cabundle-volume
       configMap:
         name: cabundle
     - hostPath:
         path: /
-      name: host     
+      name: host
     - name: journal-logs
       hostPath:
-        path: /var/log/journal         
+        path: /var/log/journal
   config:
     processors:
       k8sattributes:
@@ -64,13 +64,13 @@ spec:
               - from: resource_attribute
                 name: k8s.pod.uid
           - sources:
-              - from: connection  
+              - from: connection
     receivers:
       hostmetrics:
         collection_interval: 60s
         initial_delay: 1s
         root_path: /
-        scrapers: 
+        scrapers:
           cpu: {}
           memory: {}
           disk: {}
@@ -78,12 +78,12 @@ spec:
           filesystem: {}
           paging: {}
           processes: {}
-          process: {}    
+          process: {}
       k8sobjects:
         auth_type: serviceAccount
         objects:
           - name: pods
-            mode: pull 
+            mode: pull
             interval: 60s
           - name: events
             mode: watch
@@ -94,10 +94,10 @@ spec:
         insecure_skip_verify: true
       k8s_cluster:
         distribution: openshift
-        collection_interval: 60s        
+        collection_interval: 60s
       journald:
         files: /var/log/journal/*/*
-        priority: info 
+        priority: info
         units:
           - kubelet
           - crio
