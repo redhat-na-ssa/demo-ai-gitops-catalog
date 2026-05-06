@@ -11,5 +11,5 @@ RUN yum install -y socat && \
 EXPOSE 6666
 
 # hadolint ignore=DL3025
-# CMD trap : TERM INT; sleep infinity & wait
 CMD socat TCP4-LISTEN:6666,reuseaddr,fork -
+# CMD trap : TERM INT; sleep infinity & wait

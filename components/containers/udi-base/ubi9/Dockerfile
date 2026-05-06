@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1.3-labs
+# hadolint ignore=DL4006
 ARG IMAGE_NAME=registry.access.redhat.com/ubi9/ubi:9.4
 FROM ${IMAGE_NAME}
 
