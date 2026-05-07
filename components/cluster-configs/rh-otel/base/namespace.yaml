@@ -1,9 +1,11 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: k8s-otel
+  annotations:
+    openshift.io/display-name: "Demo - Otel Collector"
+  name: demo-otel-collector
   labels:
-    security.openshift.io/scc.podSecurityLabelSync: "false"
     pod-security.kubernetes.io/enforce: "privileged"
     pod-security.kubernetes.io/audit: "privileged"
     pod-security.kubernetes.io/warn: "privileged"
+    security.openshift.io/scc.podSecurityLabelSync: "false"

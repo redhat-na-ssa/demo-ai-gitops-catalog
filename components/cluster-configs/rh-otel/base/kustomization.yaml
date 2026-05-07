@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - namespace.yaml
-  - service-account.yaml
+  - config-map.yaml
   - cluster-role-bindings.yaml
   - cluster-role.yaml
+  - namespace.yaml
   - scc.yaml
-  - config-maps.yaml
+  - service-account.yaml

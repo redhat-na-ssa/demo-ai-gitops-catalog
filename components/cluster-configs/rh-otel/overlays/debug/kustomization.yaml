@@ -1,7 +1,7 @@
 kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
-namespace: k8s-otel
+namespace: demo-otel-collector
 
 patches:
   - target:
@@ -10,7 +10,7 @@ patches:
     patch: |-
       - op: replace
         path: /users/0
-        value: system:serviceaccount:k8s-otel:otel
+        value: system:serviceaccount:demo-otel-collector:otel
 
 resources:
   - ../../base

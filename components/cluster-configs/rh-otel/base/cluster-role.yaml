@@ -2,10 +2,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: otel-collector
-  namespace: k8s-otel
 rules:
 - apiGroups:
-  - "events.k8s.io"
+  - events.k8s.io
   resources:
   - events
   verbs:
@@ -70,19 +69,19 @@ rules:
   - list
   - watch
 - apiGroups:
-    - autoscaling
+  - autoscaling
   resources:
-    - horizontalpodautoscalers
+  - horizontalpodautoscalers
   verbs:
-    - get
-    - list
-    - watch
+  - get
+  - list
+  - watch
 - apiGroups:
-    - config.openshift.io
+  - config.openshift.io
   resources:
-    - infrastructures
-    - infrastructures/status
+  - infrastructures
+  - infrastructures/status
   verbs:
-    - get
-    - watch
-    - list
+  - get
+  - watch
+  - list

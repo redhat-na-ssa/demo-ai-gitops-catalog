@@ -2,7 +2,7 @@ apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: otel
-  namespace: k8s-otel
+  namespace: demo-otel-collector
 spec:
   serviceAccount: otel
   mode: daemonset
@@ -25,7 +25,7 @@ spec:
     seccompProfile:
       type: RuntimeDefault
   volumeMounts:
-    - name: cabundle-volume
+    - name: ca-bundle
       mountPath: /etc/pki/ca-trust/source/service-ca
       readOnly: true
     - mountPath: /hostfs
@@ -35,9 +35,9 @@ spec:
       mountPath: /var/log/journal/
       readOnly: true
   volumes:
-    - name: cabundle-volume
+    - name: ca-bundle
       configMap:
-        name: cabundle
+        name: ca-bundle
     - hostPath:
         path: /
       name: host
@@ -46,6 +46,11 @@ spec:
         path: /var/log/journal
   config:
     processors:
+      batch:
+        send_batch_size: 512
+        send_batch_max_size: 1024
+        timeout: 1s
+      groupbyattrs:
       k8sattributes:
         auth_type: serviceAccount
         extract:
@@ -90,19 +95,18 @@ spec:
     exporters:
       debug:
         verbosity: basic
-      otlphttp:
+      otlp_http:
         endpoint: 'http://10.1.1.100:9009/otlp'
         headers:
           X-Scope-OrgID: test
         tls:
           insecure: true
-
     service:
       pipelines:
         metrics:
           exporters:
             - debug
-            - otlphttp
+            - otlp_http
           processors:
             - k8sattributes
           receivers:
