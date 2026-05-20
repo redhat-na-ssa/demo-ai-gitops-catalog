@@ -24,9 +24,9 @@ receivers:
     webhook_configs:
       - url: 'http://http-receiver.diag.svc.cluster.local:8080/v1/receiver'
   - name: Watchdog
-  - name: n8n
-    webhook_configs:
-      - url: 'http://n8n.diag.svc.cluster.local:5678/webhook-test/ocp'
+  # - name: n8n
+  #   webhook_configs:
+  #     - url: 'http://n8n.diag.svc.cluster.local:5678/webhook-test/ocp'
 route:
   group_by:
     - namespace
@@ -41,6 +41,6 @@ route:
     - receiver: Critical
       matchers:
         - severity = critical
-    - receiver: n8n
-      matchers:
-        - alertname = *
+    # - receiver: n8n
+    #   matchers:
+    #     - alertname = *
