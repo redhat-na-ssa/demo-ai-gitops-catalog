@@ -72,6 +72,7 @@ htpasswd_add_user(){
   "
 
   touch "${HTPASSWD}"
+  sed -i "/${USERNAME}/d" "${HTPASSWD}"
   echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD}"
   htpasswd -bB -C 10 "${HTPASSWD}" "${USERNAME}" "${PASSWORD}"
 }
