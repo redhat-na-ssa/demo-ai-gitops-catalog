@@ -9,5 +9,6 @@ spec:
   applicationMenu:
     section: Git Repos
     imageURL: /static/assets/public/imgs/logos/github.svg
+    # https://github.com/openshift/console/tree/main/frontend/public/imgs
     # see /static/assets in the web console for more icons
     # oc -n openshift-console exec -it deploy/console -- find /opt/bridge/static/assets/public  -type f
