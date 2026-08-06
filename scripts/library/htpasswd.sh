@@ -3,30 +3,30 @@
 DEFAULT_HTPASSWD=scratch/htpasswd-local
 
 htpasswd_add_user(){
-  USER=${1:-admin}
-  PASS=${2:-$(genpass)}
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-$(genpass 16)}
   HTPASSWD_FILE=${3:-${DEFAULT_HTPASSWD}}
 
   echo "
-    USERNAME: ${USER}
-    PASSWORD: ${PASS}
+    USERNAME: ${USERNAME}
+    PASSWORD: ${PASSWORD}
 
     FILENAME:  ${HTPASSWD_FILE}
     PASSWORDS: ${HTPASSWD_FILE}.txt
   "
 
   touch "${HTPASSWD_FILE}" "${HTPASSWD_FILE}".txt
-  sed -i '/# '"${USER}"'/d' "${HTPASSWD_FILE}".txt
-  echo "# ${USER} - ${PASS}" >> "${HTPASSWD_FILE}.txt"
+  sed -i '/# '"${USERNAME}"'/d' "${HTPASSWD_FILE}".txt
+  echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD_FILE}.txt"
 
   if which htpasswd >/dev/null 2>&1; then
     echo "using local htpasswd..."
-    htpasswd -b -B -C10 "${HTPASSWD_FILE}" "${USER}" "${PASS}"
+    htpasswd -b -B -C10 "${HTPASSWD_FILE}" "${USERNAME}" "${PASSWORD}"
   else
     echo "using oc to run pod..."
     oc run \
       --image httpd \
-      -q --rm -i minion -- /bin/sh -c 'sleep 2; htpasswd -n -b -B -C10 '"${USER}"' '"${PASS}"'' > "${HTPASSWD_FILE}" 2>/dev/null
+      -q --rm -i minion -- /bin/sh -c 'sleep 2; htpasswd -n -b -B -C10 '"${USERNAME}"' '"${PASSWORD}"'' > "${HTPASSWD_FILE}" 2>/dev/null
   fi
 }
 
