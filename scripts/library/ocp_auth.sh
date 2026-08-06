@@ -4,23 +4,23 @@
 [ -e htpasswd.sh ] && . htpasswd.sh
 
 ocp_auth_add_admin_user(){
-  HT_USERNAME=${1:-admin}
-  HT_PASSWORD=${2:-$(genpass)}
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-$(genpass)}
 
   htpasswd_ocp_get_file
-  htpasswd_add_user "${HT_USERNAME}" "${HT_PASSWORD}"
+  htpasswd_add_user "${USERNAME}" "${PASSWORD}"
   htpasswd_ocp_set_file
-  htpasswd_validate_user "${HT_USERNAME}" "${HT_PASSWORD}"
+  htpasswd_validate_user "${USERNAME}" "${PASSWORD}"
 }
 
 ocp_auth_add_to_group(){
-  USER=${1:-admin}
+  USERNAME=${1:-admin}
   OCP_GROUP=${2:-${DEFAULT_OCP_GROUP}}
 
   ocp_auth_create_group "${OCP_GROUP}"
 
   oc adm groups add-users \
-  "${OCP_GROUP}" "${USER}"
+  "${OCP_GROUP}" "${USERNAME}"
 }
 
 ocp_auth_create_group(){
