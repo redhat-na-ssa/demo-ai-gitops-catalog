@@ -20,10 +20,10 @@ htpasswd_add_user(){
   echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD_FILE}.txt"
 
   if which htpasswd >/dev/null 2>&1; then
-    echo "using local htpasswd..."
+    echo "using htpasswd..."
     htpasswd -b -B -C10 "${HTPASSWD_FILE}" "${USERNAME}" "${PASSWORD}"
   else
-    echo "using oc to run pod..."
+    echo "using oc to run htpasswd..."
     oc run \
       --image httpd \
       -q --rm -i minion -- /bin/sh -c 'sleep 2; htpasswd -n -b -B -C10 '"${USERNAME}"' '"${PASSWORD}"'' > "${HTPASSWD_FILE}" 2>/dev/null
@@ -71,13 +71,17 @@ htpasswd_ocp_set_file(){
   touch "${HTPASSWD_FILE}" || return 1
 
   oc -n openshift-config \
+    create secret generic "$(basename ${HTPASSWD_NAME})" > /dev/null 2>&1
+
+  oc -n openshift-config \
     set data secret/"${HTPASSWD_NAME}" \
-    --from-file=htpasswd="${HTPASSWD_FILE}"
+    --from-file=htpasswd="${HTPASSWD_FILE}" \
+    --from-file=password="${HTPASSWD_FILE}".txt
 }
 
 htpasswd_validate_user(){
-  USER=${1:-admin}
-  PASS=${2:-admin}
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-admin}
   KUBECONFIG=${KUBECONFIG:-~/.kube/config}
   TMP_CONFIG=scratch/kubeconfig.XXX
 
@@ -89,16 +93,16 @@ htpasswd_validate_user(){
   cp "${KUBECONFIG}" "${TMP_CONFIG}"
 
   retry oc --kubeconfig "${TMP_CONFIG}" login \
-    -u "${USER}" -p "${PASS}" > /dev/null 2>&1 || return 1
+    -u "${USERNAME}" -p "${PASSWORD}" > /dev/null 2>&1 || return 1
 
   # verify user is present
-  oc get user "${USER}" || return 1
+  oc get user "${USERNAME}" || return 1
 
   # cleanup tmp config
   rm "${TMP_CONFIG}"
 
   echo ""
-  echo "Validated Login: ${USER}"
+  echo "Validated Login: ${USERNAME}"
   echo ""
 }
 

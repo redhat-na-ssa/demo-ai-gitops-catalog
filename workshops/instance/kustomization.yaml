@@ -5,6 +5,7 @@ labels:
 - includeSelectors: false
   pairs:
     component: workshop
+    workshop: user
 
 namespace: user0
 
