@@ -172,6 +172,7 @@ eq
 esac
 etcd
 euo
+eval
 exe
 failDelay
 fe

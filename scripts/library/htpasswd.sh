@@ -71,7 +71,7 @@ htpasswd_ocp_set_file(){
   touch "${HTPASSWD_FILE}" || return 1
 
   oc -n openshift-config \
-    create secret generic "$(basename ${HTPASSWD_NAME})" > /dev/null 2>&1
+    create secret generic "$(basename "${HTPASSWD_NAME}")" > /dev/null 2>&1
 
   oc -n openshift-config \
     set data secret/"${HTPASSWD_NAME}" \

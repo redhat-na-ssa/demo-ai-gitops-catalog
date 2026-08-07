@@ -12,9 +12,6 @@ WORKSHOP_NUM=${WORKSHOP_NUM:-50}
 WORKSHOP_HTPASSWD=${OBJ_DIR}/htpasswd-workshop
 WORKSHOP_GROUP=workshop-users
 
-
-HTPASSWD_FILE=${OBJ_DIR}/htpasswd-workshop
-
 workshop(){
   workshop_init
   _workshop_usage
@@ -140,6 +137,6 @@ workshop_stop_notebooks(){
   oc annotate notebooks kubeflow-resource-stopped='now' --all -A
 
   # oc -n rhods-notebooks \
-  #   delete po -l app=jupyterhub
+  #   delete pod -l app=jupyterhub
 }
 

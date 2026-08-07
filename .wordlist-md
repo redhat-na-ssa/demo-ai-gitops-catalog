@@ -34,6 +34,7 @@ CodeFlare
 CodeReady
 ConfigMap
 Containerfile
+CoreOS
 CreateContainerError
 DCGM
 DNS
@@ -78,6 +79,7 @@ LDAP
 LVM
 Lan
 Lifecycle
+MEM
 MLOps
 MTA
 MachineConfig
@@ -214,6 +216,7 @@ configs
 contrib
 cp
 cpopen
+cpu
 cr
 crd
 crds
@@ -314,6 +317,7 @@ jq
 json
 jsonpath
 jupyter
+jupyterhub
 kafka
 kataconfig
 kiali
@@ -425,6 +429,7 @@ redhat-na-ssa
 redistributions
 repo
 resourceexclusion
+restartPolicy
 reusability
 rh
 rhacs
@@ -507,4 +512,3 @@ xargs
 xlarge
 yaml
 zotregistry
-CoreOS
