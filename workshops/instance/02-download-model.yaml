@@ -19,7 +19,7 @@ spec:
 
               # install modules
               pip install --no-cache-dir --user huggingface_hub
-              
+
               # download model
               python -c "
               from huggingface_hub import snapshot_download
