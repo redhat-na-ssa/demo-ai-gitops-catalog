@@ -1,7 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2068
-# shellcheck disable=SC2317
-# shellcheck disable=SC2329
+# shellcheck disable=SC1091
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+. "${SCRIPT_DIR}"/functions.sh || return 1
 
 TMP_DIR=scratch
 OBJ_DIR=${TMP_DIR}/workshop
