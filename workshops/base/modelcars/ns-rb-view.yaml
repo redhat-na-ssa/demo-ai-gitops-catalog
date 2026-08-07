@@ -18,7 +18,10 @@ subjects:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: workshop-image-pullers
+  annotations:
+    openshift.io/description: |
+      Allow all serviceaccounts to pull images from this namespace.
+  name: image-pullers-all
   namespace: modelcars
 subjects:
   - kind: Group
