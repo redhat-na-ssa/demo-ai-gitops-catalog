@@ -1,0 +1,59 @@
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  annotations:
+    opendatahub.io/connection-hidden: 'false'
+    opendatahub.io/connection-type-protocol: uri
+    opendatahub.io/connection-type-ref: uri-v1
+    openshift.io/display-name: granite-vision-model
+  name: granite-vision-model
+  labels:
+    opendatahub.io/dashboard: 'true'
+stringData:
+  URI: pvc://granite-vision-model/granite-vision-3.3-2b
+type: Opaque
+---
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: granite-vision-model
+  annotations:
+    modelFormat: vLLM
+    openshift.io/display-name: granite-vision-model
+    # opendatahub.io/connections - references the secret below
+    # so dashboard magic works when you edit the deployment
+    opendatahub.io/connections: granite-vision-model
+    # opendatahub.io/hardware-profile-namespace: redhat-ods-applications
+    # opendatahub.io/hardware-profile-name: workshop-profile
+    opendatahub.io/model-type: generative
+    security.opendatahub.io/enable-auth: "false"
+    serving.kserve.io/deploymentMode: Standard
+  labels:
+    opendatahub.io/dashboard: "true"
+spec:
+  predictor:
+    automountServiceAccountToken: false
+    deploymentStrategy:
+      type: RollingUpdate
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      args:
+        - '--max-model-len=8192'
+      env:
+        - name: VLLM_CPU_KVCACHE_SPACE
+          value: "2"
+      modelFormat:
+        name: vLLM
+      name: ""
+      resources:
+        limits:
+          cpu: "4"
+          memory: 12Gi
+        requests:
+          cpu: "4"
+          memory: 12Gi
+      runtime: granite-vision-model
+      storageUri: pvc://granite-vision-model/granite-vision-3.3-2b
+    timeout: 30

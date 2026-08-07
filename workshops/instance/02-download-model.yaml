@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: download-granite-vision
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: downloader
+          image: python:3.11-slim
+          env:
+            - name: HOME
+              value: /tmp
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              #!/bin/bash
+
+              # install modules
+              pip install --no-cache-dir --user huggingface_hub
+              
+              # download model
+              python -c "
+              from huggingface_hub import snapshot_download
+              snapshot_download(
+                  repo_id='ibm-granite/granite-vision-3.3-2b',
+                  local_dir='/models/granite-vision-3.3-2b'
+              )
+              "
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
+      volumes:
+        - name: model-storage
+          persistentVolumeClaim:
+            claimName: granite-vision-model
+  backoffLimit: 2
