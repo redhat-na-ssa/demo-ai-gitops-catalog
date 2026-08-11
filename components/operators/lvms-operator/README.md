@@ -8,6 +8,8 @@ The current *overlays* available are for the following channels:
 
 * [stable-4.19](operator/overlays/stable-4.19)
 * [stable-4.20](operator/overlays/stable-4.20)
+* [stable-4.21](operator/overlays/stable-4.21)
+* [stable-4.22](operator/overlays/stable-4.22)
 
 ## Usage
 
