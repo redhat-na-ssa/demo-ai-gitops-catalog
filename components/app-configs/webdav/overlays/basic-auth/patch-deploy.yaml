@@ -17,17 +17,17 @@ spec:
                 < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
               }
 
-              USER=${USER:-admin}
+              USERNAME=${USERNAME:-admin}
               PASSWORD=${PASSWORD:-$(genpass 16)}
 
               echo "
-                USER:     ${USER}
+                USERNAME: ${USERNAME}
                 PASSWORD: ${PASSWORD}
               "
 
               rclone serve webdav \
                 --addr :8080 \
-                --user ${USER} \
+                --user ${USERNAME} \
                 --pass ${PASSWORD} \
                 /data
 

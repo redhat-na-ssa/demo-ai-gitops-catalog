@@ -3,30 +3,30 @@
 DEFAULT_HTPASSWD=scratch/htpasswd-local
 
 htpasswd_add_user(){
-  USER=${1:-admin}
-  PASS=${2:-$(genpass)}
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-$(genpass 16)}
   HTPASSWD_FILE=${3:-${DEFAULT_HTPASSWD}}
 
   echo "
-    USERNAME: ${USER}
-    PASSWORD: ${PASS}
+    USERNAME: ${USERNAME}
+    PASSWORD: ${PASSWORD}
 
     FILENAME:  ${HTPASSWD_FILE}
     PASSWORDS: ${HTPASSWD_FILE}.txt
   "
 
   touch "${HTPASSWD_FILE}" "${HTPASSWD_FILE}".txt
-  sed -i '/# '"${USER}"'/d' "${HTPASSWD_FILE}".txt
-  echo "# ${USER} - ${PASS}" >> "${HTPASSWD_FILE}.txt"
+  sed -i '/# '"${USERNAME}"'/d' "${HTPASSWD_FILE}".txt
+  echo "# ${USERNAME} - ${PASSWORD}" >> "${HTPASSWD_FILE}.txt"
 
   if which htpasswd >/dev/null 2>&1; then
-    echo "using local htpasswd..."
-    htpasswd -b -B -C10 "${HTPASSWD_FILE}" "${USER}" "${PASS}"
+    echo "using htpasswd..."
+    htpasswd -b -B -C10 "${HTPASSWD_FILE}" "${USERNAME}" "${PASSWORD}"
   else
-    echo "using oc to run pod..."
+    echo "using oc to run htpasswd..."
     oc run \
       --image httpd \
-      -q --rm -i minion -- /bin/sh -c 'sleep 2; htpasswd -n -b -B -C10 '"${USER}"' '"${PASS}"'' > "${HTPASSWD_FILE}" 2>/dev/null
+      -q --rm -i minion -- /bin/sh -c 'sleep 2; htpasswd -n -b -B -C10 '"${USERNAME}"' '"${PASSWORD}"'' > "${HTPASSWD_FILE}" 2>/dev/null
   fi
 }
 
@@ -71,13 +71,17 @@ htpasswd_ocp_set_file(){
   touch "${HTPASSWD_FILE}" || return 1
 
   oc -n openshift-config \
+    create secret generic "$(basename "${HTPASSWD_NAME}")" > /dev/null 2>&1
+
+  oc -n openshift-config \
     set data secret/"${HTPASSWD_NAME}" \
-    --from-file=htpasswd="${HTPASSWD_FILE}"
+    --from-file=htpasswd="${HTPASSWD_FILE}" \
+    --from-file=password="${HTPASSWD_FILE}".txt
 }
 
 htpasswd_validate_user(){
-  USER=${1:-admin}
-  PASS=${2:-admin}
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-admin}
   KUBECONFIG=${KUBECONFIG:-~/.kube/config}
   TMP_CONFIG=scratch/kubeconfig.XXX
 
@@ -89,16 +93,16 @@ htpasswd_validate_user(){
   cp "${KUBECONFIG}" "${TMP_CONFIG}"
 
   retry oc --kubeconfig "${TMP_CONFIG}" login \
-    -u "${USER}" -p "${PASS}" > /dev/null 2>&1 || return 1
+    -u "${USERNAME}" -p "${PASSWORD}" > /dev/null 2>&1 || return 1
 
   # verify user is present
-  oc get user "${USER}" || return 1
+  oc get user "${USERNAME}" || return 1
 
   # cleanup tmp config
   rm "${TMP_CONFIG}"
 
   echo ""
-  echo "Validated Login: ${USER}"
+  echo "Validated Login: ${USERNAME}"
   echo ""
 }
 

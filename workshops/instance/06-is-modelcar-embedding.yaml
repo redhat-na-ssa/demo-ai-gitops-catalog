@@ -1,0 +1,59 @@
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  annotations:
+    opendatahub.io/connection-hidden: 'false'
+    opendatahub.io/connection-type-protocol: oci
+    opendatahub.io/connection-type-ref: oci-v1
+    openshift.io/display-name: all-minilm-l6-v2
+  name: all-minilm-l6-v2
+  labels:
+    opendatahub.io/dashboard: 'true'
+stringData:
+  .dockerconfigjson: '{}'
+  ACCESS_TYPE: ''
+  OCI_HOST: quay.io/redhat-ai-services/modelcar-catalog
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: all-minilm-l6-v2
+  annotations:
+    modelFormat: vLLM
+    openshift.io/display-name: all-minilm-l6-v2
+    # opendatahub.io/connections - references the secret above
+    # so dashboard magic works when you edit the deployment
+    opendatahub.io/connections: all-minilm-l6-v2
+    # opendatahub.io/hardware-profile-namespace: redhat-ods-applications
+    # opendatahub.io/hardware-profile-name: workshop-profile
+    opendatahub.io/model-type: generative
+    security.opendatahub.io/enable-auth: "false"
+    serving.kserve.io/deploymentMode: Standard
+  labels:
+    opendatahub.io/dashboard: "true"
+spec:
+  predictor:
+    automountServiceAccountToken: false
+    deploymentStrategy:
+      type: RollingUpdate
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      env:
+        - name: VLLM_CPU_KVCACHE_SPACE
+          value: "2"
+      modelFormat:
+        name: vLLM
+      name: ""
+      resources:
+        limits:
+          cpu: "2"
+          memory: 12Gi
+        requests:
+          cpu: "2"
+          memory: 12Gi
+      runtime: granite-vision-model
+      storageUri: oci://quay.io/redhat-ai-services/modelcar-catalog:sentence-transformers--all-minilm-l6-v2
+    timeout: 30
