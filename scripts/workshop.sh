@@ -1,6 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2068
-# shellcheck disable=SC1091
+# shellcheck disable=SC2068,SC2120,SC1091
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 . "${SCRIPT_DIR}"/functions.sh || return 1
