@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailpit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: mailpit
+  template:
+    metadata:
+      labels:
+        deployment: mailpit
+    spec:
+      containers:
+        - name: mailpit
+          image: docker.io/axllent/mailpit:latest
+          env:
+            - name: MP_MAX_MESSAGES
+              value: '5000'
+            - name: MP_SMTP_AUTH_ACCEPT_ANY
+              value: '1'
+            - name: MP_SMTP_AUTH_ALLOW_INSECURE
+              value: '1'
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          ports:
+          - containerPort: 1025
+            protocol: TCP
+          - containerPort: 8025
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /data
+            name: empty
+      volumes:
+      - name: empty
+        emptyDir: {}

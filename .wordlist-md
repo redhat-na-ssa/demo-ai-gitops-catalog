@@ -85,6 +85,7 @@ MTA
 MachineConfig
 MachineConfigPool
 MachineSet
+Mailpit
 MetalLB
 MirrorSet
 ModelCar
@@ -187,6 +188,7 @@ autoscaler
 autoscalers
 autoscaling
 aws
+axllent
 backplane
 belyakov
 bitnami
@@ -349,6 +351,7 @@ machineConfigSelector
 machineconfiguration
 machineset
 machinesets
+mailpit
 managementState
 mariadb
 mastersSchedulable
