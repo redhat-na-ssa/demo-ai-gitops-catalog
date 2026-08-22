@@ -1,0 +1,13 @@
+apiVersion: operator.openshift.io/v1
+kind: Console
+metadata:
+  name: cluster
+spec:
+  customization:
+    capabilities:
+      - name: LightspeedButton
+        visibility:
+          state: Disabled
+      - name: GettingStartedBanner
+        visibility:
+          state: Disabled
