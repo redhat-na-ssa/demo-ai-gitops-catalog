@@ -10,6 +10,7 @@ RUN dnf install -y \
 # build openldap
 WORKDIR /tmp
 
+# hadolint ignore=DL3003
 RUN wget -q https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.13.tgz && \
     tar xzf openldap-2.6.13.tgz && \
     cd openldap-2.6.13 && \
