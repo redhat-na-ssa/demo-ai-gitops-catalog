@@ -129,7 +129,7 @@ download_hcp(){
 download_helm(){
   BIN_VERSION=${1:-latest}
   DOWNLOAD_URL=${OPENSHIFT_CLIENTS_URL}/helm/${BIN_VERSION}/helm-${OS:-linux}-amd64.tar.gz
-  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" helm-${OS:-linux}-amd64
+  curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" helm-"${OS:-linux}"-amd64
   mv "${BIN_PATH}/helm-${OS:-linux}-amd64" "${BIN_PATH}/helm"
 }
 
@@ -234,19 +234,18 @@ download_opm(){
 download_oras(){
   BIN_VERSION=${1:-1.2.3}
   DOWNLOAD_URL=https://github.com/oras-project/oras/releases/download/v${BIN_VERSION}/oras_${BIN_VERSION}_${OS:-linux}_amd64.tar.gz
-  echo $DOWNLOAD_URL
   curl "${DOWNLOAD_URL}" -sL | tar zx -C "${BIN_PATH}/" oras
   chmod +x "${BIN_PATH}/oras"
 }
 
 download_rclone(){
-  curl -LsO https://downloads.rclone.org/rclone-current-${OS:-linux}-amd64.zip
-  unzip rclone-current-${OS:-linux}-amd64.zip
+  curl -LsO https://downloads.rclone.org/rclone-current-"${OS:-linux}"-amd64.zip
+  unzip rclone-current-"${OS:-linux}"-amd64.zip
 
-  cp rclone-*-${OS:-linux}-amd64/rclone "${BIN_PATH}/rclone"
+  cp rclone-*-"${OS:-linux}"-amd64/rclone "${BIN_PATH}/rclone"
   chmod +x "${BIN_PATH}/rclone"
 
-  rm -rf rclone-*-${OS:-linux}-amd64*
+  rm -rf rclone-*-"${OS:-linux}"-amd64*
 }
 
 download_restic(){

@@ -128,7 +128,7 @@ spec:
               uniqueMember: uid=testuser,ou=users,dc=example,dc=org
 
               LDIF
-              
+
               }
 
               whoami(){
@@ -142,5 +142,5 @@ spec:
               bootstrap_ldif
 
               whoami && sleep infinity
-              
+
               sleep 60
