@@ -4,23 +4,25 @@
 [ -e htpasswd.sh ] && . htpasswd.sh
 
 ocp_auth_add_admin_user(){
-  HT_USERNAME=${1:-admin}
-  HT_PASSWORD=${2:-$(genpass)}
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-$(genpass)}
 
   htpasswd_ocp_get_file
-  htpasswd_add_user "${HT_USERNAME}" "${HT_PASSWORD}"
+  htpasswd_add_user "${USERNAME}" "${PASSWORD}"
   htpasswd_ocp_set_file
-  htpasswd_validate_user "${HT_USERNAME}" "${HT_PASSWORD}"
+  htpasswd_validate_user "${USERNAME}" "${PASSWORD}"
 }
 
 ocp_auth_add_to_group(){
-  USER=${1:-admin}
+  USERNAME=${1:-admin}
   OCP_GROUP=${2:-${DEFAULT_OCP_GROUP}}
 
-  ocp_auth_create_group "${OCP_GROUP}"
+  if ! oc get group "${OCP_GROUP}" > /dev/null; then
+    ocp_auth_create_group "${OCP_GROUP}"
+  fi
 
   oc adm groups add-users \
-  "${OCP_GROUP}" "${USER}"
+    "${OCP_GROUP}" "${USERNAME}"
 }
 
 ocp_auth_create_group(){
@@ -88,12 +90,12 @@ ocp_auth_kubeadmin_remove(){
 }
 
 ocp_auth_setup_user(){
-  USER=${1:-admin}
-  PASS=${2:-$(genpass)}
+  USERNAME=${1:-admin}
+  PASSWORD=${2:-$(genpass)}
   OCP_GROUP=${3:-${DEFAULT_OCP_GROUP}}
 
-  htpasswd_add_user "${USER}" "${PASS}"
-  ocp_auth_add_to_group "${USER}" "${OCP_GROUP}"
+  htpasswd_add_user "${USERNAME}" "${PASSWORD}"
+  ocp_auth_add_to_group "${USERNAME}" "${OCP_GROUP}"
 
   echo "
     run: htpasswd_ocp_set_file

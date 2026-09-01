@@ -1,0 +1,17 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+namespace: demo-otel-collector
+
+patches:
+  - target:
+      kind: SecurityContextConstraints
+      name: otel-scc
+    patch: |-
+      - op: replace
+        path: /users/0
+        value: system:serviceaccount:demo-otel-collector:otel
+
+resources:
+  - ../../base
+  - opentelemetry-collector.yaml

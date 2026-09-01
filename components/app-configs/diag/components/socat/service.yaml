@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: socat
+    app.kubernetes.io/component: socat
+    app.kubernetes.io/instance: socat
+    app.kubernetes.io/name: socat
+    app.kubernetes.io/part-of: socat
+  name: socat
+spec:
+  ports:
+  - name: 6666-tcp
+    port: 6666
+    protocol: TCP
+  - name: 6666-udp
+    port: 6666
+    protocol: UDP
+  selector:
+    app: socat
+    deployment: socat

@@ -3,6 +3,7 @@ apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
   name: iperf3
+  namespace: diag
 spec:
   tags:
   - name: latest

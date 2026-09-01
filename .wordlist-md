@@ -34,6 +34,7 @@ CodeFlare
 CodeReady
 ConfigMap
 Containerfile
+CoreOS
 CreateContainerError
 DCGM
 DNS
@@ -78,10 +79,13 @@ LDAP
 LVM
 Lan
 Lifecycle
+MEM
 MLOps
 MTA
 MachineConfig
+MachineConfigPool
 MachineSet
+Mailpit
 MetalLB
 MirrorSet
 ModelCar
@@ -106,6 +110,7 @@ OLM
 Observability
 OpenDataHub
 OpenShift
+OpenTelemetry
 OpenVINO
 OperatorGroup
 PV
@@ -157,9 +162,11 @@ addon
 addr
 adhoc
 adm
+aead
 ai
 aiservices
 alertmanager
+algif
 alongsecret
 amd
 amq
@@ -181,6 +188,7 @@ autoscaler
 autoscalers
 autoscaling
 aws
+axllent
 backplane
 belyakov
 bitnami
@@ -211,6 +219,7 @@ configs
 contrib
 cp
 cpopen
+cpu
 cr
 crd
 crds
@@ -259,6 +268,7 @@ github
 githubusercontent
 gitops
 gitops-admins
+glauth
 gmail
 godmode
 gp
@@ -311,6 +321,7 @@ jq
 json
 jsonpath
 jupyter
+jupyterhub
 kafka
 kataconfig
 kiali
@@ -338,11 +349,15 @@ linkedin
 linux
 llm
 localhost
+machineConfigSelector
+machineconfiguration
 machineset
 machinesets
+mailpit
 managementState
 mariadb
 mastersSchedulable
+matchExpressions
 md
 mellanox
 memberof
@@ -351,6 +366,7 @@ mig
 minio
 mkdir
 mkdocs
+modprobe
 mufg
 multicluster
 mv
@@ -370,6 +386,7 @@ nvidia
 nw
 oauth
 obeone
+observability
 oc
 oci
 ocp
@@ -417,6 +434,7 @@ redhat-na-ssa
 redistributions
 repo
 resourceexclusion
+restartPolicy
 reusability
 rh
 rhacs
@@ -488,6 +506,7 @@ vllm
 vscode
 vsphere
 weaviate
+webdav
 whoami
 wip
 workspaces

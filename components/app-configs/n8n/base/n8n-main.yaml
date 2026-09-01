@@ -20,7 +20,7 @@ spec:
             name: n8n-env
         - secretRef:
             name: n8n-env
-        image: docker.io/n8nio/n8n:1.111.0
+        image: docker.io/n8nio/n8n:latest
         ports:
         - containerPort: 5678
           name: main

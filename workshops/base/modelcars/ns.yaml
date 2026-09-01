@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: modelcars
+  annotations:
+    openshift.io/description: |
+      Model Storage
+    openshift.io/display-name: ModelCar Storage
+    openshift.io/requester: automation
+  labels:
+    owner: workshop

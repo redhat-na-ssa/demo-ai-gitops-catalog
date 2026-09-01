@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"socat:latest","namespace":"diag"},"fieldPath":"spec.template.spec.containers[?(@.name==\"socat\")].image","paused":false}]'
+  labels:
+    app: socat
+    app.kubernetes.io/component: socat
+    app.kubernetes.io/instance: socat
+    app.kubernetes.io/name: socat
+    app.kubernetes.io/part-of: socat
+    app.openshift.io/runtime: socat
+    app.openshift.io/runtime-namespace: diag
+    app.openshift.io/runtime-version: latest
+  name: socat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: socat
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: socat
+        deployment: socat
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/diag/socat:latest
+        imagePullPolicy: IfNotPresent
+        name: socat
+        command:
+          - /bin/sh
+          - -c
+          - |
+            #/bin/sh
+            socat TCP4-LISTEN:6666,reuseaddr,fork - &
+            socat UDP4-LISTEN:6666,reuseaddr,fork -
+
+            sleep infinity
+        ports:
+        - containerPort: 6666
+          protocol: TCP
+        - containerPort: 6666
+          protocol: UDP
+      restartPolicy: Always

@@ -83,7 +83,6 @@ ocp_aws_machineset_clone_worker(){
       get "${MACHINE_SET_WORKER}" -o yaml | \
         sed '/machine/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${MACHINE_SET_NAME}"'/g
           /^  name:/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${MACHINE_SET_NAME}"'/g
-          /name/ s/'"${MACHINE_SET_WORKER##*/}"'/'"${MACHINE_SET_NAME}"'/g
           s/instanceType.*/instanceType: '"${INSTANCE_TYPE}"'/
           /cluster-api-autoscaler/d
           /uid:/d

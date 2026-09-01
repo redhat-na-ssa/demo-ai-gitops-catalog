@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdav
+spec:
+  template:
+    spec:
+      containers:
+        - name: server
+          command:
+            - /bin/sh
+            - -c
+            - |
+              #!/bin/sh
+
+              genpass(){
+                < /dev/urandom LC_ALL=C tr -dc Aa-zZ0-9 | head -c "${1:-32}"
+              }
+
+              USERNAME=${USERNAME:-admin}
+              PASSWORD=${PASSWORD:-$(genpass 16)}
+
+              echo "
+                USERNAME: ${USERNAME}
+                PASSWORD: ${PASSWORD}
+              "
+
+              rclone serve webdav \
+                --addr :8080 \
+                --user ${USERNAME} \
+                --pass ${PASSWORD} \
+                /data
+
+              sleep infinity
+          livenessProbe: null

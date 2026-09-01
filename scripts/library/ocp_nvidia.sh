@@ -62,6 +62,10 @@ ocp_nvidia_dashboard_monitor_setup(){
   rm dcgm-exporter-dashboard.json
 }
 
+ocp_nvidia_get_gpu_count(){
+  oc get nodes -l nvidia.com/gpu.present=true -o custom-columns='NODE:.metadata.name,NV_GPU:.status.capacity.nvidia\.com/gpu'
+}
+
 ocp_nvidia_label_device_plugin_config_machineset(){
   MACHINE_SET_NAME=${1:-machineset.machine.openshift.io/g4dn-4xlarge}
   DEVICE_CONFIG=${2:-default}

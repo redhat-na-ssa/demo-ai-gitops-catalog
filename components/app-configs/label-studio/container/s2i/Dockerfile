@@ -1,3 +1,4 @@
+# hadolint ignore=DL3006
 FROM registry.access.redhat.com/ubi8/python-311
 
 ENV LS_DIR=/opt/app-root/src \

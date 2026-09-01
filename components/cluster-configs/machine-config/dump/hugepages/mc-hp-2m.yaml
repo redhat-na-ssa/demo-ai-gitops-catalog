@@ -1,0 +1,12 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: hp
+  name: 50-kargs-hugepages
+spec:
+  kernelArguments:
+    - hugepagesz=2M
+    - hugepages=3072
+    - hugepagesz=1G
+    - hugepages=6
