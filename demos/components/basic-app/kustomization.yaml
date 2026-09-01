@@ -6,3 +6,12 @@ namespace: sandbox
 resources:
   - ../../../components/cluster-configs/namespaces/instance/sandbox
   - ../../../components/app-configs/httpbin/base
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/resources
+      value: {}
+  target:
+    kind: Deployment
+    name: httpbin
