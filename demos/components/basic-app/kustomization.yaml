@@ -24,6 +24,7 @@ patches:
         limits.cpu: '32'
         limits.memory: 128Gi
         requests.nvidia.com/gpu: '0'
+        requests.amd.com/gpu: '0'
   target:
     kind: ResourceQuota
     name: quota-compute
