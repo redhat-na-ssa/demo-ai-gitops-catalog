@@ -1,0 +1,26 @@
+FROM registry.access.redhat.com/ubi9/ubi AS BUILDER
+
+# install build deps
+RUN dnf install -y \
+      git curl-minimal wget \
+      gcc make openssl-devel \
+      cyrus-sasl-devel && \
+      dnf clean all
+
+# build openldap
+WORKDIR /tmp
+
+# hadolint ignore=DL3003
+RUN wget -q https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.13.tgz && \
+    tar xzf openldap-2.6.13.tgz && \
+    cd openldap-2.6.13 && \
+    ./configure --help && \
+    ./configure \
+      --prefix=/usr/local \
+      --sysconfdir=/etc/openldap \
+      --enable-slapd && \
+    make && make install
+
+FROM registry.access.redhat.com/ubi9/ubi AS FINAL
+
+COPY --from=BUILDER /usr/local /usr/local
