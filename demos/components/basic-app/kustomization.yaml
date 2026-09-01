@@ -15,3 +15,15 @@ patches:
   target:
     kind: Deployment
     name: httpbin
+- patch: |-
+    - op: replace
+      path: /spec/hard
+      value:
+        requests.cpu: '1'
+        requests.memory: 1Gi
+        limits.cpu: '32'
+        limits.memory: 128Gi
+        requests.nvidia.com/gpu: '0'
+  target:
+    kind: ResourceQuota
+    name: quota-compute
