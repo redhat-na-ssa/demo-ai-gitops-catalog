@@ -4,7 +4,7 @@ metadata:
   name: console
 spec:
   port:
-    targetPort: 8025-tcp
+    targetPort: web
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge
