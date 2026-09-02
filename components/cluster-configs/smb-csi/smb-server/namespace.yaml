@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smb-server
+  annotations:
+    openshift.io/display-name: "SMB Server"
+    argocd.argoproj.io/sync-wave: "0"
