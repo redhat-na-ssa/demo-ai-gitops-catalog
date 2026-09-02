@@ -1,10 +1,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: kube-system
+namespace: csi-smb-driver
 
 resources:
-  - https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/rbac-csi-smb.yaml
-  - https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/csi-smb-driver.yaml
-  - https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/csi-smb-controller.yaml
-  - https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/csi-smb-node.yaml
+  # curl -LO https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/rbac-csi-smb.yaml
+  # curl -LO https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/csi-smb-driver.yaml
+  # curl -LO https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/csi-smb-controller.yaml
+  # curl -LO https://github.com/kubernetes-csi/csi-driver-smb/raw/refs/heads/master/deploy/v1.20.3/csi-smb-node.yaml
+  # sed -i 's/kube-system/csi-smb-driver/g' *.yaml
+
+  - csi-smb-controller.yaml
+  - csi-smb-driver.yaml
+  - csi-smb-node.yaml
+  - rbac-csi-smb.yaml
+  - scc.yaml
