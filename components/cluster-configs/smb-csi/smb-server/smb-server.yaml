@@ -32,23 +32,9 @@ spec:
         "kubernetes.io/os": linux
       containers:
         - name: smb-server
-          image: docker.io/andyzhangx/samba:win-fix
-          env:
-            - name: PERMISSIONS
-              value: "0777"
-            - name: USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: smbcreds
-                  key: username
-            - name: PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: smbcreds
-                  key: password
-          args: ["-u", "$(USERNAME);$(PASSWORD)", "-s", "share;/smbshare/;yes;no;no;all;none", "-p"]
+          image: quay.io/samba.org/samba-server:latest
           volumeMounts:
-            - mountPath: /smbshare
+            - mountPath: /share
               name: data-volume
           ports:
             - containerPort: 445
