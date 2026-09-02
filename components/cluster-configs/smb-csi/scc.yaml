@@ -1,9 +1,10 @@
 # oc adm policy add-scc-to-user node-exporter -z csi-smb-node-sa --dry-run -o yaml
+# oc adm policy add-scc-to-user node-exporter -z csi-smb-controller-sa --dry-run -o yaml
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: system:openshift:scc:node-exporter
+  name: csi-smb-node-exporter
 rules:
 - apiGroups:
   - security.openshift.io
@@ -13,10 +14,11 @@ rules:
   - securitycontextconstraints
   verbs:
   - use
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: system:openshift:scc:node-exporter
+  name: csi-smb-node-exporter
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25,30 +27,6 @@ subjects:
 - kind: ServiceAccount
   name: csi-smb-node-sa
   namespace: kube-system
-# oc adm policy add-scc-to-user node-exporter -z csi-smb-controller-sa --dry-run -o yaml
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: system:openshift:scc:node-exporter
-rules:
-- apiGroups:
-  - security.openshift.io
-  resourceNames:
-  - node-exporter
-  resources:
-  - securitycontextconstraints
-  verbs:
-  - use
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: system:openshift:scc:node-exporter
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: system:openshift:scc:node-exporter
-subjects:
 - kind: ServiceAccount
   name: csi-smb-controller-sa
   namespace: kube-system
