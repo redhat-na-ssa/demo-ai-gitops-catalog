@@ -34,26 +34,19 @@ spec:
       containers:
         - name: samba
           image: quay.io/samba.org/samba-server:latest
-          # command:
-          # - /bin/sh
-          # - -c
-          # - |
-          #   #/bin/sh
-          #   smbd --version
-          #   samba-container --help
-
-          #   sleep infinity
+          env:
+            - name: SAMBACC_CONFIG
+              value: /etc/samba/container.json:/config/container.yaml
+          ports:
+            - containerPort: 445
           volumeMounts:
             - mountPath: /share
               name: empty
-          #   - mountPath: /run/samba
-          #     name: empty
-          #     subPath: run
-          #   - mountPath: /var/lib/samba/
-          #     name: empty
-          #     subPath: var
-          ports:
-            - containerPort: 445
+            - mountPath: /config
+              name: config
       volumes:
         - name: empty
           emptyDir: {}
+        - name: config
+          configMap:
+            name: smb-config

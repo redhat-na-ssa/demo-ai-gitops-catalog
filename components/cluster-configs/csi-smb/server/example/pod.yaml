@@ -4,14 +4,18 @@ kind: Pod
 metadata:
   labels:
     run: test
-  name: test
+  name: smb-test
 spec:
   containers:
     - name: minion
       image: registry.redhat.io/openshift4/ose-cli:latest
+      command:
+        - sleep
+        - infinity
       volumeMounts:
         - name: smb
           mountPath: /data
+          readOnly: false
   volumes:
     - name: smb
       persistentVolumeClaim:

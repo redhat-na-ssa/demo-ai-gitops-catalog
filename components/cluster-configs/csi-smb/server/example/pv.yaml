@@ -23,9 +23,9 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: samba.smb-server.svc.cluster.local/share##
+    volumeHandle: main.smb-server.svc.cluster.local/share##
     volumeAttributes:
-      source: "//samba.smb-server.svc.cluster.local/share"
-    # nodeStageSecretRef:
-    #   name: smbcreds
-    #   namespace: smb-server
+      source: "//main.smb-server.svc.cluster.local/share"
+    nodeStageSecretRef:
+      name: smbcreds
+      namespace: smb-server

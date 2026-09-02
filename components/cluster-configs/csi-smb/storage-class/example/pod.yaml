@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: test
+  name: smb-test
+spec:
+  restartPolicy: Never
+  containers:
+    - name: minion
+      image: registry.redhat.io/openshift4/ose-cli:latest
+      command:
+        - sleep
+        - infinity
+      volumeMounts:
+        - name: smb
+          mountPath: /data
+  volumes:
+    - name: smb
+      persistentVolumeClaim:
+        claimName: pvc-smb
