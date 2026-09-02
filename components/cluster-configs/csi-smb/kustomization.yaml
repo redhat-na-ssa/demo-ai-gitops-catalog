@@ -14,4 +14,6 @@ resources:
   - csi-smb-driver.yaml
   - csi-smb-node.yaml
   - rbac-csi-smb.yaml
+
+  - namespace.yaml
   - scc.yaml

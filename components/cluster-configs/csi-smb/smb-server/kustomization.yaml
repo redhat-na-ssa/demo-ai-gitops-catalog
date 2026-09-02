@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: smb-server
 
 resources:
+  - deploy.yaml
   - namespace.yaml
-  - smb-server.yaml
-  - smb-secret.yaml
+  - rbac.yaml

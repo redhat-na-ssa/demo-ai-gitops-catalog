@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: samba
+  name: csi-smb-driver
   annotations:
-    openshift.io/display-name: "Samba Server"
+    openshift.io/display-name: CSI Samba Driver
     argocd.argoproj.io/sync-wave: "0"

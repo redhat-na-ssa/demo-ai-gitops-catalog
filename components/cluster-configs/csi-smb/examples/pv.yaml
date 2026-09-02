@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-smb-00
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - vers=3.0
+    ## https://access.redhat.com/solutions/450913
+    - noauto
+    - nofail
+    - x-systemd.automount
+    - x-systemd.device-timeout
+    # Required to prevent data corruption
+    - noserverino
+  csi:
+    driver: smb.csi.k8s.io
+    readOnly: false
+    volumeHandle: samba.smb-server.svc.cluster.local/share##
+    volumeAttributes:
+      source: "//samba.smb-server.svc.cluster.local/share"
+    # nodeStageSecretRef:
+    #   name: smbcreds
+    #   namespace: smb-server

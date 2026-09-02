@@ -2,53 +2,56 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: smb-server
+  name: samba
   labels:
-    app: smb-server
+    app: samba
 spec:
   type: ClusterIP  # use "LoadBalancer" to get a public ip
   selector:
-    app: smb-server
+    app: samba
   ports:
     - port: 445
-      name: smb-server
+      name: samba
 ---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: smb-server
+  name: samba
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: smb-server
+      app: samba
   template:
     metadata:
-      name: smb-server
+      name: samba
       labels:
-        app: smb-server
+        app: samba
     spec:
+      serviceAccountName: samba-server
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
-        - name: smb-server
+        - name: samba
           image: quay.io/samba.org/samba-server:latest
-          command:
-          - /bin/sh
-          - -c
-          - |
-            #/bin/sh
-            smbd --version
-            samba-container --help
+          # command:
+          # - /bin/sh
+          # - -c
+          # - |
+          #   #/bin/sh
+          #   smbd --version
+          #   samba-container --help
 
-            sleep infinity
+          #   sleep infinity
           volumeMounts:
             - mountPath: /share
               name: empty
-              subPath: data
-            - mountPath: /run/samba
-              name: empty
-              subPath: run
+          #   - mountPath: /run/samba
+          #     name: empty
+          #     subPath: run
+          #   - mountPath: /var/lib/samba/
+          #     name: empty
+          #     subPath: var
           ports:
             - containerPort: 445
       volumes:
