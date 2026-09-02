@@ -40,13 +40,17 @@ spec:
             #/bin/sh
             smbd --version
             samba-container --help
-            
+
             sleep infinity
           volumeMounts:
             - mountPath: /share
-              name: data-volume
+              name: empty
+              subPath: data
+            - mountPath: /run/samba
+              name: empty
+              subPath: run
           ports:
             - containerPort: 445
       volumes:
-        - name: data-volume
+        - name: empty
           emptyDir: {}
