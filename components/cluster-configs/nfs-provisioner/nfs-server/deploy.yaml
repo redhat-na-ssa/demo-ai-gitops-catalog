@@ -1,0 +1,53 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-server
+  labels:
+    app: nfs-server
+spec:
+  type: ClusterIP  # use "LoadBalancer" to get a public ip
+  selector:
+    app: nfs-server
+  ports:
+    - port: 2049
+      name: nfs
+    - port: 20048
+      name: mountd
+    - port: 111
+      name: rpcbind
+    - port: 111
+      name: udp-rpcbind
+      protocol: UDP
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nfs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfs-server
+  template:
+    metadata:
+      name: nfs-server
+      labels:
+        app: nfs-server
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-server
+          image: image-registry.openshift-image-registry.svc:5000/nfs-provisioner/nfs-server:latest
+          ports:
+            - containerPort: 2049
+            - containerPort: 20048
+            - containerPort: 111
+            - containerPort: 111
+              protocol: UDP
+          volumeMounts:
+            - mountPath: /exports
+              name: empty
+      volumes:
+        - name: empty
+          emptyDir: {}

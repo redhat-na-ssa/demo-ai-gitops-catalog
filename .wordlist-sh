@@ -36,6 +36,7 @@ LsO
 MAINTAINER
 MachineAutoscaler
 MultiNamespace
+NFSv
 NGC
 NUM
 NoExecute
@@ -87,6 +88,7 @@ applicationsets
 argocds
 args
 aspell
+au
 awk
 awscli
 awscliv
@@ -174,11 +176,14 @@ etcd
 euo
 eval
 exe
+exportfs
 failDelay
 fe
 fi
 finalizers
 fromPort
+fs
+fsid
 gaudi
 gb
 gc
@@ -256,6 +261,7 @@ mikefarah
 minReplicas
 mirroredmanagedclusters
 mkdocs
+mountd
 multiclusterengines
 multiclusterhub
 multiclusterhubs
@@ -269,6 +275,7 @@ nbB
 ncast
 ne
 newkey
+nfsd
 nodeCount
 nodePlacement
 nodeSelector
@@ -294,12 +301,14 @@ packagemanifest
 packagemanifests
 passwd
 pem
+pidof
 pipefail
 pki
 placementbindings
 placementrules
 preferredVersion
 printf
+proc
 projectcalico
 prometheusK
 prometheusOperator
@@ -323,12 +332,17 @@ retryDelay
 rf
 rollout
 rootDirectory
+rpc
+rpcbind
+rpcinfo
 rsa
+rw
 sL
 sLfO
 sLo
 sPrometheusAdapter
 sS
+sbin
 scaleTargetRef
 schedulable
 schemas
@@ -348,6 +362,7 @@ skel
 sl
 squidfunk
 src
+statd
 su
 subctl
 subjectAltName
@@ -369,6 +384,7 @@ tolerations
 tpm
 ui
 uid
+umount
 uname
 uncordon
 uniq

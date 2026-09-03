@@ -8,6 +8,7 @@ rules:
   - security.openshift.io
   resourceNames:
   - hostmount-anyuid
+  - hostmount-anyuid-v2
   # - nfs-provisioner-hostmount-anyuid
   resources:
   - securitycontextconstraints

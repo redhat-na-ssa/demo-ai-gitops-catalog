@@ -23,16 +23,16 @@ patches:
         - name: PROVISIONER_NAME
           value: k8s-sigs.io/nfs-subdir-external-provisioner
         - name: NFS_SERVER
-          value: nfs-server.lan
+          value: nfs-server.nfs-provisioner.svc.cluster.local
         - name: NFS_PATH
-          value: /nfs-data
+          value: /data
     - op: replace
       path: /spec/template/spec/volumes
       value:
         - name: nfs-client-root
           nfs:
-            server: nfs-server.lan
-            path: /nfs-data
+            server: nfs-server.nfs-provisioner.svc.cluster.local
+            path: /data
   target:
     kind: Deployment
 - patch: |-
